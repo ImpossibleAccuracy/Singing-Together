@@ -9,55 +9,44 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.mohamedrejeb.calf.core.LocalPlatformContext
-import com.mohamedrejeb.calf.picker.FilePickerFileType
-import com.mohamedrejeb.calf.picker.FilePickerSelectionMode
-import com.mohamedrejeb.calf.picker.rememberFilePickerLauncher
+import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.baseline_mic_24
 import com.singing.app.composeapp.generated.resources.baseline_volume_up_black_24dp
+import com.singing.audio.utils.backgroundScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.di.module.viewModels
-import org.singing.app.domain.model.AudioFile
-import org.singing.app.domain.model.Frequency
-import org.singing.app.domain.model.ListWithSelected
-import org.singing.app.domain.model.PlayerState
-import org.singing.app.setup.audio.VoiceInput
+import org.singing.app.domain.audio.voice.VoiceInput
+import org.singing.app.domain.model.audio.Frequency
+import org.singing.app.setup.audio.AudioDefaults
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.helper.Space
-import org.singing.app.ui.screens.record.views.AudioInOutLayout
-import org.singing.app.ui.screens.record.views.AudioInOutLayoutActions
-import org.singing.app.ui.screens.record.views.AudioInOutLayoutData
+import org.singing.app.ui.screens.record.model.PlayerUiState
+import org.singing.app.ui.screens.record.model.RecorderState
 import org.singing.app.ui.screens.record.views.audio.*
 import org.singing.app.ui.screens.record.views.display.AudioDisplay
 import org.singing.app.ui.screens.record.views.display.AudioDisplayData
 import org.singing.app.ui.screens.record.views.filter.AudioInputFilters
 import org.singing.app.ui.screens.record.views.filter.AudioInputFiltersActions
 import org.singing.app.ui.screens.record.views.filter.AudioInputFiltersData
-import org.singing.app.ui.screens.record.views.messages.NoVoiceInputMessage
 import org.singing.app.ui.screens.record.views.replay.ReplayCard
 
 actual class RecordScreen : Screen {
     private var _viewModel: RecordViewModel? = null
     private val viewModel get() = _viewModel!!
 
-    private var _audioViewModel: RecordScreenAudioViewModel? = null
-    private val audioViewModel get() = _audioViewModel!!
-
     @Composable
     override fun Content() {
         _viewModel = viewModels<RecordViewModel>()
-        _audioViewModel = viewModels<RecordScreenAudioViewModel>()
 
         val isEnabled by VoiceInput.isEnabled.collectAsStateSafe(true)
 
@@ -94,10 +83,6 @@ actual class RecordScreen : Screen {
                     modifier = Modifier
                         .width(324.dp)
                 ) {
-                    AudioInOutLayoutContainer()
-
-                    Space(16.dp)
-
                     FiltersCardContainer()
 
                     Space(16.dp)
@@ -154,8 +139,10 @@ actual class RecordScreen : Screen {
 
     @Composable
     private fun DisplayMainContainer() {
+        val scope = rememberCoroutineScope()
+
         val selectedAudio by viewModel.selectedAudio.collectAsStateSafe()
-        val playerState by viewModel.playerState.collectAsStateSafe()
+        val recorderState by viewModel.recorderState.collectAsStateSafe()
 
         val currentMicrophoneFrequency by VoiceInput.voiceData
             .collectAsState(Frequency(0.0), Dispatchers.IO)
@@ -187,9 +174,15 @@ actual class RecordScreen : Screen {
                 secondData = secondAudio,
                 action = {
                     StartRecordButton(
-                        isPlaying = playerState == PlayerState.PLAY,
+                        isPlaying = recorderState != RecorderState.STOP,
                         onClick = {
-                            viewModel.togglePlaying()
+                            scope.launch {
+                                if (recorderState == RecorderState.STOP) {
+                                    viewModel.startRecord()
+                                } else {
+                                    viewModel.stopRecord()
+                                }
+                            }
                         }
                     )
                 }
@@ -199,18 +192,28 @@ actual class RecordScreen : Screen {
 
     @Composable
     private fun AudioLayoutContainer() {
+        val scope = rememberCoroutineScope()
+
         val selectedAudio by viewModel.selectedAudio.collectAsStateSafe()
         val playerPosition by viewModel.playerPosition.collectAsStateSafe()
+        val recorderState by viewModel.recorderState.collectAsStateSafe()
         val playerState by viewModel.playerState.collectAsStateSafe()
 
-        val pickerLauncher = rememberFilePickerLauncher(
-            type = FilePickerFileType.Audio,
-            selectionMode = FilePickerSelectionMode.Single,
-            onResult = { files ->
-                if (files.isNotEmpty()) {
-                    viewModel.selectedAudio.value = AudioFile(
-                        file = files.first()
-                    )
+        val canEditPlayerState = recorderState != RecorderState.RECORD
+        val canEditTrack = playerState != PlayerUiState.PLAY
+
+        var showAudioTrackPicker by remember { mutableStateOf(false) }
+
+        FilePicker(
+            show = showAudioTrackPicker,
+            fileExtensions = AudioDefaults.AllowedSoundFormats,
+            onFileSelected = { inputFile ->
+                backgroundScope.launch(Dispatchers.IO) {
+                    showAudioTrackPicker = false
+
+                    if (inputFile != null) {
+                        viewModel.setSelectedAudio(inputFile)
+                    }
                 }
             }
         )
@@ -227,90 +230,44 @@ actual class RecordScreen : Screen {
         ) {
             if (selectedAudio == null) {
                 SelectTrackFile(
+                    enabled = canEditTrack,
                     onTrackPickup = {
-                        pickerLauncher.launch()
+                        showAudioTrackPicker = true
                     }
                 )
             } else {
                 val duration = selectedAudio!!.duration
-                val canEditPlayerData = playerState != PlayerState.PLAY
 
                 AudioTrackControls(
                     data = AudioTrackControlsData(
                         duration = duration,
                         currentPosition = playerPosition,
-                        isPlaying = playerState == PlayerState.PLAY_PREVIEW,
-                        isEditable = canEditPlayerData,
+                        isPlaying = playerState == PlayerUiState.PLAY,
+                        canEditPlayerState = canEditPlayerState,
+                        canEditTrack = canEditTrack,
                     ),
                     actions = AudioTrackControlsActions(
                         onTrackPositionChange = {
-                            viewModel.updatePlayerPosition((duration * it).toLong())
+                            scope.launch {
+                                viewModel.setPlayerPosition((duration * it).toLong())
+                            }
                         },
                         onChangeTrack = {
-                            pickerLauncher.launch()
+                            showAudioTrackPicker = true
                         },
                         onRemoveTrack = {
-                            viewModel.selectedAudio.value = null
+                            viewModel.clearSelectedAudio()
                         },
                         onPreviewClick = {
-                            if (playerState == PlayerState.STOP) {
-                                viewModel.startPlaying(true)
-                            } else {
-                                viewModel.stopPlaying()
+                            scope.launch {
+                                if (playerState == PlayerUiState.STOP) {
+                                    viewModel.startPlaying()
+                                } else {
+                                    viewModel.stopPlaying()
+                                }
                             }
                         }
                     ),
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun AudioInOutLayoutContainer() {
-        val selectedAudio by viewModel.selectedAudio.collectAsStateSafe()
-        val hasSelectedAudio = selectedAudio != null
-
-        val selectedVoiceInput by audioViewModel.selectedVoiceInput.collectAsStateSafe()
-        val selectedVoiceOutput by audioViewModel.selectedVoiceOutput.collectAsStateSafe()
-        val selectedAudioOutput by audioViewModel.selectedAudioOutput.collectAsStateSafe()
-
-        val microphones by audioViewModel.microphones.collectAsStateSafe()
-        val speakers by audioViewModel.speakers.collectAsStateSafe()
-
-        when {
-            selectedVoiceInput == null -> {
-                NoVoiceInputMessage()
-            }
-
-            else -> {
-                AudioInOutLayout(
-                    data = AudioInOutLayoutData(
-                        defaultNoChoiceLabel = "Не выбрано",
-                        showAudioOutput = hasSelectedAudio,
-                        voiceInputs = ListWithSelected(
-                            list = microphones,
-                            selectedItem = selectedVoiceInput
-                        ),
-                        voiceOutputs = ListWithSelected(
-                            list = speakers,
-                            selectedItem = selectedVoiceOutput
-                        ),
-                        audioOutputs = ListWithSelected(
-                            list = speakers,
-                            selectedItem = selectedAudioOutput
-                        ),
-                    ),
-                    actions = AudioInOutLayoutActions(
-                        onVoiceInputSelected = {
-                            audioViewModel.selectedVoiceInput.value = it
-                        },
-                        onVoiceOutputSelected = {
-                            audioViewModel.selectedVoiceOutput.value = it
-                        },
-                        onAudioOutputSelected = {
-                            audioViewModel.selectedAudioOutput.value = it
-                        },
-                    )
                 )
             }
         }

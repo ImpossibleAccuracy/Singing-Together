@@ -1,9 +1,9 @@
 package com.singing.audio.library.looper
 
-import com.singing.audio.library.params.DecoderParams
+import com.singing.audio.library.params.AudioParams
 
 class TotalTimeDecoderLoop(
-    private val data: DecoderParams,
+    private val data: AudioParams,
     private val totalTime: Long,
 ) : DecoderLoop {
 

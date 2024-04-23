@@ -21,7 +21,6 @@ include(
     ":library",
     ":library:utils",
     ":library:audio-library",
-    ":library:audio-devices",
 )
 
 include(

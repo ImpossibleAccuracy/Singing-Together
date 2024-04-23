@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.baseline_add_black_24dp
 import org.jetbrains.compose.resources.vectorResource
-import org.singing.app.domain.model.AudioFilter
+import org.singing.app.domain.model.audio.AudioFilter
 import org.singing.app.ui.helper.Space
 import org.singing.app.ui.views.AudioFilterItem
 

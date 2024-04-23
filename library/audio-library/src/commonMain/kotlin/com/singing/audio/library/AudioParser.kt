@@ -3,14 +3,14 @@ package com.singing.audio.library
 import com.singing.audio.library.decoder.AudioDecoder
 import com.singing.audio.library.input.AudioInput
 import com.singing.audio.library.looper.DecoderLoop
-import com.singing.audio.library.params.DecoderParams
+import com.singing.audio.library.params.AudioParams
 import com.singing.audio.library.transformation.bytes.ByteOperation
 import com.singing.audio.library.utils.isPowerOf2
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class AudioParser<T>(
-    val data: DecoderParams,
+    val data: AudioParams,
     input: AudioInput,
     val decoder: AudioDecoder<T>,
     val decoderLoop: DecoderLoop? = null
@@ -39,7 +39,9 @@ class AudioParser<T>(
         }
     }
 
-    fun parse(): Flow<T> {
+    fun parse(
+        onBytesRead: ((ByteArray) -> Unit)? = null,
+    ): Flow<T> {
         return flow {
             val buf = ByteArray(data.bufferSize)
 
@@ -52,6 +54,8 @@ class AudioParser<T>(
                     input.readBytes(buf)
                 }
             ) {
+                onBytesRead?.invoke(buf)
+
                 val samples = computeSamples(buf)
 
                 if (decoderLoop?.isResume(samples) == false) {

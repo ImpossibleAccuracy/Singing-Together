@@ -20,7 +20,8 @@ data class AudioTrackControlsData(
     val duration: Long,
     val currentPosition: Long? = null,
     val isPlaying: Boolean = true,
-    val isEditable: Boolean = true,
+    val canEditPlayerState: Boolean = true,
+    val canEditTrack: Boolean = true,
 ) {
     internal val playerPosition: Double
         get() = currentPosition!! / duration.toDouble()
@@ -49,7 +50,7 @@ fun AudioTrackControls(
             modifier = Modifier.fillMaxWidth()
         ) {
             AssistChip(
-                enabled = data.isEditable,
+                enabled = data.canEditTrack,
                 onClick = {
                     actions.onChangeTrack()
                 },
@@ -72,7 +73,7 @@ fun AudioTrackControls(
             Space(12.dp)
 
             AssistChip(
-                enabled = data.isEditable,
+                enabled = data.canEditTrack,
                 onClick = {
                     actions.onRemoveTrack()
                 },
@@ -122,7 +123,7 @@ fun AudioTrackControls(
                     data.playerPosition.toFloat()
                 },
                 onValueChange = {
-                    if (data.isEditable) {
+                    if (data.canEditPlayerState) {
                         actions.onTrackPositionChange?.invoke(it)
                     }
                 }
@@ -140,7 +141,7 @@ fun AudioTrackControls(
         Space(8.dp)
 
         FilledTonalButton(
-            enabled = data.isEditable,
+            enabled = data.canEditPlayerState,
             colors = ButtonDefaults.filledTonalButtonColors(
                 containerColor = MaterialTheme.colorScheme.tertiary,
             ),

@@ -1,15 +1,11 @@
 package org.singing.app.setup.audio
 
-import com.singing.audio.devices.DevicesScanner
-import com.singing.audio.library.input.ext.toAudioFormat
-import com.singing.audio.library.params.DecoderParams
+import com.singing.audio.library.params.AudioParams
 
 actual object AudioDefaults {
-    actual val VoiceBufferSize: Int = 1024 * 64
-
-    actual val VoiceDecoderParams: DecoderParams =
-        DecoderParams(
-            bufferSize = VoiceBufferSize,
+    actual val VoiceInputAudioParams: AudioParams =
+        AudioParams(
+            bufferSize = 1024 * 64,
             frameRate = 41400F,
             frameSize = 2,
             sampleRate = 41400F,
@@ -18,7 +14,11 @@ actual object AudioDefaults {
             isBigEndian = false,
         )
 
-    init {
-        DevicesScanner.inputAudioFormat = VoiceDecoderParams.toAudioFormat()
-    }
+    actual val AllowedSoundFormats: List<String> = listOf(
+        "m4a",
+        "mp3",
+        "wav",
+        "wma",
+        "aac",
+    )
 }

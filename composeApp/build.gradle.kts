@@ -61,7 +61,6 @@ kotlin {
 
             implementation(project(":library:utils"))
             implementation(project(":library:audio-library"))
-            implementation(project(":library:audio-devices"))
 
             implementation(libs.kotlinx.coroutines.core)
 
@@ -81,10 +80,10 @@ kotlin {
             implementation(libs.settings.multiplatform)
 
             implementation(libs.calf.ui)
-            implementation(libs.calf.filePicker)
 
-            implementation(libs.composeDnd)
+//            implementation(libs.composeDnd)
 
+            implementation(libs.mpfilepicker)
             implementation(libs.composeImageLoader)
         }
 
@@ -106,6 +105,9 @@ kotlin {
             implementation(libs.ktor.client.cio)
 
             implementation(libs.sqldelight.sqlite)
+
+            implementation(libs.mp3spi)
+
         }
 
         androidMain.dependencies {

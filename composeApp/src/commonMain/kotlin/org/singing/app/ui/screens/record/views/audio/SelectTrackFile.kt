@@ -18,6 +18,7 @@ import org.singing.app.ui.helper.Space
 @Composable
 fun SelectTrackFile(
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     onTrackPickup: () -> Unit,
 ) {
     Row(
@@ -47,6 +48,7 @@ fun SelectTrackFile(
         Space(12.dp)
 
         OutlinedButton(
+            enabled = enabled,
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.tertiary),
             onClick = {
                 onTrackPickup()
