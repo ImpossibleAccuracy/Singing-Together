@@ -97,7 +97,7 @@ internal fun AppTheme(
 
         val theme = getAppTheme(isDark)
 
-        SystemAppearance(theme, !isDark)
+        SystemAppearance(theme, isDark)
 
         MaterialTheme(
             colorScheme = theme,

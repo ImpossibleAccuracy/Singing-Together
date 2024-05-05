@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -19,25 +20,22 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.darkrockstudios.libraries.mpfilepicker.FilePicker
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.baseline_mic_24
-import com.singing.app.composeapp.generated.resources.baseline_volume_up_black_24dp
-import com.singing.audio.utils.backgroundScope
+import com.singing.config.track.TrackProperties
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.di.module.viewModels
-import org.singing.app.domain.audio.voice.VoiceInput
-import org.singing.app.domain.model.audio.Frequency
-import org.singing.app.setup.audio.AudioDefaults
+import com.singing.audio.player.PlayerState
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.helper.Space
-import org.singing.app.ui.screens.record.model.PlayerUiState
-import org.singing.app.ui.screens.record.model.RecorderState
+import org.singing.app.ui.screens.record.model.RecordState
 import org.singing.app.ui.screens.record.views.audio.*
 import org.singing.app.ui.screens.record.views.display.AudioDisplay
 import org.singing.app.ui.screens.record.views.display.AudioDisplayData
 import org.singing.app.ui.screens.record.views.filter.AudioInputFilters
 import org.singing.app.ui.screens.record.views.filter.AudioInputFiltersActions
 import org.singing.app.ui.screens.record.views.filter.AudioInputFiltersData
+import org.singing.app.ui.screens.record.views.record.RecordHistory
 import org.singing.app.ui.screens.record.views.replay.ReplayCard
 
 actual class RecordScreen : Screen {
@@ -48,13 +46,14 @@ actual class RecordScreen : Screen {
     override fun Content() {
         _viewModel = viewModels<RecordViewModel>()
 
-        val isEnabled by VoiceInput.isEnabled.collectAsStateSafe(true)
-
         val verticalScroll = rememberScrollState()
 
-        if (isEnabled) {
+        val recordData by viewModel.recordData.collectAsStateSafe()
+
+        if (recordData.isAnyInputEnabled) {
             Row(
                 modifier = Modifier
+                    .fillMaxSize()
                     .verticalScroll(state = verticalScroll)
                     .padding(
                         horizontal = 24.dp,
@@ -74,7 +73,7 @@ actual class RecordScreen : Screen {
 
                     Space(16.dp)
 
-//                RecordHistoryContainer()
+                    RecordHistoryContainer()
                 }
 
                 Space(16.dp)
@@ -139,143 +138,185 @@ actual class RecordScreen : Screen {
 
     @Composable
     private fun DisplayMainContainer() {
-        val scope = rememberCoroutineScope()
+        val state by viewModel.uiState.collectAsStateSafe()
 
-        val selectedAudio by viewModel.selectedAudio.collectAsStateSafe()
-        val recorderState by viewModel.recorderState.collectAsStateSafe()
+        val recordData by viewModel.recordData.collectAsStateSafe()
 
-        val currentMicrophoneFrequency by VoiceInput.voiceData
-            .collectAsState(Frequency(0.0), Dispatchers.IO)
-
-        val firstAudio =
-            AudioDisplayData(
-                icon = vectorResource(Res.drawable.baseline_mic_24),
-                title = "C4",
-                subtitle = "${currentMicrophoneFrequency.round()} Hz",
-            )
-
-        val secondAudio = selectedAudio?.let {
-            AudioDisplayData(
-                icon = vectorResource(Res.drawable.baseline_volume_up_black_24dp),
-                title = "C4",
-                subtitle = "237 Hz",
-            )
-        }
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(height = 256.dp)
-                .clip(shape = RoundedCornerShape(36.dp))
-                .background(color = MaterialTheme.colorScheme.surface)
-        ) {
-            AudioDisplay(
-                firstData = firstAudio,
-                secondData = secondAudio,
-                action = {
-                    StartRecordButton(
-                        isPlaying = recorderState != RecorderState.STOP,
-                        onClick = {
-                            scope.launch {
-                                if (recorderState == RecorderState.STOP) {
-                                    viewModel.startRecord()
-                                } else {
-                                    viewModel.stopRecord()
+        with(state) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(height = 256.dp)
+                    .clip(shape = RoundedCornerShape(36.dp))
+                    .background(color = MaterialTheme.colorScheme.surface)
+            ) {
+                AudioDisplay(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .let {
+                            if (recordCountdown == null) it
+                            else it.blur(16.dp)
+                        },
+                    data = AudioDisplayData(
+                        pair = recordData.firstInput to recordData.secondInput,
+                    ),
+                    action = {
+                        StartRecordButton(
+                            enabled = state.recordCountdown == null,
+                            isPlaying = recordState == RecordState.RECORD,
+                            onClick = {
+                                when (recordState) {
+                                    RecordState.RECORD -> viewModel.stopRecord()
+                                    RecordState.STOP -> viewModel.startRecord()
+                                    RecordState.COUNTDOWN -> {}
                                 }
                             }
-                        }
-                    )
+                        )
+                    }
+                )
+
+                if (state.recordCountdown != null) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                MaterialTheme.colorScheme
+                                    .surfaceContainerHighest
+                                    .copy(
+                                        alpha = 0.01f
+                                    )
+                            )
+                    ) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = state.recordCountdown.toString(),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.displayMedium,
+                        )
+                    }
                 }
-            )
+            }
         }
     }
 
     @Composable
     private fun AudioLayoutContainer() {
-        val scope = rememberCoroutineScope()
-
-        val selectedAudio by viewModel.selectedAudio.collectAsStateSafe()
-        val playerPosition by viewModel.playerPosition.collectAsStateSafe()
-        val recorderState by viewModel.recorderState.collectAsStateSafe()
-        val playerState by viewModel.playerState.collectAsStateSafe()
-
-        val canEditPlayerState = recorderState != RecorderState.RECORD
-        val canEditTrack = playerState != PlayerUiState.PLAY
-
+        val coroutineScope = rememberCoroutineScope()
         var showAudioTrackPicker by remember { mutableStateOf(false) }
+        var showAudioProcessDialog by remember { mutableStateOf(false) }
 
-        FilePicker(
-            show = showAudioTrackPicker,
-            fileExtensions = AudioDefaults.AllowedSoundFormats,
-            onFileSelected = { inputFile ->
-                backgroundScope.launch(Dispatchers.IO) {
-                    showAudioTrackPicker = false
+        val state by viewModel.uiState.collectAsStateSafe()
 
-                    if (inputFile != null) {
-                        viewModel.setSelectedAudio(inputFile)
+        val audioProcessState = state.audioProcessState
+        val selectedAudio = audioProcessState?.selectedAudio
+
+        if (audioProcessState != null) {
+            AudioProcessDialog(
+                visible = showAudioProcessDialog,
+                data = AudioProcessDialogData(
+                    isParsing = audioProcessState.isParsing,
+                    title = audioProcessState.selectedAudio.name,
+                    result = audioProcessState.data,
+                ),
+                onCloseRequest = {
+                    if (!audioProcessState.isParsing) {
+                        showAudioProcessDialog = false
                     }
                 }
-            }
-        )
+            )
+        }
 
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .clip(shape = MaterialTheme.shapes.medium)
-                .background(color = MaterialTheme.colorScheme.tertiaryContainer)
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 12.dp
-                )
-        ) {
-            if (selectedAudio == null) {
-                SelectTrackFile(
-                    enabled = canEditTrack,
-                    onTrackPickup = {
-                        showAudioTrackPicker = true
+        with(state) {
+            FilePicker(
+                show = showAudioTrackPicker,
+                fileExtensions = TrackProperties.allowedSoundFormats,
+                onFileSelected = { inputFile ->
+                    coroutineScope.launch(Dispatchers.IO) {
+                        showAudioTrackPicker = false
+
+                        if (inputFile != null) {
+                            showAudioProcessDialog = true
+                            viewModel.processAudio(inputFile)
+                        }
                     }
-                )
-            } else {
-                val duration = selectedAudio!!.duration
+                }
+            )
 
-                AudioTrackControls(
-                    data = AudioTrackControlsData(
-                        duration = duration,
-                        currentPosition = playerPosition,
-                        isPlaying = playerState == PlayerUiState.PLAY,
-                        canEditPlayerState = canEditPlayerState,
-                        canEditTrack = canEditTrack,
-                    ),
-                    actions = AudioTrackControlsActions(
-                        onTrackPositionChange = {
-                            scope.launch {
-                                viewModel.setPlayerPosition((duration * it).toLong())
-                            }
-                        },
-                        onChangeTrack = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(shape = MaterialTheme.shapes.medium)
+                    .background(color = MaterialTheme.colorScheme.tertiaryContainer)
+                    .padding(
+                        horizontal = 16.dp,
+                        vertical = 12.dp
+                    )
+            ) {
+                if (selectedAudio == null) {
+                    SelectTrackFile(
+                        enabled = canEditTrack && canEditPlayerState,
+                        onTrackPickup = {
                             showAudioTrackPicker = true
-                        },
-                        onRemoveTrack = {
-                            viewModel.clearSelectedAudio()
-                        },
-                        onPreviewClick = {
-                            scope.launch {
-                                if (playerState == PlayerUiState.STOP) {
+                        }
+                    )
+                } else {
+                    val duration = selectedAudio.duration
+
+                    AudioTrackControls(
+                        data = AudioTrackControlsData(
+                            duration = duration,
+                            currentPosition = playerPosition,
+                            isPlaying = playerState == PlayerState.PLAY,
+                            canEditPlayerState = canEditPlayerState,
+                            canEditTrack = canEditTrack,
+                        ),
+                        actions = AudioTrackControlsActions(
+                            onTrackPositionChange = {
+                                viewModel.setPlayerPosition((duration * it).toLong())
+                            },
+                            onChangeTrack = {
+                                showAudioTrackPicker = true
+                            },
+                            onRemoveTrack = {
+                                viewModel.clearSelectedAudio()
+                            },
+                            onPreviewClick = {
+                                if (playerState == PlayerState.STOP) {
                                     viewModel.startPlaying()
                                 } else {
                                     viewModel.stopPlaying()
                                 }
                             }
-                        }
-                    ),
-                )
+                        ),
+                    )
+                }
             }
         }
     }
 
     @Composable
+    private fun RecordHistoryContainer() {
+        val recordData by viewModel.recordData.collectAsStateSafe()
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = MaterialTheme.shapes.medium)
+                .background(color = MaterialTheme.colorScheme.surfaceContainerLow)
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 12.dp
+                )
+        ) {
+            RecordHistory(
+                items = recordData.history.asReversed(),
+            )
+        }
+    }
+
+    @Composable
     private fun FiltersCardContainer() {
-        val filters by VoiceInput.voiceFilters.collectAsStateSafe()
+        val state by viewModel.uiState.collectAsStateSafe()
 
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -284,11 +325,11 @@ actual class RecordScreen : Screen {
         ) {
             AudioInputFilters(
                 data = AudioInputFiltersData(
-                    items = filters,
+                    items = state.filters,
                 ),
                 actions = AudioInputFiltersActions(
                     onFiltersUpdate = {
-                        VoiceInput.setFilters(it)
+                        viewModel.setVoiceFilters(it)
                     }
                 )
             )

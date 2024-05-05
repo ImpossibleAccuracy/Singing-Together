@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.baseline_play_arrow_black_24dp
 import com.singing.app.composeapp.generated.resources.baseline_radio_button_checked_black_24dp
 import com.singing.app.composeapp.generated.resources.baseline_stop_black_24dp
 import org.jetbrains.compose.resources.vectorResource
@@ -14,10 +13,12 @@ import org.singing.app.ui.helper.Space
 
 @Composable
 fun StartRecordButton(
+    enabled: Boolean = true,
     isPlaying: Boolean,
     onClick: () -> Unit
 ) {
     FilledTonalButton(
+        enabled = enabled,
         onClick = onClick,
         colors = ButtonDefaults.filledTonalButtonColors(
             containerColor = MaterialTheme.colorScheme.inversePrimary,

@@ -1,14 +1,14 @@
 package org.singing.app.setup.audio
 
-import com.singing.audio.library.input.AudioInput
-import com.singing.audio.library.params.AudioParams
+import com.singing.audio.library.filter.AudioFilter
+import com.singing.audio.library.parser.AudioParser
+import com.singing.audio.sampled.model.TimedFrequency
+import com.singing.audio.player.model.AudioFile
 
-actual fun getSoundInput(
-    data: AudioParams,
-): AudioInput? {
+actual suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioParser<Double>? {
     TODO("Not yet implemented")
 }
 
-actual fun getSoundOutput(data: AudioParams): AudioOutput? {
+actual suspend fun createTrackAudioParser(file: AudioFile, filters: List<AudioFilter>): AudioParser<TimedFrequency> {
     TODO("Not yet implemented")
 }

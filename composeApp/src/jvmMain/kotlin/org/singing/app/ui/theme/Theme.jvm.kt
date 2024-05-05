@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 
 @Composable
 internal actual fun SystemAppearance(scheme: ColorScheme, isDark: Boolean) {
+    TODO("Not yet implemented")
 }
 
 @Composable

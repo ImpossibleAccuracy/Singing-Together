@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose)
     alias(libs.plugins.android.library)
 }
 
@@ -9,7 +8,14 @@ group = "com.singing.audio.utils"
 kotlin {
     jvm()
 
-    androidTarget()
+    androidTarget {
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "${JavaVersion.VERSION_1_8}"
+                freeCompilerArgs += "-Xjdk-release=${JavaVersion.VERSION_1_8}"
+            }
+        }
+    }
 
     sourceSets {
         all {
@@ -19,9 +25,6 @@ kotlin {
         }
 
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-
             implementation(libs.kotlinx.coroutines.core)
         }
     }
@@ -29,15 +32,10 @@ kotlin {
 
 android {
     namespace = group.toString()
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
-    }
-
-    sourceSets["main"].apply {
-        manifest.srcFile("src/androidMain/AndroidManifest.xml")
-        res.srcDirs("src/androidMain/res")
+        minSdk = libs.versions.minSdk.get().toInt()
     }
 
     compileOptions {

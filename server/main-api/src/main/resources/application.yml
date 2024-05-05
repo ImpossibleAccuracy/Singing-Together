@@ -1,0 +1,37 @@
+app:
+  token:
+    expirationTime: ${TOKEN_EXPIRATION_TIME}
+    secret: ${TOKEN_SECRET_KEY}
+  pagination:
+    defaultLimit: 30
+  resources:
+    mediaServerURL: ${MEDIA_SERVER_URL:http://localhost:9000}
+
+server:
+  port: ${SERVER_PORT:8000}
+  error:
+    include-stacktrace: never
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: ${MAX_FILE_SIZE:10MB}
+      max-request-size: ${MAX_FILE_SIZE:10MB}
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}
+  security:
+    filter:
+      order: 10
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.MySQLDialect

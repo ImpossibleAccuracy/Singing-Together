@@ -7,8 +7,8 @@ import java.io.File
 
 actual class DatabaseDriverFactory {
     companion object {
-        private const val DbPath = "MyApp"
-        private const val DbName = "mylocaldb"
+        private const val DB_PATH = "MyApp"
+        private const val DB_NAME = "mylocaldb"
     }
 
     actual fun createDriver(): SqlDriver {
@@ -17,16 +17,16 @@ actual class DatabaseDriverFactory {
         val parentFolder = if (isDebug) {
             File(System.getProperty("java.io.tmpdir"))
         } else {
-            File(System.getProperty("user.home") + DbPath)
+            File(System.getProperty("user.home") + DB_PATH)
         }
 
         if (!parentFolder.exists()) {
             parentFolder.mkdirs()
         }
         val databasePath = if (isDebug) {
-            File(System.getProperty("java.io.tmpdir"), DbName)
+            File(System.getProperty("java.io.tmpdir"), DB_NAME)
         } else {
-            File(parentFolder, DbName)
+            File(parentFolder, DB_NAME)
         }
         return JdbcSqliteDriver(url = "jdbc:sqlite:${databasePath.absolutePath}").also { driver ->
             Database.Schema.create(driver = driver)

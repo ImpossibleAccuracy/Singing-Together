@@ -59,30 +59,21 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
 
+            implementation(project(":config"))
             implementation(project(":library:utils"))
             implementation(project(":library:audio-library"))
+            implementation(project(":library:audio-player"))
 
             implementation(libs.kotlinx.coroutines.core)
 
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.koin)
-            implementation(libs.voyager.transitions)
-
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose)
-
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization)
+            implementation(libs.bundles.voyager)
+            implementation(libs.bundles.koin)
+            implementation(libs.bundles.ktor)
 
             implementation(libs.sqldelight.coroutines)
 
             implementation(libs.settings.multiplatform)
-
             implementation(libs.calf.ui)
-
-//            implementation(libs.composeDnd)
-
             implementation(libs.mpfilepicker)
             implementation(libs.composeImageLoader)
         }
@@ -103,11 +94,11 @@ kotlin {
             implementation(libs.koin.compose.jvm)
 
             implementation(libs.ktor.client.cio)
-
             implementation(libs.sqldelight.sqlite)
 
             implementation(libs.mp3spi)
-
+            implementation(libs.dsp.core)
+            implementation(libs.dsp.jvm)
         }
 
         androidMain.dependencies {
@@ -115,14 +106,16 @@ kotlin {
 
             implementation(libs.kotlinx.coroutines.android)
 
-            implementation(libs.androidx.compose.activity)
-            implementation(libs.androidx.compose.lifecycle)
+            implementation(libs.bundles.android)
 
             implementation(libs.koin.android)
 
             implementation(libs.ktor.client.android)
-
             implementation(libs.sqldelight.android)
+
+            implementation(libs.mp3spi)
+            implementation(libs.dsp.core)
+            implementation(libs.dsp.jvm)
         }
     }
 }
@@ -137,11 +130,11 @@ sqldelight {
 
 android {
     namespace = "org.singing.app"
-    compileSdk = 34
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 24
-        targetSdk = 34
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
 
         applicationId = "org.singing.app"
         versionCode = 1
@@ -153,6 +146,7 @@ android {
     sourceSets["main"].apply {
         manifest.srcFile("src/androidMain/AndroidManifest.xml")
         res.srcDirs("src/androidMain/res")
+        resources.srcDirs("src/commonMain/resources")
     }
 
     //https://developer.android.com/studio/test/gradle-managed-devices

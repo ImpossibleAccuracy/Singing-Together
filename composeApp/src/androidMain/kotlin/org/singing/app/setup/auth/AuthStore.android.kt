@@ -2,8 +2,6 @@ package org.singing.app.setup.auth
 
 import org.singing.app.MyApplication
 import org.singing.app.setup.auth.store.AccountHelper
-import org.singing.app.setup.auth.UserCredentials
-import org.singing.app.setup.auth.UserData
 
 actual class AuthStore {
     private val accountHelper by lazy {

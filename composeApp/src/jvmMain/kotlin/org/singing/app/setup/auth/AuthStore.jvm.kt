@@ -2,8 +2,6 @@ package org.singing.app.setup.auth
 
 import com.russhwolf.settings.contains
 import org.singing.app.setup.auth.store.authSettings
-import org.singing.app.setup.auth.UserCredentials
-import org.singing.app.setup.auth.UserData
 
 actual class AuthStore {
     companion object {

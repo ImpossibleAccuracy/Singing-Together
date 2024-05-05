@@ -12,7 +12,7 @@ import org.singing.app.App
 import org.singing.app.di.totalAppModules
 import java.awt.Dimension
 
-suspend fun main() = application {
+fun main() = application {
     val minSize = Dimension(1280, 720)
 
     Window(

@@ -1,17 +1,10 @@
 package org.singing.app.setup.audio
 
-import com.singing.audio.library.decoder.frequency.FrequencyDecoder
-import com.singing.audio.library.input.AudioInput
-import com.singing.audio.library.params.AudioParams
+import com.singing.audio.library.filter.AudioFilter
+import com.singing.audio.library.parser.AudioParser
+import com.singing.audio.sampled.model.TimedFrequency
+import com.singing.audio.player.model.AudioFile
 
-expect fun getSoundInput(data: AudioParams): AudioInput?
+expect suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioParser<Double>?
 
-fun getSoundInput() = getSoundInput(
-    data = AudioDefaults.VoiceInputAudioParams
-)
-
-fun createSimpleFrequencyDecoder() =
-    FrequencyDecoder(
-        bufferSize = AudioDefaults.VoiceInputAudioParams.bufferSize,
-        data = AudioDefaults.VoiceInputAudioParams
-    )
+expect suspend fun createTrackAudioParser(file: AudioFile, filters: List<AudioFilter>): AudioParser<TimedFrequency>

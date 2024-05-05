@@ -12,8 +12,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.baseline_add_black_24dp
+import com.singing.audio.library.filter.AudioFilter
+import com.singing.audio.taros.filter.HighPassAudioFilter
 import org.jetbrains.compose.resources.vectorResource
-import org.singing.app.domain.model.audio.AudioFilter
 import org.singing.app.ui.helper.Space
 import org.singing.app.ui.views.AudioFilterItem
 
@@ -86,16 +87,22 @@ fun AudioInputFilters(
             modifier = Modifier.fillMaxWidth(),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
             onClick = {
-                val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-                val title = (1..7)
-                    .map { allowedChars.random() }
-                    .joinToString("")
-
                 actions.onFiltersUpdate(
-                    data.items.plus(
-                        AudioFilter(title)
+                    listOf(
+                        HighPassAudioFilter("LowPassAudioFilter", 300F, 41400f)
                     )
                 )
+
+//                val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+//                val title = (1..7)
+//                    .map { allowedChars.random() }
+//                    .joinToString("")
+
+//                actions.onFiltersUpdate(
+//                    data.items.plus(
+//                        AudioFilter(title)
+//                    )
+//                )
             }
         ) {
             Icon(

@@ -1,5 +1,8 @@
 
+TestStore
+
 *.iml
+.fastRequest
 .gradle
 .idea
 .kotlin

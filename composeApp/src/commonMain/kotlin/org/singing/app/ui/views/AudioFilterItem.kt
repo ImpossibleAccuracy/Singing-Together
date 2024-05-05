@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.baseline_close_black_24dp
-import com.singing.app.composeapp.generated.resources.baseline_drag_handle_black_24dp
 import org.jetbrains.compose.resources.vectorResource
 
 @OptIn(ExperimentalFoundationApi::class)

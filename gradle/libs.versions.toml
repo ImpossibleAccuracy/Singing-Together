@@ -1,40 +1,84 @@
 [versions]
+minSdk = "26"
+targetSdk = "34"
+compileSdk = "34"
+
 
 kotlin = "1.9.23"
+compose = "1.6.1"
+spring = "3.2.5"
+spring-swagger = "2.5.0"
+javafx-plugin = "0.1.0"
+
+
 kotlinx-coroutines = "1.8.0"
 
-compose = "1.6.1"
-
-agp = "8.2.0"
+agp = "8.2.0" # 8.4.0 is notsupported by Intellij Ideas
 androidx-compose-activity = "1.9.0"
 androidx-lifecycle-compose = "2.7.0"
-androidx-uiTest = "1.6.6"
+androidx-uiTest = "1.6.7"
+
+mysql = "8.0.32"
+reactor = "1.2.2"
+jackson = "2.16.2"
+jjwt = "0.11.5"
 
 voyager = "1.0.0"
-
 koin = "3.5.3"
 koin-compose = "1.1.2"
-
-settings-multiplatform = "1.1.1"
-
 ktor = "2.3.8"
 sqldelight = "2.0.1"
 
+mp3spi = "1.9.5.4"
+dsp = "2.5"
+
+settings-multiplatform = "1.1.1"
 calf = "0.4.0"
 mpfilepicker = "3.1.0"
-#compose-dnd = "0.2.0"
-mp3spi = "1.9.5.4"
 composeImageLoader = "1.7.8"
 
+h2 = "2.1.212"
+junit = "5.10.2"
+springmockk = "4.0.2"
+reactor-test = "3.6.3"
+
 [libraries]
+# KOTLIN
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+
+# COROUTINES
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kotlinx-coroutines" }
+kotlinx-coroutines-reactor = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactor", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-javafx = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-javafx", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 
+# PLATFORM
 androidx-compose-activity = { module = "androidx.activity:activity-compose", version.ref = "androidx-compose-activity" }
 androidx-compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle-compose" }
 androidx-testManifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "androidx-uiTest" }
 androidx-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "androidx-uiTest" }
+
+# LIBRARIES
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter", version.ref = "spring" }
+spring-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring" }
+spring-starter-security = { module = "org.springframework.boot:spring-boot-starter-security", version.ref = "spring" }
+spring-starter-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring" }
+spring-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring" }
+spring-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring" }
+spring-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "spring" }
+spring-swagger = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-swagger" }
+
+mysql-connector = { module = "mysql:mysql-connector-java", version.ref = "mysql" }
+reactor-extensions = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version.ref = "reactor" }
+
+jackson-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
+
+jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jjwt" }
+jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
+jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
 
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
@@ -44,8 +88,6 @@ koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
 koin-compose-jvm = { module = "io.insert-koin:koin-compose-jvm", version.ref = "koin-compose" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
-
-settings-multiplatform = { module = "com.russhwolf:multiplatform-settings", version.ref = "settings-multiplatform" }
 
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
@@ -57,14 +99,59 @@ sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", 
 sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 
-calf-ui = { module = "com.mohamedrejeb.calf:calf-ui", version.ref = "calf" }
-
-composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
-#composeDnd = { module = "com.mohamedrejeb.dnd:compose-dnd", version.ref = "compose-dnd" }
+# SOUND
 mp3spi = { module = "com.googlecode.soundlibs:mp3spi", version.ref = "mp3spi" }
+dsp-core = { module = "be.tarsos.dsp:core", version.ref = "dsp" }
+dsp-jvm = { module = "be.tarsos.dsp:jvm", version.ref = "dsp" }
+
+# OTHER
+settings-multiplatform = { module = "com.russhwolf:multiplatform-settings", version.ref = "settings-multiplatform" }
+calf-ui = { module = "com.mohamedrejeb.calf:calf-ui", version.ref = "calf" }
+composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
 mpfilepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "mpfilepicker" }
 
+# TESTS
+h2-connector = { module = "com.h2database:h2", version.ref = "h2" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring" }
+spring-mockk = { module = "com.ninja-squad:springmockk", version.ref = "springmockk" }
+reactor-test = { module = "io.projectreactor:reactor-test", version.ref = "reactor-test" }
+
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit" }
+junit-engine-jupiter = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+
+[bundles]
+android = ["androidx-compose-activity", "androidx-compose-lifecycle"]
+
+spring = [
+    "spring-boot-starter",
+    "spring-starter-web",
+    "spring-starter-security",
+    "spring-starter-jpa",
+    "spring-starter-validation",
+    "spring-starter-actuator"
+]
+mysql = ["mysql-connector"]
+jackson = ["jackson-module", "jackson-annotations"]
+jjwt = ["jjwt-impl", "jjwt-api", "jjwt-jackson"]
+
+voyager = ["voyager-navigator", "voyager-koin", "voyager-transitions"]
+koin = ["koin-core", "koin-compose", "voyager-transitions"]
+ktor = ["ktor-client-core", "ktor-serialization", "ktor-client-content-negotiation"]
+
 [plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring" }
+
+javafx = { id = "org.openjfx.javafxplugin", version.ref = "javafx-plugin" }
+
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version.ref = "kotlin" }
+kotlin-jpa = { id = "org.jetbrains.kotlin.plugin.jpa", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
 multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 
