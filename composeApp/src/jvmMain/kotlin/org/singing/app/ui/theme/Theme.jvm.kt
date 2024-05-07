@@ -5,10 +5,11 @@ import androidx.compose.runtime.Composable
 
 @Composable
 internal actual fun SystemAppearance(scheme: ColorScheme, isDark: Boolean) {
-    TODO("Not yet implemented")
+    // No appearance on desktop
 }
 
 @Composable
 internal actual fun getAppTheme(isDark: Boolean): ColorScheme =
-    if (isDark) DarkColorScheme
-    else LightColorScheme
+    LightColorScheme // TODO: fix on production
+//    if (isDark) DarkColorScheme
+//    else LightColorScheme

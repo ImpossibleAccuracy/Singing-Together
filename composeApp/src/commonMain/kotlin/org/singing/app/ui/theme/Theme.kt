@@ -92,8 +92,7 @@ internal fun AppTheme(
     CompositionLocalProvider(
         LocalThemeIsDark provides isDarkState
     ) {
-//        val isDark by isDarkState
-        val isDark = false
+        val isDark by isDarkState
 
         val theme = getAppTheme(isDark)
 

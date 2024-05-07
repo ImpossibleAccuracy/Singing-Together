@@ -29,11 +29,17 @@ kotlin {
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.dsp.core)
-            implementation(libs.dsp.jvm)
         }
-        
+
         jvmMain.dependencies {
+            implementation("org.openjfx:javafx-base:21.0.1:win")
+            implementation("org.openjfx:javafx-graphics:21.0.1:win")
+            implementation("org.openjfx:javafx-controls:21.0.1:win")
             implementation("org.openjfx:javafx-media:21.0.1:win")
+            implementation("org.openjfx:javafx-web:21.0.1:win")
+            implementation("org.openjfx:javafx-swing:21.0.1:win")
+
+            implementation(libs.dsp.jvm)
         }
     }
 }
@@ -47,15 +53,7 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTargetVersion.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTargetVersion.get())
     }
 }

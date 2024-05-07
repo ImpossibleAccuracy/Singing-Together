@@ -18,6 +18,7 @@ actual suspend fun getFileDuration(file: File): Long {
     return player.totalDuration.toMillis().toLong()
 }
 
+
 suspend fun MediaPlayer.waitReady() = callbackFlow {
     send(false)
 
@@ -27,7 +28,6 @@ suspend fun MediaPlayer.waitReady() = callbackFlow {
 
     awaitClose {
         onReady = null
-        dispose()
     }
 }.first { it }
 

@@ -5,4 +5,6 @@ actual class AudioFile {
         get() = TODO("Not yet implemented")
     actual val duration: Long
         get() = TODO("Not yet implemented")
+    actual val path: String
+        get() = TODO("Not yet implemented")
 }

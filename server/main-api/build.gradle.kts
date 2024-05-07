@@ -23,7 +23,7 @@ allOpen {
 
 // For calculation total duration
 javafx {
-    version = "17"
+    version = "21"
     modules = listOf("javafx.media")
 }
 
@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":config"))
     implementation(project(":library:audio-library"))
     implementation(project(":library:audio-player"))
+    implementation("org.openjfx:javafx-media:21.0.1:win")
     implementation(libs.mp3spi)
     implementation(libs.dsp.core)
     implementation(libs.dsp.jvm)

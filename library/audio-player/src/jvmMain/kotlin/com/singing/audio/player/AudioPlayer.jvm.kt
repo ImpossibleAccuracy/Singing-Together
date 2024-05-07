@@ -1,5 +1,6 @@
 package com.singing.audio.player
 
+import com.singing.audio.player.model.AudioFile
 import com.singing.audio.waitReady
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer
@@ -9,7 +10,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
-import com.singing.audio.player.model.AudioFile
 
 actual class AudioPlayer {
     companion object {
@@ -54,6 +54,10 @@ actual class AudioPlayer {
             setOnStalled {
                 currentState = PlayerState.STOP
                 trySend(currentState)
+            }
+
+            setOnError {
+                println(error)
             }
 
             play()

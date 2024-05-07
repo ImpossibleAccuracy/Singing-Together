@@ -1,9 +1,10 @@
 package org.singing.app.setup.audio
 
 import com.singing.audio.library.filter.AudioFilter
-import com.singing.audio.library.input.ext.toAudioParams
 import com.singing.audio.library.model.AudioParams
 import com.singing.audio.library.parser.AudioParser
+import com.singing.audio.player.model.AudioFile
+import com.singing.audio.sampled.input.toAudioParams
 import com.singing.audio.sampled.model.TimedFrequency
 import com.singing.audio.taros.decoder.TarosDspDecoderImpl
 import com.singing.audio.taros.decoder.timed.TimedTarosDspDecoder
@@ -16,7 +17,6 @@ import com.singing.config.track.TrackProperties
 import com.singing.config.voice.VoiceProperties
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import com.singing.audio.player.model.AudioFile
 
 
 val microphoneInput: TarosDspInput by lazy {

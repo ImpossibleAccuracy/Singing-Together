@@ -1,12 +1,39 @@
 <resources>
     <string name="app_name">Singing Together</string>
 
-    <string name="cyclone">Cyclone</string>
-    <string name="open_github">Open github</string>
-    <string name="run">Run</string>
-    <string name="stop">Stop</string>
-    <string name="theme">Theme</string>
 
-    <string name="navigate_back">Back</string>
-    <string name="navigate_details">Navigate to Details Screen</string>
+    <string name="title_record_screen">Record</string>
+
+    <string name="title_select_track">Select track</string>
+    <string name="subtitle_select_track">Your voice will be compared to the selected track</string>
+    <string name="title_select_record_type">Select recording method</string>
+    <string name="subtitle_select_record_type">The recording quality will depend on the chosen method.</string>
+
+
+    <string name="choice_select_vocal_title">Vocal</string>
+    <string name="choice_select_vocal_subtitle">
+        Just you and
+        your voice
+    </string>
+    <string name="choice_select_track_title">Cover</string>
+    <string name="choice_select_track_subtitle">
+        Singing training
+        to the music
+    </string>
+
+
+    <string name="action_replace">Replace</string>
+    <string name="action_next">Next</string>
+
+    <string name="action_stop_playing">Stop</string>
+    <string name="action_start_playing">Play</string>
+    <string name="action_select_track">Select file from device</string>
+    <string name="action_start_record">Start record</string>
+    <string name="action_stop_record">Finish record</string>
+
+    <string name="label_recording">Recording</string>
+    <string name="label_start_record">Please start recording</string>
+    <string name="label_file_name">File name</string>
+    <string name="label_file_full_path">File full path</string>
+    <string name="label_no_history">Recording history will be displayed after recording starts</string>
 </resources>

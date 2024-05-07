@@ -1,14 +1,13 @@
 package org.singing.app.setup.audio
 
-import com.darkrockstudios.libraries.mpfilepicker.MPFile
 import com.singing.audio.getFileDuration
 import com.singing.audio.player.model.AudioFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
+import org.singing.app.setup.file.ComposeFile
 
-actual suspend fun processAudioFile(inputFile: MPFile<Any>): AudioFile? {
-    val file = inputFile.platformFile as File
+actual suspend fun processAudioFile(inputFile: ComposeFile): AudioFile? {
+    val file = inputFile.file
 
     val duration = withContext(Dispatchers.IO) {
         getFileDuration(file)

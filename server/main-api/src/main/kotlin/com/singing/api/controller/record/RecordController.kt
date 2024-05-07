@@ -28,7 +28,7 @@ class RecordController(
     }
 
     private val basePath: Path by lazy {
-        Paths.get("store").createDirectories()
+        Paths.get("TestStore").createDirectories()
     }
 
     @GetMapping
@@ -80,12 +80,14 @@ class RecordController(
             Logger.debug("New file received")
             Logger.debug("Parsing...")
 
-            val record = recordService.buildRecord(
-                voiceFile.toFile(),
-                audioTrackFile?.toFile(),
-            )
-
-            println(record)
+            val record = recordService
+                .buildRecord(
+                    voiceFile.toFile(),
+                    audioTrackFile?.toFile(),
+                )
+                .apply {
+                    this.account = this@requireAuthenticated.account
+                }
 
             Logger.debug("Parse done!")
 

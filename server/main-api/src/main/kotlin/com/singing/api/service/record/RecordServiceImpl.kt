@@ -7,7 +7,7 @@ import com.singing.api.domain.repository.RecordRepository
 import com.singing.api.domain.specifications.*
 import com.singing.api.security.requireAuthenticatedOrDefault
 import com.singing.audio.getFileDuration
-import com.singing.audio.library.input.ext.toAudioParams
+import com.singing.audio.sampled.input.toAudioParams
 import com.singing.audio.sampled.model.TimedFrequency
 import com.singing.audio.taros.decoder.timed.TimedTarosDspDecoder
 import com.singing.audio.taros.input.openInputStreamAsTarosDspInput

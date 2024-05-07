@@ -32,4 +32,8 @@ class Record(
 
     @OneToMany(mappedBy = "record", fetch = FetchType.LAZY, targetEntity = Publication::class)
     var publications: Set<Publication> = setOf()
+
+    override fun toString(): String {
+        return "Record(createdAt=$createdAt, duration=$duration, account=${account?.id})"
+    }
 }

@@ -24,7 +24,6 @@ dependencyResolutionManagement {
 }
 
 include(
-    ":library",
     ":library:utils",
     ":library:audio-library",
     ":library:audio-player",

@@ -28,8 +28,8 @@ kotlin {
     androidTarget {
         compilations.all {
             kotlinOptions {
-                jvmTarget = "${JavaVersion.VERSION_1_8}"
-                freeCompilerArgs += "-Xjdk-release=${JavaVersion.VERSION_1_8}"
+                jvmTarget = libs.versions.jvmTargetVersion.get()
+                freeCompilerArgs += "-Xjdk-release=${libs.versions.jvmTargetVersion.get()}"
             }
         }
 
@@ -74,7 +74,6 @@ kotlin {
 
             implementation(libs.settings.multiplatform)
             implementation(libs.calf.ui)
-            implementation(libs.mpfilepicker)
             implementation(libs.composeImageLoader)
         }
 
@@ -162,8 +161,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTargetVersion.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTargetVersion.get())
     }
 
     buildFeatures {
@@ -180,8 +179,8 @@ compose.desktop {
         mainClass = "MainKt"
 
         nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.singing.app"
+            targetFormats(TargetFormat.Exe, TargetFormat.Msi)
+            packageName = "com.singing.app"
             packageVersion = "1.0.0"
         }
     }

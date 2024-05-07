@@ -47,15 +47,7 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    buildFeatures {
-        compose = true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.11"
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvmTargetVersion.get())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTargetVersion.get())
     }
 }
