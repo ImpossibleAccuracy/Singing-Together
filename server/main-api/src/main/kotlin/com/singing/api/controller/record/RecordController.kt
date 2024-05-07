@@ -59,7 +59,7 @@ class RecordController(
     suspend fun createNewRecord(
         @RequestParam("voice") voiceRecord: MultipartFile,
         @RequestParam("track", required = false) audioTrack: MultipartFile?,
-    ): String = requireAuthenticated {
+    ): String = tryAuthenticate {
         coroutineScope {
             assertFileIsAcceptable(voiceRecord)
 
@@ -72,7 +72,7 @@ class RecordController(
             }
 
             val audioTrackFile = audioTrack?.let { file ->
-                basePath.resolve(file.originalFilename ?: "voice.raw").also {
+                basePath.resolve(file.originalFilename ?: "audio.raw").also {
                     file.transferTo(it)
                 }
             }
@@ -85,8 +85,8 @@ class RecordController(
                     voiceFile.toFile(),
                     audioTrackFile?.toFile(),
                 )
-                .apply {
-                    this.account = this@requireAuthenticated.account
+                .also {
+                    it.account = account
                 }
 
             Logger.debug("Parse done!")

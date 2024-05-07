@@ -1,10 +1,12 @@
 package org.singing.app.ui.screens.record.viewmodel
 
+import com.singing.audio.capture.AudioCapture
 import com.singing.audio.player.AudioPlayer
 import com.singing.audio.player.PlayerState
 import com.singing.config.note.NotesStore
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import org.singing.app.domain.repository.RecordRepository
 import org.singing.app.domain.store.VoiceInput
 import org.singing.app.ui.base.AppViewModel
 import org.singing.app.ui.screens.record.viewmodel.model.RecordItem
@@ -15,8 +17,11 @@ import org.singing.app.ui.screens.record.viewmodel.state.RecordData
 import org.singing.app.ui.screens.record.viewmodel.state.RecordScreenUiState
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
-class RecordViewModel : AppViewModel() {
+class RecordViewModel(
+    private val recordRepository: RecordRepository,
+) : AppViewModel() {
     private val player = AudioPlayer()
+    private val voiceCapture = AudioCapture()
 
     private var countdownJob: Job? = null
     private val _uiState = MutableStateFlow(RecordScreenUiState())
@@ -279,6 +284,9 @@ class RecordViewModel : AppViewModel() {
 
             val selectedAudio = uiState.value.audioProcessState?.selectedAudio
 
+            voiceCapture.capture()
+            voiceCapture.awaitStart()
+
             if (selectedAudio != null) {
                 startPlaying()
             }
@@ -353,6 +361,16 @@ class RecordViewModel : AppViewModel() {
             it.copy(
                 recordStartedAt = -1,
                 recordState = RecordState.STOP,
+            )
+        }
+
+        viewModelScope.launch {
+            val result = voiceCapture.stop()
+
+            recordRepository.saveRecord(
+                history = uiState.value.history,
+                voiceRecord = result,
+                audioTrack = uiState.value.audioProcessState?.selectedAudio
             )
         }
     }

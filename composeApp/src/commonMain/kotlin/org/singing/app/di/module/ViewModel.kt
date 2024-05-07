@@ -19,7 +19,7 @@ val viewModelsModule = module {
     }
 
     factory {
-        RecordViewModel()
+        RecordViewModel(get())
     }
 }
 

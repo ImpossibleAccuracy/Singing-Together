@@ -32,6 +32,7 @@ kotlin {
         }
 
         jvmMain.dependencies {
+            implementation(libs.xtaudio)
             implementation(libs.mp3spi)
             implementation(libs.dsp.jvm)
         }

@@ -65,7 +65,9 @@ class RecordServiceImpl(
         val voiceInput = voiceFile.inputStream()
         val trackInput = trackFile?.inputStream()
 
-        result.duration = getFileDuration(voiceFile)
+        val durationDeferred = async {
+            getFileDuration(voiceFile)
+        }
 
         val voiceDeferred = async {
             parseFileToFrequencies(
@@ -83,6 +85,8 @@ class RecordServiceImpl(
                 )
             }
         }
+
+        result.duration = durationDeferred.await()
 
         val voiceParserResult = voiceDeferred.await()
         val trackParserResult = trackDeferred?.await()

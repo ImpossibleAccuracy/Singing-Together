@@ -31,6 +31,7 @@ koin-compose = "1.1.2"
 ktor = "2.3.8"
 sqldelight = "2.0.1"
 
+xtaudio = "2.0"
 mp3spi = "1.9.5.4"
 dsp = "2.5"
 
@@ -102,6 +103,7 @@ sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.re
 sqldelight-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 
 # SOUND
+xtaudio = { module = "com.github.sjoerdvankreel:xt.audio", version.ref = "xtaudio" }
 mp3spi = { module = "com.googlecode.soundlibs:mp3spi", version.ref = "mp3spi" }
 dsp-core = { module = "be.tarsos.dsp:core", version.ref = "dsp" }
 dsp-jvm = { module = "be.tarsos.dsp:jvm", version.ref = "dsp" }
