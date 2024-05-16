@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.layout.positionInParent
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
@@ -53,6 +54,8 @@ fun <T> Timeline(
     nodeLabel: (@Composable (item: T, position: Int) -> Unit)? = null,
     nodeContent: @Composable (item: T, position: Int) -> Unit,
 ) {
+    val density = LocalDensity.current.density
+
     var labelSize by remember { mutableStateOf(0.dp) }
 
     val nodesOffset = if (startNode == null) 0 else 1
@@ -64,6 +67,7 @@ fun <T> Timeline(
             val nodeIndicatorColor = (indicatorColor?.invoke(0) ?: MaterialTheme.colorScheme.secondary)
 
             TimelineNode(
+                density = density,
                 position = TimelineNodePosition.FIRST,
                 nodeSpacing = nodeSpacing,
                 indicatorSize = indicatorSize,
@@ -91,6 +95,7 @@ fun <T> Timeline(
                 ?: MaterialTheme.colorScheme.secondary
 
             TimelineNode(
+                density = density,
                 position = nodePosition,
                 nodeSpacing = nodeSpacing,
                 indicatorSize = indicatorSize,
@@ -101,8 +106,10 @@ fun <T> Timeline(
                 isLabelsEnabled = nodeLabel != null,
                 labelSize = labelSize,
                 labelSizeReady = {
-                    if (it.width > labelSize.value) {
-                        labelSize = it.width.dp
+                    val actualSize = (it.width / density).dp
+
+                    if (actualSize > labelSize) {
+                        labelSize = actualSize
                     }
                 },
                 label = nodeLabel?.let { label ->
@@ -112,7 +119,7 @@ fun <T> Timeline(
                 },
                 content = {
                     nodeContent(item, index)
-                }
+                },
             )
 
             if (index != nodes.lastIndex || finishNode != null) {
@@ -126,6 +133,7 @@ fun <T> Timeline(
             ) ?: MaterialTheme.colorScheme.secondary)
 
             TimelineNode(
+                density = density,
                 position = TimelineNodePosition.LAST,
                 nodeSpacing = nodeSpacing,
                 indicatorSize = indicatorSize,
@@ -145,6 +153,7 @@ fun <T> Timeline(
 
 @Composable
 fun TimelineNode(
+    density: Float,
     position: TimelineNodePosition,
     nodeSpacing: Dp,
     indicatorSize: Dp,
@@ -156,7 +165,7 @@ fun TimelineNode(
     label: (@Composable () -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
-    val circleRadius = indicatorSize.value / 2
+    val circleRadius = indicatorSize.value / 2 * density
 
     var lineOffsetX by remember { mutableStateOf(0f) }
 
@@ -167,9 +176,10 @@ fun TimelineNode(
                 if (position != TimelineNodePosition.LAST) {
                     drawLine(
                         color = indicatorColor,
+                        strokeWidth = density,
                         start = Offset(
                             x = lineOffsetX + circleRadius,
-                            y = circleRadius * 2 + nodeSpacing.value,
+                            y = circleRadius * 2 + nodeSpacing.value * density,
                         ),
                         end = Offset(
                             x = lineOffsetX + circleRadius,
@@ -186,13 +196,13 @@ fun TimelineNode(
                         bottom = 32.dp,
                     )
                 }
-            }) {
-
+            },
+    ) {
         if (isLabelsEnabled) {
             Box(
                 modifier = Modifier
                     .widthIn(min = labelSize)
-                    .onSizeChanged { labelSizeReady(it) }
+                    .onSizeChanged(labelSizeReady)
             ) {
                 label?.let {
                     it()
@@ -202,13 +212,15 @@ fun TimelineNode(
             Space(16.dp)
         }
 
-        indicator(
-            Modifier
+        Box(
+            modifier = Modifier
                 .size(indicatorSize)
                 .onGloballyPositioned {
                     lineOffsetX = it.positionInParent().x
-                },
-        )
+                }
+        ) {
+            indicator(Modifier.fillMaxSize())
+        }
 
         Space(16.dp)
 
