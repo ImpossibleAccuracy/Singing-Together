@@ -20,14 +20,14 @@ actual class AudioPlayer actual constructor() {
      * Stop player
      */
     actual suspend fun stop() {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     /**
      * Set playing position in microseconds.
      */
     actual suspend fun setPosition(position: Long) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     /**

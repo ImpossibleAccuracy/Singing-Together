@@ -138,7 +138,7 @@ class RecordRepository(
                     is RecordData.Cover -> record.copy(isPublished = true)
                     is RecordData.Vocal -> record.copy(isPublished = true)
                 }
-            }
+            }!!
         }
 
     suspend fun uploadRecord(record: RecordData): RecordData =

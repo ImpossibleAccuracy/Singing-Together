@@ -20,8 +20,8 @@ import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.views.base.record.card.RecordCard
-import org.singing.app.ui.views.shared.MainRecordCard
-import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
+import org.singing.app.ui.views.shared.record.MainRecordCard
+import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 
 
 data class RecentRecordsData(

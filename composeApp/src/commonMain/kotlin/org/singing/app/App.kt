@@ -8,6 +8,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.screen.Screen
@@ -43,6 +44,14 @@ internal fun App() {
                 true
             }
         ) { navigator ->
+            LaunchedEffect(navigator.lastItem) {
+                val prevItem = navigator.items.getOrNull(navigator.items.lastIndex - 1)
+
+                if (prevItem is AppScreen) {
+                    prevItem.onLeave()
+                }
+            }
+
             Scaffold(
                 modifier = Modifier.systemBarsPadding(),
                 containerColor = MaterialTheme.colorScheme.background,

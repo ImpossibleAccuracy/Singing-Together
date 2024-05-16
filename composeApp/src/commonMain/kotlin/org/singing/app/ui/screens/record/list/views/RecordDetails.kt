@@ -16,8 +16,8 @@ import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatTimeString
 import org.singing.app.ui.views.base.account.AccountView
-import org.singing.app.ui.views.shared.RecordCardActions
-import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
+import org.singing.app.ui.views.shared.record.RecordCardActions
+import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -26,7 +26,7 @@ fun RecordDetails(
     modifier: Modifier = Modifier,
     accountData: AccountUiData?,
     record: RecordData,
-    actions: RecordCardActionsCallbacks,
+    actions: RecordCardActionsCallbacks?,
 ) {
     Row(
         modifier = modifier
@@ -36,58 +36,65 @@ fun RecordDetails(
             .padding(
                 horizontal = 24.dp,
                 vertical = 16.dp
-            )
+            ),
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier
-                .size(size = 128.dp)
-                .clip(shape = MaterialTheme.shapes.medium)
-                .background(color = MaterialTheme.colorScheme.surface)
-        ) {
-            Text(
-                text = when (record) {
-                    is RecordData.Cover -> "${record.accuracy}%"
-                    is RecordData.Vocal -> "N/A"
-                },
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleLarge,
-            )
-        }
-
-        Space(16.dp)
-
-        Column(
+        Row(
             modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = when (record) {
-                    is RecordData.Cover -> record.filename
-                    is RecordData.Vocal -> "No track selected"
-                },
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleLarge,
-            )
-
-            Space(2.dp)
-
-            Text(
-                text = formatTimeString(record.duration),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-
-            Space(12.dp)
-
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(size = 128.dp)
+                    .clip(shape = MaterialTheme.shapes.medium)
+                    .background(color = MaterialTheme.colorScheme.surface)
             ) {
-                RecordCardActions(
-                    record = record,
-                    actions = actions,
+                Text(
+                    text = when (record) {
+                        is RecordData.Cover -> "${record.accuracy}%"
+                        is RecordData.Vocal -> "N/A"
+                    },
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleLarge,
                 )
+            }
+
+            Space(16.dp)
+
+            Column(
+                modifier = Modifier.weight(1f),
+            ) {
+                Text(
+                    text = when (record) {
+                        is RecordData.Cover -> record.filename
+                        is RecordData.Vocal -> "No track selected"
+                    },
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleLarge,
+                )
+
+                Space(2.dp)
+
+                Text(
+                    text = formatTimeString(record.duration),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+
+                if (actions != null) {
+                    Space(12.dp)
+
+                    FlowRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    ) {
+                        RecordCardActions(
+                            record = record,
+                            actions = actions,
+                        )
+                    }
+                }
             }
         }
 

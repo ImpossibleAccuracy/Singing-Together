@@ -16,6 +16,7 @@ fun AccountPublications(
     modifier: Modifier = Modifier,
     publications: List<Publication>,
     onAuthorClick: (Publication) -> Unit,
+    navigatePublicationDetails: (Publication) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -25,12 +26,15 @@ fun AccountPublications(
             minSize = 380.dp,
         ),
     ) {
-        items(publications) {
+        items(publications) { item ->
             PublicationCard(
-                publication = it,
+                publication = item,
                 containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 onAuthorClick = {
-                    onAuthorClick(it)
+                    onAuthorClick(item)
+                },
+                navigatePublicationDetails = {
+                    navigatePublicationDetails(item)
                 }
             )
         }

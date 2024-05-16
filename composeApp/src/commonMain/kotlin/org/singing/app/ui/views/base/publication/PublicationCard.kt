@@ -31,7 +31,9 @@ fun PublicationCard(
     modifier: Modifier = Modifier,
     publication: Publication,
     containerColor: Color = MaterialTheme.colorScheme.surface,
+    showActions: Boolean = true,
     onAuthorClick: (() -> Unit)? = null,
+    navigatePublicationDetails: () -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -46,10 +48,13 @@ fun PublicationCard(
                 .clickable(enabled = onAuthorClick != null) {
                     onAuthorClick?.invoke()
                 }
-                .padding(
-                    horizontal = 8.dp,
-                    vertical = 4.dp
-                )
+                .let {
+                    if (onAuthorClick == null) it
+                    else it.padding(
+                        horizontal = 8.dp,
+                        vertical = 4.dp
+                    )
+                }
         ) {
             Box(
                 modifier = Modifier.clip(shape = RoundedCornerShape(50))
@@ -93,44 +98,46 @@ fun PublicationCard(
 
         Space(8.dp)
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            AssistChip(
-                label = {
-                    Text(
-                        text = "See record",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                },
-                onClick = {
+        if (showActions) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                AssistChip(
+                    label = {
+                        Text(
+                            text = "See record",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    },
+                    onClick = {
+                        navigatePublicationDetails()
+                    }
+                )
 
-                }
-            )
+                Space(8.dp)
 
-            Space(8.dp)
+                AssistChip(
+                    label = {
+                        Text(
+                            text = "Listen now",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    },
+                    trailingIcon = {
+                        Icon(
+                            imageVector = vectorResource(Res.drawable.baseline_play_circle_filled_24),
+                            tint = MaterialTheme.colorScheme.onSurface,
+                            contentDescription = ""
+                        )
+                    },
+                    onClick = {
 
-            AssistChip(
-                label = {
-                    Text(
-                        text = "Listen now",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.labelLarge,
-                    )
-                },
-                trailingIcon = {
-                    Icon(
-                        imageVector = vectorResource(Res.drawable.baseline_play_circle_filled_24),
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        contentDescription = ""
-                    )
-                },
-                onClick = {
-
-                }
-            )
+                    }
+                )
+            }
         }
     }
 }

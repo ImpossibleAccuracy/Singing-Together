@@ -20,7 +20,7 @@ class PublicationRepository(
     companion object {
         const val PublicationsCount = 4
 
-        private val DefaultItems = RecordRepository.DefaultItems.take(PublicationsCount).mapIndexed { index, item ->
+        val DefaultItems = RecordRepository.DefaultItems.take(PublicationsCount).mapIndexed { index, item ->
             Publication(
                 author = AccountRepository.DefaultItems[index % AccountRepository.DefaultItems.size],
                 createdAt = item.createdAt,
@@ -38,11 +38,9 @@ class PublicationRepository(
             author = UserContainer.user.value!!,
             createdAt = Clock.System.now(),
             description = description,
-            record = record,
+            record = recordRepository.markPublished(record),
         ).also {
             addSingle(it)
-
-            recordRepository.markPublished(record)
         }
     }
 
@@ -62,4 +60,10 @@ class PublicationRepository(
                 .sortedByDescending { it.createdAt }
         }
         .first()
+
+    suspend fun getRecordPublication(record: RecordData) = withContext(Dispatchers.IO) {
+        items.value.first {
+            it.record == record
+        }
+    }
 }

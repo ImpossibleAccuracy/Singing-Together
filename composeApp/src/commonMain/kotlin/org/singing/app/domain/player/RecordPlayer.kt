@@ -1,22 +1,23 @@
-package org.singing.app.domain.repository.record
+package org.singing.app.domain.player
 
 import com.singing.audio.player.AudioPlayer
 import com.singing.audio.player.PlayerState
 import com.singing.audio.player.multiplyPlayers
 import com.singing.audio.utils.ComposeFile
-import com.singing.audio.utils.backgroundScope
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.singing.app.domain.model.RecordData
+import org.singing.app.domain.repository.record.RecordRepository
 
 
 class RecordPlayer(
     private val recordRepository: RecordRepository,
 ) {
+    private val recorderScope = CoroutineScope(Dispatchers.Default)
+
     private val _state = MutableStateFlow(PlayerState.STOP)
     val state = _state.asStateFlow()
 
@@ -27,7 +28,7 @@ class RecordPlayer(
     private val player2 = AudioPlayer()
 
 
-    fun play(recordData: RecordData) = backgroundScope.launch {
+    suspend fun play(recordData: RecordData) {
         val voiceFile = recordRepository.getRecordVoiceFile(recordData)
 
         // TODO: extract magic number
@@ -79,10 +80,17 @@ class RecordPlayer(
             }
     }
 
-    private suspend fun startPlayerLoop() = backgroundScope.launch {
+    private suspend fun startPlayerLoop() = recorderScope.launch {
         player1.createPositionFlow().collect { newPosition ->
             _position.value = newPosition
         }
+    }
+
+    suspend fun reset() {
+        recorderScope.cancel()
+
+        stop()
+        setPosition(0)
     }
 
     suspend fun setPosition(newPosition: Long) {
@@ -95,12 +103,7 @@ class RecordPlayer(
     suspend fun stop() {
         _state.value = PlayerState.STOP
 
-        if (player1.isPlaying()) {
-            player1.stop()
-        }
-
-        if (player2.isPlaying()) {
-            player2.stop()
-        }
+        player1.stop()
+        player2.stop()
     }
 }

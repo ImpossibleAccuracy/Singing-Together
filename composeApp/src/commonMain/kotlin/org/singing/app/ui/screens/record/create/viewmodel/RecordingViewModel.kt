@@ -1,12 +1,12 @@
 package org.singing.app.ui.screens.record.create.viewmodel
 
 import com.singing.audio.player.PlayerState
-import com.singing.config.note.NotesStore
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.singing.app.domain.repository.record.RecordRepository
+import org.singing.app.domain.usecase.FindNoteUseCase
 import org.singing.app.ui.base.AppViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.model.RecordState
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
@@ -16,6 +16,7 @@ import org.singing.app.ui.screens.record.create.viewmodel.usecase.PlayerHelper
 import org.singing.app.ui.screens.record.create.viewmodel.usecase.RecordHelper
 
 class RecordingViewModel(
+    private val findNoteUseCase: FindNoteUseCase,
     private val recordRepository: RecordRepository,
 ) : AppViewModel() {
     private val _uiState = MutableStateFlow(RecordScreenUiState())
@@ -154,9 +155,8 @@ class RecordingViewModel(
 
     // ---------------- USER FUNCTIONS ----------------
 
-    fun getNote(frequency: Double): String {
-        return NotesStore.findNote(frequency)
-    }
+    fun getNote(frequency: Double): String =
+        findNoteUseCase(frequency)
 
 
     fun startRecord() {

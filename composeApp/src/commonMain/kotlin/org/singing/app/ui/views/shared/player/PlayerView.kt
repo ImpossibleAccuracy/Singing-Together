@@ -1,4 +1,4 @@
-package org.singing.app.ui.screens.record.create.views
+package org.singing.app.ui.views.shared.player
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -7,11 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.action_start_playing
-import com.singing.app.composeapp.generated.resources.action_stop_playing
+import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.views.base.AppFilledButton
 import org.singing.app.ui.views.base.progress.TimeProgress
@@ -19,7 +19,11 @@ import org.singing.app.ui.views.base.progress.TimeProgress
 
 @Composable
 fun PlayerView(
-    editable: Boolean,
+    modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.secondary,
+    contentColor: Color = MaterialTheme.colorScheme.onSecondary,
+    inactiveTrackColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    editable: Boolean = true,
     totalDuration: Long,
     currentPosition: Long,
     isPlaying: Boolean,
@@ -29,18 +33,14 @@ fun PlayerView(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxWidth()
             .clip(shape = MaterialTheme.shapes.large)
-            .background(color = MaterialTheme.colorScheme.secondary)
-            .padding(
-                start = 16.dp,
-                top = 18.dp,
-                end = 16.dp,
-                bottom = 12.dp,
-            )
+            .background(color = containerColor)
+                then modifier
     ) {
         TimeProgress(
             modifier = Modifier.fillMaxWidth(),
+            contentColor = contentColor,
+            inactiveTrackColor = inactiveTrackColor,
             editable = editable,
             totalDuration = totalDuration,
             currentPosition = currentPosition,
@@ -59,11 +59,19 @@ fun PlayerView(
                 false -> stringResource(Res.string.action_start_playing)
             }
 
+            val icon = vectorResource(
+                when (isPlaying) {
+                    true -> Res.drawable.baseline_stop_black_24dp
+                    false -> Res.drawable.baseline_play_arrow_black_24dp
+                }
+            )
+
             AppFilledButton(
                 modifier = Modifier.widthIn(min = 180.dp),
                 enabled = editable,
-                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                containerColor = contentColor,
                 label = actionText,
+                trailingIcon = icon,
                 onClick = {
                     if (isPlaying) {
                         onStop()

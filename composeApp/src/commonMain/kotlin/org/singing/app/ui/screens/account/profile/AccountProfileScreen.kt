@@ -23,7 +23,8 @@ import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.screens.account.profile.views.AccountBanner
 import org.singing.app.ui.screens.account.profile.views.AccountPublications
-import org.singing.app.ui.views.shared.MainPublicationCard
+import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
+import org.singing.app.ui.views.shared.publication.MainPublicationCard
 
 class AccountProfileScreen(
     private val requestedAccount: AccountUiData,
@@ -111,7 +112,14 @@ class AccountProfileScreen(
                                         )
                                     )
                                 }
-                            }
+                            },
+                            navigatePublicationDetails = {
+                                navigator.push(
+                                    PublicationDetailsScreen(
+                                        requestedPublication = it,
+                                    )
+                                )
+                            },
                         )
                     }
                 }

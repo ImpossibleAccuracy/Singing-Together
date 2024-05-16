@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.registry.ScreenProvider
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecordData
 import org.singing.app.setup.collectAsStateSafe
@@ -19,17 +20,27 @@ import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.main.views.*
+import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
 import org.singing.app.ui.screens.record.create.SelectRecordTypeScreen
 import org.singing.app.ui.screens.record.list.RecordListScreen
-import org.singing.app.ui.views.shared.DeleteRecordDialog
-import org.singing.app.ui.views.shared.PublishRecordDialog
-import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
+import org.singing.app.ui.views.shared.record.DeleteRecordDialog
+import org.singing.app.ui.views.shared.record.PublishRecordDialog
+import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 import kotlin.math.max
 
 class MainScreen : AppScreen(), ScreenProvider {
+    private var _viewModel: MainViewModel? = null
+
+    override fun onLeave() {
+        super.onLeave()
+
+        _viewModel?.resetRecordPlayer()
+    }
+
     @Composable
     override fun Content() {
         val viewModel = viewModels<MainViewModel>(true)
+        _viewModel = viewModel
 
         val verticalScroll = rememberScrollState()
 
@@ -109,6 +120,7 @@ class MainScreen : AppScreen(), ScreenProvider {
         viewModel: MainViewModel,
         gridModifier: Modifier
     ) {
+        val coroutineScope = rememberCoroutineScope()
         val navigator = LocalNavigator.currentOrThrow
 
         val user by viewModel.user.collectAsStateSafe()
@@ -151,7 +163,15 @@ class MainScreen : AppScreen(), ScreenProvider {
                     viewModel.uploadRecord(it)
                 },
                 showPublication = {
-                    TODO()
+                    coroutineScope.launch {
+                        val publication = viewModel.getRecordPublication(it)
+
+                        navigator.push(
+                            PublicationDetailsScreen(
+                                requestedPublication = publication,
+                            )
+                        )
+                    }
                 },
                 onPublishRecord = {
                     recordToPublish = it
@@ -217,13 +237,21 @@ class MainScreen : AppScreen(), ScreenProvider {
             modifier = Modifier.fillMaxWidth(),
             listModifier = listModifier,
             publications = latestPublications,
+            player = viewModel.recordPlayer,
             onAuthorClick = {
                 navigator.push(
                     AccountProfileScreen(
                         requestedAccount = it.author,
                     )
                 )
-            }
+            },
+            navigatePublicationDetails = {
+                navigator.push(
+                    PublicationDetailsScreen(
+                        requestedPublication = it,
+                    )
+                )
+            },
         )
     }
 }

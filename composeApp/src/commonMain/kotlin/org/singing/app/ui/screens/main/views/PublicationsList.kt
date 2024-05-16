@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import org.singing.app.di.injectComponent
 import org.singing.app.domain.model.Publication
+import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.views.base.publication.PublicationCard
 import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
@@ -23,8 +23,10 @@ import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
 fun PublicationsList(
     modifier: Modifier = Modifier,
     listModifier: Modifier = Modifier,
+    player: RecordPlayer,
     publications: List<Publication>,
     onAuthorClick: (Publication) -> Unit,
+    navigatePublicationDetails: (Publication) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -61,12 +63,15 @@ fun PublicationsList(
 
                     PublicationCardWithPlayer(
                         publication = item,
-                        player = injectComponent(),
+                        player = player,
                         contentColor = MaterialTheme.colorScheme.secondary,
                         inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
                         onAuthorClick = {
                             onAuthorClick(item)
-                        }
+                        },
+                        navigatePublicationDetails = {
+                            navigatePublicationDetails(item)
+                        },
                     )
 
                     if (publications.size > 1) {
@@ -82,7 +87,10 @@ fun PublicationsList(
                             publication = item,
                             onAuthorClick = {
                                 onAuthorClick(item)
-                            }
+                            },
+                            navigatePublicationDetails = {
+                                navigatePublicationDetails(item)
+                            },
                         )
 
                         if (index != publications.lastIndex) {

@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.shared
+package org.singing.app.ui.views.shared.publication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,7 +25,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.repository.record.RecordPlayer
+import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.views.base.progress.TimeProgress

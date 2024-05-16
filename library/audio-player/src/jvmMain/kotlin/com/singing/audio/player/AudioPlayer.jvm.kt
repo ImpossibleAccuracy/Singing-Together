@@ -28,45 +28,49 @@ actual class AudioPlayer {
         initPosition: Long,
     ): Flow<PlayerState> = callbackFlow {
         val media = Media(file.uri.toString())
+
         player = MediaPlayer(media)
+        player!!.waitReady()
+        player!!.seek(Duration.millis(initPosition.toDouble()))
 
-        with(player!!) {
-            waitReady()
-            seek(Duration.millis(initPosition.toDouble()))
+        lock.lock()
 
-            setOnPlaying {
-                currentState = PlayerState.PLAY
-                trySend(currentState)
-            }
+        val localPlayer = player ?: return@callbackFlow
 
-            setOnStopped {
-                currentState = PlayerState.STOP
-                trySend(currentState)
-            }
-
-            setOnEndOfMedia {
-                currentState = PlayerState.STOP
-                trySend(currentState)
-            }
-
-            setOnPaused {
-                currentState = PlayerState.STOP
-                trySend(currentState)
-            }
-
-            setOnStalled {
-                currentState = PlayerState.STOP
-                trySend(currentState)
-            }
-
-            setOnError {
-                println(error)
-
-                throw error
-            }
-
-            play()
+        localPlayer.setOnPlaying {
+            currentState = PlayerState.PLAY
+            trySend(currentState)
         }
+
+        localPlayer.setOnStopped {
+            currentState = PlayerState.STOP
+            trySend(currentState)
+        }
+
+        localPlayer.setOnEndOfMedia {
+            currentState = PlayerState.STOP
+            trySend(currentState)
+        }
+
+        localPlayer.setOnPaused {
+            currentState = PlayerState.STOP
+            trySend(currentState)
+        }
+
+        localPlayer.setOnStalled {
+            currentState = PlayerState.STOP
+            trySend(currentState)
+        }
+
+        localPlayer.setOnError {
+            println(player!!.error)
+
+            throw player!!.error
+        }
+
+        localPlayer.play()
+
+        lock.unlock()
 
         awaitClose {
             player?.stop()
@@ -76,9 +80,16 @@ actual class AudioPlayer {
     }
 
     actual suspend fun stop() {
+        if (player == null) return
+
         lock.lock()
 
-        if (player != null && player!!.status != MediaPlayer.Status.DISPOSED) {
+        if (player == null) {
+            lock.unlock()
+            return
+        }
+
+        if (player!!.status != MediaPlayer.Status.DISPOSED) {
             player?.stop()
             player?.dispose() // TODO: dispose only on next play
             player = null

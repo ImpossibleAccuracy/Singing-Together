@@ -8,7 +8,7 @@ import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.repository.account.AccountRepository
 import org.singing.app.domain.repository.publication.PublicationRepository
-import org.singing.app.domain.repository.record.RecordPlayer
+import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.ui.base.AppViewModel
 
 class AccountProfileViewModel(

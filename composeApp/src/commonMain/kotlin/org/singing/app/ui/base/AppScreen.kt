@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 
 abstract class AppScreen : Screen {
+    open fun onLeave() {}
+
     open fun onClose() {}
 
     @Composable

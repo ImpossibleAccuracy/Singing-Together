@@ -9,6 +9,11 @@ sealed interface RecordData {
     val isPublished: Boolean
     val creatorId: Int
 
+    val isTwoLineRecord: Boolean
+        get() {
+            return this is Cover
+        }
+
     data class Vocal(
         override val duration: Long,
         override val createdAt: Instant,

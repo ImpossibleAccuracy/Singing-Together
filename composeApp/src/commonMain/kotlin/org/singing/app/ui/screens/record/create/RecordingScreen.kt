@@ -21,8 +21,8 @@ import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.screens.record.create.views.Display
 import org.singing.app.ui.screens.record.create.views.DisplayInfo
-import org.singing.app.ui.screens.record.create.views.PlayerView
 import org.singing.app.ui.screens.record.create.views.RecordHistory
+import org.singing.app.ui.views.shared.player.PlayerView
 
 class RecordingScreen(
     private val audio: AudioProcessState? = null,
@@ -122,6 +122,14 @@ class RecordingScreen(
 
         if (audioProcessState != null) {
             PlayerView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = 16.dp,
+                        top = 18.dp,
+                        end = 16.dp,
+                        bottom = 12.dp,
+                    ),
                 editable = uiState.canEditPlayerState,
                 totalDuration = audioProcessState.selectedAudio.duration,
                 currentPosition = uiState.playerPosition,

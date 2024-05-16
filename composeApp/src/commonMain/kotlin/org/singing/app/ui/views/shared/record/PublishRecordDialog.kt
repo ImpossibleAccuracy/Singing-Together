@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.shared
+package org.singing.app.ui.views.shared.record
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog

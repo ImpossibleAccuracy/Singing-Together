@@ -12,6 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import com.singing.audio.player.PlayerState
 import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.AccountUiData
@@ -20,13 +23,14 @@ import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
 import org.singing.app.ui.screens.record.list.views.RecordDetails
-import org.singing.app.ui.screens.record.list.views.RecordPlayerView
 import org.singing.app.ui.screens.record.list.views.RecordPointsView
 import org.singing.app.ui.screens.record.list.views.RecordsList
-import org.singing.app.ui.views.shared.DeleteRecordDialog
-import org.singing.app.ui.views.shared.PublishRecordDialog
-import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
+import org.singing.app.ui.views.shared.player.PlayerView
+import org.singing.app.ui.views.shared.record.DeleteRecordDialog
+import org.singing.app.ui.views.shared.record.PublishRecordDialog
+import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 
 
 class RecordListScreen(
@@ -36,9 +40,18 @@ class RecordListScreen(
         const val PUBLICATION_DESCRIPTION_MAX_LENGTH = 300
     }
 
+    private var _viewModel: RecordListViewModel? = null
+
+    override fun onLeave() {
+        super.onLeave()
+
+        _viewModel?.resetRecordPlayer()
+    }
+
     @Composable
     override fun Content() {
         val viewModel = viewModels<RecordListViewModel>()
+        _viewModel = viewModel
 
         val detailsVerticalScroll = rememberScrollState()
 
@@ -196,6 +209,9 @@ class RecordListScreen(
         user: AccountUiData?,
         record: RecordData,
     ) {
+        val coroutineScope = rememberCoroutineScope()
+        val navigator = LocalNavigator.currentOrThrow
+
         var recordToPublish by remember { mutableStateOf<RecordData?>(null) }
         var recordToDelete by remember { mutableStateOf<RecordData?>(null) }
 
@@ -207,7 +223,15 @@ class RecordListScreen(
                     viewModel.uploadRecord(it)
                 },
                 showPublication = {
-                    TODO()
+                    coroutineScope.launch {
+                        val publication = viewModel.getRecordPublication(it)
+
+                        navigator.push(
+                            PublicationDetailsScreen(
+                                requestedPublication = publication,
+                            )
+                        )
+                    }
                 },
                 onPublishRecord = {
                     recordToPublish = it
@@ -258,11 +282,39 @@ class RecordListScreen(
         val playerState by player.state.collectAsStateSafe()
         val playerPosition by player.position.collectAsStateSafe()
 
-        LaunchedEffect(record) {
-            viewModel.resetRecordPlayer()
-        }
+        PlayerView(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 16.dp,
+                    top = 4.dp,
+                    end = 16.dp,
+                    bottom = 12.dp,
+                ),
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.tertiary,
+            inactiveTrackColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            totalDuration = record.duration,
+            currentPosition = playerPosition,
+            isPlaying = playerState == PlayerState.PLAY,
+            onPositionChange = {
+                coroutineScope.launch {
+                    player.setPosition(it)
+                }
+            },
+            onPlay = {
+                coroutineScope.launch {
+                    player.play(record)
+                }
+            },
+            onStop = {
+                coroutineScope.launch {
+                    player.stop()
+                }
+            },
+        )
 
-        RecordPlayerView(
+        /*RecordPlayerView(
             modifier = modifier,
             duration = record.duration,
             playerState = playerState,
@@ -282,7 +334,7 @@ class RecordListScreen(
                     player.stop()
                 }
             },
-        )
+        )*/
     }
 
     @Composable

@@ -26,7 +26,7 @@ import nl.jacobras.humanreadable.HumanReadable
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.Publication
-import org.singing.app.domain.repository.record.RecordPlayer
+import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Divider
 import org.singing.app.ui.base.Space
@@ -41,6 +41,7 @@ fun PublicationCardWithPlayer(
     contentColor: Color = MaterialTheme.colorScheme.primary,
     inactiveTrackColor: Color = MaterialTheme.colorScheme.primaryContainer,
     onAuthorClick: (() -> Unit)? = null,
+    navigatePublicationDetails: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -111,7 +112,7 @@ fun PublicationCardWithPlayer(
                     )
                 },
                 onClick = {
-
+                    navigatePublicationDetails()
                 }
             )
         }
