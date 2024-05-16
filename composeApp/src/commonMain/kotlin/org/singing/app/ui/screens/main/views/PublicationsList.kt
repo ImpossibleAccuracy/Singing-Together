@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import org.singing.app.di.injectComponent
 import org.singing.app.domain.model.Publication
 import org.singing.app.ui.base.Space
-import org.singing.app.ui.views.publication.PublicationCard
-import org.singing.app.ui.views.publication.PublicationCardWithPlayer
+import org.singing.app.ui.views.base.publication.PublicationCard
+import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
 
 
 @Composable

@@ -1,4 +1,4 @@
-package org.singing.app.ui.views
+package org.singing.app.ui.views.base
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable

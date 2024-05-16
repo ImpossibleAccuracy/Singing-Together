@@ -14,9 +14,9 @@ import kotlinx.datetime.Clock
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.model.RecordPoint
 import org.singing.app.domain.repository.StateRepository
+import org.singing.app.domain.repository.publication.PublicationRepository
 import org.singing.app.domain.repository.track.createTestFile
 import org.singing.app.setup.file.writeFile
-import org.singing.app.ui.screens.record.create.viewmodel.model.RecordPair
 import java.nio.file.Paths
 import kotlin.random.Random.Default.nextDouble
 import kotlin.time.Duration.Companion.days
@@ -28,41 +28,52 @@ class RecordRepository(
         val DefaultItems: List<RecordData> =
             listOf(
                 RecordData.Cover(
-                    97,
-                    "ASD.mp3",
-                    133000,
-                    Clock.System.now().minus(5.days),
-                    true,
+                    accuracy = 97,
+                    filename = "ASD.mp3",
+                    duration = 133000,
+                    createdAt = Clock.System.now().minus(5.days),
+                    isSavedRemote = true,
+                    isPublished = true,
                 ),
                 RecordData.Vocal(
-                    10000,
-                    Clock.System.now().minus(7.days),
-                    true,
+                    duration = 10000,
+                    createdAt = Clock.System.now().minus(7.days),
+                    isSavedRemote = true,
+                    isPublished = false,
                 ),
                 RecordData.Cover(
-                    23,
-                    "ASD.mp3",
-                    10000,
-                    Clock.System.now().minus(12.days),
-                    true,
+                    accuracy = 23,
+                    filename = "ASD.mp3",
+                    duration = 10000,
+                    createdAt = Clock.System.now().minus(12.days),
+                    isSavedRemote = true,
+                    isPublished = false,
                 ),
                 RecordData.Cover(
-                    78,
-                    "ASD.mp3",
-                    10000,
-                    Clock.System.now().minus(12.days),
-                    true,
+                    accuracy = 78,
+                    filename = "ASD.mp3",
+                    duration = 10000,
+                    createdAt = Clock.System.now().minus(12.days),
+                    isSavedRemote = true,
+                    isPublished = true,
                 ),
                 RecordData.Vocal(
-                    10000,
-                    Clock.System.now().minus(23.days),
-                    false,
+                    duration = 10000,
+                    createdAt = Clock.System.now().minus(23.days),
+                    isSavedRemote = false,
+                    isPublished = false,
                 ),
             )
+                .mapIndexed { index, item ->
+                    when (item) {
+                        is RecordData.Cover -> item.copy(isPublished = index < PublicationRepository.PublicationsCount)
+                        is RecordData.Vocal -> item.copy(isPublished = index < PublicationRepository.PublicationsCount)
+                    }
+                }
     }
 
     suspend fun saveRecord(
-        history: List<RecordPair>,
+        history: List<RecordPoint>,
         voiceRecord: ByteArray,
         audioTrack: AudioFile? = null,
     ) {
@@ -115,6 +126,16 @@ class RecordRepository(
         return items
     }
 
+    suspend fun markPublished(record: RecordData) =
+        withContext(Dispatchers.IO) {
+            updateSingle(record) {
+                when (record) {
+                    is RecordData.Cover -> record.copy(isPublished = true)
+                    is RecordData.Vocal -> record.copy(isPublished = true)
+                }
+            }
+        }
+
     suspend fun uploadRecord(record: RecordData): RecordData =
         withContext(Dispatchers.IO) {
             updateSingle(record) {
@@ -125,7 +146,7 @@ class RecordRepository(
             }!!
         }
 
-    suspend fun deleteRecord(record: RecordData) =
+    suspend fun deleteRecord(record: RecordData): Unit =
         withContext(Dispatchers.IO) {
             updateSingle(record) { null }
         }

@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.publication
+package org.singing.app.ui.views.base.publication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

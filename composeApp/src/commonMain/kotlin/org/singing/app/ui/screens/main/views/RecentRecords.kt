@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,9 +26,11 @@ import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.theme.extended
-import org.singing.app.ui.views.AppFilledButton
-import org.singing.app.ui.views.IconLabel
-import org.singing.app.ui.views.record.RecordCard
+import org.singing.app.ui.views.base.AppFilledButton
+import org.singing.app.ui.views.base.IconLabel
+import org.singing.app.ui.views.base.record.card.RecordCard
+import org.singing.app.ui.views.shared.RecordCardActions
+import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -39,7 +44,7 @@ data class RecentRecordsData(
 data class RecentRecordsActions(
     val navigateAllRecords: () -> Unit,
     val navigateRecordDetails: (RecordData) -> Unit,
-    val onShowMistakes: (RecordData) -> Unit,
+    val onPlayRecord: (RecordData) -> Unit,
     val onDeleteRecord: (RecordData) -> Unit,
 )
 
@@ -49,6 +54,7 @@ fun RecentRecords(
     gridModifier: Modifier,
     data: RecentRecordsData,
     actions: RecentRecordsActions,
+    cardActions: RecordCardActionsCallbacks,
 ) {
     Column {
         Row(
@@ -102,7 +108,11 @@ fun RecentRecords(
             )
         } else {
             if (data.showMainRecord) {
-                MainRecordCard(data, actions)
+                MainRecordCard(
+                    data = data,
+                    actions = actions,
+                    cardActions = cardActions,
+                )
             }
 
             if (data.records.size > 1 || !data.showMainRecord) {
@@ -116,10 +126,12 @@ fun RecentRecords(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MainRecordCard(
     data: RecentRecordsData,
     actions: RecentRecordsActions,
+    cardActions: RecordCardActionsCallbacks,
 ) {
     Column(
         modifier = Modifier
@@ -133,47 +145,14 @@ private fun MainRecordCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                modifier = Modifier.weight(1f)
+            FlowRow(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                AssistChip(
-                    label = {
-                        Text(
-                            text = "Listen now",
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = vectorResource(Res.drawable.baseline_play_circle_filled_24),
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                            contentDescription = "",
-                        )
-                    },
-                    onClick = {}
-                )
-
-                Space(12.dp)
-
-                AssistChip(
-                    label = {
-                        Text(
-                            text = "Delete record",
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    },
-                    leadingIcon = {
-                        Icon(
-                            imageVector = vectorResource(Res.drawable.baseline_delete_outline_24),
-                            tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                            contentDescription = "",
-                        )
-                    },
-                    onClick = {
-                        actions.onDeleteRecord(mainItem)
-                    }
+                RecordCardActions(
+                    record = mainItem,
+                    actions = cardActions,
                 )
             }
 
@@ -281,9 +260,10 @@ private fun MainRecordCard(
             AppFilledButton(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary,
-                label = "View mistakes",
+                label = "Listen now",
+                trailingIcon = vectorResource(Res.drawable.baseline_play_circle_filled_24),
                 onClick = {
-                    actions.onShowMistakes(mainItem)
+                    actions.onPlayRecord(mainItem)
                 }
             )
         }

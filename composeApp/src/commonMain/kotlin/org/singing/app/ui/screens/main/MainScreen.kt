@@ -3,9 +3,6 @@ package org.singing.app.ui.screens.main
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -23,17 +20,15 @@ import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.screens.main.views.*
 import org.singing.app.ui.screens.record.create.SelectRecordTypeScreen
 import org.singing.app.ui.screens.record.list.RecordListScreen
-import org.singing.app.ui.screens.record.list.model.RecordOperationTab
-import org.singing.app.ui.views.AppTextButton
+import org.singing.app.ui.views.shared.DeleteRecordDialog
+import org.singing.app.ui.views.shared.PublishRecordDialog
+import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
 import kotlin.math.max
 
 class MainScreen : AppScreen(), ScreenProvider {
-    private var _viewModel: MainViewModel? = null
-    private val viewModel get() = _viewModel!!
-
     @Composable
     override fun Content() {
-        _viewModel = viewModels()
+        val viewModel = viewModels<MainViewModel>(true)
 
         val verticalScroll = rememberScrollState()
 
@@ -54,6 +49,7 @@ class MainScreen : AppScreen(), ScreenProvider {
                 Space(36.dp)
 
                 RecentRecordsContainer(
+                    viewModel = viewModel,
                     gridModifier = Modifier.connectVerticalNestedScroll(1000.dp, verticalScroll),
                 )
 
@@ -70,7 +66,9 @@ class MainScreen : AppScreen(), ScreenProvider {
                             .weight(1f)
                             .heightIn(min = minSize.dp, max = max(minSize, size.height).dp)
                     ) {
-                        RecentTracksContainer()
+                        RecentTracksContainer(
+                            viewModel = viewModel,
+                        )
                     }
 
                     Space(24.dp)
@@ -83,6 +81,7 @@ class MainScreen : AppScreen(), ScreenProvider {
                             }
                     ) {
                         PublicationsListContainer(
+                            viewModel = viewModel,
                             listModifier = Modifier.connectVerticalNestedScroll(600.dp, verticalScroll),
                         )
                     }
@@ -105,13 +104,18 @@ class MainScreen : AppScreen(), ScreenProvider {
     }
 
     @Composable
-    private fun RecentRecordsContainer(gridModifier: Modifier) {
+    private fun RecentRecordsContainer(
+        viewModel: MainViewModel,
+        gridModifier: Modifier
+    ) {
         val navigator = LocalNavigator.currentOrThrow
 
         val user by viewModel.user.collectAsStateSafe()
         val records by viewModel.records.collectAsStateSafe()
 
         var recordToDelete by remember { mutableStateOf<RecordData?>(null) }
+        var recordToPublish by remember { mutableStateOf<RecordData?>(null) }
+
         var showMainRecord by remember { mutableStateOf(true) }
 
         RecentRecords(
@@ -134,58 +138,61 @@ class MainScreen : AppScreen(), ScreenProvider {
                         )
                     )
                 },
-                onShowMistakes = {
-                    navigator.push(
-                        RecordListScreen(
-                            defaultSelectedRecord = it,
-                            defaultSelectedTab = RecordOperationTab.Record
-                        )
-                    )
+                onPlayRecord = {
+                    TODO()
                 },
                 onDeleteRecord = {
                     recordToDelete = it
                 }
+            ),
+            cardActions = RecordCardActionsCallbacks(
+                onUploadRecord = {
+                    viewModel.uploadRecord(it)
+                },
+                showPublication = {
+                    TODO()
+                },
+                onPublishRecord = {
+                    recordToPublish = it
+                },
+                onDeleteRecord = {
+                    recordToDelete = it
+                },
             )
         )
 
         if (recordToDelete != null) {
-            AlertDialog(
-                title = {
-                    Text("Delete record?")
-                },
-                text = {
-                    Text("Record cannot be restored after delete.")
-                },
-                confirmButton = {
-                    AppTextButton(
-                        contentColor = MaterialTheme.colorScheme.primary,
-                        label = "OK",
-                        onClick = {
-                            viewModel.deleteRecord(recordToDelete!!)
+            DeleteRecordDialog(
+                onConfirm = {
+                    viewModel.deleteRecord(recordToDelete!!)
 
-                            showMainRecord = false
-                            recordToDelete = null
-                        }
-                    )
+                    showMainRecord = false
+                    recordToDelete = null
                 },
-                dismissButton = {
-                    AppTextButton(
-                        contentColor = MaterialTheme.colorScheme.primary,
-                        label = "Cancel",
-                        onClick = {
-                            recordToDelete = null
-                        }
-                    )
-                },
-                onDismissRequest = {
+                onDismiss = {
                     recordToDelete = null
                 }
+            )
+        }
+
+        if (recordToPublish != null) {
+            PublishRecordDialog(
+                onConfirm = {
+                    viewModel.publishRecord(recordToPublish!!, it)
+
+                    recordToPublish = null
+                },
+                onDismiss = {
+                    recordToPublish = null
+                },
             )
         }
     }
 
     @Composable
-    private fun RecentTracksContainer() {
+    private fun RecentTracksContainer(
+        viewModel: MainViewModel,
+    ) {
         val tracks by viewModel.recentTracks.collectAsStateSafe()
 
         RecentTracks(
@@ -198,6 +205,7 @@ class MainScreen : AppScreen(), ScreenProvider {
 
     @Composable
     private fun PublicationsListContainer(
+        viewModel: MainViewModel,
         listModifier: Modifier = Modifier
     ) {
         val latestPublications by viewModel.latestPublications.collectAsState()

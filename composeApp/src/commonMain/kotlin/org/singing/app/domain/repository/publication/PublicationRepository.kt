@@ -13,9 +13,13 @@ import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.domain.repository.track.generateString
 import org.singing.app.domain.store.account.UserContainer
 
-class PublicationRepository : StateRepository<Publication>(DefaultItems) {
+class PublicationRepository(
+    private val recordRepository: RecordRepository,
+) : StateRepository<Publication>(DefaultItems) {
     companion object {
-        private val DefaultItems = RecordRepository.DefaultItems.take(1).map {
+        const val PublicationsCount = 2
+
+        private val DefaultItems = RecordRepository.DefaultItems.take(PublicationsCount).map {
             Publication(
                 author = AccountUiData(
                     username = "Admin",
@@ -46,6 +50,8 @@ class PublicationRepository : StateRepository<Publication>(DefaultItems) {
             record = record,
         ).also {
             addSingle(it)
+
+            recordRepository.markPublished(record)
         }
     }
 }

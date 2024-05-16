@@ -1,4 +1,4 @@
-package org.singing.app.ui.views
+package org.singing.app.ui.views.base
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size

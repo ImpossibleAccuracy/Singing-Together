@@ -1,65 +1,43 @@
 package org.singing.app.ui.screens.record.list
 
 import com.singing.config.note.NotesStore
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.model.RecordPoint
-import org.singing.app.domain.repository.publication.PublicationRepository
 import org.singing.app.domain.repository.record.RecordPlayer
 import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.domain.store.account.UserContainer
+import org.singing.app.domain.usecase.DeleteRecordUseCase
+import org.singing.app.domain.usecase.PublishRecordUseCase
+import org.singing.app.domain.usecase.UploadRecordUseCase
 import org.singing.app.ui.base.AppViewModel
 
 class RecordListViewModel(
-    private val publicationRepository: PublicationRepository,
+    private val deleteRecordUseCase: DeleteRecordUseCase,
+    private val publishRecordUseCase: PublishRecordUseCase,
+    private val uploadRecordUseCase: UploadRecordUseCase,
     private val recordRepository: RecordRepository,
     val recordPlayer: RecordPlayer,
 ) : AppViewModel() {
+    private val _isLoadingRecords = MutableStateFlow(true)
+    val isLoadingRecords = _isLoadingRecords.asStateFlow()
+
     val records = recordRepository
         .getRecords()
+        .onEach {
+            _isLoadingRecords.value = false
+        }
         .stateIn()
 
-    val selectedRecord = MutableStateFlow<RecordData?>(null)
+    val selectedRecord = MutableStateFlow(-1)
 
     private val _user = UserContainer.user
     val user = _user.asStateFlow()
 
-
-    init {
-        viewModelScope.launch {
-            val firstRecord = records
-                .first { it.isNotEmpty() }
-                .firstOrNull()
-
-            if (selectedRecord.value == null) {
-                selectedRecord.value = firstRecord
-            }
-        }
-    }
-
-
-    fun uploadRecord(record: RecordData) =
-        viewModelScope.launch {
-            val newRecord = recordRepository.uploadRecord(record)
-
-            if (selectedRecord.value == record) {
-                selectedRecord.value = newRecord
-            }
-        }
-
-    fun deleteRecord(record: RecordData) =
-        viewModelScope.launch {
-            recordRepository.deleteRecord(record)
-
-            if (record == selectedRecord.value) {
-                selectedRecord.value = records.value.firstOrNull {
-                    it != record
-                }
-            }
-        }
 
     fun getNote(frequency: Double): String {
         return NotesStore.findNote(frequency)
@@ -75,8 +53,28 @@ class RecordListViewModel(
             recordPlayer.setPosition(0)
         }
 
+    fun uploadRecord(record: RecordData) =
+        viewModelScope.launch {
+            val newRecord = uploadRecordUseCase(record)
+
+            if (selectedRecord.value == records.value.indexOf(record)) {
+                selectedRecord.value = records.value.indexOf(newRecord)
+            }
+        }
+
     fun publishRecord(record: RecordData, description: String) =
         viewModelScope.launch {
-            publicationRepository.publishRecord(record, description)
+            publishRecordUseCase(record, description)
+        }
+
+    fun deleteRecord(record: RecordData) =
+        viewModelScope.launch {
+            deleteRecordUseCase(record)
+
+            if (selectedRecord.value == records.value.indexOf(record)) {
+                selectedRecord.value = records.value.indexOfFirst {
+                    it != record
+                }
+            }
         }
 }

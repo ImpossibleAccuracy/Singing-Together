@@ -1,4 +1,4 @@
-package org.singing.app.ui.screens.record.list.views
+package org.singing.app.ui.views.base.record.points
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
@@ -13,8 +13,8 @@ import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatFrequency
 import org.singing.app.ui.base.formatTimeString
 import org.singing.app.ui.theme.extended
-import org.singing.app.ui.views.timeline.DefaultTimelineIndicator
-import org.singing.app.ui.views.timeline.Timeline
+import org.singing.app.ui.views.base.timeline.DefaultTimelineIndicator
+import org.singing.app.ui.views.base.timeline.Timeline
 
 
 @Composable

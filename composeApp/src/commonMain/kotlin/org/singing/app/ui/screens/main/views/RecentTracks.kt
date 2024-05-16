@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import org.singing.app.domain.model.RecentTrack
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatTimeString
-import org.singing.app.ui.views.track.TrackItem
+import org.singing.app.ui.views.base.track.TrackItem
 
 
 @Composable
@@ -47,8 +47,8 @@ fun RecentTracks(
                         )
                 ) {
                     TrackItem(
-                        filename = item.file.name,
-                        duration = formatTimeString(item.file.duration),
+                        filename = item.audioFile.name,
+                        duration = formatTimeString(item.audioFile.duration),
                         isFavourite = item.isFavourite,
                         onFavouriteChange = {
                             onFavouriteChange(item, it)

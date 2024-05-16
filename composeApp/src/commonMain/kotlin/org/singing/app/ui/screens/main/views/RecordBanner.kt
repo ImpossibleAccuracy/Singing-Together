@@ -19,7 +19,7 @@ import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.main_record_banner
 import org.jetbrains.compose.resources.painterResource
 import org.singing.app.ui.theme.extended
-import org.singing.app.ui.views.AppFilledButton
+import org.singing.app.ui.views.base.AppFilledButton
 
 
 @Composable

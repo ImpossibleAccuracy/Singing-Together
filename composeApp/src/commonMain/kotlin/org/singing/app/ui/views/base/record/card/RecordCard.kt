@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.record
+package org.singing.app.ui.views.base.record.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

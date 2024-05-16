@@ -1,66 +1,65 @@
 package org.singing.app.ui.screens.record.list
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
+import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
-import org.singing.app.ui.screens.record.list.model.RecordOperationTab
 import org.singing.app.ui.screens.record.list.views.RecordDetails
-import org.singing.app.ui.screens.record.list.views.RecordOperationsTabs
+import org.singing.app.ui.screens.record.list.views.RecordPlayerView
+import org.singing.app.ui.screens.record.list.views.RecordPointsView
 import org.singing.app.ui.screens.record.list.views.RecordsList
+import org.singing.app.ui.views.shared.DeleteRecordDialog
+import org.singing.app.ui.views.shared.PublishRecordDialog
+import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
 
 
 class RecordListScreen(
     private val defaultSelectedRecord: RecordData? = null,
-    private val defaultSelectedTab: RecordOperationTab = RecordOperationTab.Record,
 ) : AppScreen() {
     companion object {
-        const val CONTENT_ANIMATION_DURATION = 220
         const val PUBLICATION_DESCRIPTION_MAX_LENGTH = 300
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun Content() {
         val viewModel = viewModels<RecordListViewModel>()
 
-        LaunchedEffect(defaultSelectedRecord) {
-            if (viewModel.selectedRecord.value == null) {
-                viewModel.selectedRecord.value = defaultSelectedRecord
+        val detailsVerticalScroll = rememberScrollState()
+
+        val isLoadingRecords by viewModel.isLoadingRecords.collectAsStateSafe()
+        val records by viewModel.records.collectAsStateSafe()
+        val selectedRecordIndex by viewModel.selectedRecord.collectAsState()
+
+        LaunchedEffect(defaultSelectedRecord, records) {
+            if (viewModel.selectedRecord.value == -1) {
+                if (defaultSelectedRecord == null) {
+                    viewModel.selectedRecord.value = 0
+                } else {
+                    viewModel.selectedRecord.value = records.indexOf(defaultSelectedRecord)
+                }
             }
         }
 
-        val detailsVerticalScroll = rememberScrollState()
-
-        val user by viewModel.user.collectAsState()
-
-        val records by viewModel.records.collectAsStateSafe()
-        val selectedRecord by viewModel.selectedRecord.collectAsState()
-
-        var detailsPagerState = rememberPagerState(
-            initialPage = RecordOperationTab.entries.indexOf(defaultSelectedTab),
-            pageCount = {
-                RecordOperationTab.entries.size
-            }
-        )
+        val selectedRecord = when {
+            selectedRecordIndex == -1 || records.isEmpty() -> defaultSelectedRecord
+            else -> records[selectedRecordIndex]
+        }
 
         LaunchedEffect(selectedRecord) {
             detailsVerticalScroll.animateScrollTo(0)
@@ -73,41 +72,74 @@ class RecordListScreen(
                     .clip(shape = MaterialTheme.shapes.large)
                     .background(color = MaterialTheme.colorScheme.surfaceContainerLow)
                     .padding(
-                        start = 12.dp,
+                        start = when (records.isEmpty()) {
+                            true -> 24.dp
+                            false -> 12.dp
+                        },
                         end = 24.dp,
                     )
             ) {
-                if (records.isEmpty()) {
+                if (records.isEmpty() && selectedRecord == null) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text(
-                            text = "No records available",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
+                        if (isLoadingRecords) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.primary,
+                            )
+                        } else {
+                            Text(
+                                text = "No records available",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.headlineSmall,
+                            )
+                        }
                     }
                 } else {
-                    val record = selectedRecord
-
-                    RecordListContainer(
-                        records = records,
-                        selectedRecord = record,
-                        onSelectedRecordChange = {
-                            viewModel.selectedRecord.value = it
+                    Box(
+                        modifier = Modifier
+                            .width(300.dp)
+                            .fillMaxHeight(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        if (isLoadingRecords) {
+                            CircularProgressIndicator(
+                                color = MaterialTheme.colorScheme.primary,
+                            )
                         }
-                    )
 
-                    Space(16.dp)
+                        if (records.size > 1) {
+                            RecordListContainer(
+                                modifier = Modifier.fillMaxWidth(),
+                                records = records,
+                                selectedRecord = selectedRecord,
+                                onSelectedRecordChange = {
+                                    viewModel.selectedRecord.value = records.indexOf(it)
+                                }
+                            )
 
-                    if (record == null) {
-                        Text(
-                            text = "Select records",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
+                        }
+                    }
+
+                    if (isLoadingRecords || records.size > 1) {
+                        Space(16.dp)
+                    }
+
+                    if (selectedRecord == null) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text(
+                                text = "Select record",
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.headlineSmall,
+                            )
+                        }
                     } else {
+                        val user by viewModel.user.collectAsState()
+
                         Column(
                             modifier = Modifier
                                 .weight(1f)
@@ -120,15 +152,21 @@ class RecordListScreen(
                             RecordDetailsContainer(
                                 viewModel = viewModel,
                                 user = user,
-                                record = record,
+                                record = selectedRecord,
                             )
 
-                            Space(16.dp)
+                            Space(24.dp)
 
-                            RecordOperationsTabs(
+                            RecordDetailsPlayerContainer(
                                 viewModel = viewModel,
-                                record = record,
-                                pagerState = detailsPagerState,
+                                record = selectedRecord,
+                            )
+
+                            Space(12.dp)
+
+                            RecordDetailsPointsContainer(
+                                viewModel = viewModel,
+                                record = selectedRecord,
                             )
                         }
                     }
@@ -138,33 +176,138 @@ class RecordListScreen(
     }
 
     @Composable
-    private fun RecordDetailsContainer(
-        viewModel: RecordListViewModel,
-        user: AccountUiData?,
-        record: RecordData,
-    ) {
-        RecordDetails(
-            record = record,
-            accountData = user,
-            onUploadRecord = {
-                viewModel.uploadRecord(record)
-            },
-            onDeleteRecord = {
-                viewModel.deleteRecord(record)
-            },
-        )
-    }
-
-    @Composable
     private fun RecordListContainer(
+        modifier: Modifier = Modifier,
         records: List<RecordData>,
         selectedRecord: RecordData?,
         onSelectedRecordChange: (RecordData) -> Unit,
     ) {
         RecordsList(
+            modifier = modifier,
             records = records,
             selectedRecord = selectedRecord,
             onSelectedRecordChange = onSelectedRecordChange,
+        )
+    }
+
+    @Composable
+    private fun RecordDetailsContainer(
+        viewModel: RecordListViewModel,
+        user: AccountUiData?,
+        record: RecordData,
+    ) {
+        var recordToPublish by remember { mutableStateOf<RecordData?>(null) }
+        var recordToDelete by remember { mutableStateOf<RecordData?>(null) }
+
+        RecordDetails(
+            record = record,
+            accountData = user,
+            actions = RecordCardActionsCallbacks(
+                onUploadRecord = {
+                    viewModel.uploadRecord(it)
+                },
+                showPublication = {
+                    TODO()
+                },
+                onPublishRecord = {
+                    recordToPublish = it
+                },
+                onDeleteRecord = {
+                    recordToDelete = it
+                },
+            ),
+        )
+
+        if (recordToPublish != null) {
+            PublishRecordDialog(
+                onConfirm = {
+                    viewModel.publishRecord(recordToPublish!!, it)
+
+                    recordToPublish = null
+                },
+                onDismiss = {
+                    recordToPublish = null
+                },
+            )
+        }
+
+        if (recordToDelete != null) {
+            DeleteRecordDialog(
+                onConfirm = {
+                    viewModel.deleteRecord(recordToDelete!!)
+
+                    recordToDelete = null
+                },
+                onDismiss = {
+                    recordToDelete = null
+                },
+            )
+        }
+    }
+
+    @Composable
+    private fun RecordDetailsPlayerContainer(
+        modifier: Modifier = Modifier,
+        viewModel: RecordListViewModel,
+        record: RecordData,
+    ) {
+        val coroutineScope = rememberCoroutineScope()
+
+        val player = remember { viewModel.recordPlayer }
+
+        val playerState by player.state.collectAsStateSafe()
+        val playerPosition by player.position.collectAsStateSafe()
+
+        LaunchedEffect(record) {
+            viewModel.resetRecordPlayer()
+        }
+
+        RecordPlayerView(
+            modifier = modifier,
+            duration = record.duration,
+            playerState = playerState,
+            playerPosition = playerPosition,
+            updatePosition = {
+                coroutineScope.launch {
+                    player.setPosition(it)
+                }
+            },
+            startPlay = {
+                coroutineScope.launch {
+                    player.play(record)
+                }
+            },
+            stopPlay = {
+                coroutineScope.launch {
+                    player.stop()
+                }
+            },
+        )
+    }
+
+    @Composable
+    private fun RecordDetailsPointsContainer(
+        modifier: Modifier = Modifier,
+        viewModel: RecordListViewModel,
+        record: RecordData,
+    ) {
+        val points = remember { mutableStateListOf<RecordPoint>() }
+
+        LaunchedEffect(record) {
+            points.clear()
+
+            points.addAll(
+                viewModel.getRecordPoints(record)
+            )
+        }
+
+        RecordPointsView(
+            modifier = modifier,
+            points = points,
+            isTwoLineRecord = record is RecordData.Cover,
+            note = {
+                viewModel.getNote(it)
+            },
         )
     }
 }

@@ -12,28 +12,33 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.module
 import org.singing.app.ui.screens.main.MainViewModel
+import org.singing.app.ui.screens.record.audio.SelectAudioViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
 import org.singing.app.ui.screens.record.list.RecordListViewModel
 
 val viewModelsModule = module {
     factoryOf(::MainViewModel)
-    factoryOf(::RecordingViewModel)
     factoryOf(::RecordListViewModel)
+    factoryOf(::SelectAudioViewModel)
+    factoryOf(::RecordingViewModel)
 }
 
 @Composable
 inline fun <reified T : ScreenModel> Screen.viewModels(
+    saveWithNavigator: Boolean = false,
     qualifier: Qualifier? = null,
     noinline parameters: ParametersDefinition? = null
 ): T {
     val koin = getKoin()
+    val navigator = LocalNavigator.current
 
-    return when (val navigator = LocalNavigator.current) {
-        null -> rememberScreenModel(tag = qualifier?.value) {
-            koin.get<T>(qualifier, parameters)
-        }
+    return when {
+        navigator != null && saveWithNavigator ->
+            navigator.rememberNavigatorScreenModel {
+                koin.get<T>(qualifier, parameters)
+            }
 
-        else -> navigator.rememberNavigatorScreenModel {
+        else -> rememberScreenModel(tag = qualifier?.value) {
             koin.get<T>(qualifier, parameters)
         }
     }

@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.timeline
+package org.singing.app.ui.views.base.timeline
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*

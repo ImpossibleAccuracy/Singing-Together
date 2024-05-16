@@ -2,8 +2,6 @@ package org.singing.app.ui.screens.record.list.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,25 +10,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberImagePainter
-import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.baseline_delete_outline_24
-import com.singing.app.composeapp.generated.resources.baseline_file_upload_24
 import nl.jacobras.humanreadable.HumanReadable
-import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatTimeString
-import org.singing.app.ui.views.account.AccountView
+import org.singing.app.ui.views.base.account.AccountView
+import org.singing.app.ui.views.shared.RecordCardActions
+import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun RecordDetails(
     modifier: Modifier = Modifier,
     accountData: AccountUiData?,
     record: RecordData,
-    onUploadRecord: () -> Unit,
-    onDeleteRecord: () -> Unit,
+    actions: RecordCardActionsCallbacks,
 ) {
     Row(
         modifier = modifier
@@ -83,50 +79,15 @@ fun RecordDetails(
 
             Space(12.dp)
 
-            Row {
-                AssistChip(
-                    label = {
-                        Text(
-                            text = "Delete record",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    },
-                    trailingIcon = {
-                        Icon(
-                            imageVector = vectorResource(Res.drawable.baseline_delete_outline_24),
-                            tint = MaterialTheme.colorScheme.onSurface,
-                            contentDescription = "",
-                        )
-                    },
-                    onClick = {
-                        onDeleteRecord()
-                    }
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                RecordCardActions(
+                    record = record,
+                    actions = actions,
                 )
-
-                if (!record.isSavedRemote) {
-                    Space(12.dp)
-
-                    AssistChip(
-                        label = {
-                            Text(
-                                text = "Push to server",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.labelLarge,
-                            )
-                        },
-                        trailingIcon = {
-                            Icon(
-                                imageVector = vectorResource(Res.drawable.baseline_file_upload_24),
-                                tint = MaterialTheme.colorScheme.onSurface,
-                                contentDescription = "",
-                            )
-                        },
-                        onClick = {
-                            onUploadRecord()
-                        }
-                    )
-                }
             }
         }
 
@@ -139,3 +100,4 @@ fun RecordDetails(
         )
     }
 }
+

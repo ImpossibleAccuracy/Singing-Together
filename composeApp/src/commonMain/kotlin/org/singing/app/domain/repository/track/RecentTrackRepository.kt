@@ -3,6 +3,7 @@ package org.singing.app.domain.repository.track
 import com.singing.audio.player.model.AudioFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.singing.app.domain.model.RecentTrack
 import org.singing.app.domain.repository.StateRepository
@@ -19,7 +20,7 @@ class RecentTrackRepository : StateRepository<RecentTrack>(DefaultItems) {
         private val DefaultItems: List<RecentTrack> = (0..7)
             .map { i ->
                 RecentTrack(
-                    file = createTestFile(),
+                    audioFile = createTestFile(),
                     isFavourite = i % 3 == 0
                 )
             }
@@ -28,6 +29,14 @@ class RecentTrackRepository : StateRepository<RecentTrack>(DefaultItems) {
 
     fun getRecentTracks(): Flow<List<RecentTrack>> {
         return items
+    }
+
+    fun getFavouriteTracks(): Flow<List<RecentTrack>> {
+        return items.map { list ->
+            list.filter {
+                it.isFavourite
+            }
+        }
     }
 
     suspend fun updateRecentTrackFavourite(track: RecentTrack, isFavourite: Boolean) =
