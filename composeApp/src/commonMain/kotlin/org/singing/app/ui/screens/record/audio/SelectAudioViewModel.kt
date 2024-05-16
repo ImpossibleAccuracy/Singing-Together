@@ -7,7 +7,7 @@ import org.singing.app.domain.repository.track.RecentTrackRepository
 import org.singing.app.ui.base.AppViewModel
 
 class SelectAudioViewModel(
-    private val recentTrackRepository: RecentTrackRepository,
+    recentTrackRepository: RecentTrackRepository,
 ) : AppViewModel() {
     private val _isRecentFavouriteTracksLoading = MutableStateFlow(true)
     val isRecentFavouriteTracksLoading = _isRecentFavouriteTracksLoading.asStateFlow()

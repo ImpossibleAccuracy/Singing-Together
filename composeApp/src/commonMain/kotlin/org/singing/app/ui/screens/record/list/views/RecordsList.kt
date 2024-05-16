@@ -23,7 +23,7 @@ fun RecordsList(
     records: List<RecordData>,
 ) {
     LazyColumn(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxHeight()
             .padding(vertical = 16.dp)
     ) {

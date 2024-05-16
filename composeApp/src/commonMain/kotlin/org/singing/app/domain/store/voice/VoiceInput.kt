@@ -1,6 +1,5 @@
 package org.singing.app.domain.store.voice
 
-import com.singing.audio.library.filter.AudioFilter
 import com.singing.audio.library.parser.AudioParser
 import com.singing.audio.utils.backgroundScope
 import com.singing.config.voice.VoiceProperties
@@ -11,9 +10,6 @@ import org.singing.app.setup.audio.createVoiceAudioParser
 
 @OptIn(ExperimentalCoroutinesApi::class)
 object VoiceInput {
-    private val _voiceFilters = MutableStateFlow(VoiceProperties.defaultFilters)
-    val voiceFilters = _voiceFilters.asStateFlow()
-
     private var isParserEmittedAtLeastOnce = MutableStateFlow(false)
     private val parser = MutableStateFlow<AudioParser<Double>?>(null)
 
@@ -34,22 +30,12 @@ object VoiceInput {
     init {
         backgroundScope.launch {
             reloadParser()
-
-            voiceFilters
-                .drop(1)
-                .collect {
-                    reloadParser()
-                }
         }
     }
 
     suspend fun reloadParser() {
-        val newParser = createVoiceAudioParser(_voiceFilters.value)
+        val newParser = createVoiceAudioParser(VoiceProperties.defaultFilters)
         parser.value = newParser
         isParserEmittedAtLeastOnce.value = true
-    }
-
-    fun setFilters(newFilters: List<AudioFilter>) {
-        _voiceFilters.value = newFilters
     }
 }

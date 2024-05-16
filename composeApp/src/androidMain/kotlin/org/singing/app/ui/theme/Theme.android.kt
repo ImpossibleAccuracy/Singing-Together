@@ -22,7 +22,7 @@ internal actual fun SystemAppearance(scheme: ExtendedMaterialTheme, isDark: Bool
 
 @Composable
 internal actual fun getAppTheme(isDark: Boolean): ExtendedMaterialTheme {
-    val context = LocalContext.current
+//    val context = LocalContext.current
 
     return when {
         // TODO: add dynamic theme for android

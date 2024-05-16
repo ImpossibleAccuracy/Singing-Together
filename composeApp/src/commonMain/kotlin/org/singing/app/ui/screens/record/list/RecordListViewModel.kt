@@ -1,7 +1,6 @@
 package org.singing.app.ui.screens.record.list
 
 import com.singing.config.note.NotesStore
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onEach

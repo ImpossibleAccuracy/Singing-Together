@@ -49,7 +49,7 @@ actual fun FilePicker(
                 preferences.put(KEY, result.absoluteFile.parent)
 
                 onFileSelected(
-                    com.singing.audio.utils.ComposeFile(result)
+                    ComposeFile(result)
                 )
             }
         }

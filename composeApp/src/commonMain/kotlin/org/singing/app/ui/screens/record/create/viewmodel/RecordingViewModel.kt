@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.ui.base.AppViewModel
-import org.singing.app.ui.screens.record.create.viewmodel.model.RecordItem
 import org.singing.app.ui.screens.record.create.viewmodel.model.RecordState
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.screens.record.create.viewmodel.state.RecordScreenUiState
@@ -19,16 +18,6 @@ import org.singing.app.ui.screens.record.create.viewmodel.usecase.RecordHelper
 class RecordingViewModel(
     private val recordRepository: RecordRepository,
 ) : AppViewModel() {
-    companion object {
-        private val DefaultRecordItem = NotesStore.default().let {
-            RecordItem(
-                frequency = it.frequency,
-                note = it.note,
-                time = 0,
-            )
-        }
-    }
-
     private val _uiState = MutableStateFlow(RecordScreenUiState())
     val uiState = _uiState.asStateFlow()
 

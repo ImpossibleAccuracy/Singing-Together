@@ -10,14 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import org.singing.app.domain.model.PointAccuracy
 import org.singing.app.domain.model.RecordPoint
-import org.singing.app.ui.base.Space
-import org.singing.app.ui.base.formatFrequency
-import org.singing.app.ui.base.formatTimeString
-import org.singing.app.ui.theme.extended
-import org.singing.app.ui.views.base.timeline.DefaultTimelineIndicator
-import org.singing.app.ui.views.base.timeline.Timeline
+import org.singing.app.ui.views.base.record.points.RecordTimeline
 
 @Composable
 fun RecordPointsView(
@@ -56,7 +50,12 @@ fun RecordPointsView(
 
             Spacer(Modifier.height(16.dp))
 
-            Column(modifier = modifier) {
+            RecordTimeline(
+                isTwoLineRecord = isTwoLineRecord,
+                points = points,
+                note = note,
+            )
+            /*Column(modifier = modifier) {
                 Timeline(
                     nodes = points,
                     startNode = {
@@ -142,7 +141,7 @@ fun RecordPointsView(
                         }
                     },
                 )
-            }
+            }*/
         }
     }
 }

@@ -15,6 +15,7 @@ abstract class StateRepository<T>(
         }
     }
 
+    @Suppress("unused")
     protected fun update(function: (List<T>) -> List<T>) {
         _items.update(function)
     }
