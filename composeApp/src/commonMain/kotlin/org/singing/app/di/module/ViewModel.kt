@@ -11,6 +11,7 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.module
+import org.singing.app.ui.screens.account.profile.AccountProfileViewModel
 import org.singing.app.ui.screens.main.MainViewModel
 import org.singing.app.ui.screens.record.audio.SelectAudioViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
@@ -20,6 +21,7 @@ val viewModelsModule = module {
     factoryOf(::MainViewModel)
     factoryOf(::RecordListViewModel)
     factoryOf(::SelectAudioViewModel)
+    factoryOf(::AccountProfileViewModel)
     factoryOf(::RecordingViewModel)
 }
 

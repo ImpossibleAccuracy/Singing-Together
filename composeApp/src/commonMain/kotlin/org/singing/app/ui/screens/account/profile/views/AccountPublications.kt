@@ -3,13 +3,19 @@ package org.singing.app.ui.screens.account.profile.views
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.singing.app.domain.model.Publication
+import org.singing.app.ui.views.base.publication.PublicationCard
 
 @Composable
-fun Publications(
-    modifier: Modifier = Modifier
+fun AccountPublications(
+    modifier: Modifier = Modifier,
+    publications: List<Publication>,
+    onAuthorClick: (Publication) -> Unit,
 ) {
     LazyVerticalGrid(
         modifier = modifier,
@@ -19,10 +25,14 @@ fun Publications(
             minSize = 380.dp,
         ),
     ) {
-        items(5) {
-//            PublicationCard(
-//                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
-//            )
+        items(publications) {
+            PublicationCard(
+                publication = it,
+                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                onAuthorClick = {
+                    onAuthorClick(it)
+                }
+            )
         }
     }
 }

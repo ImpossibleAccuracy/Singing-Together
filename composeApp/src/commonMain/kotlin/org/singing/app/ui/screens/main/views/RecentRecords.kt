@@ -1,7 +1,5 @@
 package org.singing.app.ui.screens.main.views
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -10,29 +8,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.seiko.imageloader.rememberImagePainter
-import com.singing.app.composeapp.generated.resources.*
-import nl.jacobras.humanreadable.HumanReadable
-import org.jetbrains.compose.resources.painterResource
+import com.singing.app.composeapp.generated.resources.Res
+import com.singing.app.composeapp.generated.resources.baseline_navigate_next_24
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.base.Space
-import org.singing.app.ui.theme.extended
-import org.singing.app.ui.views.base.AppFilledButton
-import org.singing.app.ui.views.base.IconLabel
 import org.singing.app.ui.views.base.record.card.RecordCard
-import org.singing.app.ui.views.shared.RecordCardActions
+import org.singing.app.ui.views.shared.MainRecordCard
 import org.singing.app.ui.views.shared.RecordCardActionsCallbacks
-import kotlin.time.Duration.Companion.milliseconds
-import kotlin.time.Duration.Companion.seconds
 
 
 data class RecentRecordsData(
@@ -108,10 +97,18 @@ fun RecentRecords(
             )
         } else {
             if (data.showMainRecord) {
+                val mainItem = data.records.first()
+
                 MainRecordCard(
-                    data = data,
-                    actions = actions,
+                    record = mainItem,
+                    creator = data.user,
                     cardActions = cardActions,
+                    navigateRecordDetails = {
+                        actions.navigateRecordDetails(mainItem)
+                    },
+                    playRecord = {
+                        actions.onPlayRecord(mainItem)
+                    },
                 )
             }
 
@@ -122,150 +119,6 @@ fun RecentRecords(
 
                 RecordsGrid(gridModifier, data, actions)
             }
-        }
-    }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun MainRecordCard(
-    data: RecentRecordsData,
-    actions: RecentRecordsActions,
-    cardActions: RecordCardActionsCallbacks,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clip(shape = MaterialTheme.shapes.medium)
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
-            .padding(all = 16.dp)
-    ) {
-        val mainItem = data.records.first()
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            FlowRow(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                RecordCardActions(
-                    record = mainItem,
-                    actions = cardActions,
-                )
-            }
-
-            Space(12.dp)
-
-            Row(
-                modifier = Modifier
-                    .height(36.dp)
-                    .clip(shape = RoundedCornerShape(50))
-                    .background(color = MaterialTheme.colorScheme.surface),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    text = HumanReadable.timeAgo(mainItem.createdAt),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-
-                if (mainItem.isSavedRemote && data.user != null) {
-                    Image(
-                        modifier = Modifier
-                            .size(size = 36.dp)
-                            .clip(shape = RoundedCornerShape(50)),
-                        painter = when (data.user.avatar) {
-                            null -> painterResource(Res.drawable.baseline_person_24)
-                            else -> rememberImagePainter(data.user.avatar)
-                        },
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "Avatar",
-                    )
-                }
-            }
-        }
-
-        Space(12.dp)
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(
-                modifier = Modifier
-                    .clip(shape = MaterialTheme.shapes.medium)
-                    .background(color = MaterialTheme.extended.secondaryFixedDim)
-                    .padding(
-                        horizontal = 48.dp,
-                        vertical = 24.dp
-                    )
-            ) {
-                val text = when (mainItem) {
-                    is RecordData.Cover -> "${mainItem.accuracy}% accuracy"
-                    is RecordData.Vocal -> "N/A"
-                }
-
-                Text(
-                    text = text,
-                    color = MaterialTheme.extended.onSecondaryFixedVariant,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-            }
-
-            Space(12.dp)
-
-            Column {
-                IconLabel(
-                    leadingIcon = vectorResource(Res.drawable.baseline_folder_music_black_24dp),
-                    label = when (mainItem) {
-                        is RecordData.Cover -> mainItem.filename
-                        is RecordData.Vocal -> "No track selected"
-                    }
-                )
-
-                Space(4.dp)
-
-                IconLabel(
-                    leadingIcon = vectorResource(Res.drawable.baseline_access_time_24),
-                    label = HumanReadable.duration(
-                        mainItem.duration.milliseconds
-                            .inWholeSeconds.seconds
-                    )
-                )
-            }
-        }
-
-        Space(12.dp)
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            TextButton(
-                onClick = {
-                    actions.navigateRecordDetails(mainItem)
-                }
-            ) {
-                Text(
-                    text = "See record",
-                    color = MaterialTheme.colorScheme.secondary,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
-
-            Space(12.dp)
-
-            AppFilledButton(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.onSecondary,
-                label = "Listen now",
-                trailingIcon = vectorResource(Res.drawable.baseline_play_circle_filled_24),
-                onClick = {
-                    actions.onPlayRecord(mainItem)
-                }
-            )
         }
     }
 }

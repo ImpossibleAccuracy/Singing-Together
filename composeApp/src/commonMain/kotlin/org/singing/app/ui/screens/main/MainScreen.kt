@@ -17,6 +17,7 @@ import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
+import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.main.views.*
 import org.singing.app.ui.screens.record.create.SelectRecordTypeScreen
 import org.singing.app.ui.screens.record.list.RecordListScreen
@@ -208,12 +209,21 @@ class MainScreen : AppScreen(), ScreenProvider {
         viewModel: MainViewModel,
         listModifier: Modifier = Modifier
     ) {
+        val navigator = LocalNavigator.currentOrThrow
+
         val latestPublications by viewModel.latestPublications.collectAsState()
 
         PublicationsList(
             modifier = Modifier.fillMaxWidth(),
             listModifier = listModifier,
             publications = latestPublications,
+            onAuthorClick = {
+                navigator.push(
+                    AccountProfileScreen(
+                        requestedAccount = it.author,
+                    )
+                )
+            }
         )
     }
 }

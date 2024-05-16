@@ -23,7 +23,8 @@ import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
 fun PublicationsList(
     modifier: Modifier = Modifier,
     listModifier: Modifier = Modifier,
-    publications: List<Publication>
+    publications: List<Publication>,
+    onAuthorClick: (Publication) -> Unit,
 ) {
     Column(
         modifier = modifier
@@ -56,11 +57,16 @@ fun PublicationsList(
                 modifier = listModifier.fillMaxWidth()
             ) {
                 item {
+                    val item = publications.first()
+
                     PublicationCardWithPlayer(
-                        publication = publications.first(),
+                        publication = item,
                         player = injectComponent(),
                         contentColor = MaterialTheme.colorScheme.secondary,
                         inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                        onAuthorClick = {
+                            onAuthorClick(item)
+                        }
                     )
 
                     if (publications.size > 1) {
@@ -70,8 +76,13 @@ fun PublicationsList(
 
                 if (publications.size > 1) {
                     items(publications.size - 1) { index ->
+                        val item = publications[index + 1]
+
                         PublicationCard(
-                            publication = publications[index + 1]
+                            publication = item,
+                            onAuthorClick = {
+                                onAuthorClick(item)
+                            }
                         )
 
                         if (index != publications.lastIndex) {

@@ -2,6 +2,7 @@ package org.singing.app.ui.views.base.publication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberImagePainter
 import com.singing.app.composeapp.generated.resources.Res
@@ -29,6 +31,7 @@ fun PublicationCard(
     modifier: Modifier = Modifier,
     publication: Publication,
     containerColor: Color = MaterialTheme.colorScheme.surface,
+    onAuthorClick: (() -> Unit)? = null,
 ) {
     Column(
         modifier = modifier
@@ -38,18 +41,27 @@ fun PublicationCard(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .clip(shape = MaterialTheme.shapes.small)
+                .clickable(enabled = onAuthorClick != null) {
+                    onAuthorClick?.invoke()
+                }
+                .padding(
+                    horizontal = 8.dp,
+                    vertical = 4.dp
+                )
         ) {
             Box(
                 modifier = Modifier.clip(shape = RoundedCornerShape(50))
             ) {
                 Image(
+                    modifier = Modifier.size(size = 36.dp),
                     painter = when (publication.author.avatar) {
                         null -> painterResource(Res.drawable.baseline_person_24)
                         else -> rememberImagePainter(publication.author.avatar)
                     },
+                    contentScale = ContentScale.Crop,
                     contentDescription = "Avatar",
-                    modifier = Modifier.size(size = 36.dp)
                 )
             }
 

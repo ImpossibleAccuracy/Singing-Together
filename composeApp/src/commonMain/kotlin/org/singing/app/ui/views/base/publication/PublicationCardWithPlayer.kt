@@ -2,6 +2,7 @@ package org.singing.app.ui.views.base.publication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -12,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberImagePainter
 import com.singing.app.composeapp.generated.resources.Res
@@ -38,6 +40,7 @@ fun PublicationCardWithPlayer(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     contentColor: Color = MaterialTheme.colorScheme.primary,
     inactiveTrackColor: Color = MaterialTheme.colorScheme.primaryContainer,
+    onAuthorClick: (() -> Unit)? = null,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -54,33 +57,47 @@ fun PublicationCardWithPlayer(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Box(
-                modifier = Modifier.clip(shape = RoundedCornerShape(50))
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .clip(shape = MaterialTheme.shapes.small)
+                    .clickable(enabled = onAuthorClick != null) {
+                        onAuthorClick?.invoke()
+                    }
+                    .padding(
+                        horizontal = 8.dp,
+                        vertical = 4.dp
+                    )
             ) {
-                Image(
-                    painter = when (publication.author.avatar) {
-                        null -> painterResource(Res.drawable.baseline_person_24)
-                        else -> rememberImagePainter(publication.author.avatar)
-                    },
-                    contentDescription = "Avatar",
-                    modifier = Modifier.size(size = 36.dp)
-                )
-            }
+                Box(
+                    modifier = Modifier.clip(shape = RoundedCornerShape(50))
+                ) {
+                    Image(
+                        modifier = Modifier.size(size = 36.dp),
+                        painter = when (publication.author.avatar) {
+                            null -> painterResource(Res.drawable.baseline_person_24)
+                            else -> rememberImagePainter(publication.author.avatar)
+                        },
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "Avatar",
+                    )
+                }
 
-            Space(8.dp)
+                Space(8.dp)
 
-            Column {
-                Text(
-                    text = publication.author.username,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
+                Column {
+                    Text(
+                        text = publication.author.username,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
 
-                Text(
-                    text = HumanReadable.timeAgo(publication.createdAt),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelMedium,
-                )
+                    Text(
+                        text = HumanReadable.timeAgo(publication.createdAt),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
             }
 
             Spacer(Modifier.weight(1f))

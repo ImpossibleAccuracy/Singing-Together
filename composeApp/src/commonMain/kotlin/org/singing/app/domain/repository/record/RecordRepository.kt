@@ -34,12 +34,14 @@ class RecordRepository(
                     createdAt = Clock.System.now().minus(5.days),
                     isSavedRemote = true,
                     isPublished = true,
+                    creatorId = 1,
                 ),
                 RecordData.Vocal(
                     duration = 10000,
                     createdAt = Clock.System.now().minus(7.days),
                     isSavedRemote = true,
                     isPublished = false,
+                    creatorId = 2,
                 ),
                 RecordData.Cover(
                     accuracy = 23,
@@ -48,6 +50,7 @@ class RecordRepository(
                     createdAt = Clock.System.now().minus(12.days),
                     isSavedRemote = true,
                     isPublished = false,
+                    creatorId = 3,
                 ),
                 RecordData.Cover(
                     accuracy = 78,
@@ -56,12 +59,14 @@ class RecordRepository(
                     createdAt = Clock.System.now().minus(12.days),
                     isSavedRemote = true,
                     isPublished = true,
+                    creatorId = 1,
                 ),
                 RecordData.Vocal(
                     duration = 10000,
                     createdAt = Clock.System.now().minus(23.days),
                     isSavedRemote = false,
                     isPublished = false,
+                    creatorId = 2,
                 ),
             )
                 .mapIndexed { index, item ->
