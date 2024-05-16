@@ -19,9 +19,9 @@ import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
-import org.singing.app.ui.screens.record.create.views.PlayerView
 import org.singing.app.ui.screens.record.create.views.Display
 import org.singing.app.ui.screens.record.create.views.DisplayInfo
+import org.singing.app.ui.screens.record.create.views.PlayerView
 import org.singing.app.ui.screens.record.create.views.RecordHistory
 
 class RecordingScreen(
@@ -43,14 +43,14 @@ class RecordingScreen(
 
     @Composable
     override fun Content() {
-        _viewModel = viewModels()
+        _viewModel = viewModels(true)
 
         val verticalScrollState = rememberScrollState()
 
         LaunchedEffect(audio) {
             if (isNewInstance) {
                 if (audio == null) {
-                    viewModel.clearSelectedAudio()
+                    viewModel.stopActionsAndClearData()
                 } else {
                     viewModel.setProcessedAudio(audio)
                 }
@@ -165,6 +165,7 @@ class RecordingScreen(
 
         RecordHistory(
             history = history,
+            note = viewModel::getNote
         )
     }
 }

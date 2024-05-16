@@ -63,7 +63,7 @@ internal fun App() {
 
                             IconButton(
                                 onClick = {
-                                    if (navigator.canPop/* && !isRoot*/) {
+                                    if (navigator.canPop && !isRoot) {
                                         onNavigateUp(navigator.lastItem)
 
                                         navigator.pop()

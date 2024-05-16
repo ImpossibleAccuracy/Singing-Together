@@ -6,7 +6,7 @@ import com.singing.audio.taros.filter.LowPassAudioFilter
 import com.singing.config.voice.DefaultVoiceProperties.inputSampleRate
 
 internal object DefaultTrackProperties : ITrackProperties {
-    override val bufferSize: Int = 1024 * 8
+    override val bufferSize: Int = 1024 * 16
 
     override val defaultFilters: List<AudioFilter> = listOf(
         LowPassAudioFilter("Default LowPass Filter", 1200F, inputSampleRate.toFloat()),

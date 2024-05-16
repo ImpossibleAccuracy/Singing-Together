@@ -13,8 +13,8 @@ import com.singing.app.composeapp.generated.resources.action_start_playing
 import com.singing.app.composeapp.generated.resources.action_stop_playing
 import org.jetbrains.compose.resources.stringResource
 import org.singing.app.ui.base.Space
-import org.singing.app.ui.views.AppFilledButton
-import org.singing.app.ui.views.progress.TimeProgress
+import org.singing.app.ui.views.base.AppFilledButton
+import org.singing.app.ui.views.base.progress.TimeProgress
 
 
 @Composable

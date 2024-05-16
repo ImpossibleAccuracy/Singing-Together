@@ -16,15 +16,16 @@ import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
+import org.singing.app.domain.model.RecordPoint
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatFrequency
 import org.singing.app.ui.base.formatTimeString
-import org.singing.app.ui.screens.record.create.viewmodel.model.RecordPair
 
 
 @Composable
 fun RecordHistory(
-    history: List<RecordPair>
+    history: List<RecordPoint>,
+    note: (Double) -> String,
 ) {
     var isHistoryVisible by remember { mutableStateOf(true) }
 
@@ -96,8 +97,6 @@ fun RecordHistory(
                         val first = it.first
                         val second = it.second
 
-                        if (first == null && second == null) return@forEachIndexed
-
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
@@ -117,19 +116,17 @@ fun RecordHistory(
 
                             Space(12.dp)
 
-                            if (first != null) {
-                                Text(
-                                    text = first.note,
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    style = MaterialTheme.typography.bodyLarge,
-                                )
-                            }
+                            Text(
+                                text = note(first),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
 
                             if (second != null) {
                                 Space(4.dp)
 
                                 Text(
-                                    text = "(${second.note})",
+                                    text = "(${note(second)})",
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                                     style = MaterialTheme.typography.titleMedium,
                                 )
@@ -137,19 +134,17 @@ fun RecordHistory(
 
                             Spacer(Modifier.weight(1f))
 
-                            if (first != null) {
-                                Text(
-                                    text = formatFrequency(first.frequency),
-                                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                                    style = MaterialTheme.typography.labelLarge,
-                                )
-                            }
+                            Text(
+                                text = formatFrequency(first),
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                style = MaterialTheme.typography.labelLarge,
+                            )
 
                             if (second != null) {
                                 Space(4.dp)
 
                                 Text(
-                                    text = "(${formatFrequency(second.frequency)})",
+                                    text = "(${formatFrequency(second)})",
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                                     style = MaterialTheme.typography.labelMedium,
                                 )

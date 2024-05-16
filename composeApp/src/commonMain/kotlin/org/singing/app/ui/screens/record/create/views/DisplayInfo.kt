@@ -15,7 +15,7 @@ import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.ui.base.formatTimeString
-import org.singing.app.ui.views.AppFilledButton
+import org.singing.app.ui.views.base.AppFilledButton
 
 
 @Composable

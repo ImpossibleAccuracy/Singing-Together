@@ -23,6 +23,7 @@ import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.screens.record.audio.SelectAudioScreen
 
 class SelectRecordTypeScreen : Screen {
     @Composable

@@ -1,34 +1,36 @@
 package org.singing.app.ui.screens.record.create.viewmodel
 
-import com.singing.audio.capture.AudioCapture
-import com.singing.audio.player.AudioPlayer
 import com.singing.audio.player.PlayerState
 import com.singing.config.note.NotesStore
-import kotlinx.coroutines.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.singing.app.domain.repository.record.RecordRepository
-import org.singing.app.domain.store.voice.VoiceInput
 import org.singing.app.ui.base.AppViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.model.RecordItem
-import org.singing.app.ui.screens.record.create.viewmodel.model.RecordPair
 import org.singing.app.ui.screens.record.create.viewmodel.model.RecordState
-import org.singing.app.ui.screens.record.create.viewmodel.state.AudioInputData
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.screens.record.create.viewmodel.state.RecordScreenUiState
+import org.singing.app.ui.screens.record.create.viewmodel.usecase.InputListener
+import org.singing.app.ui.screens.record.create.viewmodel.usecase.PlayerHelper
+import org.singing.app.ui.screens.record.create.viewmodel.usecase.RecordHelper
 
-@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class RecordingViewModel(
     private val recordRepository: RecordRepository,
 ) : AppViewModel() {
-    private val player = AudioPlayer()
-    private val voiceCapture = AudioCapture()
+    companion object {
+        private val DefaultRecordItem = NotesStore.default().let {
+            RecordItem(
+                frequency = it.frequency,
+                note = it.note,
+                time = 0,
+            )
+        }
+    }
 
-    private var countdownJob: Job? = null
     private val _uiState = MutableStateFlow(RecordScreenUiState())
     val uiState = _uiState.asStateFlow()
-
-    private val _audioInputData = MutableStateFlow(AudioInputData())
-    val audioInputData = _audioInputData.asStateFlow()
 
     val recordDuration = uiState
         .map { it.recordStartedAt to it.isRecording }
@@ -46,8 +48,84 @@ class RecordingViewModel(
         .distinctUntilChanged()
         .stateIn(viewModelScope, SharingStarted.Lazily, -1)
 
-    private val _firstInput = MutableStateFlow<Flow<RecordItem>?>(null)
-    private val _secondInput = MutableStateFlow<Flow<RecordItem>?>(null)
+
+    private val playerHelper = PlayerHelper(
+        coroutineScope = viewModelScope,
+        onPlayerStateUpdate = { playerState ->
+            _uiState.update {
+                it.copy(
+                    playerState = playerState
+                )
+            }
+
+            if (playerState == PlayerState.STOP) {
+                if (isRecording) {
+                    stopRecord()
+                }
+            }
+        },
+        onPlayerPositionUpdate = { newPosition ->
+            _uiState.update {
+                it.copy(
+                    playerPosition = newPosition
+                )
+            }
+        }
+    )
+
+    private val recordHelper = RecordHelper(
+        coroutineScope = viewModelScope,
+        onRecordStateUpdate = { newState ->
+            _uiState.update {
+                it.copy(
+                    recordState = newState,
+                )
+            }
+        },
+        onNewCountdownValue = { value ->
+            _uiState.update {
+                it.copy(
+                    recordCountdown = value
+                )
+            }
+        },
+        onBeforeRecord = {
+            if (isPlaying) {
+                startPlaying()
+            }
+
+            _uiState.update {
+                it.copy(
+                    playerPosition = 0,
+                    recordStartedAt = System.currentTimeMillis(),
+                    history = listOf(),
+                )
+            }
+        },
+        onRecordDone = { result ->
+            viewModelScope.launch {
+                recordRepository.saveRecord(
+                    history = uiState.value.history,
+                    voiceRecord = result,
+                    audioTrack = uiState.value.audioProcessState?.selectedAudio
+                )
+            }
+        },
+    )
+
+    private val inputListener = InputListener(
+        coroutineScope = viewModelScope,
+        recordOffsetTime = {
+            if (isRecording) System.currentTimeMillis() - uiState.value.recordStartedAt
+            else null
+        },
+        selectedAudioFlow = uiState.map { it.audioProcessState },
+        playerPositionFlow = uiState.map { it.playerPosition },
+        onNewHistoryItem = {},
+    )
+
+    val audioInputData = inputListener.audioInputData
+
 
     private val isRecording: Boolean
         get() = uiState.value.isRecording
@@ -57,120 +135,6 @@ class RecordingViewModel(
 
     val isAnyActionActive: Boolean
         get() = uiState.value.isPlaying || uiState.value.recordState != RecordState.STOP
-
-    init {
-        listenForInputs()
-        listenForVoiceInput()
-        listenForSelectedAudio()
-    }
-
-    // ---------------- INIT FUNCTIONS ----------------
-
-    private fun listenForInputs() = viewModelScope.launch {
-        launch {
-            _firstInput
-                .flatMapConcat { it ?: flowOf(null) }
-                .collect { data ->
-                    _audioInputData.update {
-                        it.copy(
-                            firstInput = data
-                        )
-                    }
-                }
-        }
-
-        launch {
-            _secondInput
-                .flatMapConcat { it ?: flowOf(null) }
-                .collect { data ->
-                    _audioInputData.update {
-                        it.copy(
-                            secondInput = data
-                        )
-                    }
-                }
-        }
-
-        launch {
-            audioInputData
-                .map { it.firstInput to it.secondInput }
-                .distinctUntilChanged()
-                .sample(1000)
-                .collect { pair ->
-                    if (isRecording) {
-                        _uiState.update {
-                            it.copy(
-                                history = ArrayList<RecordPair>(it.history.size + 1).apply {
-                                    add(
-                                        RecordPair(
-                                            first = pair.first,
-                                            second = pair.second,
-                                            time = getRecordOffsetTime()
-                                        )
-                                    )
-
-                                    addAll(it.history)
-                                }
-                            )
-                        }
-                    }
-                }
-        }
-    }
-
-    private fun listenForVoiceInput() = viewModelScope.launch {
-        VoiceInput.isEnabled.collect { isEnabled ->
-            _audioInputData.update {
-                it.copy(
-                    isAnyInputEnabled = isEnabled,
-                )
-            }
-
-            when (isEnabled) {
-                true -> {
-                    _firstInput.value = VoiceInput.voiceData
-                        .map {
-                            buildRecordItem(frequency = it)
-                        }
-                        .stateIn(
-                            viewModelScope,
-                            SharingStarted.Lazily,
-                            NotesStore.default().let {
-                                RecordItem(
-                                    frequency = it.frequency,
-                                    note = it.note,
-                                    time = 0,
-                                )
-                            }
-                        )
-                }
-
-                false -> {
-                    _firstInput.value = null
-                }
-            }
-        }
-    }
-
-    private fun listenForSelectedAudio() = viewModelScope.launch {
-        val playerPositionFlow = uiState.map { it.playerPosition }.distinctUntilChanged()
-
-        uiState
-            .map { it.audioProcessState }
-            .distinctUntilChanged()
-            .collect { audioState ->
-                _secondInput.value = when {
-                    audioState?.data == null || audioState.isParsing -> null
-
-                    // When player position changes, when will new note be emitted
-                    else -> playerPositionFlow.map { playerPosition ->
-                        audioState.data.firstOrNull {
-                            it.time >= playerPosition
-                        } ?: RecordItem("ERROR", -1.0, -1)
-                    }
-                }
-            }
-    }
 
 
     // ---------------- DATA CLEAR FUNCTIONS ----------------
@@ -187,6 +151,7 @@ class RecordingViewModel(
                 stopPlaying()
             }
 
+            clearSelectedAudio()
             _uiState.value = RecordScreenUiState()
         }
     }
@@ -197,48 +162,36 @@ class RecordingViewModel(
         super.onDispose()
     }
 
-    // ---------------- INTERNAL FUNCTIONS ----------------
-
-    private fun buildRecordItem(frequency: Double, time: Long = getRecordOffsetTime()) =
-        RecordItem(
-            note = NotesStore.findNote(frequency),
-            frequency = frequency,
-            time = time
-        )
-
-    private fun getRecordOffsetTime(): Long =
-        if (isRecording) System.currentTimeMillis() - uiState.value.recordStartedAt
-        else 0
-
 
     // ---------------- USER FUNCTIONS ----------------
+
+    fun getNote(frequency: Double): String {
+        return NotesStore.findNote(frequency)
+    }
+
+
+    fun startRecord() {
+        assertNotRecording()
+
+        recordHelper.startRecord()
+    }
+
+    fun stopRecordCountdown() {
+        if (uiState.value.recordState == RecordState.COUNTDOWN) {
+            recordHelper.stopRecordCountdown()
+        }
+    }
+
+    fun stopRecord() {
+        recordHelper.stopRecord()
+    }
+
 
     fun setPlayerPosition(newPosition: Long) {
         viewModelScope.launch {
             assertNotRecording()
 
-            _uiState.update {
-                it.copy(
-                    playerPosition = newPosition
-                )
-            }
-
-            if (player.isPlaying()) {
-                player.setPosition(newPosition)
-            }
-        }
-    }
-
-    private fun startPlayerLoop() {
-        viewModelScope.launch {
-            player.createPositionFlow()
-                .collect { newPosition ->
-                    _uiState.update {
-                        it.copy(
-                            playerPosition = newPosition
-                        )
-                    }
-                }
+            playerHelper.setPosition(newPosition)
         }
     }
 
@@ -251,7 +204,7 @@ class RecordingViewModel(
         }
     }
 
-    fun clearSelectedAudio() {
+    private fun clearSelectedAudio() {
         assertNotRecording()
 
         _uiState.update {
@@ -259,169 +212,21 @@ class RecordingViewModel(
                 audioProcessState = null
             )
         }
-
-        _audioInputData.update {
-            it.copy(
-                secondInput = null,
-            )
-        }
     }
-
-
-    fun startRecord() {
-        assertNotRecording()
-
-        viewModelScope.launch {
-            startRecordCountdown().let {
-                it.join()
-
-                if (it.isCancelled) {
-                    return@launch
-                }
-            }
-
-            prepareToRecord()
-
-            val selectedAudio = uiState.value.audioProcessState?.selectedAudio
-
-            voiceCapture.capture()
-            voiceCapture.awaitStart()
-
-            if (selectedAudio != null) {
-                startPlaying()
-            }
-
-            _uiState.update {
-                it.copy(
-                    recordState = RecordState.RECORD
-                )
-            }
-        }
-    }
-
-    private fun prepareToRecord() {
-        if (isPlaying) {
-            startPlaying()
-        }
-
-        _uiState.update {
-            it.copy(
-                playerPosition = 0,
-                recordStartedAt = System.currentTimeMillis(),
-                history = listOf(),
-            )
-        }
-    }
-
-    private fun startRecordCountdown() =
-        viewModelScope.async {
-            _uiState.update {
-                it.copy(
-                    recordState = RecordState.COUNTDOWN
-                )
-            }
-
-            for (i in 3 downTo 1) {
-                _uiState.update {
-                    it.copy(
-                        recordCountdown = i
-                    )
-                }
-
-                delay(1000)
-            }
-
-            _uiState.update {
-                it.copy(
-                    recordCountdown = null
-                )
-            }
-        }
-            .also {
-                countdownJob = it
-            }
-
-    fun stopRecordCountdown() {
-        countdownJob?.cancel()
-
-        if (uiState.value.recordState == RecordState.COUNTDOWN) {
-            _uiState.update {
-                it.copy(
-                    recordState = RecordState.STOP,
-                    recordCountdown = null,
-                )
-            }
-        }
-    }
-
-    fun stopRecord() {
-        stopPlaying()
-
-        _uiState.update {
-            it.copy(
-                recordStartedAt = -1,
-                recordState = RecordState.STOP,
-            )
-        }
-
-        viewModelScope.launch {
-            val result = voiceCapture.stop()
-
-            recordRepository.saveRecord(
-                history = uiState.value.history,
-                voiceRecord = result,
-                audioTrack = uiState.value.audioProcessState?.selectedAudio
-            )
-        }
-    }
-
 
     fun startPlaying() {
-        viewModelScope.launch {
-            val track = uiState.value.audioProcessState?.selectedAudio
-                ?: throw NullPointerException("Set selected audio before call startPlaying()")
+        val track = uiState.value.audioProcessState?.selectedAudio
+            ?: throw NullPointerException("Set setProcessedAudio() before call startPlaying()")
 
-            if (player.isPlaying()) {
-                player.setPosition(0)
-            } else {
-                val totalDuration = track.duration
-                val initPosition = uiState.value.playerPosition
+        val initPosition = uiState.value.playerPosition
 
-                val startPosition =
-                    if (initPosition >= totalDuration * 0.995) 0
-                    else initPosition
-
-                player
-                    .play(track.file, startPosition)
-                    .onEach {
-                        if (it == PlayerState.PLAY) {
-                            startPlayerLoop()
-                        }
-                    }
-                    .collect { playerState ->
-                        _uiState.update {
-                            it.copy(
-                                playerState = playerState
-                            )
-                        }
-
-                        if (playerState == PlayerState.STOP) {
-                            if (isRecording) {
-                                stopRecord()
-                            }
-                        }
-                    }
-            }
-        }
+        playerHelper.startPlaying(track, initPosition)
     }
 
     fun stopPlaying() {
-        viewModelScope.launch {
-            if (player.isPlaying()) {
-                player.stop()
-            }
-        }
+        playerHelper.stopPlaying()
     }
+
 
     private fun assertNotRecording() {
         if (isRecording) {
