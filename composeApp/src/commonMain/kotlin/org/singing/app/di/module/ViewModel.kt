@@ -7,20 +7,18 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.compose.getKoin
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.module
 import org.singing.app.ui.screens.main.MainViewModel
-import org.singing.app.ui.screens.record.viewmodel.RecordViewModel
+import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
+import org.singing.app.ui.screens.record.list.RecordListViewModel
 
 val viewModelsModule = module {
-    single {
-        MainViewModel()
-    }
-
-    factory {
-        RecordViewModel(get())
-    }
+    factoryOf(::MainViewModel)
+    factoryOf(::RecordingViewModel)
+    factoryOf(::RecordListViewModel)
 }
 
 @Composable
@@ -40,7 +38,7 @@ inline fun <reified T : ScreenModel> Screen.viewModels(
         }
     }
 
-    /*return rememberScreenModel(tag = qualifier?.value) {
-        koin.get<T>(qualifier, parameters)
-    }*/
+//    return rememberScreenModel(tag = qualifier?.value) {
+//        koin.get<T>(qualifier, parameters)
+//    }
 }

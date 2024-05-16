@@ -7,4 +7,4 @@ import com.singing.audio.sampled.model.TimedFrequency
 
 expect suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioParser<Double>?
 
-expect suspend fun createTrackAudioParser(file: AudioFile, filters: List<AudioFilter>): AudioParser<TimedFrequency>
+expect suspend fun createTrackAudioParser(audioFile: AudioFile, filters: List<AudioFilter>): AudioParser<TimedFrequency>

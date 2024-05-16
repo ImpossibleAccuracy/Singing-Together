@@ -1,6 +1,6 @@
 package com.singing.audio.player
 
-import com.singing.audio.player.model.AudioFile
+import com.singing.audio.utils.ComposeFile
 import kotlinx.coroutines.flow.Flow
 
 expect class AudioPlayer() {
@@ -11,7 +11,7 @@ expect class AudioPlayer() {
      * @return Flow with player states
      */
     suspend fun play(
-        file: AudioFile,
+        file: ComposeFile,
         initPosition: Long,
     ): Flow<PlayerState>
 

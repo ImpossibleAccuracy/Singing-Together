@@ -78,7 +78,6 @@ class RecordServiceImpl(
 
         val trackDeferred = trackInput?.let {
             async {
-                println(8)
                 parseFileToFrequencies(
                     it,
                     TrackProperties.bufferSize

@@ -26,6 +26,8 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(project(":library:utils"))
+
             implementation(libs.kotlinx.coroutines.core)
 
             implementation(libs.dsp.core)

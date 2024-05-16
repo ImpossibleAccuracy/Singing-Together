@@ -6,6 +6,14 @@ plugins {
 group = "com.singing.audio.utils"
 
 kotlin {
+    targets.configureEach {
+        compilations.configureEach {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+
     jvm()
 
     androidTarget()

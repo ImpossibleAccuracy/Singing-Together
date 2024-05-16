@@ -25,7 +25,7 @@ kotlin {
 
     jvm()
 
-    androidTarget {
+    androidTarget("android") {
         compilations.all {
             kotlinOptions {
                 jvmTarget = libs.versions.jvmTargetVersion.get()
@@ -57,7 +57,7 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.components.resources)
-            implementation(compose.components.uiToolingPreview)
+            implementation(compose.uiTooling)
 
             implementation(project(":config"))
             implementation(project(":library:utils"))
@@ -65,6 +65,7 @@ kotlin {
             implementation(project(":library:audio-player"))
 
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.datetime)
 
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.koin)
@@ -75,6 +76,7 @@ kotlin {
             implementation(libs.settings.multiplatform)
             implementation(libs.calf.ui)
             implementation(libs.composeImageLoader)
+            implementation(libs.humanReadable)
         }
 
         jvmMain.dependencies {
@@ -86,7 +88,6 @@ kotlin {
             implementation("org.openjfx:javafx-swing:21.0.1:win")
 
             implementation(compose.desktop.currentOs)
-            implementation(compose.uiTooling)
 
             implementation(libs.kotlinx.coroutines.javafx)
 
@@ -101,6 +102,7 @@ kotlin {
         }
 
         androidMain.dependencies {
+            implementation(compose.components.uiToolingPreview)
             implementation(compose.uiTooling)
 
             implementation(libs.kotlinx.coroutines.android)

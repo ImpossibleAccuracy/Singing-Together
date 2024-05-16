@@ -1,6 +1,6 @@
 package com.singing.audio.player
 
-import com.singing.audio.player.model.AudioFile
+import com.singing.audio.utils.ComposeFile
 import com.singing.audio.waitReady
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer
@@ -10,21 +10,24 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.sync.Mutex
 
 actual class AudioPlayer {
     companion object {
         private const val UPDATE_RATE = 100L
     }
 
+    private val lock = Mutex()
+
     private var currentState: PlayerState = PlayerState.STOP
 
     private var player: MediaPlayer? = null
 
     actual suspend fun play(
-        file: AudioFile,
+        file: ComposeFile,
         initPosition: Long,
     ): Flow<PlayerState> = callbackFlow {
-        val media = Media(file.file.toURI().toString())
+        val media = Media(file.uri.toString())
         player = MediaPlayer(media)
 
         with(player!!) {
@@ -58,6 +61,8 @@ actual class AudioPlayer {
 
             setOnError {
                 println(error)
+
+                throw error
             }
 
             play()
@@ -71,11 +76,17 @@ actual class AudioPlayer {
     }
 
     actual suspend fun stop() {
-        player?.stop()
-        player?.dispose()
-        player = null
+        lock.lock()
 
-        currentState = PlayerState.STOP
+        if (player != null && player!!.status != MediaPlayer.Status.DISPOSED) {
+            player?.stop()
+            player?.dispose() // TODO: dispose only on next play
+            player = null
+
+            currentState = PlayerState.STOP
+        }
+
+        lock.unlock()
     }
 
     actual suspend fun setPosition(position: Long) {

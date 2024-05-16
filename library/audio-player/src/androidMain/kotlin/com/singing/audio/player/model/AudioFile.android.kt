@@ -1,10 +1,9 @@
 package com.singing.audio.player.model
 
-actual class AudioFile {
-    actual val name: String
-        get() = TODO("Not yet implemented")
-    actual val duration: Long
-        get() = TODO("Not yet implemented")
-    actual val path: String
-        get() = TODO("Not yet implemented")
-}
+import com.singing.audio.utils.ComposeFile
+
+actual data class AudioFile(
+    actual val name: String,
+    actual val file: ComposeFile,
+    actual val duration: Long,
+)

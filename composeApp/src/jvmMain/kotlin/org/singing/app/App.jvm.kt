@@ -9,9 +9,9 @@ import com.singing.app.composeapp.generated.resources.app_name
 import com.singing.app.composeapp.generated.resources.title_record_screen
 import org.jetbrains.compose.resources.stringResource
 import org.singing.app.ui.screens.main.MainScreen
-import org.singing.app.ui.screens.record.RecordScreen
-import org.singing.app.ui.screens.record.SelectAudioScreen
-import org.singing.app.ui.screens.record.SelectRecordTypeScreen
+import org.singing.app.ui.screens.record.create.RecordingScreen
+import org.singing.app.ui.screens.record.create.SelectAudioScreen
+import org.singing.app.ui.screens.record.create.SelectRecordTypeScreen
 
 @Composable
 internal actual fun getScreenTitle(screen: Screen): String =
@@ -19,7 +19,7 @@ internal actual fun getScreenTitle(screen: Screen): String =
         is MainScreen -> stringResource(Res.string.app_name)
         is SelectRecordTypeScreen -> stringResource(Res.string.title_record_screen)
         is SelectAudioScreen -> stringResource(Res.string.title_record_screen)
-        is RecordScreen -> stringResource(Res.string.title_record_screen)
+        is RecordingScreen -> stringResource(Res.string.title_record_screen)
 
         else -> screen.key
     }
@@ -27,7 +27,7 @@ internal actual fun getScreenTitle(screen: Screen): String =
 @Composable
 internal actual fun isRootNavigationItem(screen: Screen): Boolean =
     when (screen) {
-        is MainScreen, is RecordScreen -> true
+        is MainScreen, is RecordingScreen -> true
         else -> false
     }
 

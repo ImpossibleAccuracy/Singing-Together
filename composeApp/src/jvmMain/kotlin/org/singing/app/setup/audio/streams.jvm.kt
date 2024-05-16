@@ -55,10 +55,13 @@ actual suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioPars
     )
 }
 
-actual suspend fun createTrackAudioParser(file: AudioFile, filters: List<AudioFilter>): AudioParser<TimedFrequency> {
+actual suspend fun createTrackAudioParser(
+    audioFile: AudioFile,
+    filters: List<AudioFilter>
+): AudioParser<TimedFrequency> {
     val input = withContext(Dispatchers.IO) {
         openInputStreamAsTarosDspInput(
-            inputStream = file.file.inputStream(),
+            inputStream = audioFile.file.inputStream(),
             bufferSize = TrackProperties.bufferSize,
         )
     }

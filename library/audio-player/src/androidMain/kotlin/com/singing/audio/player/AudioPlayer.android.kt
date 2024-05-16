@@ -1,6 +1,6 @@
 package com.singing.audio.player
 
-import com.singing.audio.player.model.AudioFile
+import com.singing.audio.utils.ComposeFile
 import kotlinx.coroutines.flow.Flow
 
 actual class AudioPlayer actual constructor() {
@@ -10,7 +10,7 @@ actual class AudioPlayer actual constructor() {
      * @return Flow with player states
      */
     actual suspend fun play(
-        file: AudioFile,
+        file: ComposeFile,
         initPosition: Long
     ): Flow<PlayerState> {
         TODO("Not yet implemented")

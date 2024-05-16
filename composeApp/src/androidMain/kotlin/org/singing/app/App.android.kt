@@ -6,15 +6,15 @@ import cafe.adriel.voyager.core.screen.Screen
 
 @Composable
 internal actual fun getScreenTitle(screen: Screen): String {
-    TODO("Not yet implemented")
+    return screen.key
 }
 
 @Composable
 internal actual fun isRootNavigationItem(screen: Screen): Boolean {
-    TODO("Not yet implemented")
+    return true
 }
 
 @Composable
 internal actual fun getTopAppBarColors(screen: Screen): Pair<Color, Color>? {
-    TODO("Not yet implemented")
+    return null
 }

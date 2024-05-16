@@ -2,6 +2,7 @@ package org.singing.app.setup.file
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.singing.audio.utils.ComposeFile
 import javafx.application.Platform
 import javafx.stage.FileChooser
 import java.io.File
@@ -48,7 +49,7 @@ actual fun FilePicker(
                 preferences.put(KEY, result.absoluteFile.parent)
 
                 onFileSelected(
-                    ComposeFile(result)
+                    com.singing.audio.utils.ComposeFile(result)
                 )
             }
         }

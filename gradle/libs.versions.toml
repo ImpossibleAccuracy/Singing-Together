@@ -13,6 +13,7 @@ spring-swagger = "2.5.0"
 javafx-plugin = "0.1.0"
 
 
+kotlinx-datetime = "0.5.0"
 kotlinx-coroutines = "1.8.0"
 
 agp = "8.2.0" # 8.4.0 is not supported by Intellij Ideas
@@ -37,8 +38,8 @@ dsp = "2.5"
 
 settings-multiplatform = "1.1.1"
 calf = "0.4.0"
-mpfilepicker = "3.1.0"
 composeImageLoader = "1.7.8"
+humanReadable = "1.8.0"
 
 h2 = "2.1.212"
 junit = "5.10.2"
@@ -49,6 +50,7 @@ reactor-test = "3.6.3"
 # KOTLIN
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
 # COROUTINES
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -112,7 +114,7 @@ dsp-jvm = { module = "be.tarsos.dsp:jvm", version.ref = "dsp" }
 settings-multiplatform = { module = "com.russhwolf:multiplatform-settings", version.ref = "settings-multiplatform" }
 calf-ui = { module = "com.mohamedrejeb.calf:calf-ui", version.ref = "calf" }
 composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
-mpfilepicker = { module = "com.darkrockstudios:mpfilepicker", version.ref = "mpfilepicker" }
+humanReadable = { module = "nl.jacobras:Human-Readable", version.ref = "humanReadable" }
 
 # TESTS
 h2-connector = { module = "com.h2database:h2", version.ref = "h2" }

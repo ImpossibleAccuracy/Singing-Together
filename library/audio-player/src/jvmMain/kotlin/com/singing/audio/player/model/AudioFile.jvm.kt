@@ -1,12 +1,9 @@
 package com.singing.audio.player.model
 
-import java.io.File
+import com.singing.audio.utils.ComposeFile
 
 actual data class AudioFile(
-    val file: File,
+    actual val file: ComposeFile,
     actual val name: String,
     actual val duration: Long,
-) {
-    actual val path: String
-        get() = file.absolutePath
-}
+)
