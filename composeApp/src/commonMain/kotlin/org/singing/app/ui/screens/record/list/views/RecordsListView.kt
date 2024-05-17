@@ -16,7 +16,7 @@ import org.singing.app.ui.views.base.record.card.RecordCard
 
 
 @Composable
-fun RecordsList(
+fun RecordsListView(
     modifier: Modifier = Modifier,
     selectedRecord: RecordData?,
     onSelectedRecordChange: (RecordData) -> Unit,

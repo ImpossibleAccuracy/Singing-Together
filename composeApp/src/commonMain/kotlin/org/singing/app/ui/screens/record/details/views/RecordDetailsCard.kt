@@ -1,4 +1,4 @@
-package org.singing.app.ui.screens.record.list.views
+package org.singing.app.ui.screens.record.details.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,7 +22,7 @@ import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun RecordDetails(
+fun RecordDetailsCard(
     modifier: Modifier = Modifier,
     accountData: AccountUiData?,
     record: RecordData,

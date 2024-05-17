@@ -7,30 +7,23 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.singing.audio.player.PlayerState
-import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
-import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
-import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
-import org.singing.app.ui.screens.record.list.views.RecordDetails
-import org.singing.app.ui.screens.record.list.views.RecordPointsView
-import org.singing.app.ui.screens.record.list.views.RecordsList
-import org.singing.app.ui.views.shared.player.PlayerView
-import org.singing.app.ui.views.shared.record.DeleteRecordDialog
-import org.singing.app.ui.views.shared.record.PublishRecordDialog
-import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
+import org.singing.app.ui.screens.record.details.views.RecordDetails
+import org.singing.app.ui.screens.record.details.views.RecordDetailsActions
+import org.singing.app.ui.screens.record.details.views.RecordDetailsData
+import org.singing.app.ui.screens.record.list.views.RecordsListView
 
 
 class RecordListScreen(
@@ -153,35 +146,27 @@ class RecordListScreen(
                     } else {
                         val user by viewModel.user.collectAsState()
 
-                        Column(
+                        RecordDetails(
                             modifier = Modifier
                                 .weight(1f)
                                 .fillMaxHeight()
                                 .verticalScroll(
                                     state = detailsVerticalScroll
-                                )
-                                .padding(vertical = 16.dp)
-                        ) {
-                            RecordDetailsContainer(
-                                viewModel = viewModel,
+                                ),
+                            data = RecordDetailsData(
+                                record = selectedRecord,
                                 user = user,
-                                record = selectedRecord,
+                                player = viewModel.recordPlayer,
+                                publication = viewModel::getRecordPublication,
+                                recordPoints = viewModel::getRecordPoints,
+                                note = viewModel::getNote,
+                            ),
+                            actions = RecordDetailsActions(
+                                uploadRecord = viewModel::uploadRecord,
+                                publishRecord = viewModel::publishRecord,
+                                deleteRecord = viewModel::deleteRecord,
                             )
-
-                            Space(24.dp)
-
-                            RecordDetailsPlayerContainer(
-                                viewModel = viewModel,
-                                record = selectedRecord,
-                            )
-
-                            Space(12.dp)
-
-                            RecordDetailsPointsContainer(
-                                viewModel = viewModel,
-                                record = selectedRecord,
-                            )
-                        }
+                        )
                     }
                 }
             }
@@ -195,171 +180,11 @@ class RecordListScreen(
         selectedRecord: RecordData?,
         onSelectedRecordChange: (RecordData) -> Unit,
     ) {
-        RecordsList(
+        RecordsListView(
             modifier = modifier,
             records = records,
             selectedRecord = selectedRecord,
             onSelectedRecordChange = onSelectedRecordChange,
-        )
-    }
-
-    @Composable
-    private fun RecordDetailsContainer(
-        viewModel: RecordListViewModel,
-        user: AccountUiData?,
-        record: RecordData,
-    ) {
-        val coroutineScope = rememberCoroutineScope()
-        val navigator = LocalNavigator.currentOrThrow
-
-        var recordToPublish by remember { mutableStateOf<RecordData?>(null) }
-        var recordToDelete by remember { mutableStateOf<RecordData?>(null) }
-
-        RecordDetails(
-            record = record,
-            accountData = user,
-            actions = RecordCardActionsCallbacks(
-                onUploadRecord = {
-                    viewModel.uploadRecord(it)
-                },
-                showPublication = {
-                    coroutineScope.launch {
-                        val publication = viewModel.getRecordPublication(it)
-
-                        navigator.push(
-                            PublicationDetailsScreen(
-                                requestedPublication = publication,
-                            )
-                        )
-                    }
-                },
-                onPublishRecord = {
-                    recordToPublish = it
-                },
-                onDeleteRecord = {
-                    recordToDelete = it
-                },
-            ),
-        )
-
-        if (recordToPublish != null) {
-            PublishRecordDialog(
-                onConfirm = {
-                    viewModel.publishRecord(recordToPublish!!, it)
-
-                    recordToPublish = null
-                },
-                onDismiss = {
-                    recordToPublish = null
-                },
-            )
-        }
-
-        if (recordToDelete != null) {
-            DeleteRecordDialog(
-                onConfirm = {
-                    viewModel.deleteRecord(recordToDelete!!)
-
-                    recordToDelete = null
-                },
-                onDismiss = {
-                    recordToDelete = null
-                },
-            )
-        }
-    }
-
-    @Composable
-    private fun RecordDetailsPlayerContainer(
-        modifier: Modifier = Modifier,
-        viewModel: RecordListViewModel,
-        record: RecordData,
-    ) {
-        val coroutineScope = rememberCoroutineScope()
-
-        val player = remember { viewModel.recordPlayer }
-
-        val playerState by player.state.collectAsStateSafe()
-        val playerPosition by player.position.collectAsStateSafe()
-
-        PlayerView(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 16.dp,
-                    top = 4.dp,
-                    end = 16.dp,
-                    bottom = 12.dp,
-                ),
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.tertiary,
-            inactiveTrackColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-            totalDuration = record.duration,
-            currentPosition = playerPosition,
-            isPlaying = playerState == PlayerState.PLAY,
-            onPositionChange = {
-                coroutineScope.launch {
-                    player.setPosition(it)
-                }
-            },
-            onPlay = {
-                coroutineScope.launch {
-                    player.play(record)
-                }
-            },
-            onStop = {
-                coroutineScope.launch {
-                    player.stop()
-                }
-            },
-        )
-
-        /*RecordPlayerView(
-            modifier = modifier,
-            duration = record.duration,
-            playerState = playerState,
-            playerPosition = playerPosition,
-            updatePosition = {
-                coroutineScope.launch {
-                    player.setPosition(it)
-                }
-            },
-            startPlay = {
-                coroutineScope.launch {
-                    player.play(record)
-                }
-            },
-            stopPlay = {
-                coroutineScope.launch {
-                    player.stop()
-                }
-            },
-        )*/
-    }
-
-    @Composable
-    private fun RecordDetailsPointsContainer(
-        modifier: Modifier = Modifier,
-        viewModel: RecordListViewModel,
-        record: RecordData,
-    ) {
-        val points = remember { mutableStateListOf<RecordPoint>() }
-
-        LaunchedEffect(record) {
-            points.clear()
-
-            points.addAll(
-                viewModel.getRecordPoints(record)
-            )
-        }
-
-        RecordPointsView(
-            modifier = modifier,
-            points = points,
-            isTwoLineRecord = record is RecordData.Cover,
-            note = {
-                viewModel.getNote(it)
-            },
         )
     }
 }

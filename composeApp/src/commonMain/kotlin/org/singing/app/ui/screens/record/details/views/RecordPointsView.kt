@@ -1,4 +1,4 @@
-package org.singing.app.ui.screens.record.list.views
+package org.singing.app.ui.screens.record.details.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
