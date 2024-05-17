@@ -1,7 +1,6 @@
 package org.singing.app.ui.screens.account.profile.views
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
@@ -36,13 +35,7 @@ fun AccountBanner(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .clip(shape = MaterialTheme.shapes.extraLarge)
-            .background(color = MaterialTheme.colorScheme.tertiaryContainer)
-            .padding(
-                horizontal = 24.dp,
-                vertical = 16.dp
-            )
+        modifier = modifier.padding(horizontal = 24.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -66,7 +59,7 @@ fun AccountBanner(
         Column {
             Text(
                 text = account.username,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = MaterialTheme.colorScheme.onBackground,
                 style = TextStyle(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold,
@@ -79,19 +72,19 @@ fun AccountBanner(
                 if (accountInfo == null) {
                     CircularProgressIndicator(
                         modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.tertiary,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 } else {
                     Text(
                         text = "${accountInfo.publicationsCount} publications",
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 1.43.em,
                         style = MaterialTheme.typography.labelLarge
                     )
 
                     Text(
                         text = "Registered for ${HumanReadable.duration(Clock.System.now() - accountInfo.registeredAt)}",
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 1.43.em,
                         style = MaterialTheme.typography.labelLarge
                     )

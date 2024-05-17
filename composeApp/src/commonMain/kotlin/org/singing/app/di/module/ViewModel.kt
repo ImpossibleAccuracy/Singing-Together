@@ -16,11 +16,13 @@ import org.singing.app.ui.screens.main.MainViewModel
 import org.singing.app.ui.screens.publication.details.PublicationDetailsViewModel
 import org.singing.app.ui.screens.record.audio.SelectAudioViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
+import org.singing.app.ui.screens.record.details.RecordDetailsViewModel
 import org.singing.app.ui.screens.record.list.RecordListViewModel
 
 val viewModelsModule = module {
     factoryOf(::MainViewModel)
     factoryOf(::RecordListViewModel)
+    factoryOf(::RecordDetailsViewModel)
     factoryOf(::PublicationDetailsViewModel)
     factoryOf(::AccountProfileViewModel)
     factoryOf(::SelectAudioViewModel)

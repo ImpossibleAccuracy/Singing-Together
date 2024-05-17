@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
@@ -20,6 +21,7 @@ import org.singing.app.ui.views.base.progress.TimeProgress
 @Composable
 fun PlayerView(
     modifier: Modifier = Modifier,
+    shape: Shape = MaterialTheme.shapes.small,
     containerColor: Color = MaterialTheme.colorScheme.secondary,
     contentColor: Color = MaterialTheme.colorScheme.onSecondary,
     inactiveTrackColor: Color = MaterialTheme.colorScheme.secondaryContainer,
@@ -33,7 +35,7 @@ fun PlayerView(
 ) {
     Column(
         modifier = Modifier
-            .clip(shape = MaterialTheme.shapes.large)
+            .clip(shape = shape)
             .background(color = containerColor)
                 then modifier
     ) {

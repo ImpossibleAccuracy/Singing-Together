@@ -2,6 +2,7 @@ package org.singing.app.ui.views.shared.publication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -9,6 +10,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -32,6 +34,17 @@ import org.singing.app.ui.views.base.progress.TimeProgress
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
+
+private val shape
+    @Composable
+    @ReadOnlyComposable
+    get() = MaterialTheme.shapes.medium
+
+val chipShape
+    @Composable
+    @ReadOnlyComposable
+    get() = MaterialTheme.shapes.medium
+
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MainPublicationCard(
@@ -47,8 +60,9 @@ fun MainPublicationCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = MaterialTheme.shapes.medium)
-            .background(color = MaterialTheme.colorScheme.surfaceContainer)
+            .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = shape)
+            .clip(shape = shape)
+            .background(color = MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(all = 16.dp)
     ) {
         Row(
@@ -123,11 +137,13 @@ fun MainPublicationCard(
             verticalArrangement = Arrangement.spacedBy(12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+
             Box(
                 modifier = Modifier
                     .height(36.dp)
-                    .clip(shape = MaterialTheme.shapes.medium)
-                    .background(color = MaterialTheme.colorScheme.surface)
+                    .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = chipShape)
+                    .clip(shape = chipShape)
+                    .background(color = MaterialTheme.colorScheme.surfaceContainerLowest)
                     .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.Center,
             ) {
@@ -144,8 +160,9 @@ fun MainPublicationCard(
             Row(
                 modifier = Modifier
                     .height(36.dp)
-                    .clip(shape = MaterialTheme.shapes.medium)
-                    .background(color = MaterialTheme.colorScheme.surface)
+                    .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = chipShape)
+                    .clip(shape = chipShape)
+                    .background(color = MaterialTheme.colorScheme.surfaceContainerLowest)
                     .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {

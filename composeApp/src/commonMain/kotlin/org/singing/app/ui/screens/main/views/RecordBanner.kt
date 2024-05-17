@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.main_record_banner
 import org.jetbrains.compose.resources.painterResource
+import org.singing.app.ui.base.Space
 import org.singing.app.ui.theme.extended
 import org.singing.app.ui.views.base.AppFilledButton
 
@@ -43,9 +44,11 @@ fun RecordBanner(
     ) {
         Text(
             "Welcome back, Username!",
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.extended.onMainBannerScrim,
             style = MaterialTheme.typography.headlineMedium,
         )
+
+        Space(24.dp)
 
         AppFilledButton(
             containerColor = MaterialTheme.colorScheme.primary,

@@ -38,6 +38,7 @@ data class ExtendedMaterialColors(
     val onTertiaryFixedVariant: Color,
 
     val mainBannerScrim: Color,
+    val onMainBannerScrim: Color,
 
     val timeline: TimelineColors,
 )
@@ -94,12 +95,13 @@ val LightColorScheme = ExtendedMaterialTheme(
         tertiaryFixedDim = tertiaryFixedDimLight,
         onTertiaryFixedVariant = onTertiaryFixedVariantLight,
         mainBannerScrim = mainBannerScrimLight,
+        onMainBannerScrim = onMainBannerScrimLight,
         timeline = TimelineColors(
-            best = Color(0xFFA4EB31), // TODO: extract colors
-            normal = Color(0xFFF5C415),
-            bad = Color(0xFFF0380F),
-            worst = Color(0xFFF00F0F),
-            undefined = Color(0xFFF00F0F),
+            best = recordBestAccuracyLight,
+            normal = recordNormalAccuracyLight,
+            bad = recordBadAccuracyLight,
+            worst = recordWorstAccuracyLight,
+            undefined = recordUndefinedAccuracyLight,
         ),
     ),
 )
@@ -156,12 +158,13 @@ val DarkColorScheme = ExtendedMaterialTheme(
         tertiaryFixedDim = tertiaryFixedDimDark,
         onTertiaryFixedVariant = onTertiaryFixedVariantDark,
         mainBannerScrim = mainBannerScrimDark,
+        onMainBannerScrim = onMainBannerScrimDark,
         timeline = TimelineColors(
-            best = Color(0xFFA4EB31), // TODO: extract colors
-            normal = Color(0xFFF5C415),
-            bad = Color(0xFFF0380F),
-            worst = Color(0xFFF00F0F),
-            undefined = Color(0xFFF00F0F),
+            best = recordBestAccuracyDark,
+            normal = recordNormalAccuracyDark,
+            bad = recordBadAccuracyDark,
+            worst = recordWorstAccuracyDark,
+            undefined = recordUndefinedAccuracyDark,
         ),
     ),
 )

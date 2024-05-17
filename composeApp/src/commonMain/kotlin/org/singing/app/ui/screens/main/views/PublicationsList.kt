@@ -31,7 +31,7 @@ fun PublicationsList(
     Column(
         modifier = modifier
             .clip(shape = MaterialTheme.shapes.medium)
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
             .padding(
                 start = 16.dp,
                 top = 16.dp,
@@ -41,7 +41,7 @@ fun PublicationsList(
     ) {
         Text(
             text = "Publications",
-            color = MaterialTheme.colorScheme.onSecondaryContainer,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleMedium,
         )
 
@@ -64,8 +64,8 @@ fun PublicationsList(
                     PublicationCardWithPlayer(
                         publication = item,
                         player = player,
-                        contentColor = MaterialTheme.colorScheme.secondary,
-                        inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                        contentColor = MaterialTheme.colorScheme.primary,
+                        inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer,
                         onAuthorClick = {
                             onAuthorClick(item)
                         },
@@ -109,13 +109,13 @@ fun PublicationsList(
                 TextButton(
                     modifier = Modifier.widthIn(min = 180.dp),
                     colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.primary,
                     ),
                     onClick = {}
                 ) {
                     Text(
                         text = "See more",
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
                         style = MaterialTheme.typography.labelLarge,
                     )
                 }

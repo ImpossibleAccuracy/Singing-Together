@@ -74,13 +74,13 @@ fun RecentRecords(
             ) {
                 Text(
                     text = "See all records",
-                    color = MaterialTheme.colorScheme.primary,
+                    color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.labelLarge,
                 )
 
                 Icon(
                     imageVector = vectorResource(Res.drawable.baseline_navigate_next_24),
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.secondaryContainer,
                     contentDescription = "",
                 )
             }

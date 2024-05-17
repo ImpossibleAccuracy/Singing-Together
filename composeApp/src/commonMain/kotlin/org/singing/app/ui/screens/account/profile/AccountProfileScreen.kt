@@ -19,6 +19,7 @@ import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.AppScreen
+import org.singing.app.ui.base.Divider
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.screens.account.profile.views.AccountBanner
@@ -61,6 +62,10 @@ class AccountProfileScreen(
                     account = requestedAccount,
                     accountInfo = accountInfo,
                 )
+
+                Space(24.dp)
+
+                Divider(Modifier.padding(horizontal = 24.dp))
 
                 Space(24.dp)
 

@@ -9,6 +9,5 @@ internal actual fun SystemAppearance(scheme: ExtendedMaterialTheme, isDark: Bool
 
 @Composable
 internal actual fun getAppTheme(isDark: Boolean): ExtendedMaterialTheme =
-    LightColorScheme // TODO: fix on production
-//    if (isDark) DarkColorScheme
-//    else LightColorScheme
+    if (isDark) DarkColorScheme
+    else LightColorScheme

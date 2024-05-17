@@ -41,7 +41,7 @@ fun MainRecordCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = MaterialTheme.shapes.medium)
-            .background(color = MaterialTheme.colorScheme.secondaryContainer)
+            .background(color = MaterialTheme.colorScheme.primaryContainer)
             .padding(all = 16.dp)
     ) {
         Row(
@@ -98,7 +98,7 @@ fun MainRecordCard(
             Box(
                 modifier = Modifier
                     .clip(shape = MaterialTheme.shapes.medium)
-                    .background(color = MaterialTheme.extended.secondaryFixedDim)
+                    .background(color = MaterialTheme.extended.primaryFixedDim)
                     .padding(
                         horizontal = 48.dp,
                         vertical = 24.dp
@@ -152,7 +152,7 @@ fun MainRecordCard(
             ) {
                 Text(
                     text = "See details",
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.primary,
                     style = MaterialTheme.typography.labelLarge,
                 )
             }
@@ -160,8 +160,8 @@ fun MainRecordCard(
             Space(12.dp)
 
             AppFilledButton(
-                containerColor = MaterialTheme.colorScheme.secondary,
-                contentColor = MaterialTheme.colorScheme.onSecondary,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 label = "Listen now",
                 trailingIcon = vectorResource(Res.drawable.baseline_play_circle_filled_24),
                 onClick = {

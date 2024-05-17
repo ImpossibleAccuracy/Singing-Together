@@ -18,8 +18,8 @@ import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
-import org.singing.app.ui.screens.record.list.views.RecordDetails
-import org.singing.app.ui.screens.record.list.views.RecordPointsView
+import org.singing.app.ui.screens.record.details.views.RecordDetailsCard
+import org.singing.app.ui.screens.record.details.views.RecordPointsView
 import org.singing.app.ui.views.base.publication.PublicationCard
 import org.singing.app.ui.views.shared.player.PlayerView
 
@@ -48,7 +48,7 @@ class PublicationDetailsScreen(
                 Column(
                     modifier = Modifier.weight(7f),
                 ) {
-                    RecordDetails(
+                    RecordDetailsCard(
                         modifier = Modifier.fillMaxWidth(),
                         accountData = requestedPublication.author,
                         record = requestedPublication.record,
@@ -70,7 +70,7 @@ class PublicationDetailsScreen(
                 ) {
                     PublicationCard(
                         modifier = Modifier.fillMaxWidth(),
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
                         publication = requestedPublication,
                         showActions = false,
                         navigatePublicationDetails = {}
@@ -131,8 +131,8 @@ class PublicationDetailsScreen(
                     end = 16.dp,
                     bottom = 12.dp,
                 ),
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.tertiary,
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.secondary,
             inactiveTrackColor = MaterialTheme.colorScheme.surfaceContainerLowest,
             totalDuration = requestedPublication.record.duration,
             currentPosition = playerPosition,

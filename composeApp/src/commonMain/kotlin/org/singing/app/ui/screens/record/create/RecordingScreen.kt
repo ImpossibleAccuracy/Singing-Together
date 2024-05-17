@@ -126,10 +126,14 @@ class RecordingScreen(
                     .fillMaxWidth()
                     .padding(
                         start = 16.dp,
-                        top = 18.dp,
+                        top = 8.dp,
                         end = 16.dp,
                         bottom = 12.dp,
                     ),
+                shape = MaterialTheme.shapes.large,
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.secondary,
+                inactiveTrackColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                 editable = uiState.canEditPlayerState,
                 totalDuration = audioProcessState.selectedAudio.duration,
                 currentPosition = uiState.playerPosition,

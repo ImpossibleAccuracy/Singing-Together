@@ -2,6 +2,7 @@ package org.singing.app.ui.views.base.publication
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.seiko.imageloader.rememberImagePainter
@@ -31,13 +33,15 @@ fun PublicationCard(
     modifier: Modifier = Modifier,
     publication: Publication,
     containerColor: Color = MaterialTheme.colorScheme.surface,
+    shape: Shape = MaterialTheme.shapes.medium,
     showActions: Boolean = true,
     onAuthorClick: (() -> Unit)? = null,
     navigatePublicationDetails: () -> Unit,
 ) {
     Column(
         modifier = modifier
-            .clip(shape = MaterialTheme.shapes.medium)
+            .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = shape)
+            .clip(shape = shape)
             .background(color = containerColor)
             .padding(all = 12.dp)
     ) {
