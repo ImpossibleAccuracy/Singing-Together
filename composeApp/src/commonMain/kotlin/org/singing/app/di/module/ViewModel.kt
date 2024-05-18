@@ -12,6 +12,8 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.dsl.module
 import org.singing.app.ui.screens.account.profile.AccountProfileViewModel
+import org.singing.app.ui.common.player.RecordPlayerViewModel
+import org.singing.app.ui.screens.community.CommunityViewModel
 import org.singing.app.ui.screens.main.MainViewModel
 import org.singing.app.ui.screens.publication.details.PublicationDetailsViewModel
 import org.singing.app.ui.screens.record.audio.SelectAudioViewModel
@@ -20,11 +22,14 @@ import org.singing.app.ui.screens.record.details.RecordDetailsViewModel
 import org.singing.app.ui.screens.record.list.RecordListViewModel
 
 val viewModelsModule = module {
+    factoryOf(::RecordPlayerViewModel)
+
     factoryOf(::MainViewModel)
     factoryOf(::RecordListViewModel)
     factoryOf(::RecordDetailsViewModel)
     factoryOf(::PublicationDetailsViewModel)
     factoryOf(::AccountProfileViewModel)
+    factoryOf(::CommunityViewModel)
     factoryOf(::SelectAudioViewModel)
     factoryOf(::RecordingViewModel)
 }

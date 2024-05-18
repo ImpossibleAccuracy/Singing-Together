@@ -14,6 +14,7 @@ javafx-plugin = "0.1.0"
 
 
 kotlinx-datetime = "0.5.0"
+kotlinx-collections = "0.3.7"
 kotlinx-coroutines = "1.8.0"
 
 agp = "8.2.0" # 8.4.0 is not supported by Intellij Ideas
@@ -38,6 +39,7 @@ dsp = "2.5"
 
 settings-multiplatform = "1.1.1"
 calf = "0.4.0"
+chiptextfield = "0.7.0-alpha03"
 composeImageLoader = "1.7.8"
 humanReadable = "1.8.0"
 
@@ -51,6 +53,7 @@ reactor-test = "3.6.3"
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+kotlinx-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections" }
 
 # COROUTINES
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -113,6 +116,7 @@ dsp-jvm = { module = "be.tarsos.dsp:jvm", version.ref = "dsp" }
 # OTHER
 settings-multiplatform = { module = "com.russhwolf:multiplatform-settings", version.ref = "settings-multiplatform" }
 calf-ui = { module = "com.mohamedrejeb.calf:calf-ui", version.ref = "calf" }
+chiptextfield = { module = "io.github.dokar3:chiptextfield-m3", version.ref = "chiptextfield" }
 composeImageLoader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "composeImageLoader" }
 humanReadable = { module = "nl.jacobras:Human-Readable", version.ref = "humanReadable" }
 

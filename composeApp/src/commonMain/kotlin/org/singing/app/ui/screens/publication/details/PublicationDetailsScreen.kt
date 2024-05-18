@@ -11,33 +11,32 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.singing.audio.player.PlayerState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
-import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.player.RecordPlayer
+import org.singing.app.ui.common.player.RecordPlayerScreen
+import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.record.details.views.RecordDetailsCard
 import org.singing.app.ui.screens.record.details.views.RecordPointsView
 import org.singing.app.ui.views.base.publication.PublicationCard
+import org.singing.app.ui.views.base.publication.publicationCardAppearance
 import org.singing.app.ui.views.shared.player.PlayerView
 
 class PublicationDetailsScreen(
     private val requestedPublication: Publication,
-) : AppScreen() {
-    private var _viewModel: PublicationDetailsViewModel? = null
-
-    override fun onLeave() {
-        super.onLeave()
-
-        _viewModel?.resetRecordPlayer()
-    }
-
+) : RecordPlayerScreen() {
     @Composable
     override fun Content() {
         val viewModel = viewModels<PublicationDetailsViewModel>()
-        _viewModel = viewModel
+        val recordPlayer = rememberRecordPlayer()
 
         val verticalScroll = rememberScrollState()
 
@@ -69,8 +68,9 @@ class PublicationDetailsScreen(
                     modifier = Modifier.weight(3f),
                 ) {
                     PublicationCard(
-                        modifier = Modifier.fillMaxWidth(),
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        modifier = publicationCardAppearance(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                        ),
                         publication = requestedPublication,
                         showActions = false,
                         navigatePublicationDetails = {}
@@ -80,7 +80,7 @@ class PublicationDetailsScreen(
 
                     PlayerViewContainer(
                         modifier = Modifier.fillMaxWidth(),
-                        viewModel = viewModel,
+                        recordPlayer = recordPlayer,
                     )
                 }
             }
@@ -92,14 +92,12 @@ class PublicationDetailsScreen(
         modifier: Modifier = Modifier,
         viewModel: PublicationDetailsViewModel,
     ) {
-        val points = remember { mutableStateListOf<RecordPoint>() }
+        var points by remember { mutableStateOf<ImmutableList<RecordPoint>>(persistentListOf()) }
 
         LaunchedEffect(requestedPublication) {
-            points.clear()
-
-            points.addAll(
-                viewModel.getRecordPoints(requestedPublication.record)
-            )
+            points = viewModel
+                .getRecordPoints(requestedPublication.record)
+                .toImmutableList()
         }
 
         RecordPointsView(
@@ -113,14 +111,12 @@ class PublicationDetailsScreen(
     @Composable
     private fun PlayerViewContainer(
         modifier: Modifier = Modifier,
-        viewModel: PublicationDetailsViewModel,
+        recordPlayer: RecordPlayer,
     ) {
         val coroutineScope = rememberCoroutineScope()
 
-        val player = remember { viewModel.recordPlayer }
-
-        val playerState by player.state.collectAsStateSafe()
-        val playerPosition by player.position.collectAsStateSafe()
+        val playerState by recordPlayer.state.collectAsStateSafe()
+        val playerPosition by recordPlayer.position.collectAsStateSafe()
 
         PlayerView(
             modifier = modifier
@@ -139,17 +135,17 @@ class PublicationDetailsScreen(
             isPlaying = playerState == PlayerState.PLAY,
             onPositionChange = {
                 coroutineScope.launch {
-                    player.setPosition(it)
+                    recordPlayer.setPosition(it)
                 }
             },
             onPlay = {
                 coroutineScope.launch {
-                    player.play(requestedPublication.record)
+                    recordPlayer.play(requestedPublication.record)
                 }
             },
             onStop = {
                 coroutineScope.launch {
-                    player.stop()
+                    recordPlayer.stop()
                 }
             },
         )

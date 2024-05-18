@@ -1,6 +1,6 @@
 package org.singing.app.domain.repository.track
 
-import com.singing.audio.player.model.AudioFile
+import org.singing.app.domain.model.AudioFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

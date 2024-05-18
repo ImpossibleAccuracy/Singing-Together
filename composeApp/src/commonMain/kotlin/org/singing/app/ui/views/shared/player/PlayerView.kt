@@ -35,7 +35,7 @@ fun PlayerView(
 ) {
     Column(
         modifier = Modifier
-            .clip(shape = shape)
+            .clip(shape)
             .background(color = containerColor)
                 then modifier
     ) {

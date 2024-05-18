@@ -2,12 +2,17 @@ package org.singing.app.ui.base
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 
 fun Modifier.connectVerticalNestedScroll(
     maxHeight: Dp,
@@ -27,3 +32,23 @@ fun Modifier.connectVerticalNestedScroll(
             }
         }
     )
+
+
+fun Modifier.onVisibilityChange(onChange: (Boolean) -> Unit): Modifier = composed {
+    val windowSize = getScreenSize()
+
+    var isVisible: Boolean? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(isVisible) {
+        if (isVisible != null) {
+            onChange(isVisible!!)
+        }
+    }
+
+    onGloballyPositioned { coordinates ->
+        isVisible = windowSize.height - coordinates.positionInRoot().y >= 0
+    }
+}
+
+@Composable
+expect fun getScreenSize(): IntSize

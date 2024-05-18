@@ -21,6 +21,8 @@ import com.singing.audio.utils.ComposeFile
 import com.singing.audio.utils.backgroundScope
 import com.singing.config.note.NotesStore
 import com.singing.config.track.TrackProperties
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -43,6 +45,10 @@ import org.singing.app.ui.views.base.AppFilledButton
 import org.singing.app.ui.views.base.track.TrackItem
 
 class SelectAudioScreen : Screen {
+    companion object {
+        private val extensions = TrackProperties.allowedSoundFormats.toImmutableList()
+    }
+
     @Composable
     override fun Content() {
         val viewModel = viewModels<SelectAudioViewModel>()
@@ -163,7 +169,7 @@ class SelectAudioScreen : Screen {
 
     @Composable
     private fun SelectAudioView(
-        recentTracks: List<RecentTrack>,
+        recentTracks: ImmutableList<RecentTrack>,
         isTracksLoading: Boolean,
         onFileSelected: (ComposeFile) -> Unit,
     ) {
@@ -171,7 +177,7 @@ class SelectAudioScreen : Screen {
 
         FilePicker(
             show = showAudioTrackPicker,
-            fileExtensions = TrackProperties.allowedSoundFormats,
+            fileExtensions = extensions,
             onFileSelected = { inputFile ->
                 if (inputFile != null) {
                     onFileSelected(inputFile)
@@ -334,7 +340,7 @@ class SelectAudioScreen : Screen {
         emit(
             AudioProcessState(
                 selectedAudio = audioFile,
-                data = data,
+                data = data.toImmutableList(),
                 isParsing = false,
             )
         )

@@ -10,13 +10,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.RecordPoint
 import org.singing.app.ui.views.base.record.points.RecordTimeline
 
 @Composable
 fun RecordPointsView(
     modifier: Modifier,
-    points: List<RecordPoint>,
+    points: ImmutableList<RecordPoint>,
     isTwoLineRecord: Boolean,
     note: (Double) -> String,
 ) {

@@ -18,10 +18,12 @@ import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.setup.collectAsStateSafe
-import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Divider
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
+import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.player.RecordPlayerScreen
+import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.views.AccountBanner
 import org.singing.app.ui.screens.account.profile.views.AccountPublications
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
@@ -29,10 +31,12 @@ import org.singing.app.ui.views.shared.publication.MainPublicationCard
 
 class AccountProfileScreen(
     private val requestedAccount: AccountUiData,
-) : AppScreen() {
+) : RecordPlayerScreen() {
     @Composable
     override fun Content() {
         val viewModel = viewModels<AccountProfileViewModel>()
+        val recordPlayer = rememberRecordPlayer()
+
         val navigator = LocalNavigator.currentOrThrow
         val coroutineScope = rememberCoroutineScope()
 
@@ -84,8 +88,6 @@ class AccountProfileScreen(
                         )
                     }
                 } else {
-                    val mainPublication = publications.first()
-
                     Text(
                         text = "Publications",
                         color = MaterialTheme.colorScheme.onBackground,
@@ -94,10 +96,21 @@ class AccountProfileScreen(
 
                     Space(8.dp)
 
-                    MainPublicationCard(
-                        publication = mainPublication,
-                        player = viewModel.recordPlayer,
-                    )
+                    Box {
+                        val mainPublication = publications.first()
+
+                        MainPublicationCard(
+                            publication = mainPublication,
+                            player = recordPlayer,
+                            onNavigateToDetails = {
+                                navigator.push(
+                                    PublicationDetailsScreen(
+                                        requestedPublication = mainPublication,
+                                    )
+                                )
+                            }
+                        )
+                    }
 
                     if (publications.size > 1) {
                         Space(12.dp)

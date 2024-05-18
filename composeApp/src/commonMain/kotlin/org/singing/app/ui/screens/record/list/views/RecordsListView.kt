@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.views.base.record.card.RecordCard
 
@@ -20,7 +21,7 @@ fun RecordsListView(
     modifier: Modifier = Modifier,
     selectedRecord: RecordData?,
     onSelectedRecordChange: (RecordData) -> Unit,
-    records: List<RecordData>,
+    records: ImmutableList<RecordData>,
 ) {
     LazyColumn(
         modifier = modifier

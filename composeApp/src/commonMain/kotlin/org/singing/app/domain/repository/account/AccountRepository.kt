@@ -5,6 +5,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import org.singing.app.domain.model.AccountInfo
 import org.singing.app.domain.model.AccountUiData
+import org.singing.app.domain.model.stable.StableInstant
 import kotlin.time.Duration.Companion.days
 
 class AccountRepository {
@@ -37,7 +38,7 @@ class AccountRepository {
         withContext(Dispatchers.IO) {
             AccountInfo(
                 publicationsCount = 10,
-                registeredAt = Clock.System.now() - 23.days
+                registeredAt = StableInstant(Clock.System.now() - 23.days)
             )
         }
 }

@@ -1,7 +1,7 @@
 package org.singing.app.setup.audio
 
 import com.singing.audio.getFileDuration
-import com.singing.audio.player.model.AudioFile
+import org.singing.app.domain.model.AudioFile
 import com.singing.audio.utils.ComposeFile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -10,14 +10,16 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.audio.player.PlayerState
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.launch
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.model.RecordPoint
-import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
 import org.singing.app.ui.views.shared.player.PlayerView
 import org.singing.app.ui.views.shared.record.DeleteRecordDialog
@@ -29,8 +31,8 @@ data class RecordDetailsData(
     val user: AccountUiData?,
     val record: RecordData,
     val player: RecordPlayer,
-    val publication: suspend (RecordData) -> Publication,
-    val recordPoints: suspend (RecordData) -> List<RecordPoint>,
+    val publication: (RecordData) -> Deferred<Publication>,
+    val recordPoints: ImmutableList<RecordPoint>,
     val note: (Double) -> String,
 )
 
@@ -92,7 +94,7 @@ private fun RecordDetailsContainer(
             },
             showPublication = {
                 coroutineScope.launch {
-                    val publication = data.publication(it)
+                    val publication = data.publication(it).await()
 
                     navigator.push(
                         PublicationDetailsScreen(
@@ -188,19 +190,9 @@ private fun RecordDetailsPointsContainer(
     modifier: Modifier = Modifier,
     data: RecordDetailsData,
 ) {
-    val points = remember { mutableStateListOf<RecordPoint>() }
-
-    LaunchedEffect(data.record) {
-        points.clear()
-
-        points.addAll(
-            data.recordPoints(data.record)
-        )
-    }
-
     RecordPointsView(
         modifier = modifier,
-        points = points,
+        points = data.recordPoints,
         isTwoLineRecord = data.record.isTwoLineRecord,
         note = data.note,
     )

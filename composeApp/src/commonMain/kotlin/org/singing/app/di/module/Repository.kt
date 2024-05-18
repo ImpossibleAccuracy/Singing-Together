@@ -5,7 +5,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import org.singing.app.domain.repository.account.AccountRepository
 import org.singing.app.domain.repository.publication.PublicationRepository
-import org.singing.app.domain.player.RecordPlayer
+import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.domain.repository.track.RecentTrackRepository
 

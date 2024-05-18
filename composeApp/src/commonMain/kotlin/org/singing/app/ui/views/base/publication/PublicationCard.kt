@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,21 +30,27 @@ import org.singing.app.domain.model.Publication
 import org.singing.app.ui.base.Space
 
 @Composable
-fun PublicationCard(
-    modifier: Modifier = Modifier,
-    publication: Publication,
+@ReadOnlyComposable
+fun publicationCardAppearance(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     shape: Shape = MaterialTheme.shapes.medium,
+    padding: PaddingValues = PaddingValues(12.dp)
+) = Modifier
+    .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape)
+    .clip(shape)
+    .background(color = containerColor)
+    .padding(padding)
+
+@Composable
+fun PublicationCard(
+    modifier: Modifier = publicationCardAppearance(),
+    publication: Publication,
     showActions: Boolean = true,
     onAuthorClick: (() -> Unit)? = null,
     navigatePublicationDetails: () -> Unit,
 ) {
     Column(
         modifier = modifier
-            .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = shape)
-            .clip(shape = shape)
-            .background(color = containerColor)
-            .padding(all = 12.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -84,7 +91,7 @@ fun PublicationCard(
                 )
 
                 Text(
-                    text = HumanReadable.timeAgo(publication.createdAt),
+                    text = HumanReadable.timeAgo(publication.createdAt.instant),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelMedium,
                 )

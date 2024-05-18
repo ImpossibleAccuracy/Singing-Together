@@ -40,6 +40,9 @@ data class ExtendedMaterialColors(
     val mainBannerScrim: Color,
     val onMainBannerScrim: Color,
 
+    val communityBannerColor: Color,
+    val onCommunityBannerColor: Color,
+
     val timeline: TimelineColors,
 )
 
@@ -96,6 +99,8 @@ val LightColorScheme = ExtendedMaterialTheme(
         onTertiaryFixedVariant = onTertiaryFixedVariantLight,
         mainBannerScrim = mainBannerScrimLight,
         onMainBannerScrim = onMainBannerScrimLight,
+        communityBannerColor = communityBannerColorLight,
+        onCommunityBannerColor = onCommunityBannerColorLight,
         timeline = TimelineColors(
             best = recordBestAccuracyLight,
             normal = recordNormalAccuracyLight,
@@ -159,6 +164,8 @@ val DarkColorScheme = ExtendedMaterialTheme(
         onTertiaryFixedVariant = onTertiaryFixedVariantDark,
         mainBannerScrim = mainBannerScrimDark,
         onMainBannerScrim = onMainBannerScrimDark,
+        communityBannerColor = communityBannerColorDark,
+        onCommunityBannerColor = onCommunityBannerColorDark,
         timeline = TimelineColors(
             best = recordBestAccuracyDark,
             normal = recordNormalAccuracyDark,

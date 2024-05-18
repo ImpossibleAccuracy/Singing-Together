@@ -8,16 +8,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.registry.ScreenProvider
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecordData
 import org.singing.app.setup.collectAsStateSafe
-import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
+import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.player.RecordPlayer
+import org.singing.app.ui.common.player.RecordPlayerScreen
+import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.main.views.*
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
@@ -28,19 +30,11 @@ import org.singing.app.ui.views.shared.record.PublishRecordDialog
 import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 import kotlin.math.max
 
-class MainScreen : AppScreen(), ScreenProvider {
-    private var _viewModel: MainViewModel? = null
-
-    override fun onLeave() {
-        super.onLeave()
-
-        _viewModel?.resetRecordPlayer()
-    }
-
+class MainScreen : RecordPlayerScreen() {
     @Composable
     override fun Content() {
         val viewModel = viewModels<MainViewModel>(true)
-        _viewModel = viewModel
+        val recordPlayer = rememberRecordPlayer()
 
         val verticalScroll = rememberScrollState()
 
@@ -92,9 +86,10 @@ class MainScreen : AppScreen(), ScreenProvider {
                                 size = it.size
                             }
                     ) {
-                        PublicationsListContainer(
+                        RecentPublicationsListContainer(
                             viewModel = viewModel,
                             listModifier = Modifier.connectVerticalNestedScroll(600.dp, verticalScroll),
+                            recordPlayer = recordPlayer,
                         )
                     }
                 }
@@ -225,19 +220,20 @@ class MainScreen : AppScreen(), ScreenProvider {
     }
 
     @Composable
-    private fun PublicationsListContainer(
+    private fun RecentPublicationsListContainer(
         viewModel: MainViewModel,
-        listModifier: Modifier = Modifier
+        listModifier: Modifier = Modifier,
+        recordPlayer: RecordPlayer,
     ) {
         val navigator = LocalNavigator.currentOrThrow
 
         val latestPublications by viewModel.latestPublications.collectAsState()
 
-        PublicationsList(
+        RecentPublicationsList(
             modifier = Modifier.fillMaxWidth(),
             listModifier = listModifier,
             publications = latestPublications,
-            player = viewModel.recordPlayer,
+            player = recordPlayer,
             onAuthorClick = {
                 navigator.push(
                     AccountProfileScreen(

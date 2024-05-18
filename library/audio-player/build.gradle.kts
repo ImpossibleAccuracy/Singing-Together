@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose)
+
     alias(libs.plugins.android.library)
 }
 
@@ -26,6 +28,9 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(compose.runtime)
+            implementation(compose.foundation)
+
             implementation(project(":library:utils"))
 
             implementation(libs.kotlinx.coroutines.core)

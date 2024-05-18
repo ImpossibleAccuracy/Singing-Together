@@ -58,6 +58,7 @@ kotlin {
             implementation(compose.material3)
             implementation(compose.components.resources)
             implementation(compose.uiTooling)
+            implementation(compose.components.uiToolingPreview)
 
             implementation(project(":config"))
             implementation(project(":library:utils"))
@@ -66,6 +67,7 @@ kotlin {
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.kotlinx.collections)
 
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.koin)
@@ -75,6 +77,7 @@ kotlin {
 
             implementation(libs.settings.multiplatform)
             implementation(libs.calf.ui)
+            implementation(libs.chiptextfield)
             implementation(libs.composeImageLoader)
             implementation(libs.humanReadable)
         }

@@ -11,20 +11,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.Publication
-import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.views.base.publication.PublicationCard
 import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
 
 
 @Composable
-fun PublicationsList(
+fun RecentPublicationsList(
     modifier: Modifier = Modifier,
     listModifier: Modifier = Modifier,
     player: RecordPlayer,
-    publications: List<Publication>,
+    publications: ImmutableList<Publication>,
     onAuthorClick: (Publication) -> Unit,
     navigatePublicationDetails: (Publication) -> Unit,
 ) {
@@ -40,9 +43,11 @@ fun PublicationsList(
             )
     ) {
         Text(
-            text = "Publications",
+            text = "Recent publications",
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleMedium,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Black,
         )
 
         Space(12.dp)

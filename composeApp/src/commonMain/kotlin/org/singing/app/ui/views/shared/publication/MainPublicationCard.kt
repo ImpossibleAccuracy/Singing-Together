@@ -27,9 +27,9 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.views.base.progress.TimeProgress
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -51,6 +51,7 @@ fun MainPublicationCard(
     modifier: Modifier = Modifier,
     publication: Publication,
     player: RecordPlayer,
+    onNavigateToDetails: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -60,8 +61,8 @@ fun MainPublicationCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = shape)
-            .clip(shape = shape)
+            .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape)
+            .clip(shape)
             .background(color = MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(all = 16.dp)
     ) {
@@ -102,7 +103,7 @@ fun MainPublicationCard(
                     )
 
                     Text(
-                        text = HumanReadable.timeAgo(publication.createdAt),
+                        text = HumanReadable.timeAgo(publication.createdAt.instant),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.labelMedium,
                     )
@@ -112,7 +113,7 @@ fun MainPublicationCard(
             Spacer(Modifier.weight(1f))
 
             IconButton(
-                onClick = {}
+                onClick = onNavigateToDetails,
             ) {
                 Icon(
                     imageVector = vectorResource(Res.drawable.baseline_open_in_new_24),
@@ -209,7 +210,7 @@ fun MainPublicationCard(
                             PlayerState.STOP -> Res.drawable.baseline_play_arrow_black_24dp
                         }
                     ),
-                    tint = MaterialTheme.colorScheme.secondary,
+                    tint = MaterialTheme.colorScheme.primary,
                     contentDescription = "",
                 )
             }
@@ -218,8 +219,8 @@ fun MainPublicationCard(
 
             TimeProgress(
                 modifier = Modifier.weight(1f),
-                contentColor = MaterialTheme.colorScheme.secondary,
-                inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer,
                 editable = true,
                 totalDuration = publication.record.duration,
                 currentPosition = playerPosition,

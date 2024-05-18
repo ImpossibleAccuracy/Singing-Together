@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.screen.Screen
@@ -26,9 +27,11 @@ import org.singing.app.ui.theme.AppTheme
 internal expect fun getScreenTitle(screen: Screen): String
 
 @Composable
+@ReadOnlyComposable
 internal expect fun isRootNavigationItem(screen: Screen): Boolean
 
 @Composable
+@ReadOnlyComposable
 internal expect fun getTopAppBarColors(screen: Screen): Pair<Color, Color>?
 
 

@@ -7,7 +7,6 @@ import kotlinx.coroutines.launch
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.model.RecordPoint
-import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.domain.store.account.UserContainer
 import org.singing.app.domain.usecase.*
@@ -21,7 +20,6 @@ class RecordListViewModel(
     private val getRecordPointsUseCase: GetRecordPointsUseCase,
     private val findNoteUseCase: FindNoteUseCase,
     recordRepository: RecordRepository,
-    val recordPlayer: RecordPlayer,
 ) : AppViewModel() {
     private val _isLoadingRecords = MutableStateFlow(true)
     val isLoadingRecords = _isLoadingRecords.asStateFlow()
@@ -35,25 +33,11 @@ class RecordListViewModel(
 
     val selectedRecord = MutableStateFlow(-1)
 
-    private val _user = UserContainer.user
-    val user = _user.asStateFlow()
-
-
-    override fun onDispose() {
-        resetRecordPlayer()
-        super.onDispose()
-    }
+    val user = UserContainer.user.asStateFlow()
 
 
     fun getNote(frequency: Double): String =
         findNoteUseCase(frequency)
-
-    fun resetRecordPlayer() {
-        viewModelScope.launch {
-            recordPlayer.reset()
-        }
-    }
-
 
     suspend fun getRecordPoints(record: RecordData): List<RecordPoint> =
         getRecordPointsUseCase(record)

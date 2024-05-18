@@ -1,6 +1,6 @@
 package org.singing.app.domain.repository.record
 
-import com.singing.audio.player.model.AudioFile
+import org.singing.app.domain.model.AudioFile
 import com.singing.audio.utils.ComposeFile
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -13,6 +13,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.model.RecordPoint
+import org.singing.app.domain.model.stable.StableInstant
 import org.singing.app.domain.repository.StateRepository
 import org.singing.app.domain.repository.publication.PublicationRepository
 import org.singing.app.domain.repository.track.createTestFile
@@ -31,14 +32,14 @@ class RecordRepository(
                     accuracy = 97,
                     filename = "ASD.mp3",
                     duration = 133000,
-                    createdAt = Clock.System.now().minus(5.days),
+                    createdAt = StableInstant(Clock.System.now().minus(5.days)),
                     isSavedRemote = true,
                     isPublished = true,
                     creatorId = 1,
                 ),
                 RecordData.Vocal(
                     duration = 10000,
-                    createdAt = Clock.System.now().minus(7.days),
+                    createdAt = StableInstant(Clock.System.now().minus(7.days)),
                     isSavedRemote = true,
                     isPublished = false,
                     creatorId = 2,
@@ -47,7 +48,7 @@ class RecordRepository(
                     accuracy = 23,
                     filename = "ASD.mp3",
                     duration = 10000,
-                    createdAt = Clock.System.now().minus(12.days),
+                    createdAt = StableInstant(Clock.System.now().minus(12.days)),
                     isSavedRemote = true,
                     isPublished = false,
                     creatorId = 3,
@@ -56,14 +57,14 @@ class RecordRepository(
                     accuracy = 78,
                     filename = "ASD.mp3",
                     duration = 10000,
-                    createdAt = Clock.System.now().minus(12.days),
+                    createdAt = StableInstant(Clock.System.now().minus(12.days)),
                     isSavedRemote = true,
                     isPublished = true,
                     creatorId = 1,
                 ),
                 RecordData.Vocal(
                     duration = 10000,
-                    createdAt = Clock.System.now().minus(23.days),
+                    createdAt = StableInstant(Clock.System.now().minus(23.days)),
                     isSavedRemote = false,
                     isPublished = false,
                     creatorId = 2,

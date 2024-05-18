@@ -2,7 +2,7 @@ package org.singing.app.setup.audio
 
 import com.singing.audio.library.filter.AudioFilter
 import com.singing.audio.library.parser.AudioParser
-import com.singing.audio.player.model.AudioFile
+import org.singing.app.domain.model.AudioFile
 import com.singing.audio.sampled.model.TimedFrequency
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow

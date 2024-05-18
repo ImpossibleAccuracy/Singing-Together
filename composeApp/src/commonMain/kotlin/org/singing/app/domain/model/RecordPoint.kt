@@ -1,7 +1,9 @@
 package org.singing.app.domain.model
 
+import androidx.compose.runtime.Stable
 import kotlin.math.abs
 
+@Stable
 data class RecordPoint(
     val time: Long,
     val first: Double,

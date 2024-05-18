@@ -27,7 +27,7 @@ private const val horizontalPadding = 16
 fun AccountView(
     modifier: Modifier = Modifier,
     username: String,
-    avatar: Painter? = null,
+    avatar: () -> (Painter?),
     showAvatar: Boolean = true,
 ) {
     Box(
@@ -56,7 +56,8 @@ fun AccountView(
 
         if (showAvatar) {
             Image(
-                painter = avatar ?: painterResource(Res.drawable.baseline_person_24),
+                painter = avatar()
+                    ?: painterResource(Res.drawable.baseline_person_24),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Avatar",
                 modifier = Modifier

@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.ui.base.Space
 
 
@@ -44,7 +45,7 @@ val DefaultTimelineIndicator: IndicatorView = @Composable { modifier, color, _ -
 @Composable
 fun <T> Timeline(
     modifier: Modifier = Modifier,
-    nodes: List<T>,
+    nodes: ImmutableList<T>,
     startNode: (@Composable () -> Unit)? = null,
     finishNode: (@Composable () -> Unit)? = null,
     indicator: IndicatorView = DefaultTimelineIndicator,
@@ -172,20 +173,26 @@ fun TimelineNode(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .drawBehind {
-                if (position != TimelineNodePosition.LAST) {
-                    drawLine(
-                        color = indicatorColor,
-                        strokeWidth = density,
-                        start = Offset(
-                            x = lineOffsetX + circleRadius,
-                            y = circleRadius * 2 + nodeSpacing.value * density,
-                        ),
-                        end = Offset(
-                            x = lineOffsetX + circleRadius,
-                            y = size.height,
-                        ),
-                    )
+            .drawWithCache {
+                val start = Offset(
+                    x = lineOffsetX + circleRadius,
+                    y = circleRadius * 2 + nodeSpacing.value * density,
+                )
+
+                val end = Offset(
+                    x = lineOffsetX + circleRadius,
+                    y = size.height,
+                )
+
+                onDrawBehind {
+                    if (position != TimelineNodePosition.LAST) {
+                        drawLine(
+                            color = indicatorColor,
+                            strokeWidth = density,
+                            start = start,
+                            end = end,
+                        )
+                    }
                 }
             }
             .let {

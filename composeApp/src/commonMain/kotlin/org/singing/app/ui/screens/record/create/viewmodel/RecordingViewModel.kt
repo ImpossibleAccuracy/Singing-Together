@@ -1,6 +1,7 @@
 package org.singing.app.ui.screens.record.create.viewmodel
 
 import com.singing.audio.player.PlayerState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -88,7 +89,7 @@ class RecordingViewModel(
                 it.copy(
                     playerPosition = 0,
                     recordStartedAt = System.currentTimeMillis(),
-                    history = listOf(),
+                    history = persistentListOf(),
                 )
             }
         },

@@ -83,7 +83,9 @@ fun AccountBanner(
                     )
 
                     Text(
-                        text = "Registered for ${HumanReadable.duration(Clock.System.now() - accountInfo.registeredAt)}",
+                        text = "Registered for ${
+                            HumanReadable.duration(Clock.System.now() - accountInfo.registeredAt.instant)
+                        }",
                         color = MaterialTheme.colorScheme.onBackground,
                         lineHeight = 1.43.em,
                         style = MaterialTheme.typography.labelLarge

@@ -69,7 +69,7 @@ fun MainRecordCard(
             ) {
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),
-                    text = HumanReadable.timeAgo(record.createdAt),
+                    text = HumanReadable.timeAgo(record.createdAt.instant),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelLarge,
                 )

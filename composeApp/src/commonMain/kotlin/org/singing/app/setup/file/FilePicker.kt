@@ -2,12 +2,13 @@ package org.singing.app.setup.file
 
 import androidx.compose.runtime.Composable
 import com.singing.audio.utils.ComposeFile
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 expect fun FilePicker(
     show: Boolean,
     initialDirectory: String?,
-    fileExtensions: List<String>,
+    fileExtensions: ImmutableList<String>,
     title: String?,
     onFileSelected: (ComposeFile?) -> Unit,
 )
@@ -15,7 +16,7 @@ expect fun FilePicker(
 @Composable
 fun FilePicker(
     show: Boolean,
-    fileExtensions: List<String>,
+    fileExtensions: ImmutableList<String>,
     onFileSelected: (ComposeFile?) -> Unit,
 ) {
     FilePicker(

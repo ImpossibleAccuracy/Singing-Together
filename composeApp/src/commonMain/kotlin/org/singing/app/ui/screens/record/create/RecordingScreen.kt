@@ -17,6 +17,7 @@ import org.singing.app.di.module.viewModels
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.common.ContentContainer
 import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.screens.record.create.views.Display
@@ -29,21 +30,23 @@ class RecordingScreen(
     private var isNewInstance: Boolean = true,
 ) : AppScreen() {
     private var _viewModel: RecordingViewModel? = null
-    private val viewModel get() = _viewModel!!
 
     override fun onClose() {
         super.onClose()
 
-        viewModel.stopRecordCountdown()
+        _viewModel?.let { viewModel ->
+            viewModel.stopRecordCountdown()
 
-        if (!viewModel.isAnyActionActive) {
-            viewModel.stopActionsAndClearData()
+            if (!viewModel.isAnyActionActive) {
+                viewModel.stopActionsAndClearData()
+            }
         }
     }
 
     @Composable
     override fun Content() {
-        _viewModel = viewModels(true)
+        val viewModel = viewModels<RecordingViewModel>(true)
+        _viewModel = viewModel
 
         val verticalScrollState = rememberScrollState()
 
@@ -74,24 +77,28 @@ class RecordingScreen(
                             vertical = 24.dp,
                         )
                 ) {
-                    DisplayContainer()
+                    DisplayContainer(
+                        viewModel = viewModel,
+                    )
 
                     Space(24.dp)
 
-                    AudioPlayerContainer().let { isVisible ->
-                        if (isVisible) {
-                            Space(24.dp)
-                        }
-                    }
+                    AudioPlayerContainer(
+                        viewModel = viewModel,
+                    )
 
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(shape = MaterialTheme.shapes.medium)
                     ) {
-                        DisplayInfoContainer()
+                        DisplayInfoContainer(
+                            viewModel = viewModel,
+                        )
 
-                        RecordHistoryContainer()
+                        RecordHistoryContainer(
+                            viewModel = viewModel,
+                        )
                     }
                 }
             }
@@ -100,7 +107,9 @@ class RecordingScreen(
 
 
     @Composable
-    private fun DisplayContainer() {
+    private fun DisplayContainer(
+        viewModel: RecordingViewModel,
+    ) {
         val recordData by viewModel.audioInputData.collectAsStateSafe()
         val recordCountdown by viewModel
             .uiState
@@ -116,7 +125,9 @@ class RecordingScreen(
     }
 
     @Composable
-    private fun AudioPlayerContainer(): Boolean {
+    private fun AudioPlayerContainer(
+        viewModel: RecordingViewModel,
+    ) {
         val uiState by viewModel.uiState.collectAsStateSafe()
         val audioProcessState = uiState.audioProcessState
 
@@ -148,13 +159,15 @@ class RecordingScreen(
                     viewModel.stopPlaying()
                 }
             )
-        }
 
-        return audioProcessState != null
+            Spacer(Modifier.height(24.dp))
+        }
     }
 
     @Composable
-    private fun DisplayInfoContainer() {
+    private fun DisplayInfoContainer(
+        viewModel: RecordingViewModel,
+    ) {
         val uiState by viewModel.uiState.collectAsStateSafe()
 
         // TODO: recomposition bugs
@@ -170,13 +183,13 @@ class RecordingScreen(
     }
 
     @Composable
-    private fun RecordHistoryContainer() {
-        val history by viewModel.uiState
-            .map { it.history }
-            .collectAsStateSafe(listOf())
+    private fun RecordHistoryContainer(
+        viewModel: RecordingViewModel,
+    ) {
+        val uiState by viewModel.uiState.collectAsStateSafe()
 
         RecordHistory(
-            history = history,
+            history = uiState.history,
             note = viewModel::getNote
         )
     }

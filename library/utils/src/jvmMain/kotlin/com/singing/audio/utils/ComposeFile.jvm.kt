@@ -1,9 +1,11 @@
 package com.singing.audio.utils
 
+import androidx.compose.runtime.Stable
 import java.io.File
 import java.io.InputStream
 import java.net.URI
 
+@Stable
 actual data class ComposeFile(
     val file: File,
 ) {

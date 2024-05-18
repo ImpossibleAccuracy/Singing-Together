@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.*
+import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.RecordPoint
@@ -24,7 +25,7 @@ import org.singing.app.ui.base.formatTimeString
 
 @Composable
 fun RecordHistory(
-    history: List<RecordPoint>,
+    history: ImmutableList<RecordPoint>,
     note: (Double) -> String,
 ) {
     var isHistoryVisible by remember { mutableStateOf(true) }

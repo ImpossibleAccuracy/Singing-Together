@@ -1,5 +1,6 @@
-package org.singing.app.domain.player
+package org.singing.app.ui.common.player
 
+import androidx.compose.runtime.Stable
 import com.singing.audio.player.AudioPlayer
 import com.singing.audio.player.PlayerState
 import com.singing.audio.player.multiplyPlayers
@@ -13,6 +14,7 @@ import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.repository.record.RecordRepository
 
 
+@Stable
 class RecordPlayer(
     private val recordRepository: RecordRepository,
 ) {

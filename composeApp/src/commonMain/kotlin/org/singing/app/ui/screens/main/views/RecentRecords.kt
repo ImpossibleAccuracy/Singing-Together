@@ -12,9 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.baseline_navigate_next_24
+import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
@@ -26,7 +29,7 @@ import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 
 data class RecentRecordsData(
     val user: AccountUiData?,
-    val records: List<RecordData>,
+    val records: ImmutableList<RecordData>,
     val showMainRecord: Boolean,
 )
 

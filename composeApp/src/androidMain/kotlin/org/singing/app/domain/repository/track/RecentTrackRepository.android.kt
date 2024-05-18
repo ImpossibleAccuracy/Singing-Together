@@ -1,6 +1,6 @@
 package org.singing.app.domain.repository.track
 
-import com.singing.audio.player.model.AudioFile
+import org.singing.app.domain.model.AudioFile
 import com.singing.audio.utils.ComposeFile
 import kotlin.random.Random.Default.nextLong
 

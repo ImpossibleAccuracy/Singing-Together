@@ -1,21 +1,25 @@
 package org.singing.app.ui.base
 
 import cafe.adriel.voyager.core.model.ScreenModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 
 abstract class AppViewModel : ScreenModel {
-    val viewModelScope: CoroutineScope by lazy { CoroutineScope(Dispatchers.Main) }
+    protected val viewModelScope: CoroutineScope by lazy { CoroutineScope(Dispatchers.Main) }
 
-    fun <T> Flow<List<T>>.stateIn() =
-        stateIn(
+    fun <T> Flow<List<T>>.stateIn(): StateFlow<ImmutableList<T>> = this
+        .map {
+            it.toImmutableList()
+        }
+        .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000),
-            listOf()
+            persistentListOf()
         )
 
     override fun onDispose() {

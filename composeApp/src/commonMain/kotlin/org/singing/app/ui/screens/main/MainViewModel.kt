@@ -6,7 +6,6 @@ import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecentTrack
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.repository.publication.PublicationRepository
-import org.singing.app.domain.player.RecordPlayer
 import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.domain.repository.track.RecentTrackRepository
 import org.singing.app.domain.store.account.UserContainer
@@ -24,7 +23,6 @@ class MainViewModel(
     publicationRepository: PublicationRepository,
     recordRepository: RecordRepository,
     private val recentTrackRepository: RecentTrackRepository,
-    val recordPlayer: RecordPlayer,
 ) : AppViewModel() {
     val records = recordRepository
         .getRecords()
@@ -38,21 +36,7 @@ class MainViewModel(
         .getRecentTracks()
         .stateIn()
 
-    private val _user = UserContainer.user
-    val user = _user.asStateFlow()
-
-
-    override fun onDispose() {
-        resetRecordPlayer()
-
-        super.onDispose()
-    }
-
-    fun resetRecordPlayer() {
-        viewModelScope.launch {
-            recordPlayer.reset()
-        }
-    }
+    val user = UserContainer.user.asStateFlow()
 
 
     fun updateRecentTrackFavourite(track: RecentTrack, isFavourite: Boolean) =

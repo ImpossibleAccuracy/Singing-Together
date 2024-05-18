@@ -8,13 +8,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.Publication
 import org.singing.app.ui.views.base.publication.PublicationCard
+import org.singing.app.ui.views.base.publication.publicationCardAppearance
 
 @Composable
 fun AccountPublications(
     modifier: Modifier = Modifier,
-    publications: List<Publication>,
+    publications: ImmutableList<Publication>,
     onAuthorClick: (Publication) -> Unit,
     navigatePublicationDetails: (Publication) -> Unit,
 ) {
@@ -28,8 +30,10 @@ fun AccountPublications(
     ) {
         items(publications) { item ->
             PublicationCard(
+                modifier = publicationCardAppearance(
+                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                ),
                 publication = item,
-                containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
                 onAuthorClick = {
                     onAuthorClick(item)
                 },

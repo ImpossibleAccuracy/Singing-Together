@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import com.singing.audio.utils.ComposeFile
 import javafx.application.Platform
 import javafx.stage.FileChooser
+import kotlinx.collections.immutable.ImmutableList
 import java.io.File
 import java.util.prefs.Preferences
 
@@ -16,7 +17,7 @@ private const val KEY = "LastDirectory"
 actual fun FilePicker(
     show: Boolean,
     initialDirectory: String?,
-    fileExtensions: List<String>,
+    fileExtensions: ImmutableList<String>,
     title: String?,
     onFileSelected: (ComposeFile?) -> Unit
 ) {

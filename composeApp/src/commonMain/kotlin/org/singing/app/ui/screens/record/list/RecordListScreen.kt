@@ -7,19 +7,23 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.async
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecordData
+import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
-import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.player.RecordPlayerScreen
+import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.record.details.views.RecordDetails
 import org.singing.app.ui.screens.record.details.views.RecordDetailsActions
 import org.singing.app.ui.screens.record.details.views.RecordDetailsData
@@ -28,23 +32,15 @@ import org.singing.app.ui.screens.record.list.views.RecordsListView
 
 class RecordListScreen(
     private val defaultSelectedRecord: RecordData? = null,
-) : AppScreen() {
+) : RecordPlayerScreen() {
     companion object {
         const val PUBLICATION_DESCRIPTION_MAX_LENGTH = 300
-    }
-
-    private var _viewModel: RecordListViewModel? = null
-
-    override fun onLeave() {
-        super.onLeave()
-
-        _viewModel?.resetRecordPlayer()
     }
 
     @Composable
     override fun Content() {
         val viewModel = viewModels<RecordListViewModel>()
-        _viewModel = viewModel
+        val recordPlayer = rememberRecordPlayer()
 
         val detailsVerticalScroll = rememberScrollState()
 
@@ -68,6 +64,8 @@ class RecordListScreen(
         }
 
         LaunchedEffect(selectedRecord) {
+            recordPlayer.reset()
+
             detailsVerticalScroll.animateScrollTo(0)
         }
 
@@ -144,7 +142,16 @@ class RecordListScreen(
                             )
                         }
                     } else {
+                        val coroutineScope = rememberCoroutineScope()
+
                         val user by viewModel.user.collectAsState()
+                        var recordPoints by remember { mutableStateOf<ImmutableList<RecordPoint>>(persistentListOf()) }
+
+                        LaunchedEffect(selectedRecord) {
+                            recordPoints = viewModel
+                                .getRecordPoints(selectedRecord)
+                                .toImmutableList()
+                        }
 
                         RecordDetails(
                             modifier = Modifier
@@ -156,9 +163,13 @@ class RecordListScreen(
                             data = RecordDetailsData(
                                 record = selectedRecord,
                                 user = user,
-                                player = viewModel.recordPlayer,
-                                publication = viewModel::getRecordPublication,
-                                recordPoints = viewModel::getRecordPoints,
+                                player = recordPlayer,
+                                publication = {
+                                    coroutineScope.async {
+                                        viewModel.getRecordPublication(it)
+                                    }
+                                },
+                                recordPoints = recordPoints,
                                 note = viewModel::getNote,
                             ),
                             actions = RecordDetailsActions(
@@ -176,7 +187,7 @@ class RecordListScreen(
     @Composable
     private fun RecordListContainer(
         modifier: Modifier = Modifier,
-        records: List<RecordData>,
+        records: ImmutableList<RecordData>,
         selectedRecord: RecordData?,
         onSelectedRecordChange: (RecordData) -> Unit,
     ) {

@@ -1,8 +1,8 @@
 package org.singing.app.domain.model
 
-import kotlinx.datetime.Instant
+import org.singing.app.domain.model.stable.StableInstant
 
 data class AccountInfo(
     val publicationsCount: Int,
-    val registeredAt: Instant,
+    val registeredAt: StableInstant,
 )

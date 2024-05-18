@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.PointAccuracy
 import org.singing.app.domain.model.RecordPoint
 import org.singing.app.ui.base.Space
@@ -21,7 +22,7 @@ import org.singing.app.ui.views.base.timeline.Timeline
 fun RecordTimeline(
     modifier: Modifier = Modifier,
     isTwoLineRecord: Boolean,
-    points: List<RecordPoint>,
+    points: ImmutableList<RecordPoint>,
     note: (Double) -> String,
 ) {
     Column(modifier = modifier) {

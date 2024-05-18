@@ -98,11 +98,14 @@ fun RecordDetailsCard(
             }
         }
 
-        AccountView(
-            username = HumanReadable.timeAgo(record.createdAt),
-            avatar = accountData?.avatar?.let {
+        val avatarPainter =
+            accountData?.avatar?.let {
                 rememberImagePainter(it)
-            },
+            }
+
+        AccountView(
+            username = HumanReadable.timeAgo(record.createdAt.instant),
+            avatar = { avatarPainter },
             showAvatar = accountData != null,
         )
     }

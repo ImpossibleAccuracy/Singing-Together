@@ -13,7 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.RecentTrack
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatTimeString
@@ -28,7 +31,7 @@ private val itemShape
 @Composable
 fun RecentTracks(
     listModifier: Modifier = Modifier,
-    tracks: List<RecentTrack>,
+    tracks: ImmutableList<RecentTrack>,
     onFavouriteChange: (RecentTrack, Boolean) -> Unit,
 ) {
     Column {
@@ -36,6 +39,8 @@ fun RecentTracks(
             text = "Recently used tracks",
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleMedium,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium,
         )
 
         Space(8.dp)
