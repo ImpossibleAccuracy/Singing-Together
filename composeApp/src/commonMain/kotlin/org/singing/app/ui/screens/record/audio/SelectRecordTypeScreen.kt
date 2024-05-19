@@ -1,4 +1,4 @@
-package org.singing.app.ui.screens.record.create
+package org.singing.app.ui.screens.record.audio
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,7 +23,7 @@ import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.ui.base.Space
-import org.singing.app.ui.screens.record.audio.SelectAudioScreen
+import org.singing.app.ui.screens.record.create.RecordingScreen
 
 class SelectRecordTypeScreen : Screen {
     @Composable

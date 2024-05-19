@@ -1,5 +1,6 @@
 package org.singing.app.ui.screens.account.profile
 
+import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -13,6 +14,7 @@ import org.singing.app.domain.repository.account.AccountRepository
 import org.singing.app.domain.repository.publication.PublicationRepository
 import org.singing.app.ui.base.AppViewModel
 
+@Stable
 class AccountProfileViewModel(
     private val publicationRepository: PublicationRepository,
     private val accountRepository: AccountRepository,

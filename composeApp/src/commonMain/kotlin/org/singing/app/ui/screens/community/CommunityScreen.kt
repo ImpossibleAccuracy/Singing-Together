@@ -28,7 +28,7 @@ import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.community.views.*
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
-import org.singing.app.ui.screens.record.create.SelectRecordTypeScreen
+import org.singing.app.ui.screens.record.audio.SelectRecordTypeScreen
 import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
 import org.singing.app.ui.views.base.publication.publicationCardAppearance
 
@@ -44,7 +44,6 @@ class CommunityScreen : RecordPlayerScreen() {
     override fun Content() {
         val viewModel = viewModels<CommunityViewModel>()
         val player = rememberRecordPlayer()
-        val navigator = LocalNavigator.currentOrThrow
 
         val verticalScroll = rememberScrollState()
 
@@ -59,24 +58,15 @@ class CommunityScreen : RecordPlayerScreen() {
                         top = 16.dp,
                         bottom = 24.dp,
                     ),
+                verticalArrangement = Arrangement.spacedBy(36.dp),
             ) {
-                WelcomeView(
-                    modifier = Modifier.fillMaxWidth(),
-                    onActionClick = {
-                        if (viewModel.uiState.value.isUserAuthorized) {
-                            navigator.push(
-                                SelectRecordTypeScreen()
-                            )
-                        } else {
-                            // TODO: navigate to auth
-                        }
-                    }
+                WelcomeViewContainer(
+                    viewModel = viewModel,
                 )
 
-                Spacer(Modifier.height(36.dp))
-
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(24.dp),
                 ) {
                     Box(
                         modifier = Modifier.weight(5f)
@@ -87,8 +77,6 @@ class CommunityScreen : RecordPlayerScreen() {
                             viewModel = viewModel,
                         )
                     }
-
-                    Space(24.dp)
 
                     Box(
                         modifier = Modifier.weight(4f)
@@ -101,23 +89,44 @@ class CommunityScreen : RecordPlayerScreen() {
                     }
                 }
 
-                Spacer(Modifier.height(36.dp))
-
-                PublicationSearchFiltersContainer(
+                Column(
                     modifier = Modifier.fillMaxWidth(),
-                    viewModel = viewModel,
-                )
+                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                ) {
+                    PublicationSearchFiltersContainer(
+                        modifier = Modifier.fillMaxWidth(),
+                        viewModel = viewModel,
+                    )
 
-                Spacer(Modifier.height(24.dp))
-
-                PublicationSearchResultContainer(
-                    modifier = Modifier.fillMaxWidth(),
-                    gridModifier = Modifier.connectVerticalNestedScroll(10000.dp, verticalScroll),
-                    viewModel = viewModel,
-                    player = player,
-                )
+                    PublicationSearchResultContainer(
+                        modifier = Modifier.fillMaxWidth(),
+                        gridModifier = Modifier.connectVerticalNestedScroll(10000.dp, verticalScroll),
+                        viewModel = viewModel,
+                        player = player,
+                    )
+                }
             }
         }
+    }
+
+    @Composable
+    private fun WelcomeViewContainer(
+        viewModel: CommunityViewModel,
+    ) {
+        val navigator = LocalNavigator.currentOrThrow
+
+        WelcomeView(
+            modifier = Modifier.fillMaxWidth(),
+            onActionClick = {
+                if (viewModel.uiState.value.isUserAuthorized) {
+                    navigator.push(
+                        SelectRecordTypeScreen()
+                    )
+                } else {
+                    // TODO: navigate to auth
+                }
+            }
+        )
     }
 
     @Composable

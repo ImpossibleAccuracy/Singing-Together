@@ -30,8 +30,8 @@ import org.singing.app.ui.views.base.publication.PublicationCard
 import org.singing.app.ui.views.base.publication.publicationCardAppearance
 import org.singing.app.ui.views.shared.player.PlayerView
 
-class PublicationDetailsScreen(
-    private val requestedPublication: Publication,
+data class PublicationDetailsScreen(
+    val requestedPublication: Publication,
 ) : RecordPlayerScreen() {
     @Composable
     override fun Content() {

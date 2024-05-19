@@ -1,5 +1,6 @@
 package org.singing.app.ui.views.base
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -11,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import org.singing.app.ui.base.Space
 
 @Composable
 fun IconLabel(
@@ -24,6 +24,7 @@ fun IconLabel(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (leadingIcon != null) {
             Icon(
@@ -32,8 +33,6 @@ fun IconLabel(
                 tint = color,
                 contentDescription = "",
             )
-
-            Space(8.dp)
         }
 
         Text(
@@ -43,14 +42,11 @@ fun IconLabel(
         )
 
         if (trailingIcon != null) {
-            Space(8.dp)
-
             Icon(
                 imageVector = trailingIcon,
                 tint = color,
                 contentDescription = "",
             )
         }
-
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import org.singing.app.ui.screens.record.create.views.DisplayInfo
 import org.singing.app.ui.screens.record.create.views.RecordHistory
 import org.singing.app.ui.views.shared.player.PlayerView
 
+@Stable
 class RecordingScreen(
     private val audio: AudioProcessState? = null,
     private var isNewInstance: Boolean = true,

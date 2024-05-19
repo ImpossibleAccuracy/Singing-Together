@@ -1,8 +1,6 @@
 package org.singing.app.ui.screens.community.views
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -10,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -18,16 +15,24 @@ import com.dokar.chiptextfield.Chip
 import com.dokar.chiptextfield.ChipTextFieldState
 import org.singing.app.domain.model.PublicationSort
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.base.cardAppearance
 import org.singing.app.ui.views.base.AppChipTextField
 
 
-private val SearchChipModifier
-    @Composable
-    get() = Modifier
-        .height(40.dp)
-        .border(1.dp, MaterialTheme.colorScheme.outlineVariant, MaterialTheme.shapes.small)
-        .clip(MaterialTheme.shapes.small)
-        .background(MaterialTheme.colorScheme.surfaceContainerLow)
+@Composable
+@ReadOnlyComposable
+private fun Modifier.searchChipAppearance(
+    onClick: () -> Unit,
+    padding: PaddingValues,
+) = Modifier
+    .height(40.dp)
+    .cardAppearance(
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        shape = MaterialTheme.shapes.small,
+        background = MaterialTheme.colorScheme.surfaceContainerLow,
+        padding = padding,
+        onClick = onClick,
+    )
 
 
 data class PublicationSearchData(
@@ -65,87 +70,89 @@ fun PublicationSearchFilters(
 
         Space(12.dp)
 
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            AppChipTextField(
-                modifier = Modifier
-                    .weight(1f)
-                    .width(720.dp),
-                shape = MaterialTheme.shapes.medium,
-                borderColor = MaterialTheme.colorScheme.outlineVariant,
-                readOnlyChips = true,
-                label = "Search by tags",
-                state = data.tags,
-                value = data.currentTagText,
-                onValueChange = actions.onTagTextUpdated,
-                onSubmit = actions.onTagSubmit,
-                onRemove = actions.onTagRemove,
-            )
-
-            Row(
-                modifier = Modifier.padding(top = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                ShowUserPublicationsChip(
-                    value = data.showUserPublications,
-                    onValueChanged = actions.onShowUserPublicationsChanged,
+                AppChipTextField(
+                    modifier = Modifier
+                        .weight(1f)
+                        .width(720.dp),
+                    shape = MaterialTheme.shapes.medium,
+                    borderColor = MaterialTheme.colorScheme.outlineVariant,
+                    readOnlyChips = true,
+                    label = "Search by tags",
+                    state = data.tags,
+                    value = data.currentTagText,
+                    onValueChange = actions.onTagTextUpdated,
+                    onSubmit = actions.onTagSubmit,
+                    onRemove = actions.onTagRemove,
                 )
 
-                Box {
-                    var expanded by remember { mutableStateOf(false) }
-
-                    SortChip(
-                        sortType = data.sortType,
-                        onClick = {
-                            expanded = true
-                        },
+                Row(
+                    modifier = Modifier.padding(top = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    ShowUserPublicationsChip(
+                        value = data.showUserPublications,
+                        onValueChanged = actions.onShowUserPublicationsChanged,
                     )
 
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = {
-                            expanded = false
-                        }
-                    ) {
-                        PublicationSort.entries.forEach {
-                            DropdownMenuItem(
-                                text = {
-                                    Text(text = getSortTypeText(it))
-                                },
-                                onClick = {
-                                    actions.onSortTypeChanged(it)
+                    Box {
+                        var expanded by remember { mutableStateOf(false) }
 
-                                    expanded = false
-                                }
-                            )
+                        SortChip(
+                            sortType = data.sortType,
+                            onClick = {
+                                expanded = true
+                            },
+                        )
+
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = {
+                                expanded = false
+                            }
+                        ) {
+                            PublicationSort.entries.forEach {
+                                DropdownMenuItem(
+                                    text = {
+                                        Text(text = getSortTypeText(it))
+                                    },
+                                    onClick = {
+                                        actions.onSortTypeChanged(it)
+
+                                        expanded = false
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
+
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.medium,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
+                ),
+                value = data.description,
+                onValueChange = actions.onDescriptionUpdated,
+                label = {
+                    Text(
+                        text = "Search by description",
+                        lineHeight = 1.5.em,
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                },
+            )
         }
-
-        Space(8.dp)
-
-        OutlinedTextField(
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                unfocusedBorderColor = MaterialTheme.colorScheme.outlineVariant,
-            ),
-            value = data.description,
-            onValueChange = actions.onDescriptionUpdated,
-            label = {
-                Text(
-                    text = "Search by description",
-                    lineHeight = 1.5.em,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-            },
-        )
     }
 }
 
@@ -155,14 +162,15 @@ private fun ShowUserPublicationsChip(
     onValueChanged: (Boolean) -> Unit,
 ) {
     Row(
-        modifier = SearchChipModifier
-            .clickable {
-                onValueChanged(!value)
-            }
-            .padding(
+        modifier = Modifier.searchChipAppearance(
+            padding = PaddingValues(
                 start = 16.dp,
                 end = 16.dp,
             ),
+            onClick = {
+                onValueChanged(!value)
+            },
+        ),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(
@@ -190,12 +198,14 @@ private fun SortChip(
     onClick: () -> Unit,
 ) {
     Row(
-        modifier = SearchChipModifier
+        modifier = Modifier
             .widthIn(min = 224.dp)
-            .clickable(onClick = onClick)
-            .padding(
-                start = 16.dp,
-                end = 16.dp,
+            .searchChipAppearance(
+                padding = PaddingValues(
+                    start = 16.dp,
+                    end = 16.dp,
+                ),
+                onClick = onClick,
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center,

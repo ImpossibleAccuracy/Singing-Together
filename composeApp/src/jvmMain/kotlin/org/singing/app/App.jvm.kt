@@ -1,44 +1,93 @@
 package org.singing.app
 
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
-import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.app_name
-import com.singing.app.composeapp.generated.resources.title_record_screen
+import cafe.adriel.voyager.navigator.Navigator
 import org.jetbrains.compose.resources.stringResource
-import org.singing.app.ui.screens.main.MainScreen
-import org.singing.app.ui.screens.record.audio.SelectAudioScreen
-import org.singing.app.ui.screens.record.create.RecordingScreen
-import org.singing.app.ui.screens.record.create.SelectRecordTypeScreen
+import org.jetbrains.compose.resources.vectorResource
+import org.singing.app.ui.base.Space
+import org.singing.app.ui.common.navigation.FabScreen
+import org.singing.app.ui.common.navigation.NoNavigationScreen
+import org.singing.app.ui.navigation.NavigationItems
+
 
 @Composable
-internal actual fun getScreenTitle(screen: Screen): String =
-    when (screen) {
-        is MainScreen -> stringResource(Res.string.app_name)
-        is SelectRecordTypeScreen -> stringResource(Res.string.title_record_screen)
-        is SelectAudioScreen -> stringResource(Res.string.title_record_screen)
-        is RecordingScreen -> stringResource(Res.string.title_record_screen)
+actual fun NavigationAppearance(
+    navigator: Navigator,
+    onNavigateUp: (screen: Screen) -> Unit,
+    content: @Composable BoxScope.() -> Unit
+) {
+    Scaffold(
+        modifier = Modifier.systemBarsPadding(),
+        containerColor = MaterialTheme.colorScheme.background,
+    ) { paddingValues ->
+        Row(Modifier.padding(paddingValues)) {
+            val currentScreen = navigator.lastItemOrNull
 
-        else -> screen.key
+            if (currentScreen !is NoNavigationScreen) {
+                NavigationRail(
+                    modifier = Modifier.padding(
+                        top = 44.dp,
+                        bottom = 56.dp,
+                    )
+                ) {
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Menu,
+                            contentDescription = "",
+                        )
+                    }
+
+                    if (currentScreen is FabScreen) {
+                        currentScreen.Fab()
+                    }
+
+                    if (currentScreen is FabScreen) {
+                        Space(40.dp)
+                    } else {
+                        Space(100.dp)
+                    }
+
+                    NavigationItems.forEach {
+                        val title = stringResource(it.title)
+                        val icon = vectorResource(it.icon)
+
+                        NavigationRailItem(
+                            selected = if (currentScreen == null) false else it.isInstance(currentScreen),
+                            label = { Text(title) },
+                            icon = {
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = title,
+                                )
+                            },
+                            onClick = {
+                                val screen = it.screenProvider()
+
+                                navigator.popUntilRoot()
+                                navigator.replace(screen)
+                            }
+                        )
+                    }
+                }
+            }
+
+            Space(12.dp)
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                content = content,
+            )
+        }
     }
-
-@Composable
-@ReadOnlyComposable
-internal actual fun isRootNavigationItem(screen: Screen): Boolean =
-    when (screen) {
-        is MainScreen -> true
-        else -> false
-    }
-
-@Composable
-@ReadOnlyComposable
-internal actual fun getTopAppBarColors(screen: Screen): Pair<Color, Color>? =
-    when (screen) {
-        is SelectRecordTypeScreen, is SelectAudioScreen ->
-            MaterialTheme.colorScheme.primaryContainer to MaterialTheme.colorScheme.onPrimaryContainer
-
-        else -> null
-    }
+}

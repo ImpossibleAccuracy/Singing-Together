@@ -1,5 +1,6 @@
 package org.singing.app.ui.screens.record.create.viewmodel
 
+import androidx.compose.runtime.Stable
 import com.singing.audio.player.PlayerState
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.delay
@@ -16,6 +17,7 @@ import org.singing.app.ui.screens.record.create.viewmodel.usecase.InputListener
 import org.singing.app.ui.screens.record.create.viewmodel.usecase.PlayerHelper
 import org.singing.app.ui.screens.record.create.viewmodel.usecase.RecordHelper
 
+@Stable
 class RecordingViewModel(
     private val findNoteUseCase: FindNoteUseCase,
     private val recordRepository: RecordRepository,
@@ -81,10 +83,6 @@ class RecordingViewModel(
             }
         },
         onBeforeRecord = {
-            if (isPlaying) {
-                startPlaying()
-            }
-
             _uiState.update {
                 it.copy(
                     playerPosition = 0,
@@ -92,15 +90,13 @@ class RecordingViewModel(
                     history = persistentListOf(),
                 )
             }
+
+            startPlaying()
         },
         onRecordDone = { result ->
-            viewModelScope.launch {
-                recordRepository.saveRecord(
-                    history = uiState.value.history,
-                    voiceRecord = result,
-                    audioTrack = uiState.value.audioProcessState?.selectedAudio
-                )
-            }
+            stopPlaying()
+
+            onRecordReady(result)
         },
     )
 
@@ -153,8 +149,20 @@ class RecordingViewModel(
         super.onDispose()
     }
 
+    // ---------------- MAIN FUNCTIONS ----------------
 
-    // ---------------- USER FUNCTIONS ----------------
+    private fun onRecordReady(result: ByteArray) {
+        viewModelScope.launch {
+            /*recordRepository.saveRecord(
+                history = uiState.value.history,
+                voiceRecord = result,
+                audioTrack = uiState.value.audioProcessState?.selectedAudio
+            )*/
+        }
+    }
+
+
+    // ---------------- AUDIO FUNCTIONS ----------------
 
     fun getNote(frequency: Double): String =
         findNoteUseCase(frequency)
@@ -178,11 +186,9 @@ class RecordingViewModel(
 
 
     fun setPlayerPosition(newPosition: Long) {
-        viewModelScope.launch {
-            assertNotRecording()
+        assertNotRecording()
 
-            playerHelper.setPosition(newPosition)
-        }
+        playerHelper.setPosition(newPosition)
     }
 
     fun setProcessedAudio(audioProcessState: AudioProcessState) {

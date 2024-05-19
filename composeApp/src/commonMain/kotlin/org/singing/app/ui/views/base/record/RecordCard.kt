@@ -1,7 +1,6 @@
-package org.singing.app.ui.views.base.record.card
+package org.singing.app.ui.views.base.record
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -13,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import nl.jacobras.humanreadable.HumanReadable
 import org.singing.app.domain.model.RecordData
-import org.singing.app.ui.base.Space
+import org.singing.app.ui.base.cardAppearance
 import org.singing.app.ui.base.formatTimeString
 
 @Composable
@@ -65,15 +64,16 @@ fun RecordCard(
     onClick: (() -> Unit)? = null,
 ) {
     Row(
-        verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .heightIn(min = 84.dp)
-            .clip(shape = MaterialTheme.shapes.medium)
-            .background(color = containerColor)
-            .clickable(enabled = onClick != null) {
-                onClick?.invoke()
-            }
-            .padding(horizontal = 16.dp)
+            .cardAppearance(
+                shape = MaterialTheme.shapes.medium,
+                background = containerColor,
+                padding = PaddingValues(horizontal = 16.dp),
+                onClick = onClick,
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         if (accuracy != null) {
             Box(
@@ -89,8 +89,6 @@ fun RecordCard(
                     style = MaterialTheme.typography.labelLarge,
                 )
             }
-
-            Space(16.dp)
         }
 
         Column(
@@ -108,8 +106,6 @@ fun RecordCard(
                 style = MaterialTheme.typography.bodyLarge,
             )
         }
-
-        Space(16.dp)
 
         Text(
             text = duration,

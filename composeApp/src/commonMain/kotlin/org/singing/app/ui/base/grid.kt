@@ -9,14 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun ColumnScope.Space(value: Dp) =
     Spacer(Modifier.height(value))
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun RowScope.Space(value: Dp) =
     Spacer(Modifier.width(value))
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun ColumnScope.Divider(
     modifier: Modifier = Modifier,
@@ -26,6 +29,7 @@ fun ColumnScope.Divider(
     color = color,
 )
 
+@Suppress("UnusedReceiverParameter")
 @Composable
 fun RowScope.Divider(
     modifier: Modifier = Modifier,

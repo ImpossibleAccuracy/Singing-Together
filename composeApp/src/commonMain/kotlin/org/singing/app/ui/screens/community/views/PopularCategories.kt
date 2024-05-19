@@ -1,14 +1,12 @@
 package org.singing.app.ui.screens.community.views
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,6 +18,7 @@ import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.CategoryInfo
 import org.singing.app.ui.base.Space
+import org.singing.app.ui.base.cardAppearance
 
 
 @Composable
@@ -31,86 +30,109 @@ fun PopularCategories(
     isCategoriesLoading: Boolean = true,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
         modifier = modifier
-            .clip(shape)
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
-            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, shape)
-            .padding(16.dp)
+            .cardAppearance(
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                shape = shape,
+                background = MaterialTheme.colorScheme.surfaceContainerLow,
+                padding = PaddingValues(16.dp)
+            ),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = "Popular categories",
-                color = MaterialTheme.colorScheme.onSurface,
-                style = TextStyle(
-                    fontSize = 22.sp,
-                    fontWeight = FontWeight.Black,
-                )
-            )
+        CategoriesHeader()
 
-            Space(4.dp)
+        when {
+            isCategoriesLoading -> {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
 
-            Text(
-                text = "For the last day",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.labelLarge,
-            )
-        }
+            categories.isEmpty() -> {
+                // TODO: add EmptyView
+            }
 
-        if (isCategoriesLoading) {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(
-                    color = MaterialTheme.colorScheme.primary,
+            else -> {
+                CategoriesList(
+                    listModifier = listModifier,
+                    categories = categories
                 )
             }
-        } else if (categories.isEmpty()) {
-            // TODO: add EmptyView
-        } else {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                modifier = listModifier.fillMaxWidth(),
+        }
+    }
+}
+
+@Composable
+private fun CategoriesHeader() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = "Popular categories",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = TextStyle(
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Black,
+            )
+        )
+
+        Text(
+            text = "For the last day",
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.labelLarge,
+        )
+    }
+}
+
+@Composable
+private fun CategoriesList(
+    listModifier: Modifier,
+    categories: ImmutableList<CategoryInfo>
+) {
+    LazyColumn(
+        modifier = listModifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        items(categories.size) {
+            val item = categories[it]
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                items(categories.size) {
-                    val item = categories[it]
+                Column(
+                    modifier = Modifier.weight(weight = 1f),
+                ) {
+                    Text(
+                        text = item.title,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
 
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Column(
-                            modifier = Modifier.weight(weight = 1f),
-                        ) {
-                            Text(
-                                text = item.title,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.titleMedium,
-                            )
+                    Text(
+                        text = "${item.publications} publications",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
 
-                            Text(
-                                text = "${item.publications} publications",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.labelMedium,
-                            )
-                        }
+                Space(12.dp)
 
-                        Space(12.dp)
+                IconButton(
+                    onClick = {
 
-                        IconButton(
-                            onClick = {
-
-                            }
-                        ) {
-                            Icon(
-                                imageVector = vectorResource(Res.drawable.baseline_navigate_next_24),
-                                tint = MaterialTheme.colorScheme.onSurface,
-                                contentDescription = "",
-                            )
-                        }
                     }
+                ) {
+                    Icon(
+                        imageVector = vectorResource(Res.drawable.baseline_navigate_next_24),
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        contentDescription = "",
+                    )
                 }
             }
         }

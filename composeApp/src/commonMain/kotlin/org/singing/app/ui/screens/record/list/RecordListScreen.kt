@@ -1,5 +1,6 @@
 package org.singing.app.ui.screens.record.list
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -22,6 +23,7 @@ import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.record.details.views.RecordDetails
@@ -44,30 +46,21 @@ class RecordListScreen(
 
         val detailsVerticalScroll = rememberScrollState()
 
+        LaunchedEffect(defaultSelectedRecord) {
+            viewModel.setSelectedRecord(defaultSelectedRecord)
+        }
+
         val isLoadingRecords by viewModel.isLoadingRecords.collectAsStateSafe()
         val records by viewModel.records.collectAsStateSafe()
-        val selectedRecordIndex by viewModel.selectedRecord.collectAsState()
-
-        LaunchedEffect(defaultSelectedRecord, records) {
-            if (viewModel.selectedRecord.value == -1) {
-                if (defaultSelectedRecord == null) {
-                    viewModel.selectedRecord.value = 0
-                } else {
-                    viewModel.selectedRecord.value = records.indexOf(defaultSelectedRecord)
-                }
-            }
-        }
-
-        val selectedRecord = when {
-            selectedRecordIndex == -1 || records.isEmpty() -> defaultSelectedRecord
-            else -> records[selectedRecordIndex]
-        }
+        val selectedRecord by viewModel.selectedRecord.collectAsState()
 
         LaunchedEffect(selectedRecord) {
             recordPlayer.reset()
 
             detailsVerticalScroll.animateScrollTo(0)
         }
+
+        val currentSelectedRecord = selectedRecord
 
         ContentContainer {
             Row(
@@ -83,7 +76,7 @@ class RecordListScreen(
                         end = 24.dp,
                     )
             ) {
-                if (records.isEmpty() && selectedRecord == null) {
+                if (records.isEmpty() && currentSelectedRecord == null) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center,
@@ -117,9 +110,9 @@ class RecordListScreen(
                             RecordListContainer(
                                 modifier = Modifier.fillMaxWidth(),
                                 records = records,
-                                selectedRecord = selectedRecord,
+                                selectedRecord = currentSelectedRecord,
                                 onSelectedRecordChange = {
-                                    viewModel.selectedRecord.value = records.indexOf(it)
+                                    viewModel.setSelectedRecord(it)
                                 }
                             )
 
@@ -130,57 +123,73 @@ class RecordListScreen(
                         Space(16.dp)
                     }
 
-                    if (selectedRecord == null) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Text(
-                                text = "Select record",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.headlineSmall,
-                            )
-                        }
-                    } else {
-                        val coroutineScope = rememberCoroutineScope()
-
-                        val user by viewModel.user.collectAsState()
-                        var recordPoints by remember { mutableStateOf<ImmutableList<RecordPoint>>(persistentListOf()) }
-
-                        LaunchedEffect(selectedRecord) {
-                            recordPoints = viewModel
-                                .getRecordPoints(selectedRecord)
-                                .toImmutableList()
-                        }
-
-                        RecordDetails(
-                            modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
-                                .verticalScroll(
-                                    state = detailsVerticalScroll
-                                ),
-                            data = RecordDetailsData(
-                                record = selectedRecord,
-                                user = user,
-                                player = recordPlayer,
-                                publication = {
-                                    coroutineScope.async {
-                                        viewModel.getRecordPublication(it)
-                                    }
-                                },
-                                recordPoints = recordPoints,
-                                note = viewModel::getNote,
-                            ),
-                            actions = RecordDetailsActions(
-                                uploadRecord = viewModel::uploadRecord,
-                                publishRecord = viewModel::publishRecord,
-                                deleteRecord = viewModel::deleteRecord,
-                            )
-                        )
-                    }
+                    RecordDetailsContainer(
+                        modifier = Modifier.weight(1f),
+                        scrollState = detailsVerticalScroll,
+                        viewModel = viewModel,
+                        recordPlayer = recordPlayer,
+                        selectedRecord = currentSelectedRecord,
+                    )
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun RecordDetailsContainer(
+        modifier: Modifier = Modifier,
+        scrollState: ScrollState,
+        viewModel: RecordListViewModel,
+        recordPlayer: RecordPlayer,
+        selectedRecord: RecordData?,
+    ) {
+        if (selectedRecord == null) {
+            Box(
+                modifier = modifier,
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = "Select record",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.headlineSmall,
+                )
+            }
+        } else {
+            val coroutineScope = rememberCoroutineScope()
+
+            val user by viewModel.user.collectAsState()
+            var recordPoints by remember { mutableStateOf<ImmutableList<RecordPoint>>(persistentListOf()) }
+
+            LaunchedEffect(selectedRecord) {
+                recordPoints = viewModel
+                    .getRecordPoints(selectedRecord)
+                    .toImmutableList()
+            }
+
+            RecordDetails(
+                modifier = modifier
+                    .fillMaxHeight()
+                    .verticalScroll(
+                        state = scrollState
+                    ),
+                data = RecordDetailsData(
+                    record = selectedRecord,
+                    user = user,
+                    player = recordPlayer,
+                    publication = {
+                        coroutineScope.async {
+                            viewModel.getRecordPublication(it)
+                        }
+                    },
+                    recordPoints = recordPoints,
+                    note = viewModel::getNote,
+                ),
+                actions = RecordDetailsActions(
+                    uploadRecord = viewModel::uploadRecord,
+                    publishRecord = viewModel::publishRecord,
+                    deleteRecord = viewModel::deleteRecord,
+                )
+            )
         }
     }
 

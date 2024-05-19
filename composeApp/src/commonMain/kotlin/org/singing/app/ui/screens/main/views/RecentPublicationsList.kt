@@ -60,50 +60,13 @@ fun RecentPublicationsList(
                 style = MaterialTheme.typography.bodyMedium,
             )
         } else {
-            LazyColumn(
-                modifier = listModifier.fillMaxWidth()
-            ) {
-                item {
-                    val item = publications.first()
-
-                    PublicationCardWithPlayer(
-                        publication = item,
-                        player = player,
-                        contentColor = MaterialTheme.colorScheme.primary,
-                        inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer,
-                        onAuthorClick = {
-                            onAuthorClick(item)
-                        },
-                        navigatePublicationDetails = {
-                            navigatePublicationDetails(item)
-                        },
-                    )
-
-                    if (publications.size > 1) {
-                        Space(12.dp)
-                    }
-                }
-
-                if (publications.size > 1) {
-                    items(publications.size - 1) { index ->
-                        val item = publications[index + 1]
-
-                        PublicationCard(
-                            publication = item,
-                            onAuthorClick = {
-                                onAuthorClick(item)
-                            },
-                            navigatePublicationDetails = {
-                                navigatePublicationDetails(item)
-                            },
-                        )
-
-                        if (index != publications.lastIndex) {
-                            Space(12.dp)
-                        }
-                    }
-                }
-            }
+            PublicationsList(
+                listModifier = listModifier,
+                publications = publications,
+                player = player,
+                onAuthorClick = onAuthorClick,
+                navigatePublicationDetails = navigatePublicationDetails,
+            )
 
             Space(8.dp)
 
@@ -124,6 +87,53 @@ fun RecentPublicationsList(
                         style = MaterialTheme.typography.labelLarge,
                     )
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PublicationsList(
+    listModifier: Modifier,
+    publications: ImmutableList<Publication>,
+    player: RecordPlayer,
+    onAuthorClick: (Publication) -> Unit,
+    navigatePublicationDetails: (Publication) -> Unit
+) {
+    LazyColumn(
+        modifier = listModifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        item {
+            val item = publications.first()
+
+            PublicationCardWithPlayer(
+                publication = item,
+                player = player,
+                contentColor = MaterialTheme.colorScheme.primary,
+                inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                onAuthorClick = {
+                    onAuthorClick(item)
+                },
+                navigatePublicationDetails = {
+                    navigatePublicationDetails(item)
+                },
+            )
+        }
+
+        if (publications.size > 1) {
+            items(publications.size - 1) { index ->
+                val item = publications[index + 1]
+
+                PublicationCard(
+                    publication = item,
+                    onAuthorClick = {
+                        onAuthorClick(item)
+                    },
+                    navigatePublicationDetails = {
+                        navigatePublicationDetails(item)
+                    },
+                )
             }
         }
     }

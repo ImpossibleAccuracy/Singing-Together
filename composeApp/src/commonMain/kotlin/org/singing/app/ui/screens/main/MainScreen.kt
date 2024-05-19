@@ -3,6 +3,12 @@ package org.singing.app.ui.screens.main
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -17,23 +23,31 @@ import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.navigation.FabScreen
 import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.main.views.*
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
-import org.singing.app.ui.screens.record.create.SelectRecordTypeScreen
+import org.singing.app.ui.screens.record.audio.SelectRecordTypeScreen
 import org.singing.app.ui.screens.record.list.RecordListScreen
 import org.singing.app.ui.views.shared.record.DeleteRecordDialog
 import org.singing.app.ui.views.shared.record.PublishRecordDialog
 import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 import kotlin.math.max
 
-class MainScreen : RecordPlayerScreen() {
+class MainScreen : RecordPlayerScreen(), FabScreen {
+    override fun onClose() {
+        super.onClose()
+
+        scope.close()
+    }
+
     @Composable
     override fun Content() {
-        val viewModel = viewModels<MainViewModel>(true)
+        val viewModel = viewModels<MainViewModel>(scope)
+
         val recordPlayer = rememberRecordPlayer()
 
         val verticalScroll = rememberScrollState()
@@ -94,6 +108,24 @@ class MainScreen : RecordPlayerScreen() {
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    override fun Fab() {
+        val viewModel = viewModels<MainViewModel>(scope)
+
+        FloatingActionButton(
+            elevation = FloatingActionButtonDefaults.elevation(0.dp),
+            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+            onClick = {
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Edit,
+                contentDescription = "",
+            )
         }
     }
 

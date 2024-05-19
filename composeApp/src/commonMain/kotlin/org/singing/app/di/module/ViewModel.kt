@@ -8,12 +8,15 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import org.koin.compose.getKoin
 import org.koin.core.module.dsl.factoryOf
+import org.koin.core.module.dsl.scopedOf
 import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
+import org.koin.core.scope.Scope
 import org.koin.dsl.module
-import org.singing.app.ui.screens.account.profile.AccountProfileViewModel
 import org.singing.app.ui.common.player.RecordPlayerViewModel
+import org.singing.app.ui.screens.account.profile.AccountProfileViewModel
 import org.singing.app.ui.screens.community.CommunityViewModel
+import org.singing.app.ui.screens.main.MainScreen
 import org.singing.app.ui.screens.main.MainViewModel
 import org.singing.app.ui.screens.publication.details.PublicationDetailsViewModel
 import org.singing.app.ui.screens.record.audio.SelectAudioViewModel
@@ -24,7 +27,11 @@ import org.singing.app.ui.screens.record.list.RecordListViewModel
 val viewModelsModule = module {
     factoryOf(::RecordPlayerViewModel)
 
-    factoryOf(::MainViewModel)
+    scope<MainScreen> {
+        scopedOf(::MainViewModel)
+    }
+//    factoryOf(::MainViewModel)
+
     factoryOf(::RecordListViewModel)
     factoryOf(::RecordDetailsViewModel)
     factoryOf(::PublicationDetailsViewModel)
@@ -32,6 +39,15 @@ val viewModelsModule = module {
     factoryOf(::CommunityViewModel)
     factoryOf(::SelectAudioViewModel)
     factoryOf(::RecordingViewModel)
+}
+
+@Composable
+inline fun <reified T : ScreenModel> Screen.viewModels(
+    scope: Scope,
+    qualifier: Qualifier? = null,
+    noinline parameters: ParametersDefinition? = null
+): T = rememberScreenModel(tag = qualifier?.value) {
+    scope.get<T>(qualifier, parameters)
 }
 
 @Composable

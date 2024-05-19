@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.base.record.points
+package org.singing.app.ui.views.base.record
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme

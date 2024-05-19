@@ -1,15 +1,16 @@
 package org.singing.app.ui.screens.account.profile
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -19,29 +20,24 @@ import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Divider
-import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.views.AccountBanner
 import org.singing.app.ui.screens.account.profile.views.AccountPublications
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
-import org.singing.app.ui.views.shared.publication.MainPublicationCard
 
-class AccountProfileScreen(
-    private val requestedAccount: AccountUiData,
+data class AccountProfileScreen(
+    val requestedAccount: AccountUiData,
 ) : RecordPlayerScreen() {
     @Composable
     override fun Content() {
         val viewModel = viewModels<AccountProfileViewModel>()
         val recordPlayer = rememberRecordPlayer()
 
-        val navigator = LocalNavigator.currentOrThrow
-        val coroutineScope = rememberCoroutineScope()
-
         val accountInfo by viewModel.accountInfo.collectAsStateSafe()
-        val publications by viewModel.publication.collectAsStateSafe()
 
         val verticalScroll = rememberScrollState()
 
@@ -60,6 +56,7 @@ class AccountProfileScreen(
                         top = 16.dp,
                         bottom = 24.dp,
                     ),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
                 AccountBanner(
                     modifier = Modifier.fillMaxWidth(),
@@ -67,81 +64,54 @@ class AccountProfileScreen(
                     accountInfo = accountInfo,
                 )
 
-                Space(24.dp)
-
                 Divider(Modifier.padding(horizontal = 24.dp))
 
-                Space(24.dp)
-
-                if (publications.isEmpty()) {
-                    // TODO: replace with EmptyView
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(24.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = "${requestedAccount.username} didn't publish anything.",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.headlineSmall,
-                        )
-                    }
-                } else {
-                    Text(
-                        text = "Publications",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-
-                    Space(8.dp)
-
-                    Box {
-                        val mainPublication = publications.first()
-
-                        MainPublicationCard(
-                            publication = mainPublication,
-                            player = recordPlayer,
-                            onNavigateToDetails = {
-                                navigator.push(
-                                    PublicationDetailsScreen(
-                                        requestedPublication = mainPublication,
-                                    )
-                                )
-                            }
-                        )
-                    }
-
-                    if (publications.size > 1) {
-                        Space(12.dp)
-
-                        AccountPublications(
-                            modifier = Modifier.connectVerticalNestedScroll(10000.dp, verticalScroll),
-                            publications = publications.subList(1, publications.size),
-                            onAuthorClick = {
-                                if (it.author.id == requestedAccount.id) {
-                                    coroutineScope.launch {
-                                        verticalScroll.animateScrollTo(0)
-                                    }
-                                } else {
-                                    navigator.push(
-                                        AccountProfileScreen(
-                                            requestedAccount = it.author,
-                                        )
-                                    )
-                                }
-                            },
-                            navigatePublicationDetails = {
-                                navigator.push(
-                                    PublicationDetailsScreen(
-                                        requestedPublication = it,
-                                    )
-                                )
-                            },
-                        )
-                    }
-                }
+                PublicationsContainer(
+                    pageScrollState = verticalScroll,
+                    recordPlayer = recordPlayer,
+                    viewModel = viewModel,
+                )
             }
         }
+    }
+
+    @Composable
+    private fun PublicationsContainer(
+        pageScrollState: ScrollState,
+        recordPlayer: RecordPlayer,
+        viewModel: AccountProfileViewModel,
+    ) {
+        val navigator = LocalNavigator.currentOrThrow
+        val coroutineScope = rememberCoroutineScope()
+
+        val publications by viewModel.publication.collectAsStateSafe()
+
+        AccountPublications(
+            modifier = Modifier.fillMaxWidth(),
+            listModifier = Modifier.connectVerticalNestedScroll(10000.dp, pageScrollState),
+            account = requestedAccount,
+            recordPlayer = recordPlayer,
+            publications = publications,
+            onAuthorClick = {
+                if (it.author.id == requestedAccount.id) {
+                    coroutineScope.launch {
+                        pageScrollState.animateScrollTo(0)
+                    }
+                } else {
+                    navigator.push(
+                        AccountProfileScreen(
+                            requestedAccount = it.author,
+                        )
+                    )
+                }
+            },
+            navigatePublicationDetails = {
+                navigator.push(
+                    PublicationDetailsScreen(
+                        requestedPublication = it,
+                    )
+                )
+            },
+        )
     }
 }

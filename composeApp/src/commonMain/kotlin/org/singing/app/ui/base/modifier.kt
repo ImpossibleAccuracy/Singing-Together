@@ -14,6 +14,14 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 
+
+fun Modifier.plus(
+    other: Modifier?
+) = when (other) {
+    null -> this
+    else -> this.then(other)
+}
+
 fun Modifier.connectVerticalNestedScroll(
     maxHeight: Dp,
     scrollState: ScrollState,

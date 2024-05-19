@@ -15,7 +15,7 @@ import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatTimeString
-import org.singing.app.ui.views.base.account.AccountView
+import org.singing.app.ui.views.base.account.AccountChip
 import org.singing.app.ui.views.shared.record.RecordCardActions
 import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 
@@ -103,7 +103,7 @@ fun RecordDetailsCard(
                 rememberImagePainter(it)
             }
 
-        AccountView(
+        AccountChip(
             username = HumanReadable.timeAgo(record.createdAt.instant),
             avatar = { avatarPainter },
             showAvatar = accountData != null,

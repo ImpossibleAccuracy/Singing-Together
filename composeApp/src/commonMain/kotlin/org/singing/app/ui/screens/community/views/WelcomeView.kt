@@ -20,7 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import org.singing.app.ui.base.Space
+import org.singing.app.ui.base.cardAppearance
 import org.singing.app.ui.theme.extended
 
 
@@ -46,28 +46,30 @@ fun WelcomeView(
             modifier = Modifier
                 .wrapContentWidth()
                 .fillMaxHeight()
-                .clip(shape = GenericShape { size, _ ->
-                    val ovalSize = Size(
-                        width = size.width / sizeScaleX,
-                        height = size.height / sizeScaleY,
-                    )
-
-                    val position = Offset(
-                        size.width - ovalSize.width,
-                        size.height / 2 - ovalSize.height / 2,
-                    )
-
-                    addOval(
-                        Rect(
-                            offset = position,
-                            size = ovalSize,
+                .cardAppearance(
+                    shape = GenericShape { size, _ ->
+                        val ovalSize = Size(
+                            width = size.width / sizeScaleX,
+                            height = size.height / sizeScaleY,
                         )
+
+                        val position = Offset(
+                            size.width - ovalSize.width,
+                            size.height / 2 - ovalSize.height / 2,
+                        )
+
+                        addOval(
+                            Rect(
+                                offset = position,
+                                size = ovalSize,
+                            )
+                        )
+                    },
+                    background = MaterialTheme.extended.communityBannerColor,
+                    padding = PaddingValues(
+                        start = 64.dp,
+                        end = 86.dp
                     )
-                })
-                .background(color = MaterialTheme.extended.communityBannerColor)
-                .padding(
-                    start = 64.dp,
-                    end = 86.dp
                 ),
             contentAlignment = Alignment.Center,
         ) {
@@ -89,7 +91,7 @@ fun WelcomeView(
                     top = 36.dp,
                     bottom = 36.dp
                 ),
-            verticalArrangement = Arrangement.Bottom,
+            verticalArrangement = Arrangement.spacedBy(36.dp, Alignment.Bottom),
             horizontalAlignment = Alignment.End,
         ) {
             Text(
@@ -98,8 +100,6 @@ fun WelcomeView(
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.End,
             )
-
-            Space(36.dp)
 
             FilledTonalButton(
                 modifier = Modifier.widthIn(min = 200.dp),

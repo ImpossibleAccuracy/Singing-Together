@@ -63,6 +63,7 @@ fun <T> Timeline(
 
     Column(
         modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(nodeSpacing)
     ) {
         if (startNode != null) {
             val nodeIndicatorColor = (indicatorColor?.invoke(0) ?: MaterialTheme.colorScheme.secondary)
@@ -81,8 +82,6 @@ fun <T> Timeline(
                 labelSizeReady = {},
                 content = startNode,
             )
-
-            Space(nodeSpacing)
         }
 
         nodes.forEachIndexed { index, item ->
@@ -122,10 +121,6 @@ fun <T> Timeline(
                     nodeContent(item, index)
                 },
             )
-
-            if (index != nodes.lastIndex || finishNode != null) {
-                Space(nodeSpacing)
-            }
         }
 
         if (finishNode != null) {

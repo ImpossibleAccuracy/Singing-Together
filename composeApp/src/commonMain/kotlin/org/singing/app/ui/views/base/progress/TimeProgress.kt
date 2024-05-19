@@ -1,5 +1,6 @@
 package org.singing.app.ui.views.base.progress
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
@@ -10,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatTimeString
 import kotlin.math.roundToLong
 
@@ -27,14 +27,13 @@ fun TimeProgress(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = formatTimeString(currentPosition),
             style = MaterialTheme.typography.labelMedium,
             color = contentColor,
         )
-
-        Space(4.dp)
 
         Slider(
             enabled = editable,
@@ -49,8 +48,6 @@ fun TimeProgress(
                 onPositionChange((it * totalDuration).roundToLong())
             },
         )
-
-        Space(4.dp)
 
         Text(
             text = formatTimeString(totalDuration),

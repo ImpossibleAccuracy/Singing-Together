@@ -1,5 +1,6 @@
 package org.singing.app.ui.views.base.track
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
@@ -18,7 +19,7 @@ import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.ui.base.Space
 
 @Composable
-fun TrackItem(
+fun TrackListItem(
     modifier: Modifier = Modifier,
     filename: String,
     duration: String,
@@ -26,9 +27,9 @@ fun TrackItem(
     onFavouriteChange: (Boolean) -> Unit,
 ) {
     Row(
-        modifier = modifier
-            .height(64.dp),
+        modifier = modifier.height(64.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Column(
             modifier = Modifier.weight(1f)
@@ -45,8 +46,6 @@ fun TrackItem(
                 style = MaterialTheme.typography.titleMedium,
             )
         }
-
-        Space(8.dp)
 
         IconButton(
             onClick = {

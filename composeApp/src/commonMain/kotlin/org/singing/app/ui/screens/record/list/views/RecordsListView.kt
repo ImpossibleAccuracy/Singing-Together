@@ -13,15 +13,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.RecordData
-import org.singing.app.ui.views.base.record.card.RecordCard
+import org.singing.app.ui.views.base.record.RecordCard
 
 
 @Composable
 fun RecordsListView(
     modifier: Modifier = Modifier,
+    records: ImmutableList<RecordData>,
     selectedRecord: RecordData?,
     onSelectedRecordChange: (RecordData) -> Unit,
-    records: ImmutableList<RecordData>,
 ) {
     LazyColumn(
         modifier = modifier

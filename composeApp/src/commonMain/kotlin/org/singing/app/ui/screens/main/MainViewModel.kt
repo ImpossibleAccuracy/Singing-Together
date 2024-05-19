@@ -1,5 +1,6 @@
 package org.singing.app.ui.screens.main
 
+import androidx.compose.runtime.Stable
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.singing.app.domain.model.Publication
@@ -15,6 +16,7 @@ import org.singing.app.domain.usecase.PublishRecordUseCase
 import org.singing.app.domain.usecase.UploadRecordUseCase
 import org.singing.app.ui.base.AppViewModel
 
+@Stable
 class MainViewModel(
     private val deleteRecordUseCase: DeleteRecordUseCase,
     private val publishRecordUseCase: PublishRecordUseCase,

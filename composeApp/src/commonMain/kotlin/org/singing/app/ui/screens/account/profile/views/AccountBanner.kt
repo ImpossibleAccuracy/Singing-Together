@@ -35,26 +35,20 @@ fun AccountBanner(
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.padding(horizontal = 24.dp)
+        modifier = modifier.padding(horizontal = 24.dp),
+        horizontalArrangement = Arrangement.spacedBy(24.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Image(
             modifier = Modifier
                 .size(size = 128.dp)
-                .clip(shape = RoundedCornerShape(50))
-        ) {
-            Image(
-                modifier = Modifier.fillMaxSize(),
-                painter = when (account.avatar) {
-                    null -> painterResource(Res.drawable.baseline_person_24)
-                    else -> rememberImagePainter(account.avatar)
-                },
-                contentScale = ContentScale.Crop,
-                contentDescription = "Avatar",
-            )
-        }
-
-        Space(24.dp)
+                .clip(shape = RoundedCornerShape(50)),
+            painter = when (account.avatar) {
+                null -> painterResource(Res.drawable.baseline_person_24)
+                else -> rememberImagePainter(account.avatar)
+            },
+            contentScale = ContentScale.Crop,
+            contentDescription = "Avatar",
+        )
 
         Column {
             Text(
@@ -68,29 +62,27 @@ fun AccountBanner(
 
             Space(8.dp)
 
-            Column {
-                if (accountInfo == null) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(24.dp),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                } else {
-                    Text(
-                        text = "${accountInfo.publicationsCount} publications",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        lineHeight = 1.43.em,
-                        style = MaterialTheme.typography.labelLarge
-                    )
+            if (accountInfo == null) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            } else {
+                Text(
+                    text = "${accountInfo.publicationsCount} publications",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    lineHeight = 1.43.em,
+                    style = MaterialTheme.typography.labelLarge
+                )
 
-                    Text(
-                        text = "Registered for ${
-                            HumanReadable.duration(Clock.System.now() - accountInfo.registeredAt.instant)
-                        }",
-                        color = MaterialTheme.colorScheme.onBackground,
-                        lineHeight = 1.43.em,
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
+                Text(
+                    text = "Registered for ${
+                        HumanReadable.duration(Clock.System.now() - accountInfo.registeredAt.instant)
+                    }",
+                    color = MaterialTheme.colorScheme.onBackground,
+                    lineHeight = 1.43.em,
+                    style = MaterialTheme.typography.labelLarge
+                )
             }
         }
     }
