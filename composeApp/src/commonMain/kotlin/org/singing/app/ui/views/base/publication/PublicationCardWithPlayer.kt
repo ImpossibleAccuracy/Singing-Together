@@ -42,6 +42,7 @@ fun PublicationCardWithPlayer(
 
     val playerState by player.state.collectAsStateSafe()
     val playerPosition by player.position.collectAsStateSafe()
+
     BasePublicationCard(
         modifier = modifier,
         authorAvatar = {

@@ -18,6 +18,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.model.RecordPoint
@@ -44,6 +45,7 @@ class RecordListScreen(
         val viewModel = viewModels<RecordListViewModel>()
         val recordPlayer = rememberRecordPlayer()
 
+        val coroutineScope = rememberCoroutineScope()
         val detailsVerticalScroll = rememberScrollState()
 
         LaunchedEffect(defaultSelectedRecord) {
@@ -55,12 +57,6 @@ class RecordListScreen(
         val isLoadingRecords by viewModel.isLoadingRecords.collectAsStateSafe()
         val records by viewModel.records.collectAsStateSafe()
         val selectedRecord by viewModel.selectedRecord.collectAsState()
-
-        LaunchedEffect(selectedRecord) {
-            recordPlayer.reset()
-
-            detailsVerticalScroll.animateScrollTo(0)
-        }
 
         val currentSelectedRecord = selectedRecord
 
@@ -115,7 +111,15 @@ class RecordListScreen(
                                 records = records,
                                 selectedRecord = currentSelectedRecord,
                                 onSelectedRecordChange = {
-                                    viewModel.setSelectedRecord(it)
+                                    if (it != selectedRecord) {
+                                        coroutineScope.launch {
+                                            recordPlayer.reset()
+
+                                            detailsVerticalScroll.animateScrollTo(0)
+                                        }
+
+                                        viewModel.setSelectedRecord(it)
+                                    }
                                 }
                             )
 

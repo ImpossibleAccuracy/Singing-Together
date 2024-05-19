@@ -1,9 +1,7 @@
 package org.singing.app.ui.common.player
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import com.singing.audio.player.AudioPlayer
@@ -17,7 +15,6 @@ import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.repository.record.RecordRepository
 
 
-@Stable
 class RecordPlayer(
     private val recordRepository: RecordRepository,
 ) {
@@ -128,14 +125,10 @@ class RecordPlayer(
 
 @Composable
 fun Screen.rememberRecordPlayer(): RecordPlayer {
-    val coroutineScope = rememberCoroutineScope()
-
     val viewModel = viewModels<RecordPlayerViewModel>()
 
     LifecycleEffect {
-        coroutineScope.launch {
-            viewModel.stopRecordPlayer()
-        }
+        viewModel.stopRecordPlayer()
     }
 
     return remember { viewModel.recordPlayer }
