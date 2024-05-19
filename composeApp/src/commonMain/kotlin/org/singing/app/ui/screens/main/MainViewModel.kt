@@ -1,7 +1,12 @@
 package org.singing.app.ui.screens.main
 
 import androidx.compose.runtime.Stable
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecentTrack
@@ -30,9 +35,10 @@ class MainViewModel(
         .getRecords()
         .stateIn()
 
-    val latestPublications = publicationRepository
+    val latestPublications: StateFlow<PersistentList<Publication>> = publicationRepository
         .getLatestUserPublications(limit = 3)
-        .stateIn()
+        .map { it.toPersistentList() }
+        .stateIn(persistentListOf())
 
     val recentTracks = recentTrackRepository
         .getRecentTracks()

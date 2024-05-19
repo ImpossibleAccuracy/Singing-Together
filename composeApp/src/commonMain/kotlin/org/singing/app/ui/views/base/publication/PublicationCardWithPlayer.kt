@@ -11,20 +11,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.seiko.imageloader.rememberImagePainter
 import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.baseline_person_24
+import com.singing.app.composeapp.generated.resources.action_see_record
 import com.singing.app.composeapp.generated.resources.baseline_play_arrow_black_24dp
 import com.singing.app.composeapp.generated.resources.baseline_stop_black_24dp
 import com.singing.audio.player.PlayerState
 import kotlinx.coroutines.launch
 import nl.jacobras.humanreadable.HumanReadable
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.Publication
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Divider
+import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.player.RecordPlayer
+import org.singing.app.ui.views.base.account.rememberAvatarPainter
 import org.singing.app.ui.views.base.progress.TimeProgress
 
 
@@ -43,23 +44,21 @@ fun PublicationCardWithPlayer(
     val playerState by player.state.collectAsStateSafe()
     val playerPosition by player.position.collectAsStateSafe()
 
+    val avatar = rememberAvatarPainter(publication.author.avatar)
+
     BasePublicationCard(
         modifier = modifier,
-        authorAvatar = {
-            when (publication.author.avatar) {
-                null -> painterResource(Res.drawable.baseline_person_24)
-                else -> rememberImagePainter(publication.author.avatar)
-            }
-        },
+        authorAvatar = { avatar },
         authorUsername = publication.author.username,
         createdAt = HumanReadable.timeAgo(publication.createdAt.instant),
         description = publication.description,
+        tags = publication.tags,
         onAuthorClick = onAuthorClick,
         slotAfterAuthor = {
             AssistChip(
                 label = {
                     Text(
-                        text = "See record",
+                        text = stringResource(Res.string.action_see_record),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.labelLarge,
                     )
@@ -70,6 +69,8 @@ fun PublicationCardWithPlayer(
             )
         },
         slotAfterDescription = {
+            Space(4.dp)
+
             Divider()
 
             Row(

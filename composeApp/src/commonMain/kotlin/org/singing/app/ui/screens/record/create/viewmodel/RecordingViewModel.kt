@@ -3,13 +3,15 @@ package org.singing.app.ui.screens.record.create.viewmodel
 import androidx.compose.runtime.Stable
 import com.singing.audio.player.PlayerState
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import org.singing.app.domain.repository.record.RecordRepository
+import org.singing.app.domain.repository.record.RecordSaveData
 import org.singing.app.domain.usecase.FindNoteUseCase
 import org.singing.app.ui.base.AppViewModel
+import org.singing.app.ui.screens.record.create.save.RecordSaveAdditionalInfo
 import org.singing.app.ui.screens.record.create.viewmodel.model.RecordState
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.screens.record.create.viewmodel.state.RecordScreenUiState
@@ -20,7 +22,6 @@ import org.singing.app.ui.screens.record.create.viewmodel.usecase.RecordHelper
 @Stable
 class RecordingViewModel(
     private val findNoteUseCase: FindNoteUseCase,
-    private val recordRepository: RecordRepository,
 ) : AppViewModel() {
     private val _uiState = MutableStateFlow(RecordScreenUiState())
     val uiState = _uiState.asStateFlow()
@@ -88,13 +89,18 @@ class RecordingViewModel(
                     playerPosition = 0,
                     recordStartedAt = System.currentTimeMillis(),
                     history = persistentListOf(),
+                    recordSaveData = null,
                 )
             }
 
-            startPlaying()
+            if (uiState.value.audioProcessState != null) {
+                startPlaying()
+            }
         },
         onRecordDone = { result ->
-            stopPlaying()
+            if (isPlaying) {
+                stopPlaying()
+            }
 
             onRecordReady(result)
         },
@@ -108,7 +114,15 @@ class RecordingViewModel(
         },
         selectedAudioFlow = uiState.map { it.audioProcessState },
         playerPositionFlow = uiState.map { it.playerPosition },
-        onNewHistoryItem = {},
+        onNewHistoryItem = { item ->
+            _uiState.update {
+                it.copy(
+                    history = it.history
+                        .plus(item)
+                        .toImmutableList()
+                )
+            }
+        },
     )
 
     val audioInputData = inputListener.audioInputData
@@ -153,11 +167,18 @@ class RecordingViewModel(
 
     private fun onRecordReady(result: ByteArray) {
         viewModelScope.launch {
-            /*recordRepository.saveRecord(
-                history = uiState.value.history,
-                voiceRecord = result,
-                audioTrack = uiState.value.audioProcessState?.selectedAudio
-            )*/
+            _uiState.update {
+                it.copy(
+                    recordSaveData = RecordSaveAdditionalInfo(
+                        duration = System.currentTimeMillis() - uiState.value.recordStartedAt,
+                        history = it.history,
+                        saveData = RecordSaveData(
+                            record = result,
+                            track = it.audioProcessState?.selectedAudio
+                        )
+                    )
+                )
+            }
         }
     }
 

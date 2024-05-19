@@ -4,15 +4,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.singing.app.di.module.viewModels
@@ -20,16 +20,18 @@ import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.ContentContainer
 import org.singing.app.ui.common.DefaultPagePaddings
+import org.singing.app.ui.screens.record.create.save.RecordSaveDialog
 import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.screens.record.create.views.Display
 import org.singing.app.ui.screens.record.create.views.DisplayInfo
 import org.singing.app.ui.screens.record.create.views.RecordHistory
+import org.singing.app.ui.screens.record.list.RecordListScreen
 import org.singing.app.ui.views.shared.player.PlayerView
 
-class RecordingScreen(
-    private val audio: AudioProcessState? = null,
-    private var isNewInstance: Boolean = true,
+data class RecordingScreen(
+    val audio: AudioProcessState? = null,
+    val isNewInstance: Boolean = true,
 ) : Screen {
     @Composable
     override fun Content() {
@@ -55,6 +57,8 @@ class RecordingScreen(
             }
         }
 
+        RecordSaveDialogContainer(viewModel)
+
         ContentContainer {
             Column(
                 modifier = Modifier
@@ -65,39 +69,61 @@ class RecordingScreen(
                     .padding(DefaultPagePaddings),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                DisplayContainer(
+                    viewModel = viewModel,
+                )
+
+                Space(24.dp)
+
+                AudioPlayerContainer(
+                    viewModel = viewModel,
+                )
+
                 Column(
                     modifier = Modifier
-                        .widthIn(max = 1000.dp)
                         .fillMaxWidth()
-                        .padding(
-                            vertical = 24.dp,
-                        )
+                        .clip(shape = MaterialTheme.shapes.medium)
                 ) {
-                    DisplayContainer(
+                    DisplayInfoContainer(
                         viewModel = viewModel,
                     )
 
-                    Space(24.dp)
-
-                    AudioPlayerContainer(
+                    RecordHistoryContainer(
                         viewModel = viewModel,
                     )
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(shape = MaterialTheme.shapes.medium)
-                    ) {
-                        DisplayInfoContainer(
-                            viewModel = viewModel,
-                        )
-
-                        RecordHistoryContainer(
-                            viewModel = viewModel,
-                        )
-                    }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun RecordSaveDialogContainer(
+        viewModel: RecordingViewModel,
+    ) {
+        val navigator = LocalNavigator.currentOrThrow
+
+        val uiState by viewModel.uiState.collectAsStateSafe()
+
+        var isSaveDialogVisible by remember { mutableStateOf(false) }
+
+        LaunchedEffect(uiState.recordSaveData) {
+            isSaveDialogVisible = (uiState.recordSaveData != null)
+        }
+
+        if (isSaveDialogVisible) {
+            RecordSaveDialog(
+                data = uiState.recordSaveData!!,
+                navigateToRecord = {
+                    navigator.push(
+                        RecordListScreen(
+                            defaultSelectedRecord = it,
+                        )
+                    )
+                },
+                onDismiss = {
+                    isSaveDialogVisible = false
+                },
+            )
         }
     }
 

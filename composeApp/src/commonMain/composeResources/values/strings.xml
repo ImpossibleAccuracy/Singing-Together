@@ -14,6 +14,24 @@
 
     <!--  SUBTITLE  -->
 
+    <string name="title_dialog_record_play">Listen</string>
+    <string name="title_dialog_record_delete">Delete record?</string>
+    <string name="subtitle_dialog_record_delete">Record cannot be restored after delete.</string>
+    <string name="title_dialog_record_publish">Enter description</string>
+
+    <string name="title_empty_publications">Empty in publications</string>
+    <string name="subtitle_empty_publications">Record something and publish them and it will show here</string>
+
+    <string name="title_empty_tracks">Looks like you didn't open anything</string>
+    <string name="subtitle_empty_tracks">The tracks you used will be shown here</string>
+
+    <string name="title_empty_records">Get started</string>
+    <string name="subtitle_empty_records">Record something great and your work will be shown here</string>
+
+    <string name="title_no_search_result">No results found</string>
+    <string name="subtitle_no_search_result">Try changing filters or rethinking your query.</string>
+
+
     <string name="title_user_welcome">Welcome %1$s!</string>
     <string name="title_record_points">Record nodes</string>
     <string name="title_recent_records">Recent records</string>
@@ -21,8 +39,7 @@
     <string name="title_recent_publications">Recent publications</string>
     <string name="title_community_banner">A space to grow,\nlearn, &amp; share</string>
     <string name="subtitle_community_banner">
-        Join our community and share your voice with other
-        users and hear them sing back.
+        Join our community and share your voice with other users and hear them sing back.
     </string>
     <string name="title_popular_categories">Popular categories</string>
     <string name="title_random_latest_publication">Random latest publication</string>
@@ -42,9 +59,14 @@
 
     <!--  ACTIONS  -->
 
+    <string name="action_close">Close</string>
     <string name="action_back">Back</string>
     <string name="action_replace">Replace</string>
     <string name="action_next">Next</string>
+    <string name="action_dismiss">Cancel</string>
+    <string name="action_confirm">OK</string>
+    <string name="action_view_record">View record</string>
+    <string name="action_create_record">Start recording</string>
     <string name="action_start_now">Start now</string>
     <string name="action_listen_now">Listen now</string>
     <string name="action_delete_record">Delete record</string>
@@ -67,17 +89,21 @@
 
     <!--  LABELS  -->
 
+    <string name="label_select_record">Select record</string>
+    <string name="label_pick_from_recent">Pick from recent</string>
+    <string name="label_no_saved_track">No saved tracks</string>
     <string name="label_expected_note">%1$s (expected %2$s)</string>
-    <string name="label_no_track_selected">No track selected</string>
+    <string name="label_no_track_selected">No track</string>
     <string name="label_or">OR</string>
-    <string name="label_accuracy">%1$d accuracy</string>
+    <string name="label_description">Description</string>
+    <string name="label_accuracy">%1$d% accuracy</string>
     <string name="label_start">Start</string>
     <string name="label_finish">Finish</string>
     <string name="label_publications_count">%1$d publications</string>
     <string name="label_for_last_day">For the last day</string>
     <string name="label_search_by_tags">Search by tags</string>
     <string name="label_search_by_description">Search by description</string>
-    <string name="label_account_publications">%1$d publications</string>
+    <string name="label_account_no_publications">%1$s didn't publish anything.</string>
     <string name="label_account_registered_since">Registered since %1$s</string>
     <string name="label_recording">Recording</string>
     <string name="label_start_record">Please start recording</string>

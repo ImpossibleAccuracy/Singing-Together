@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.base
+package org.singing.app.ui.views.base.list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth

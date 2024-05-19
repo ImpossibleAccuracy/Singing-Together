@@ -22,7 +22,7 @@ import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.CategoryInfo
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.cardAppearance
-import org.singing.app.ui.views.base.Loader
+import org.singing.app.ui.views.base.list.Loader
 
 
 @Composable

@@ -14,11 +14,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
+import com.singing.app.composeapp.generated.resources.*
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.model.RecordPoint
@@ -31,6 +35,9 @@ import org.singing.app.ui.screens.record.details.views.RecordDetails
 import org.singing.app.ui.screens.record.details.views.RecordDetailsActions
 import org.singing.app.ui.screens.record.details.views.RecordDetailsData
 import org.singing.app.ui.screens.record.list.views.RecordsListView
+import org.singing.app.ui.screens.record.start.SelectRecordTypeScreen
+import org.singing.app.ui.views.base.AppFilledButton
+import org.singing.app.ui.views.base.list.EmptyView
 
 
 class RecordListScreen(
@@ -63,7 +70,7 @@ class RecordListScreen(
         ContentContainer {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .padding(vertical = 12.dp)
                     .clip(shape = MaterialTheme.shapes.large)
                     .background(color = MaterialTheme.colorScheme.surfaceContainerLow)
@@ -85,11 +92,7 @@ class RecordListScreen(
                                 color = MaterialTheme.colorScheme.primary,
                             )
                         } else {
-                            Text(
-                                text = "No records available",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.headlineSmall,
-                            )
+                            NoRecordsContainer()
                         }
                     }
                 } else {
@@ -143,6 +146,26 @@ class RecordListScreen(
     }
 
     @Composable
+    private fun NoRecordsContainer() {
+        val navigator = LocalNavigator.currentOrThrow
+
+        EmptyView(
+            title = stringResource(Res.string.title_empty_records),
+            subtitle = stringResource(Res.string.subtitle_empty_records),
+            action = {
+                AppFilledButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    label = stringResource(Res.string.action_create_record),
+                    onClick = {
+                        navigator.push(SelectRecordTypeScreen())
+                    }
+                )
+            }
+        )
+    }
+
+    @Composable
     private fun RecordDetailsContainer(
         modifier: Modifier = Modifier,
         scrollState: ScrollState,
@@ -156,7 +179,7 @@ class RecordListScreen(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = "Select record",
+                    text = stringResource(Res.string.label_select_record),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.headlineSmall,
                 )

@@ -4,6 +4,7 @@ import com.singing.audio.player.PlayerState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.singing.app.domain.model.RecordPoint
+import org.singing.app.ui.screens.record.create.save.RecordSaveAdditionalInfo
 import org.singing.app.ui.screens.record.create.viewmodel.model.RecordState
 
 data class RecordScreenUiState(
@@ -17,6 +18,7 @@ data class RecordScreenUiState(
 
     val recordStartedAt: Long = -1,
     val history: ImmutableList<RecordPoint> = persistentListOf(),
+    val recordSaveData: RecordSaveAdditionalInfo? = null,
 ) {
     val isRecording: Boolean
         get() = recordState == RecordState.RECORD

@@ -14,16 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.action_see_all_record
-import com.singing.app.composeapp.generated.resources.baseline_navigate_next_24
-import com.singing.app.composeapp.generated.resources.title_recent_records
+import com.singing.app.composeapp.generated.resources.*
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
-import org.singing.app.ui.base.Space
+import org.singing.app.ui.base.cardAppearance
+import org.singing.app.ui.views.base.list.EmptyView
 import org.singing.app.ui.views.base.record.RecordCard
 import org.singing.app.ui.views.shared.record.MainRecordCard
 import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
@@ -50,19 +48,32 @@ fun RecentRecords(
     actions: RecentRecordsActions,
     cardActions: RecordCardActionsCallbacks,
 ) {
-    Column {
-        RecentRecordsHeader(actions)
-
-        Space(8.dp)
-
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
         if (data.records.isEmpty()) {
-            // TODO:replace with EmptyView
-            Text(
-                text = "No records",
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.bodyMedium,
+            EmptyView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .cardAppearance(
+                        shape = MaterialTheme.shapes.small,
+                        background = MaterialTheme.colorScheme.primaryContainer,
+                        padding = PaddingValues(24.dp)
+                    ),
+                icon = {
+                    Icon(
+                        modifier = Modifier.size(72.dp),
+                        imageVector = vectorResource(Res.drawable.baseline_volume_up_black_24dp),
+                        tint = MaterialTheme.colorScheme.primary,
+                        contentDescription = "",
+                    )
+                },
+                title = stringResource(Res.string.title_empty_records),
+                subtitle = stringResource(Res.string.subtitle_empty_records),
             )
         } else {
+            RecentRecordsHeader(actions)
+
             RecordsGrid(
                 gridModifier = gridModifier,
                 data = data,

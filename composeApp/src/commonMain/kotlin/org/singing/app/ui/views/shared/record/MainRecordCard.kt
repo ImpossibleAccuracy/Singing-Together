@@ -1,9 +1,7 @@
 package org.singing.app.ui.views.shared.record
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -11,12 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.seiko.imageloader.rememberImagePainter
 import com.singing.app.composeapp.generated.resources.*
 import nl.jacobras.humanreadable.HumanReadable
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.AccountUiData
@@ -25,6 +20,8 @@ import org.singing.app.ui.base.Space
 import org.singing.app.ui.theme.extended
 import org.singing.app.ui.views.base.AppFilledButton
 import org.singing.app.ui.views.base.IconLabel
+import org.singing.app.ui.views.base.account.AccountChip
+import org.singing.app.ui.views.base.account.rememberAvatarPainter
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -47,6 +44,7 @@ fun MainRecordCard(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             FlowRow(
                 modifier = Modifier.weight(1f),
@@ -59,36 +57,13 @@ fun MainRecordCard(
                 )
             }
 
-            Space(12.dp)
+            val avatar = rememberAvatarPainter(creator?.avatar)
 
-            Row(
-                modifier = Modifier
-                    .height(36.dp)
-                    .clip(shape = RoundedCornerShape(50))
-                    .background(color = MaterialTheme.colorScheme.surface),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    text = HumanReadable.timeAgo(record.createdAt.instant),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-
-                if (record.isSavedRemote && creator != null) {
-                    Image(
-                        modifier = Modifier
-                            .size(size = 36.dp)
-                            .clip(shape = RoundedCornerShape(50)),
-                        painter = when (creator.avatar) {
-                            null -> painterResource(Res.drawable.baseline_person_24)
-                            else -> rememberImagePainter(creator.avatar)
-                        },
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "Avatar",
-                    )
-                }
-            }
+            AccountChip(
+                username = HumanReadable.timeAgo(record.createdAt.instant),
+                avatar = { avatar },
+                avatarAtStart = false,
+            )
         }
 
         Space(12.dp)
@@ -106,7 +81,7 @@ fun MainRecordCard(
                     )
             ) {
                 val text = when (record) {
-                    is RecordData.Cover -> "${record.accuracy}% accuracy"
+                    is RecordData.Cover -> stringResource(Res.string.label_accuracy, record.accuracy)
                     is RecordData.Vocal -> "N/A"
                 }
 

@@ -84,7 +84,7 @@ class SelectRecordTypeScreen : Screen {
                         color = MaterialTheme.colorScheme.secondary,
                         contentColor = MaterialTheme.colorScheme.onSecondary,
                         onClick = {
-                            navigator.replace(
+                            navigator.push(
                                 SelectAudioScreen()
                             )
                         },

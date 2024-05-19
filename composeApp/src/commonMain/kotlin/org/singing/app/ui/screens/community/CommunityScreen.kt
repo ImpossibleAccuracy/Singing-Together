@@ -14,16 +14,17 @@ import com.dokar.chiptextfield.Chip
 import com.dokar.chiptextfield.ChipTextFieldState
 import kotlinx.collections.immutable.toImmutableList
 import org.singing.app.di.module.viewModels
+import org.singing.app.domain.model.Publication
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.common.ContentContainer
 import org.singing.app.ui.common.DefaultPagePaddings
-import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.community.views.*
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
 import org.singing.app.ui.screens.record.start.SelectRecordTypeScreen
+import org.singing.app.ui.views.shared.record.dialog.RecordPlayDialog
 
 
 private val sectionShape
@@ -36,7 +37,6 @@ class CommunityScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel = viewModels<CommunityViewModel>()
-        val player = rememberRecordPlayer()
 
         val verticalScroll = rememberScrollState()
 
@@ -74,7 +74,6 @@ class CommunityScreen : Screen {
                         RandomPublicationContainer(
                             modifier = Modifier.fillMaxWidth(),
                             viewModel = viewModel,
-                            player = player,
                         )
                     }
                 }
@@ -92,7 +91,6 @@ class CommunityScreen : Screen {
                         modifier = Modifier.fillMaxWidth(),
                         gridModifier = Modifier.connectVerticalNestedScroll(10000.dp, verticalScroll),
                         viewModel = viewModel,
-                        player = player,
                     )
                 }
             }
@@ -143,8 +141,9 @@ class CommunityScreen : Screen {
     private fun RandomPublicationContainer(
         modifier: Modifier = Modifier,
         viewModel: CommunityViewModel,
-        player: RecordPlayer,
     ) {
+        val player = rememberRecordPlayer()
+
         val navigator = LocalNavigator.currentOrThrow
 
         val uiState by viewModel.uiState.collectAsStateSafe()
@@ -249,17 +248,43 @@ class CommunityScreen : Screen {
         modifier: Modifier = Modifier,
         gridModifier: Modifier = Modifier,
         viewModel: CommunityViewModel,
-        player: RecordPlayer,
     ) {
         val navigator = LocalNavigator.currentOrThrow
+
+        val mainRecordPlayer = rememberRecordPlayer()
         val uiState by viewModel.uiState.collectAsStateSafe()
+
+        var publicationToPlay by remember { mutableStateOf<Publication?>(null) }
+
+        if (publicationToPlay != null) {
+            val dialogRecordPlayer = rememberRecordPlayer()
+
+            RecordPlayDialog(
+                player = dialogRecordPlayer,
+                record = publicationToPlay!!.record,
+                author = publicationToPlay!!.author,
+                onDismiss = {
+                    publicationToPlay = null
+                }
+            )
+        }
 
         PublicationSearchResult(
             modifier = modifier,
             gridModifier = gridModifier,
             publications = uiState.publications,
-            player = player,
+            player = mainRecordPlayer,
             isLoaderVisible = uiState.canLoadMorePublications,
+            playPublication = {
+                publicationToPlay = it
+            },
+            onAuthorClick = {
+                navigator.push(
+                    AccountProfileScreen(
+                        requestedAccount = it.author,
+                    )
+                )
+            },
             navigatePublicationDetails = {
                 navigator.push(
                     PublicationDetailsScreen(

@@ -22,8 +22,8 @@ import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
 import org.singing.app.ui.views.shared.player.PlayerView
-import org.singing.app.ui.views.shared.record.DeleteRecordDialog
-import org.singing.app.ui.views.shared.record.PublishRecordDialog
+import org.singing.app.ui.views.shared.record.dialog.DeleteRecordDialog
+import org.singing.app.ui.views.shared.record.dialog.PublishRecordDialog
 import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 
 

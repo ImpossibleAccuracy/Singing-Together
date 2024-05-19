@@ -1,14 +1,10 @@
 package org.singing.app.domain.repository.record
 
-import org.singing.app.domain.model.AudioFile
 import com.singing.audio.utils.ComposeFile
 import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.client.request.forms.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import org.singing.app.domain.model.RecordData
@@ -17,8 +13,6 @@ import org.singing.app.domain.model.stable.StableInstant
 import org.singing.app.domain.repository.StateRepository
 import org.singing.app.domain.repository.publication.PublicationRepository
 import org.singing.app.domain.repository.track.createTestFile
-import org.singing.app.setup.file.writeFile
-import java.nio.file.Paths
 import kotlin.random.Random.Default.nextDouble
 import kotlin.time.Duration.Companion.days
 
@@ -32,7 +26,7 @@ class RecordRepository(
                     accuracy = 97,
                     filename = "ASD.mp3",
                     duration = 133000,
-                    createdAt = StableInstant(Clock.System.now().minus(5.days)),
+                    createdAt = StableInstant(Clock.System.now().minus(19.days)),
                     isSavedRemote = true,
                     isPublished = true,
                     creatorId = 1,
@@ -57,7 +51,7 @@ class RecordRepository(
                     accuracy = 78,
                     filename = "ASD.mp3",
                     duration = 10000,
-                    createdAt = StableInstant(Clock.System.now().minus(12.days)),
+                    createdAt = StableInstant(Clock.System.now().minus(3.days)),
                     isSavedRemote = true,
                     isPublished = true,
                     creatorId = 1,
@@ -79,35 +73,53 @@ class RecordRepository(
     }
 
     suspend fun saveRecord(
-        history: List<RecordPoint>,
-        voiceRecord: ByteArray,
-        audioTrack: AudioFile? = null,
-    ) {
-        withContext(Dispatchers.IO) {
-            writeFile(
-                Paths.get("TestStore", "test.wav"),
-                voiceRecord,
+        data: RecordSaveData,
+        saveRemote: Boolean,
+    ): RecordData = withContext(Dispatchers.IO) {
+        if (data.track == null) {
+            RecordData.Vocal(
+                duration = 10000,
+                createdAt = StableInstant(Clock.System.now()),
+                isSavedRemote = saveRemote,
+                isPublished = false,
+                creatorId = 2,
             )
+        } else {
+            RecordData.Cover(
+                accuracy = 78,
+                filename = data.track.name,
+                duration = 10000,
+                createdAt = StableInstant(Clock.System.now()),
+                isSavedRemote = saveRemote,
+                isPublished = true,
+                creatorId = 1,
+            )
+        }.also(::addSingle)
 
-            val response = httpClient.post {
-                url("http://localhost:8000/record")
-                contentType(ContentType.MultiPart.FormData)
+        /*writeFile(
+            Paths.get("TestStore", "test.wav"),
+            voiceRecord,
+        )
 
-                headers {
-                    set("Authorization", "JWT_TOKEN")
-                }
+        val response = httpClient.post {
+            url("http://localhost:8000/record")
+            contentType(ContentType.MultiPart.FormData)
 
-                setBody(
-                    MultiPartFormDataContent(
-                        formData {
-                            append(
-                                key = "voice",
-                                value = voiceRecord,
-                                headers = Headers.build {
-                                    append(HttpHeaders.ContentType, "audio/wave")
-                                    append(HttpHeaders.ContentDisposition, "filename=voice.wav")
-                                }
-                            )
+            headers {
+                set("Authorization", "JWT_TOKEN")
+            }
+
+            setBody(
+                MultiPartFormDataContent(
+                    formData {
+                        append(
+                            key = "voice",
+                            value = voiceRecord,
+                            headers = Headers.build {
+                                append(HttpHeaders.ContentType, "audio/wave")
+                                append(HttpHeaders.ContentDisposition, "filename=voice.wav")
+                            }
+                        )
 
 //                            if (audioTrack != null) {
 //                                append(
@@ -118,19 +130,21 @@ class RecordRepository(
 //                                    }
 //                                )
 //                            }
-                        }
-                    )
+                    }
                 )
-            }
-
-            println(response)
-            println(response.bodyAsText())
+            )
         }
+
+        println(response)
+        println(response.bodyAsText())*/
     }
 
-    fun getRecords(): Flow<List<RecordData>> {
-        return items
-    }
+    fun getRecords(): Flow<List<RecordData>> = items
+        .map { list ->
+            list.sortedByDescending {
+                it.createdAt.instant
+            }
+        }
 
     suspend fun markPublished(record: RecordData) =
         withContext(Dispatchers.IO) {

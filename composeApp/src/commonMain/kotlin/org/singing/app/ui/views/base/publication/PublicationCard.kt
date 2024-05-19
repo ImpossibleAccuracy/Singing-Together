@@ -2,6 +2,7 @@ package org.singing.app.ui.views.base.publication
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,16 +20,20 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.seiko.imageloader.rememberImagePainter
 import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.baseline_person_24
+import com.singing.app.composeapp.generated.resources.action_listen_now
+import com.singing.app.composeapp.generated.resources.action_see_record
 import com.singing.app.composeapp.generated.resources.baseline_play_circle_filled_24
+import kotlinx.collections.immutable.ImmutableList
 import nl.jacobras.humanreadable.HumanReadable
-import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.Publication
+import org.singing.app.domain.model.PublicationTag
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.cardAppearance
+import org.singing.app.ui.base.plus
+import org.singing.app.ui.views.base.account.rememberAvatarPainter
 
 
 @Composable
@@ -50,19 +55,18 @@ fun PublicationCard(
     publication: Publication,
     showActions: Boolean = true,
     onAuthorClick: (() -> Unit)? = null,
+    onPlay: (() -> Unit)? = null,
     navigatePublicationDetails: () -> Unit,
 ) {
+    val avatar = rememberAvatarPainter(publication.author.avatar)
+
     BasePublicationCard(
         modifier = modifier,
-        authorAvatar = {
-            when (publication.author.avatar) {
-                null -> painterResource(Res.drawable.baseline_person_24)
-                else -> rememberImagePainter(publication.author.avatar)
-            }
-        },
+        authorAvatar = { avatar },
         authorUsername = publication.author.username,
         createdAt = HumanReadable.timeAgo(publication.createdAt.instant),
         description = publication.description,
+        tags = publication.tags,
         onAuthorClick = onAuthorClick,
         slotAfterAuthor = {},
         slotAfterDescription = {
@@ -74,7 +78,7 @@ fun PublicationCard(
                     AssistChip(
                         label = {
                             Text(
-                                text = "See record",
+                                text = stringResource(Res.string.action_see_record),
                                 color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.labelLarge,
                             )
@@ -89,7 +93,7 @@ fun PublicationCard(
                     AssistChip(
                         label = {
                             Text(
-                                text = "Listen now",
+                                text = stringResource(Res.string.action_listen_now),
                                 color = MaterialTheme.colorScheme.onSurface,
                                 style = MaterialTheme.typography.labelLarge,
                             )
@@ -102,7 +106,7 @@ fun PublicationCard(
                             )
                         },
                         onClick = {
-
+                            onPlay?.invoke()
                         }
                     )
                 }
@@ -111,6 +115,7 @@ fun PublicationCard(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun BasePublicationCard(
     modifier: Modifier,
@@ -118,6 +123,7 @@ fun BasePublicationCard(
     authorUsername: String,
     createdAt: String,
     description: String,
+    tags: ImmutableList<PublicationTag>,
     onAuthorClick: (() -> Unit)? = null,
     slotAfterAuthor: @Composable RowScope.() -> Unit,
     slotAfterDescription: @Composable ColumnScope.() -> Unit,
@@ -134,6 +140,7 @@ fun BasePublicationCard(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .clip(shape = MaterialTheme.shapes.small)
+                    .plus(onAuthorClick?.let { Modifier.background(MaterialTheme.colorScheme.surfaceContainer) })
                     .clickable(enabled = onAuthorClick != null) {
                         onAuthorClick?.invoke()
                     }
@@ -184,6 +191,19 @@ fun BasePublicationCard(
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.bodyMedium,
         )
+
+        FlowRow(
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            tags.forEach {
+                Text(
+                    text = it.title,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    style = MaterialTheme.typography.labelLarge,
+                )
+            }
+        }
 
         slotAfterDescription()
     }

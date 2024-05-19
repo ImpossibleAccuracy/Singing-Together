@@ -73,8 +73,14 @@ actual class AudioPlayer {
         lock.unlock()
 
         awaitClose {
-            player?.stop()
-            player?.dispose()
+            try {
+                player?.stop()
+                player?.dispose()
+            } catch (e: NullPointerException) {
+                System.err.println(e)
+                e.printStackTrace(System.err)
+            }
+
             player = null
         }
     }

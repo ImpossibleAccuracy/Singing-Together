@@ -93,10 +93,12 @@ fun RecordHistory(
                     )
                 }
             } else {
-                Column {
-                    history.forEachIndexed { index, it ->
-                        val first = it.first
-                        val second = it.second
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    repeat(history.size) {
+                        val index = history.size - 1 - it
+                        val item = history[index]
 
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -110,7 +112,7 @@ fun RecordHistory(
                                 )
                         ) {
                             Text(
-                                text = formatTimeString(it.time),
+                                text = formatTimeString(item.time),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 style = MaterialTheme.typography.labelMedium,
                             )
@@ -118,16 +120,16 @@ fun RecordHistory(
                             Space(12.dp)
 
                             Text(
-                                text = note(first),
+                                text = note(item.first),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 style = MaterialTheme.typography.bodyLarge,
                             )
 
-                            if (second != null) {
+                            if (item.second != null) {
                                 Space(4.dp)
 
                                 Text(
-                                    text = "(${note(second)})",
+                                    text = "(${note(item.second)})",
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                                     style = MaterialTheme.typography.titleMedium,
                                 )
@@ -136,24 +138,20 @@ fun RecordHistory(
                             Spacer(Modifier.weight(1f))
 
                             Text(
-                                text = formatFrequency(first),
+                                text = formatFrequency(item.first),
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
                                 style = MaterialTheme.typography.labelLarge,
                             )
 
-                            if (second != null) {
+                            if (item.second != null) {
                                 Space(4.dp)
 
                                 Text(
-                                    text = "(${formatFrequency(second)})",
+                                    text = "(${formatFrequency(item.second)})",
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                                     style = MaterialTheme.typography.labelMedium,
                                 )
                             }
-                        }
-
-                        if (index != history.lastIndex) {
-                            Space(8.dp)
                         }
                     }
                 }

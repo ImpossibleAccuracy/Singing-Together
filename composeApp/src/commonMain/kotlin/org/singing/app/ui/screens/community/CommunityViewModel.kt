@@ -4,6 +4,7 @@ import androidx.compose.runtime.Stable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -155,7 +156,8 @@ class CommunityViewModel(
                 if (loadedPublications.isEmpty()) prevPage
                 else currentPage
 
-            val newPublications = (uiState.value.publications + loadedPublications).toImmutableList()
+            val newPublications = (uiState.value.publications + loadedPublications)
+                .toPersistentList()
 
             _uiState.update {
                 it.copy(

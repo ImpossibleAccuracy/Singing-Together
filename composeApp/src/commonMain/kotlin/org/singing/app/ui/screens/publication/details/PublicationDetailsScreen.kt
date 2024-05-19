@@ -11,6 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.audio.player.PlayerState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -25,6 +27,7 @@ import org.singing.app.ui.common.ContentContainer
 import org.singing.app.ui.common.DefaultPagePaddings
 import org.singing.app.ui.common.player.RecordPlayer
 import org.singing.app.ui.common.player.rememberRecordPlayer
+import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.record.details.views.RecordDetailsCard
 import org.singing.app.ui.screens.record.details.views.RecordPointsView
 import org.singing.app.ui.views.base.publication.PublicationCard
@@ -70,14 +73,7 @@ data class PublicationDetailsScreen(
                 Column(
                     modifier = Modifier.weight(3f),
                 ) {
-                    PublicationCard(
-                        modifier = publicationCardAppearance(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        ),
-                        publication = requestedPublication,
-                        showActions = false,
-                        navigatePublicationDetails = {}
-                    )
+                    PublicationCardContainer()
 
                     Space(16.dp)
 
@@ -88,6 +84,27 @@ data class PublicationDetailsScreen(
                 }
             }
         }
+    }
+
+    @Composable
+    private fun PublicationCardContainer() {
+        val navigator = LocalNavigator.currentOrThrow
+
+        PublicationCard(
+            modifier = publicationCardAppearance(
+                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+            ),
+            publication = requestedPublication,
+            showActions = false,
+            onAuthorClick = {
+                navigator.push(
+                    AccountProfileScreen(
+                        requestedAccount = requestedPublication.author,
+                    )
+                )
+            },
+            navigatePublicationDetails = {}
+        )
     }
 
     @Composable

@@ -1,4 +1,4 @@
-package org.singing.app.ui.views.shared.record
+package org.singing.app.ui.views.shared.record.dialog
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
@@ -8,6 +8,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
+import com.singing.app.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.ui.screens.record.list.RecordListScreen.Companion.PUBLICATION_DESCRIPTION_MAX_LENGTH
 import org.singing.app.ui.views.base.AppFilledButton
 import org.singing.app.ui.views.base.AppTextButton
@@ -23,14 +25,16 @@ fun PublishRecordDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("Enter description")
+            Text(
+                text = stringResource(Res.string.title_dialog_record_publish)
+            )
         },
         text = {
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = false,
                 label = {
-                    Text(text = "Description")
+                    Text(text = stringResource(Res.string.label_description))
                 },
                 supportingText = {
                     Text(
@@ -51,7 +55,7 @@ fun PublishRecordDialog(
             AppFilledButton(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                label = "Next",
+                label = stringResource(Res.string.action_next),
                 onClick = {
                     onConfirm(description)
                 }
@@ -60,7 +64,7 @@ fun PublishRecordDialog(
         dismissButton = {
             AppTextButton(
                 contentColor = MaterialTheme.colorScheme.primary,
-                label = "Cancel",
+                label = stringResource(Res.string.action_dismiss),
                 onClick = onDismiss
             )
         },

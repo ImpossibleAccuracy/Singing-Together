@@ -1,6 +1,7 @@
 package org.singing.app.ui.screens.community.model
 
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.CategoryInfo
@@ -16,7 +17,7 @@ data class CommunityUiState(
     val currentPage: Int = -1,
     val isPublicationsLoading: Boolean = true,
     val canLoadMorePublications: Boolean = true,
-    val publications: ImmutableList<Publication> = persistentListOf(),
+    val publications: PersistentList<Publication> = persistentListOf(),
 ) {
     val isRandomPublicationLoading: Boolean
         get() = randomPublication == null

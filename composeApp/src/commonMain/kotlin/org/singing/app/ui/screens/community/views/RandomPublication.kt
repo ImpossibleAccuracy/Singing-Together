@@ -18,7 +18,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.Publication
 import org.singing.app.ui.common.player.RecordPlayer
-import org.singing.app.ui.views.base.Loader
+import org.singing.app.ui.views.base.list.Loader
 import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
 import org.singing.app.ui.views.base.publication.publicationCardAppearance
 

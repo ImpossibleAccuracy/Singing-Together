@@ -93,12 +93,14 @@ fun RecordCard(
                 text = filename ?: stringResource(Res.string.label_no_track_selected),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
             )
 
             Text(
                 text = createdAt,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
             )
         }
 

@@ -7,18 +7,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.AccountUiData
+import org.singing.app.domain.model.Publication
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Divider
 import org.singing.app.ui.base.connectVerticalNestedScroll
@@ -28,6 +25,7 @@ import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.views.AccountBanner
 import org.singing.app.ui.screens.account.profile.views.AccountPublications
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
+import org.singing.app.ui.views.shared.record.dialog.RecordPlayDialog
 
 data class AccountProfileScreen(
     val requestedAccount: AccountUiData,
@@ -55,6 +53,8 @@ data class AccountProfileScreen(
                     .padding(
                         top = 16.dp,
                         bottom = 24.dp,
+                        start = 12.dp,
+                        end = 12.dp,
                     ),
                 verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
@@ -82,9 +82,23 @@ data class AccountProfileScreen(
         viewModel: AccountProfileViewModel,
     ) {
         val navigator = LocalNavigator.currentOrThrow
-        val coroutineScope = rememberCoroutineScope()
 
         val publications by viewModel.publication.collectAsStateSafe()
+
+        var publicationToPlay by remember { mutableStateOf<Publication?>(null) }
+
+        if (publicationToPlay != null) {
+            val dialogRecordPlayer = rememberRecordPlayer()
+
+            RecordPlayDialog(
+                player = dialogRecordPlayer,
+                record = publicationToPlay!!.record,
+                author = publicationToPlay!!.author,
+                onDismiss = {
+                    publicationToPlay = null
+                }
+            )
+        }
 
         AccountPublications(
             modifier = Modifier.fillMaxWidth(),
@@ -92,18 +106,8 @@ data class AccountProfileScreen(
             account = requestedAccount,
             recordPlayer = recordPlayer,
             publications = publications,
-            onAuthorClick = {
-                if (it.author.id == requestedAccount.id) {
-                    coroutineScope.launch {
-                        pageScrollState.animateScrollTo(0)
-                    }
-                } else {
-                    navigator.push(
-                        AccountProfileScreen(
-                            requestedAccount = it.author,
-                        )
-                    )
-                }
+            playPublication = {
+                publicationToPlay = it
             },
             navigatePublicationDetails = {
                 navigator.push(

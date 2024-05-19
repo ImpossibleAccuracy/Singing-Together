@@ -2,6 +2,7 @@ package org.singing.app.ui.views.base.timeline
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
@@ -46,6 +47,7 @@ val DefaultTimelineIndicator: IndicatorView = @Composable { modifier, color, _ -
 fun <T> Timeline(
     modifier: Modifier = Modifier,
     nodes: ImmutableList<T>,
+    isLazyColumn: Boolean = false,
     startNode: (@Composable () -> Unit)? = null,
     finishNode: (@Composable () -> Unit)? = null,
     indicator: IndicatorView = DefaultTimelineIndicator,
@@ -55,18 +57,74 @@ fun <T> Timeline(
     nodeLabel: (@Composable (item: T, position: Int) -> Unit)? = null,
     nodeContent: @Composable (item: T, position: Int) -> Unit,
 ) {
-    val density = LocalDensity.current.density
+    val density = LocalDensity.current
+    val labelSize = remember { mutableStateOf(0.dp) }
 
-    var labelSize by remember { mutableStateOf(0.dp) }
+    val defaultColor = MaterialTheme.colorScheme.secondary
 
+    if (isLazyColumn) {
+        LazyColumn(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(nodeSpacing),
+        ) {
+            timelineContent(
+                itemWrapper = { item { it() } },
+                density = density.density,
+                labelSize = labelSize,
+                nodes = nodes,
+                startNode = startNode,
+                finishNode = finishNode,
+                indicator = indicator,
+                nodeSpacing = nodeSpacing,
+                indicatorSize = indicatorSize,
+                indicatorColor = { indicatorColor?.invoke(it) ?: defaultColor },
+                nodeLabel = nodeLabel,
+                nodeContent = nodeContent
+            )
+        }
+    } else {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(nodeSpacing),
+        ) {
+            timelineContent(
+                itemWrapper = { it() },
+                density = density.density,
+                labelSize = labelSize,
+                nodes = nodes,
+                startNode = startNode,
+                finishNode = finishNode,
+                indicator = indicator,
+                nodeSpacing = nodeSpacing,
+                indicatorSize = indicatorSize,
+                indicatorColor = { indicatorColor?.invoke(it) ?: defaultColor },
+                nodeLabel = nodeLabel,
+                nodeContent = nodeContent
+            )
+        }
+    }
+}
+
+
+inline fun <T> timelineContent(
+    itemWrapper: (@Composable () -> Unit) -> Unit,
+    density: Float,
+    labelSize: MutableState<Dp>,
+    nodes: ImmutableList<T>,
+    noinline startNode: (@Composable () -> Unit)? = null,
+    noinline finishNode: (@Composable () -> Unit)? = null,
+    crossinline indicator: IndicatorView,
+    nodeSpacing: Dp = 6.dp,
+    indicatorSize: Dp = 24.dp,
+    crossinline indicatorColor: @Composable (position: Int) -> Color,
+    noinline nodeLabel: (@Composable (item: T, position: Int) -> Unit)? = null,
+    noinline nodeContent: @Composable (item: T, position: Int) -> Unit,
+) {
     val nodesOffset = if (startNode == null) 0 else 1
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(nodeSpacing)
-    ) {
-        if (startNode != null) {
-            val nodeIndicatorColor = (indicatorColor?.invoke(0) ?: MaterialTheme.colorScheme.secondary)
+    if (startNode != null) {
+        itemWrapper {
+            val nodeIndicatorColor = indicatorColor.invoke(0)
 
             TimelineNode(
                 density = density,
@@ -78,21 +136,22 @@ fun <T> Timeline(
                     indicator(it, nodeIndicatorColor, 0)
                 },
                 isLabelsEnabled = nodeLabel != null,
-                labelSize = labelSize,
+                labelSize = labelSize.value,
                 labelSizeReady = {},
                 content = startNode,
             )
         }
+    }
 
-        nodes.forEachIndexed { index, item ->
-            val nodePosition = when {
-                (index == 0 && startNode == null) -> TimelineNodePosition.FIRST
-                (index == nodes.lastIndex && finishNode == null) -> TimelineNodePosition.LAST
-                else -> TimelineNodePosition.MIDDLE
-            }
+    nodes.forEachIndexed { index, item ->
+        val nodePosition = when {
+            (index == 0 && startNode == null) -> TimelineNodePosition.FIRST
+            (index == nodes.lastIndex && finishNode == null) -> TimelineNodePosition.LAST
+            else -> TimelineNodePosition.MIDDLE
+        }
 
-            val nodeIndicatorColor = indicatorColor?.invoke(index + nodesOffset)
-                ?: MaterialTheme.colorScheme.secondary
+        itemWrapper {
+            val nodeIndicatorColor = indicatorColor.invoke(index + nodesOffset)
 
             TimelineNode(
                 density = density,
@@ -104,12 +163,12 @@ fun <T> Timeline(
                     indicator(it, nodeIndicatorColor, index + nodesOffset)
                 },
                 isLabelsEnabled = nodeLabel != null,
-                labelSize = labelSize,
+                labelSize = labelSize.value,
                 labelSizeReady = {
                     val actualSize = (it.width / density).dp
 
-                    if (actualSize > labelSize) {
-                        labelSize = actualSize
+                    if (actualSize > labelSize.value) {
+                        labelSize.value = actualSize
                     }
                 },
                 label = nodeLabel?.let { label ->
@@ -122,11 +181,11 @@ fun <T> Timeline(
                 },
             )
         }
+    }
 
-        if (finishNode != null) {
-            val nodeIndicatorColor = (indicatorColor?.invoke(
-                nodes.lastIndex + nodesOffset + 1
-            ) ?: MaterialTheme.colorScheme.secondary)
+    if (finishNode != null) {
+        itemWrapper {
+            val nodeIndicatorColor = indicatorColor(nodes.lastIndex + nodesOffset + 1)
 
             TimelineNode(
                 density = density,
@@ -138,7 +197,7 @@ fun <T> Timeline(
                     indicator(it, nodeIndicatorColor, 0)
                 },
                 isLabelsEnabled = nodeLabel != null,
-                labelSize = labelSize,
+                labelSize = labelSize.value,
                 labelSizeReady = {},
                 content = finishNode,
             )

@@ -1,9 +1,9 @@
 package org.singing.app.ui.screens.account.profile
 
 import androidx.compose.runtime.Stable
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class AccountProfileViewModel(
     private val _accountInfo = MutableStateFlow<AccountInfo?>(null)
     val accountInfo = _accountInfo.asStateFlow()
 
-    private val _publications = MutableStateFlow<ImmutableList<Publication>>(persistentListOf())
+    private val _publications = MutableStateFlow<PersistentList<Publication>>(persistentListOf())
     val publication = _publications.asStateFlow()
 
 
@@ -31,7 +31,7 @@ class AccountProfileViewModel(
             launch {
                 _publications.value = publicationRepository
                     .getAccountPublications(accountId = accountUiData.id)
-                    .toImmutableList()
+                    .toPersistentList()
             }
 
             launch {

@@ -13,7 +13,6 @@ import org.koin.core.parameter.ParametersDefinition
 import org.koin.core.qualifier.Qualifier
 import org.koin.core.scope.Scope
 import org.koin.dsl.module
-import org.singing.app.ui.common.player.RecordPlayerViewModel
 import org.singing.app.ui.screens.account.profile.AccountProfileViewModel
 import org.singing.app.ui.screens.community.CommunityViewModel
 import org.singing.app.ui.screens.main.MainScreen
@@ -25,8 +24,6 @@ import org.singing.app.ui.screens.record.details.RecordDetailsViewModel
 import org.singing.app.ui.screens.record.list.RecordListViewModel
 
 val viewModelsModule = module {
-    factoryOf(::RecordPlayerViewModel)
-
     scope<MainScreen> {
         scopedOf(::MainViewModel)
     }

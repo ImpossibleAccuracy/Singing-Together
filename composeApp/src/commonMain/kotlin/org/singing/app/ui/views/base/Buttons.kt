@@ -28,7 +28,6 @@ fun AppTextButton(
         if (leadingIcon != null) {
             Icon(
                 imageVector = leadingIcon,
-                tint = contentColor,
                 contentDescription = "",
             )
 
@@ -37,7 +36,6 @@ fun AppTextButton(
 
         Text(
             text = label,
-            color = contentColor,
             style = MaterialTheme.typography.labelLarge,
         )
 
@@ -46,7 +44,6 @@ fun AppTextButton(
 
             Icon(
                 imageVector = trailingIcon,
-                tint = contentColor,
                 contentDescription = "",
             )
         }

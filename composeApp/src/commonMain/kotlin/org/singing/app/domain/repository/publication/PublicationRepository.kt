@@ -1,21 +1,20 @@
 package org.singing.app.domain.repository.publication
 
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
-import org.singing.app.domain.model.CategoryInfo
-import org.singing.app.domain.model.Publication
-import org.singing.app.domain.model.PublicationSort
-import org.singing.app.domain.model.RecordData
+import org.singing.app.domain.model.*
 import org.singing.app.domain.model.stable.StableInstant
 import org.singing.app.domain.repository.StateRepository
 import org.singing.app.domain.repository.account.AccountRepository
 import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.domain.repository.track.generateString
 import org.singing.app.domain.store.account.UserContainer
+import kotlin.random.Random.Default.nextInt
 
 class PublicationRepository(
     private val recordRepository: RecordRepository,
@@ -30,6 +29,13 @@ class PublicationRepository(
                 createdAt = StableInstant(item.createdAt.instant),
                 description = generateString(100),
                 record = item,
+                tags = persistentListOf(
+                    *(0..nextInt(3, 6))
+                        .map {
+                            PublicationTag(generateString(5))
+                        }
+                        .toTypedArray()
+                )
             )
         }
     }
@@ -43,6 +49,7 @@ class PublicationRepository(
             createdAt = StableInstant(Clock.System.now()),
             description = description,
             record = recordRepository.markPublished(record),
+            tags = persistentListOf(),
         ).also {
             addSingle(it)
         }

@@ -121,6 +121,8 @@ class SelectAudioScreen : Screen {
                             audioProcessState = null
                         },
                         navigateNext = {
+                            navigator.pop()
+
                             navigator.replace(
                                 RecordingScreen(
                                     audio = audioProcessState
@@ -275,7 +277,7 @@ class SelectAudioScreen : Screen {
                 }
             } else {
                 Text(
-                    text = "Pick from recent",
+                    text = stringResource(Res.string.label_pick_from_recent),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelMedium,
                 )
@@ -284,7 +286,7 @@ class SelectAudioScreen : Screen {
 
                 if (recentTracks.isEmpty()) {
                     Text(
-                        text = "No saved tracks",
+                        text = stringResource(Res.string.label_no_saved_track),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.titleMedium,
                     )

@@ -7,10 +7,16 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
+import com.singing.app.composeapp.generated.resources.Res
+import com.singing.app.composeapp.generated.resources.label_account_no_publications
+import com.singing.app.composeapp.generated.resources.title_recent_publications
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.toPersistentList
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.Publication
 import org.singing.app.ui.common.player.RecordPlayer
@@ -24,8 +30,8 @@ fun AccountPublications(
     listModifier: Modifier = Modifier,
     account: AccountUiData,
     recordPlayer: RecordPlayer,
-    publications: ImmutableList<Publication>,
-    onAuthorClick: (Publication) -> Unit,
+    publications: PersistentList<Publication>,
+    playPublication: (Publication) -> Unit,
     navigatePublicationDetails: (Publication) -> Unit,
 ) {
     if (publications.isEmpty()) {
@@ -33,7 +39,7 @@ fun AccountPublications(
     } else {
         Column(modifier = modifier) {
             Text(
-                text = "Publications",
+                text = stringResource(Res.string.title_recent_publications),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.titleMedium,
             )
@@ -55,10 +61,15 @@ fun AccountPublications(
             if (publications.size > 1) {
                 Spacer(Modifier.height(12.dp))
 
+                val subList = remember(publications) {
+                    publications.subList(1, publications.size)
+                        .toPersistentList()
+                }
+
                 PublicationsGrid(
                     modifier = listModifier,
-                    publications = publications.subList(1, publications.size),
-                    onAuthorClick = onAuthorClick,
+                    publications = subList,
+                    playPublication = playPublication,
                     navigatePublicationDetails = navigatePublicationDetails,
                 )
             }
@@ -74,7 +85,10 @@ private fun NoPublications(modifier: Modifier, account: AccountUiData) {
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "${account.username} didn't publish anything.",
+            text = stringResource(
+                Res.string.label_account_no_publications,
+                account.username
+            ),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.headlineSmall,
         )
@@ -84,8 +98,8 @@ private fun NoPublications(modifier: Modifier, account: AccountUiData) {
 @Composable
 private fun PublicationsGrid(
     modifier: Modifier,
-    publications: ImmutableList<Publication>,
-    onAuthorClick: (Publication) -> Unit,
+    publications: PersistentList<Publication>,
+    playPublication: (Publication) -> Unit,
     navigatePublicationDetails: (Publication) -> Unit,
 ) {
     LazyVerticalGrid(
@@ -102,8 +116,8 @@ private fun PublicationsGrid(
                     containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 ),
                 publication = item,
-                onAuthorClick = {
-                    onAuthorClick(item)
+                onPlay = {
+                    playPublication(item)
                 },
                 navigatePublicationDetails = {
                     navigatePublicationDetails(item)

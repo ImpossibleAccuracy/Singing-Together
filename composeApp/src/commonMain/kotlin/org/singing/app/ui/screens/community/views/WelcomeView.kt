@@ -44,7 +44,7 @@ fun WelcomeView(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
-            .height(height = 248.dp)
+            .height(height = 276.dp)
             .clip(shape = RoundedCornerShape(36.dp))
             .background(color = MaterialTheme.colorScheme.primary),
         horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.Start),
@@ -84,7 +84,7 @@ fun WelcomeView(
                 text = stringResource(Res.string.title_community_banner),
                 color = MaterialTheme.extended.onCommunityBannerColor,
                 style = TextStyle(
-                    fontSize = 45.sp,
+                    fontSize = 35.sp,
                     fontWeight = FontWeight.Bold,
                 )
             )
@@ -109,7 +109,9 @@ fun WelcomeView(
             )
 
             FilledTonalButton(
-                modifier = Modifier.widthIn(min = 200.dp),
+                modifier = Modifier
+                    .widthIn(min = 200.dp)
+                    .requiredHeight(52.dp),
                 colors = ButtonDefaults.filledTonalButtonColors(
                     containerColor = MaterialTheme.extended.communityBannerColor,
                     contentColor = MaterialTheme.extended.onCommunityBannerColor,

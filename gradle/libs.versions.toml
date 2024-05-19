@@ -7,7 +7,7 @@ jvmTargetVersion = "21"
 
 
 kotlin = "1.9.23"
-compose = "1.6.1"
+compose = "1.6.2"
 spring = "3.2.5"
 spring-swagger = "2.5.0"
 javafx-plugin = "0.1.0"
@@ -15,11 +15,11 @@ javafx-plugin = "0.1.0"
 
 kotlinx-datetime = "0.5.0"
 kotlinx-collections = "0.3.7"
-kotlinx-coroutines = "1.8.0"
+kotlinx-coroutines = "1.8.1"
 
-agp = "8.2.0" # 8.4.0 is not supported by Intellij Ideas
+agp = "8.2.0" # 8.4.0 is not supported by Intellij Idea
 androidx-compose-activity = "1.9.0"
-androidx-lifecycle-compose = "2.7.0"
+androidx-lifecycle-compose = "2.8.0"
 androidx-uiTest = "1.6.7"
 
 mysql = "8.0.32"
@@ -28,9 +28,9 @@ jackson = "2.16.2"
 jjwt = "0.11.5"
 
 voyager = "1.0.0"
-koin = "3.5.3"
-koin-compose = "1.1.2"
-ktor = "2.3.8"
+koin = "3.5.6"
+koin-compose = "1.1.5"
+ktor = "2.3.11"
 sqldelight = "2.0.1"
 
 xtaudio = "2.0"
