@@ -1,4 +1,4 @@
-package org.singing.app
+package org.singing.app.ui.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -7,18 +7,16 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.ui.common.navigation.NoNavigationScreen
-import org.singing.app.ui.navigation.NavigationItems
+import org.singing.app.ui.common.navigation.TopBarScreen
 
 
 @Composable
 actual fun NavigationAppearance(
     navigator: Navigator,
-    onNavigateUp: (screen: Screen) -> Unit,
     content: @Composable BoxScope.() -> Unit,
 ) {
     val currentScreen = navigator.lastItemOrNull
@@ -26,6 +24,11 @@ actual fun NavigationAppearance(
     Scaffold(
         modifier = Modifier.systemBarsPadding(),
         containerColor = MaterialTheme.colorScheme.background,
+        topBar = {
+            if (currentScreen is TopBarScreen) {
+                currentScreen.TopAppBar()
+            }
+        },
         bottomBar = {
             if (currentScreen !is NoNavigationScreen) {
                 NavigationBar {
@@ -45,6 +48,7 @@ actual fun NavigationAppearance(
                             onClick = {
                                 val screen = it.screenProvider()
 
+                                navigator.popAll()
                                 navigator.push(screen)
                             }
                         )

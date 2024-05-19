@@ -9,6 +9,7 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,6 +21,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.singing.app.composeapp.generated.resources.Res
+import com.singing.app.composeapp.generated.resources.action_lets_start
+import com.singing.app.composeapp.generated.resources.subtitle_community_banner
+import com.singing.app.composeapp.generated.resources.title_community_banner
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.ui.base.cardAppearance
 import org.singing.app.ui.theme.extended
 
@@ -29,18 +35,19 @@ private const val sizeScaleY = 0.466f
 
 
 @Composable
+@NonRestartableComposable
 fun WelcomeView(
     modifier: Modifier = Modifier,
     onActionClick: () -> Unit,
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(56.dp, Alignment.Start),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
             .height(height = 248.dp)
             .clip(shape = RoundedCornerShape(36.dp))
-            .background(color = MaterialTheme.colorScheme.primary)
+            .background(color = MaterialTheme.colorScheme.primary),
+        horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.Start),
     ) {
         Box(
             modifier = Modifier
@@ -68,13 +75,13 @@ fun WelcomeView(
                     background = MaterialTheme.extended.communityBannerColor,
                     padding = PaddingValues(
                         start = 64.dp,
-                        end = 86.dp
+                        end = 64.dp
                     )
                 ),
             contentAlignment = Alignment.Center,
         ) {
             Text(
-                text = "A space to grow,\nlearn, & share",
+                text = stringResource(Res.string.title_community_banner),
                 color = MaterialTheme.extended.onCommunityBannerColor,
                 style = TextStyle(
                     fontSize = 45.sp,
@@ -88,14 +95,14 @@ fun WelcomeView(
                 .weight(1f)
                 .padding(
                     end = 64.dp,
-                    top = 36.dp,
-                    bottom = 36.dp
+                    top = 24.dp,
+                    bottom = 24.dp
                 ),
-            verticalArrangement = Arrangement.spacedBy(36.dp, Alignment.Bottom),
+            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Bottom),
             horizontalAlignment = Alignment.End,
         ) {
             Text(
-                text = "Join our community and share your voice with other users and hear them sing back.",
+                text = stringResource(Res.string.subtitle_community_banner),
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.End,
@@ -110,7 +117,7 @@ fun WelcomeView(
                 onClick = onActionClick,
             ) {
                 Text(
-                    text = "Let’s start",
+                    text = stringResource(Res.string.action_lets_start),
                     color = MaterialTheme.extended.onCommunityBannerColor,
                     style = TextStyle(
                         fontSize = 22.sp,

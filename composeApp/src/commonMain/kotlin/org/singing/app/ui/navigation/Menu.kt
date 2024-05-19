@@ -1,9 +1,7 @@
 package org.singing.app.ui.navigation
 
 import cafe.adriel.voyager.core.screen.Screen
-import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.app_name
-import com.singing.app.composeapp.generated.resources.baseline_close_black_24dp
+import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.singing.app.ui.screens.community.CommunityScreen
@@ -20,20 +18,20 @@ data class NavigationItem(
 
 val NavigationItems = listOf(
     NavigationItem(
-        title = Res.string.app_name,
-        icon = Res.drawable.baseline_close_black_24dp,
+        title = Res.string.title_home,
+        icon = Res.drawable.baseline_dashboard_24,
         isInstance = { it is MainScreen },
         screenProvider = { MainScreen() }
     ),
     NavigationItem(
-        title = Res.string.app_name,
-        icon = Res.drawable.baseline_close_black_24dp,
+        title = Res.string.title_records,
+        icon = Res.drawable.baseline_album_24,
         isInstance = { it is RecordListScreen },
         screenProvider = { RecordListScreen() }
     ),
     NavigationItem(
-        title = Res.string.app_name,
-        icon = Res.drawable.baseline_close_black_24dp,
+        title = Res.string.title_community,
+        icon = Res.drawable.baseline_explore_24,
         isInstance = { it is CommunityScreen },
         screenProvider = { CommunityScreen() }
     ),

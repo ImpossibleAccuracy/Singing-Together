@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import com.singing.audio.player.PlayerState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -21,8 +22,8 @@ import org.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.DefaultPagePaddings
 import org.singing.app.ui.common.player.RecordPlayer
-import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.record.details.views.RecordDetailsCard
 import org.singing.app.ui.screens.record.details.views.RecordPointsView
@@ -32,7 +33,7 @@ import org.singing.app.ui.views.shared.player.PlayerView
 
 data class PublicationDetailsScreen(
     val requestedPublication: Publication,
-) : RecordPlayerScreen() {
+) : Screen {
     @Composable
     override fun Content() {
         val viewModel = viewModels<PublicationDetailsViewModel>()
@@ -42,7 +43,9 @@ data class PublicationDetailsScreen(
 
         ContentContainer {
             Row(
-                modifier = Modifier.verticalScroll(state = verticalScroll)
+                modifier = Modifier
+                    .verticalScroll(state = verticalScroll)
+                    .padding(DefaultPagePaddings)
             ) {
                 Column(
                     modifier = Modifier.weight(7f),
@@ -119,14 +122,7 @@ data class PublicationDetailsScreen(
         val playerPosition by recordPlayer.position.collectAsStateSafe()
 
         PlayerView(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(
-                    start = 16.dp,
-                    top = 4.dp,
-                    end = 16.dp,
-                    bottom = 12.dp,
-                ),
+            modifier = modifier.fillMaxWidth(),
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.secondary,
             inactiveTrackColor = MaterialTheme.colorScheme.surfaceContainerLowest,

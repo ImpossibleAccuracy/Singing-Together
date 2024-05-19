@@ -5,3 +5,5 @@ import cafe.adriel.voyager.core.screen.Screen
 
 @Composable
 expect fun getStartDestination(): Screen
+
+expect fun isRootScreen(screen: Screen): Boolean

@@ -3,34 +3,27 @@ package org.singing.app.ui.screens.community
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.dokar.chiptextfield.Chip
 import com.dokar.chiptextfield.ChipTextFieldState
-import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.baseline_shuffle_variant_24
 import kotlinx.collections.immutable.toImmutableList
-import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.di.module.viewModels
 import org.singing.app.setup.collectAsStateSafe
-import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.DefaultPagePaddings
 import org.singing.app.ui.common.player.RecordPlayer
-import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.community.views.*
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
-import org.singing.app.ui.screens.record.audio.SelectRecordTypeScreen
-import org.singing.app.ui.views.base.publication.PublicationCardWithPlayer
-import org.singing.app.ui.views.base.publication.publicationCardAppearance
+import org.singing.app.ui.screens.record.start.SelectRecordTypeScreen
 
 
 private val sectionShape
@@ -39,7 +32,7 @@ private val sectionShape
     get() = MaterialTheme.shapes.small
 
 
-class CommunityScreen : RecordPlayerScreen() {
+class CommunityScreen : Screen {
     @Composable
     override fun Content() {
         val viewModel = viewModels<CommunityViewModel>()
@@ -54,10 +47,7 @@ class CommunityScreen : RecordPlayerScreen() {
                     .verticalScroll(
                         state = verticalScroll,
                     )
-                    .padding(
-                        top = 16.dp,
-                        bottom = 24.dp,
-                    ),
+                    .padding(DefaultPagePaddings),
                 verticalArrangement = Arrangement.spacedBy(36.dp),
             ) {
                 WelcomeViewContainer(
@@ -163,77 +153,28 @@ class CommunityScreen : RecordPlayerScreen() {
             player.reset()
         }
 
-        Column(
-            modifier = publicationCardAppearance(
-                containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                shape = sectionShape,
-                padding = PaddingValues(
-                    start = 16.dp,
-                    top = 4.dp,
-                    end = 16.dp,
-                    bottom = 16.dp,
-                ),
-            )
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = "Random latest publication",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Black,
-                )
-
-                Spacer(Modifier.weight(1f))
-
-                IconButton(
-                    onClick = viewModel::nextRandomPublication,
-                ) {
-                    Icon(
-                        imageVector = vectorResource(Res.drawable.baseline_shuffle_variant_24),
-                        tint = MaterialTheme.colorScheme.onSurface,
-                        contentDescription = "",
+        RandomPublication(
+            modifier = modifier,
+            shape = sectionShape,
+            player = player,
+            isLoading = uiState.isRandomPublicationLoading || uiState.randomPublication == null,
+            publication = uiState.randomPublication,
+            onReload = viewModel::nextRandomPublication,
+            onAuthorClick = {
+                navigator.push(
+                    AccountProfileScreen(
+                        requestedAccount = it.author,
                     )
-                }
-            }
-
-            Space(4.dp)
-
-            if (uiState.isRandomPublicationLoading || uiState.randomPublication == null) {
-                Box(
-                    modifier = modifier,
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            } else {
-                val publication = uiState.randomPublication!!
-
-                PublicationCardWithPlayer(
-                    modifier = modifier,
-                    publication = publication,
-                    player = player,
-                    onAuthorClick = {
-                        navigator.push(
-                            AccountProfileScreen(
-                                requestedAccount = publication.author,
-                            )
-                        )
-                    },
-                    navigatePublicationDetails = {
-                        navigator.push(
-                            PublicationDetailsScreen(
-                                requestedPublication = publication,
-                            )
-                        )
-                    },
                 )
-            }
-        }
+            },
+            navigatePublicationDetails = {
+                navigator.push(
+                    PublicationDetailsScreen(
+                        requestedPublication = it,
+                    )
+                )
+            },
+        )
     }
 
     @Composable

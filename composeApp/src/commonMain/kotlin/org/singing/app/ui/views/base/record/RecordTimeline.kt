@@ -7,7 +7,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.singing.app.composeapp.generated.resources.Res
+import com.singing.app.composeapp.generated.resources.label_expected_note
+import com.singing.app.composeapp.generated.resources.label_finish
+import com.singing.app.composeapp.generated.resources.label_start
 import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.domain.model.PointAccuracy
 import org.singing.app.domain.model.RecordPoint
 import org.singing.app.ui.base.Space
@@ -30,14 +35,14 @@ fun RecordTimeline(
             nodes = points,
             startNode = {
                 Text(
-                    text = "Start",
+                    text = stringResource(Res.string.label_start),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleMedium,
                 )
             },
             finishNode = {
                 Text(
-                    text = "Finish",
+                    text = stringResource(Res.string.label_finish),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.titleMedium,
                 )
@@ -77,39 +82,41 @@ fun RecordTimeline(
                         style = MaterialTheme.typography.labelMedium,
                     )
                 }
-            },
-            nodeContent = { item, index ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
+            }) { item, _ ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(
+                    modifier = Modifier.weight(1f)
                 ) {
-                    Column(
-                        modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = note(item.first),
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-
-                        if (isTwoLineRecord && item.second != null) {
-                            Text(
-                                text = "Expected ${note(item.second)} (${formatFrequency(item.second)})",
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                style = MaterialTheme.typography.titleSmall,
-                            )
-                        }
-                    }
-
-                    Space(12.dp)
-
                     Text(
-                        text = formatFrequency(item.first),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.titleSmall,
+                        text = note(item.first),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.titleMedium,
                     )
+
+                    if (isTwoLineRecord && item.second != null) {
+                        Text(
+                            text = stringResource(
+                                Res.string.label_expected_note,
+                                note(item.first),
+                                note(item.second),
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                    }
                 }
-            },
-        )
+
+                Space(12.dp)
+
+                Text(
+                    text = formatFrequency(item.first),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.titleSmall,
+                )
+            }
+        }
     }
 }

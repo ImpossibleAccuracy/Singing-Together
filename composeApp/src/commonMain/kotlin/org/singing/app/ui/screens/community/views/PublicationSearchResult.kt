@@ -1,23 +1,21 @@
 package org.singing.app.ui.screens.community.views
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import org.singing.app.domain.model.Publication
 import org.singing.app.ui.base.onVisibilityChange
 import org.singing.app.ui.common.player.RecordPlayer
+import org.singing.app.ui.views.base.Loader
 import org.singing.app.ui.views.base.publication.PublicationCard
 import org.singing.app.ui.views.base.publication.publicationCardAppearance
 import org.singing.app.ui.views.shared.publication.MainPublicationCard
@@ -48,19 +46,7 @@ fun PublicationSearchResult(
         }
 
         if (isLoaderVisible) {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center,
-            ) {
-                CircularProgressIndicator(
-                    modifier = Modifier.onVisibilityChange {
-                        if (it) {
-                            onLoadMorePublications()
-                        }
-                    },
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-            }
+            ResultLoader(onLoadMorePublications)
         } else {
             // TODO: add "AllRead" View
         }
@@ -107,4 +93,15 @@ private fun PublicationsGrid(
             }
         }
     }
+}
+
+@Composable
+private fun ResultLoader(onLoadMorePublications: () -> Unit) {
+    Loader(
+        modifier = Modifier.onVisibilityChange {
+            if (it) {
+                onLoadMorePublications()
+            }
+        }
+    )
 }

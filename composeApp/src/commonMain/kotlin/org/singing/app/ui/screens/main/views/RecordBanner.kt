@@ -16,10 +16,14 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.singing.app.composeapp.generated.resources.*
 import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.main_record_banner
+import com.singing.app.composeapp.generated.resources.quest
+import com.singing.app.composeapp.generated.resources.title_user_welcome
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import org.singing.app.domain.model.AccountUiData
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.theme.extended
 import org.singing.app.ui.views.base.AppFilledButton
@@ -27,6 +31,7 @@ import org.singing.app.ui.views.base.AppFilledButton
 
 @Composable
 fun RecordBanner(
+    user: AccountUiData?,
     onAction: () -> Unit,
 ) {
     Column(
@@ -45,7 +50,10 @@ fun RecordBanner(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            "Welcome back, Username!",
+            text = stringResource(
+                resource = Res.string.title_user_welcome,
+                user?.username ?: stringResource(Res.string.quest),
+            ),
             color = MaterialTheme.extended.onMainBannerScrim,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Black,
@@ -56,7 +64,7 @@ fun RecordBanner(
         AppFilledButton(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            label = "Start record now",
+            label = stringResource(Res.string.action_start_now),
             onClick = {
                 onAction()
             }

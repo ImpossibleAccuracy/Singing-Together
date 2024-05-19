@@ -30,7 +30,6 @@ val viewModelsModule = module {
     scope<MainScreen> {
         scopedOf(::MainViewModel)
     }
-//    factoryOf(::MainViewModel)
 
     factoryOf(::RecordListViewModel)
     factoryOf(::RecordDetailsViewModel)
@@ -40,6 +39,7 @@ val viewModelsModule = module {
     factoryOf(::SelectAudioViewModel)
     factoryOf(::RecordingViewModel)
 }
+
 
 @Composable
 inline fun <reified T : ScreenModel> Screen.viewModels(

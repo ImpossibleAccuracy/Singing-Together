@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -18,6 +17,7 @@ import org.singing.app.ui.base.formatTimeString
 import org.singing.app.ui.views.base.account.AccountChip
 import org.singing.app.ui.views.shared.record.RecordCardActions
 import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
+import org.singing.app.ui.views.shared.record.RecordThumb
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -28,6 +28,10 @@ fun RecordDetailsCard(
     record: RecordData,
     actions: RecordCardActionsCallbacks?,
 ) {
+    val avatarPainter = accountData?.avatar?.let {
+        rememberImagePainter(it)
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -37,76 +41,78 @@ fun RecordDetailsCard(
                 horizontal = 24.dp,
                 vertical = 16.dp
             ),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Row(
+        RecordThumb(
+            size = 128.dp,
+            textStyle = MaterialTheme.typography.titleLarge,
+            accuracy = when (record) {
+                is RecordData.Cover -> record.accuracy
+                is RecordData.Vocal -> null
+            }
+        )
+
+        Column(
             modifier = Modifier.weight(1f),
-            verticalAlignment = Alignment.CenterVertically,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(size = 128.dp)
-                    .clip(shape = MaterialTheme.shapes.medium)
-                    .background(color = MaterialTheme.colorScheme.surface)
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                Text(
-                    text = when (record) {
-                        is RecordData.Cover -> "${record.accuracy}%"
-                        is RecordData.Vocal -> "N/A"
-                    },
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleLarge,
+                RecordInfo(
+                    modifier = Modifier
+                        .weight(1f)
+                        .widthIn(min = 250.dp),
+                    record = record,
+                )
+
+                AccountChip(
+                    username = HumanReadable.timeAgo(record.createdAt.instant),
+                    avatar = { avatarPainter },
+                    showAvatar = accountData != null,
                 )
             }
 
-            Space(16.dp)
-
-            Column(
-                modifier = Modifier.weight(1f),
-            ) {
-                Text(
-                    text = when (record) {
-                        is RecordData.Cover -> record.filename
-                        is RecordData.Vocal -> "No track selected"
-                    },
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-
-                Space(2.dp)
-
-                Text(
-                    text = formatTimeString(record.duration),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-
-                if (actions != null) {
-                    Space(12.dp)
-
-                    FlowRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    ) {
-                        RecordCardActions(
-                            record = record,
-                            actions = actions,
-                        )
-                    }
+            if (actions != null) {
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    RecordCardActions(
+                        record = record,
+                        actions = actions,
+                    )
                 }
             }
         }
+    }
+}
 
-        val avatarPainter =
-            accountData?.avatar?.let {
-                rememberImagePainter(it)
-            }
+@Composable
+private fun RecordInfo(
+    modifier: Modifier,
+    record: RecordData,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Text(
+            text = when (record) {
+                is RecordData.Cover -> record.filename
+                is RecordData.Vocal -> "No track selected"
+            },
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.titleLarge,
+        )
 
-        AccountChip(
-            username = HumanReadable.timeAgo(record.createdAt.instant),
-            avatar = { avatarPainter },
-            showAvatar = accountData != null,
+        Space(2.dp)
+
+        Text(
+            text = formatTimeString(record.duration),
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

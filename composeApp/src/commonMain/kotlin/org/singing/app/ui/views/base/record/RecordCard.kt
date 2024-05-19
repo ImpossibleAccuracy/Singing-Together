@@ -1,19 +1,21 @@
 package org.singing.app.ui.views.base.record
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.singing.app.composeapp.generated.resources.Res
+import com.singing.app.composeapp.generated.resources.label_no_track_selected
 import nl.jacobras.humanreadable.HumanReadable
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.domain.model.RecordData
 import org.singing.app.ui.base.cardAppearance
 import org.singing.app.ui.base.formatTimeString
+import org.singing.app.ui.views.shared.record.RecordThumb
 
 @Composable
 fun RecordCard(
@@ -28,7 +30,7 @@ fun RecordCard(
             RecordCard(
                 modifier = modifier,
                 accuracy = null,
-                filename = "No track selected",
+                filename = stringResource(Res.string.label_no_track_selected),
                 createdAt = HumanReadable.timeAgo(record.createdAt.instant),
                 duration = formatTimeString(record.duration),
                 containerColor = containerColor,
@@ -76,26 +78,19 @@ fun RecordCard(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         if (accuracy != null) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .size(size = 64.dp)
-                    .clip(shape = MaterialTheme.shapes.medium)
-                    .background(color = accuracyContainerColor)
-            ) {
-                Text(
-                    text = "$accuracy %",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelLarge,
-                )
-            }
+            RecordThumb(
+                color = accuracyContainerColor,
+                size = 64.dp,
+                textStyle = MaterialTheme.typography.labelLarge,
+                accuracy = accuracy,
+            )
         }
 
         Column(
             modifier = Modifier.weight(weight = 1f)
         ) {
             Text(
-                text = filename ?: "No track selected",
+                text = filename ?: stringResource(Res.string.label_no_track_selected),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyLarge,
             )

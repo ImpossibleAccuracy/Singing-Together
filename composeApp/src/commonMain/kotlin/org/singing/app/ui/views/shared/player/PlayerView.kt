@@ -34,10 +34,15 @@ fun PlayerView(
     onStop: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .clip(shape)
             .background(color = containerColor)
-                then modifier
+            .padding(
+                start = 16.dp,
+                top = 4.dp,
+                end = 16.dp,
+                bottom = 12.dp,
+            )
     ) {
         TimeProgress(
             modifier = Modifier.fillMaxWidth(),

@@ -6,19 +6,20 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
+import cafe.adriel.voyager.core.screen.Screen
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import org.singing.app.di.module.viewModels
 import org.singing.app.setup.collectAsStateSafe
-import org.singing.app.ui.base.AppScreen
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.DefaultPagePaddings
 import org.singing.app.ui.screens.record.create.viewmodel.RecordingViewModel
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.screens.record.create.views.Display
@@ -26,29 +27,21 @@ import org.singing.app.ui.screens.record.create.views.DisplayInfo
 import org.singing.app.ui.screens.record.create.views.RecordHistory
 import org.singing.app.ui.views.shared.player.PlayerView
 
-@Stable
 class RecordingScreen(
     private val audio: AudioProcessState? = null,
     private var isNewInstance: Boolean = true,
-) : AppScreen() {
-    private var _viewModel: RecordingViewModel? = null
+) : Screen {
+    @Composable
+    override fun Content() {
+        val viewModel = viewModels<RecordingViewModel>(true)
 
-    override fun onClose() {
-        super.onClose()
-
-        _viewModel?.let { viewModel ->
+        LifecycleEffect {
             viewModel.stopRecordCountdown()
 
             if (!viewModel.isAnyActionActive) {
                 viewModel.stopActionsAndClearData()
             }
         }
-    }
-
-    @Composable
-    override fun Content() {
-        val viewModel = viewModels<RecordingViewModel>(true)
-        _viewModel = viewModel
 
         val verticalScrollState = rememberScrollState()
 
@@ -68,7 +61,8 @@ class RecordingScreen(
                     .fillMaxSize()
                     .verticalScroll(
                         state = verticalScrollState
-                    ),
+                    )
+                    .padding(DefaultPagePaddings),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Column(
@@ -135,14 +129,7 @@ class RecordingScreen(
 
         if (audioProcessState != null) {
             PlayerView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = 16.dp,
-                        top = 8.dp,
-                        end = 16.dp,
-                        bottom = 12.dp,
-                    ),
+                modifier = Modifier.fillMaxWidth(),
                 shape = MaterialTheme.shapes.large,
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
                 contentColor = MaterialTheme.colorScheme.secondary,

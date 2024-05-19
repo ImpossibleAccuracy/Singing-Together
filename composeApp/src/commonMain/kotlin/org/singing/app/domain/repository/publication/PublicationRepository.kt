@@ -65,8 +65,6 @@ class PublicationRepository(
         showOwnPublications: Boolean,
         sort: PublicationSort,
     ): List<Publication> = withContext(Dispatchers.IO) {
-        println("loadPublicationsByFilters()")
-
         val currentUser = UserContainer.user.value
 
         val items = items.value
@@ -84,14 +82,14 @@ class PublicationRepository(
 
         val sortedItems =
             when (sort) {
-                PublicationSort.DateCreated -> items.sortedBy { it.createdAt.instant }
+                PublicationSort.DateCreated -> items.sortedByDescending { it.createdAt.instant }
 
-                PublicationSort.Accuracy -> items.sortedBy {
+                PublicationSort.Accuracy -> items.sortedByDescending {
                     if (it.record is RecordData.Cover) it.record.accuracy
-                    else null
+                    else -1
                 }
 
-                PublicationSort.Duration -> items.sortedBy { it.record.duration }
+                PublicationSort.Duration -> items.sortedByDescending { it.record.duration }
             }
 
         val startOffset = page * PageSize

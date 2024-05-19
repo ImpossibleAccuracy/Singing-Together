@@ -100,13 +100,12 @@ class CommunityViewModel(
         filterAwaitJob?.cancel()
 
         filterAwaitJob = viewModelScope.launch {
-            delay(1500)
-
             if (uiState.value.searchFilters == newState.searchFilters) {
                 _uiState.update {
                     it.copy(
                         currentPage = -1,
                         publications = persistentListOf(),
+                        canLoadMorePublications = true,
                     )
                 }
 

@@ -17,6 +17,7 @@ import com.seiko.imageloader.rememberImagePainter
 import com.singing.app.composeapp.generated.resources.*
 import nl.jacobras.humanreadable.HumanReadable
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
@@ -141,33 +142,38 @@ fun MainRecordCard(
 
         Space(12.dp)
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            TextButton(
-                onClick = {
-                    navigateRecordDetails()
-                }
-            ) {
-                Text(
-                    text = "See details",
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelLarge,
-                )
+        MainRecordActions(navigateRecordDetails, playRecord)
+    }
+}
+
+@Composable
+private fun MainRecordActions(navigateRecordDetails: () -> Unit, playRecord: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.End
+    ) {
+        TextButton(
+            onClick = {
+                navigateRecordDetails()
             }
-
-            Space(12.dp)
-
-            AppFilledButton(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                label = "Listen now",
-                trailingIcon = vectorResource(Res.drawable.baseline_play_circle_filled_24),
-                onClick = {
-                    playRecord()
-                }
+        ) {
+            Text(
+                text = stringResource(Res.string.action_see_record),
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelLarge,
             )
         }
+
+        Space(12.dp)
+
+        AppFilledButton(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            label = stringResource(Res.string.action_listen_now),
+            trailingIcon = vectorResource(Res.drawable.baseline_play_circle_filled_24),
+            onClick = {
+                playRecord()
+            }
+        )
     }
 }

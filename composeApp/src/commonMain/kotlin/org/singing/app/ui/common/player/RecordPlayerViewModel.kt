@@ -9,14 +9,14 @@ class RecordPlayerViewModel(
     val recordPlayer: RecordPlayer,
 ) : AppViewModel() {
     override fun onDispose() {
-        resetRecordPlayer()
+        stopRecordPlayer()
 
         super.onDispose()
     }
 
-    fun resetRecordPlayer() {
+    fun stopRecordPlayer() {
         viewModelScope.launch {
-            recordPlayer.reset()
+            recordPlayer.stop()
         }
     }
 }

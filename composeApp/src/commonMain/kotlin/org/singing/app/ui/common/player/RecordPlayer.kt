@@ -1,15 +1,18 @@
 package org.singing.app.ui.common.player
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
+import cafe.adriel.voyager.core.screen.Screen
 import com.singing.audio.player.AudioPlayer
 import com.singing.audio.player.PlayerState
 import com.singing.audio.player.multiplyPlayers
 import com.singing.audio.utils.ComposeFile
 import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
+import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecordData
 import org.singing.app.domain.repository.record.RecordRepository
 
@@ -18,6 +21,10 @@ import org.singing.app.domain.repository.record.RecordRepository
 class RecordPlayer(
     private val recordRepository: RecordRepository,
 ) {
+    companion object {
+        private const val POSITION_UPDATE_RATE = 300L
+    }
+
     private val recorderScope = CoroutineScope(Dispatchers.Default)
 
     private val _state = MutableStateFlow(PlayerState.STOP)
@@ -26,6 +33,7 @@ class RecordPlayer(
     private val _position = MutableStateFlow<Long>(0)
     val position = _position.asStateFlow()
 
+    private var positionLoopJob: Job? = null
     private val player1 = AudioPlayer()
     private val player2 = AudioPlayer()
 
@@ -82,14 +90,22 @@ class RecordPlayer(
             }
     }
 
-    private suspend fun startPlayerLoop() = recorderScope.launch {
-        player1.createPositionFlow().collect { newPosition ->
-            _position.value = newPosition
+    private suspend fun startPlayerLoop() {
+        positionLoopJob?.cancel()
+
+        positionLoopJob = recorderScope.launch {
+            player1.createPositionFlow().collectLatest { newPosition ->
+                _position.value = newPosition
+
+                delay(POSITION_UPDATE_RATE)
+            }
+
+            positionLoopJob = null
         }
     }
 
     suspend fun reset() {
-        recorderScope.cancel()
+        positionLoopJob?.cancel()
 
         stop()
         setPosition(0)
@@ -108,4 +124,19 @@ class RecordPlayer(
         player1.stop()
         player2.stop()
     }
+}
+
+@Composable
+fun Screen.rememberRecordPlayer(): RecordPlayer {
+    val coroutineScope = rememberCoroutineScope()
+
+    val viewModel = viewModels<RecordPlayerViewModel>()
+
+    LifecycleEffect {
+        coroutineScope.launch {
+            viewModel.stopRecordPlayer()
+        }
+    }
+
+    return remember { viewModel.recordPlayer }
 }

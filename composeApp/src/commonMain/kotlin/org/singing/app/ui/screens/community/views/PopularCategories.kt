@@ -3,7 +3,10 @@ package org.singing.app.ui.screens.community.views
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,13 +15,14 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.singing.app.composeapp.generated.resources.Res
-import com.singing.app.composeapp.generated.resources.baseline_navigate_next_24
+import com.singing.app.composeapp.generated.resources.*
 import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.CategoryInfo
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.cardAppearance
+import org.singing.app.ui.views.base.Loader
 
 
 @Composable
@@ -43,14 +47,7 @@ fun PopularCategories(
 
         when {
             isCategoriesLoading -> {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                Loader(color = MaterialTheme.colorScheme.primary)
             }
 
             categories.isEmpty() -> {
@@ -74,7 +71,7 @@ private fun CategoriesHeader() {
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
-            text = "Popular categories",
+            text = stringResource(Res.string.title_popular_categories),
             color = MaterialTheme.colorScheme.onSurface,
             style = TextStyle(
                 fontSize = 22.sp,
@@ -83,7 +80,7 @@ private fun CategoriesHeader() {
         )
 
         Text(
-            text = "For the last day",
+            text = stringResource(Res.string.label_for_last_day),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             style = MaterialTheme.typography.labelLarge,
         )
@@ -115,7 +112,7 @@ private fun CategoriesList(
                     )
 
                     Text(
-                        text = "${item.publications} publications",
+                        text = stringResource(Res.string.label_publications_count, item.publications),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.labelMedium,
                     )

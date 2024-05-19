@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
@@ -23,7 +24,6 @@ import org.singing.app.ui.base.Divider
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.common.ContentContainer
 import org.singing.app.ui.common.player.RecordPlayer
-import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.views.AccountBanner
 import org.singing.app.ui.screens.account.profile.views.AccountPublications
@@ -31,7 +31,7 @@ import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
 
 data class AccountProfileScreen(
     val requestedAccount: AccountUiData,
-) : RecordPlayerScreen() {
+) : Screen {
     @Composable
     override fun Content() {
         val viewModel = viewModels<AccountProfileViewModel>()

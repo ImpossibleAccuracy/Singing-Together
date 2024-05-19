@@ -14,7 +14,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.singing.app.composeapp.generated.resources.Res
+import com.singing.app.composeapp.generated.resources.action_see_more
+import com.singing.app.composeapp.generated.resources.title_recent_publications
 import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.domain.model.Publication
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.player.RecordPlayer
@@ -43,7 +47,7 @@ fun RecentPublicationsList(
             )
     ) {
         Text(
-            text = "Recent publications",
+            text = stringResource(Res.string.title_recent_publications),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleMedium,
             fontSize = 18.sp,
@@ -82,7 +86,7 @@ fun RecentPublicationsList(
                     onClick = {}
                 ) {
                     Text(
-                        text = "See more",
+                        text = stringResource(Res.string.action_see_more),
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                         style = MaterialTheme.typography.labelLarge,
                     )

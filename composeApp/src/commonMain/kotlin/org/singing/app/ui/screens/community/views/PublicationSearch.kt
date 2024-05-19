@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import com.dokar.chiptextfield.Chip
 import com.dokar.chiptextfield.ChipTextFieldState
+import com.singing.app.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import org.singing.app.domain.model.PublicationSort
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.cardAppearance
@@ -62,7 +64,7 @@ fun PublicationSearchFilters(
 ) {
     Column(modifier = modifier) {
         Text(
-            text = "Search publications",
+            text = stringResource(Res.string.title_search_publications),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Black,
@@ -73,18 +75,16 @@ fun PublicationSearchFilters(
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            FlowRow(
+            Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 AppChipTextField(
-                    modifier = Modifier
-                        .weight(1f)
-                        .width(720.dp),
+                    modifier = Modifier.weight(1f),
                     shape = MaterialTheme.shapes.medium,
                     borderColor = MaterialTheme.colorScheme.outlineVariant,
                     readOnlyChips = true,
-                    label = "Search by tags",
+                    label = stringResource(Res.string.label_search_by_tags),
                     state = data.tags,
                     value = data.currentTagText,
                     onValueChange = actions.onTagTextUpdated,
@@ -146,7 +146,7 @@ fun PublicationSearchFilters(
                 onValueChange = actions.onDescriptionUpdated,
                 label = {
                     Text(
-                        text = "Search by description",
+                        text = stringResource(Res.string.label_search_by_description),
                         lineHeight = 1.5.em,
                         style = MaterialTheme.typography.bodyLarge,
                     )
@@ -185,7 +185,7 @@ private fun ShowUserPublicationsChip(
         Space(12.dp)
 
         Text(
-            text = "Show my publications",
+            text = stringResource(Res.string.action_show_my_publications),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
         )
@@ -211,7 +211,10 @@ private fun SortChip(
         horizontalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "Sort by ${getSortTypeText(sortType).lowercase()}",
+            text = stringResource(
+                resource = Res.string.label_publication_sort,
+                getSortTypeText(sortType).lowercase()
+            ),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
         )
@@ -231,7 +234,7 @@ private fun SortChip(
 @Composable
 private fun getSortTypeText(sortType: PublicationSort) =
     when (sortType) {
-        PublicationSort.DateCreated -> "Publication Date"
-        PublicationSort.Accuracy -> "Accuracy"
-        PublicationSort.Duration -> "Duration"
+        PublicationSort.DateCreated -> stringResource(Res.string.label_sort_publication_date)
+        PublicationSort.Accuracy -> stringResource(Res.string.label_sort_accuracy)
+        PublicationSort.Duration -> stringResource(Res.string.label_sort_duration)
     }

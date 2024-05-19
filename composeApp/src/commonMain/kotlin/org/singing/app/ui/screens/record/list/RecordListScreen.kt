@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.screen.Screen
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -24,7 +25,6 @@ import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.ContentContainer
 import org.singing.app.ui.common.player.RecordPlayer
-import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.record.details.views.RecordDetails
 import org.singing.app.ui.screens.record.details.views.RecordDetailsActions
@@ -34,7 +34,7 @@ import org.singing.app.ui.screens.record.list.views.RecordsListView
 
 class RecordListScreen(
     private val defaultSelectedRecord: RecordData? = null,
-) : RecordPlayerScreen() {
+) : Screen {
     companion object {
         const val PUBLICATION_DESCRIPTION_MAX_LENGTH = 300
     }
@@ -47,7 +47,9 @@ class RecordListScreen(
         val detailsVerticalScroll = rememberScrollState()
 
         LaunchedEffect(defaultSelectedRecord) {
-            viewModel.setSelectedRecord(defaultSelectedRecord)
+            if (defaultSelectedRecord != null) {
+                viewModel.setSelectedRecord(defaultSelectedRecord)
+            }
         }
 
         val isLoadingRecords by viewModel.isLoadingRecords.collectAsStateSafe()
@@ -66,6 +68,7 @@ class RecordListScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(vertical = 12.dp)
                     .clip(shape = MaterialTheme.shapes.large)
                     .background(color = MaterialTheme.colorScheme.surfaceContainerLow)
                     .padding(

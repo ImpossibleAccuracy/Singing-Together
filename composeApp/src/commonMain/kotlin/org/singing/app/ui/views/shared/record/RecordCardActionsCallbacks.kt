@@ -1,14 +1,20 @@
 package org.singing.app.ui.views.shared.record
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.*
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.RecordData
 
+
+private val chipHeight = Modifier.height(32.dp)
 
 data class RecordCardActionsCallbacks(
     val onUploadRecord: (RecordData) -> Unit,
@@ -24,9 +30,10 @@ fun RecordCardActions(
 ) {
     if (!record.isSavedRemote) {
         AssistChip(
+            modifier = chipHeight,
             label = {
                 Text(
-                    text = "Push to server",
+                    text = stringResource(Res.string.action_upload_record),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelLarge,
                 )
@@ -46,9 +53,10 @@ fun RecordCardActions(
 
     if (record.isPublished) {
         AssistChip(
+            modifier = chipHeight,
             label = {
                 Text(
-                    text = "Show publication",
+                    text = stringResource(Res.string.action_show_publication),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelLarge,
                 )
@@ -66,9 +74,10 @@ fun RecordCardActions(
         )
     } else {
         AssistChip(
+            modifier = chipHeight,
             label = {
                 Text(
-                    text = "Publish",
+                    text = stringResource(Res.string.action_publish_record),
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.labelLarge,
                 )
@@ -87,9 +96,10 @@ fun RecordCardActions(
     }
 
     AssistChip(
+        modifier = chipHeight,
         label = {
             Text(
-                text = "Delete record",
+                text = stringResource(Res.string.action_delete_record),
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.labelLarge,
             )

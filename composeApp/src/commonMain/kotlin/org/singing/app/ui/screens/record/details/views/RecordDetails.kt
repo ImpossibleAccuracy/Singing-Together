@@ -52,28 +52,30 @@ fun RecordDetails(
     Column(
         modifier = modifier.padding(vertical = 16.dp)
     ) {
-        RecordDetailsContainer(
+        RecordDetailsMain(
             data = data,
             actions = actions,
         )
 
         Space(24.dp)
 
-        RecordDetailsPlayerContainer(
+        RecordDetailsPlayer(
             data = data,
-            actions = actions,
         )
 
         Space(12.dp)
 
-        RecordDetailsPointsContainer(
-            data = data,
+        RecordPointsView(
+            modifier = Modifier.fillMaxWidth(),
+            points = data.recordPoints,
+            isTwoLineRecord = data.record.isTwoLineRecord,
+            note = data.note,
         )
     }
 }
 
 @Composable
-private fun RecordDetailsContainer(
+private fun RecordDetailsMain(
     modifier: Modifier = Modifier,
     data: RecordDetailsData,
     actions: RecordDetailsActions,
@@ -112,38 +114,59 @@ private fun RecordDetailsContainer(
         ),
     )
 
-    if (recordToPublish != null) {
+    PublishDialog(
+        record = recordToPublish,
+        actions = actions,
+        onDismiss = { recordToPublish = null },
+    )
+
+    DeleteDialog(
+        record = recordToDelete,
+        actions = actions,
+        onDismiss = { recordToDelete = null }
+    )
+}
+
+@Composable
+private fun PublishDialog(
+    record: RecordData?,
+    actions: RecordDetailsActions,
+    onDismiss: () -> Unit,
+) {
+    if (record != null) {
         PublishRecordDialog(
             onConfirm = {
-                actions.publishRecord(recordToPublish!!, it)
+                actions.publishRecord(record, it)
 
-                recordToPublish = null
+                onDismiss()
             },
-            onDismiss = {
-                recordToPublish = null
-            },
-        )
-    }
-
-    if (recordToDelete != null) {
-        DeleteRecordDialog(
-            onConfirm = {
-                actions.deleteRecord(recordToDelete!!)
-
-                recordToDelete = null
-            },
-            onDismiss = {
-                recordToDelete = null
-            },
+            onDismiss = onDismiss,
         )
     }
 }
 
 @Composable
-private fun RecordDetailsPlayerContainer(
+private fun DeleteDialog(
+    record: RecordData?,
+    actions: RecordDetailsActions,
+    onDismiss: () -> Unit,
+) {
+    if (record != null) {
+        DeleteRecordDialog(
+            onConfirm = {
+                actions.deleteRecord(record)
+
+                onDismiss()
+            },
+            onDismiss = onDismiss,
+        )
+    }
+}
+
+@Composable
+private fun RecordDetailsPlayer(
     modifier: Modifier = Modifier,
     data: RecordDetailsData,
-    actions: RecordDetailsActions,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -153,14 +176,7 @@ private fun RecordDetailsPlayerContainer(
     val playerPosition by player.position.collectAsStateSafe()
 
     PlayerView(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                start = 16.dp,
-                top = 4.dp,
-                end = 16.dp,
-                bottom = 12.dp,
-            ),
+        modifier = modifier,
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         contentColor = MaterialTheme.colorScheme.secondary,
         inactiveTrackColor = MaterialTheme.colorScheme.surfaceContainerLowest,
@@ -182,18 +198,5 @@ private fun RecordDetailsPlayerContainer(
                 player.stop()
             }
         },
-    )
-}
-
-@Composable
-private fun RecordDetailsPointsContainer(
-    modifier: Modifier = Modifier,
-    data: RecordDetailsData,
-) {
-    RecordPointsView(
-        modifier = modifier,
-        points = data.recordPoints,
-        isTwoLineRecord = data.record.isTwoLineRecord,
-        note = data.note,
     )
 }

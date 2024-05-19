@@ -14,41 +14,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
+import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.coroutines.launch
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
+import org.koin.core.scope.Scope
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecordData
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.connectVerticalNestedScroll
 import org.singing.app.ui.common.ContentContainer
+import org.singing.app.ui.common.DefaultPagePaddings
 import org.singing.app.ui.common.navigation.FabScreen
 import org.singing.app.ui.common.player.RecordPlayer
-import org.singing.app.ui.common.player.RecordPlayerScreen
 import org.singing.app.ui.common.player.rememberRecordPlayer
 import org.singing.app.ui.screens.account.profile.AccountProfileScreen
 import org.singing.app.ui.screens.main.views.*
 import org.singing.app.ui.screens.publication.details.PublicationDetailsScreen
-import org.singing.app.ui.screens.record.audio.SelectRecordTypeScreen
 import org.singing.app.ui.screens.record.list.RecordListScreen
+import org.singing.app.ui.screens.record.start.SelectRecordTypeScreen
 import org.singing.app.ui.views.shared.record.DeleteRecordDialog
 import org.singing.app.ui.views.shared.record.PublishRecordDialog
 import org.singing.app.ui.views.shared.record.RecordCardActionsCallbacks
 import kotlin.math.max
 
-class MainScreen : RecordPlayerScreen(), FabScreen {
-    override fun onClose() {
-        super.onClose()
-
-        scope.close()
-    }
+class MainScreen : Screen, FabScreen, KoinScopeComponent {
+    override val scope: Scope by lazy { createScope(this) }
 
     @Composable
     override fun Content() {
         val viewModel = viewModels<MainViewModel>(scope)
-
         val recordPlayer = rememberRecordPlayer()
+
+        LifecycleEffect {
+            scope.close()
+        }
 
         val verticalScroll = rememberScrollState()
 
@@ -59,12 +63,9 @@ class MainScreen : RecordPlayerScreen(), FabScreen {
                     .verticalScroll(
                         state = verticalScroll,
                     )
-                    .padding(
-                        top = 16.dp,
-                        bottom = 24.dp,
-                    ),
+                    .padding(DefaultPagePaddings),
             ) {
-                RecordBannerContainer()
+                RecordBannerContainer(viewModel = viewModel)
 
                 Space(36.dp)
 
@@ -130,10 +131,15 @@ class MainScreen : RecordPlayerScreen(), FabScreen {
     }
 
     @Composable
-    private fun RecordBannerContainer() {
+    private fun RecordBannerContainer(
+        viewModel: MainViewModel,
+    ) {
         val navigator = LocalNavigator.currentOrThrow
 
+        val user by viewModel.user.collectAsStateSafe()
+
         RecordBanner(
+            user = user,
             onAction = {
                 navigator.push(
                     SelectRecordTypeScreen()

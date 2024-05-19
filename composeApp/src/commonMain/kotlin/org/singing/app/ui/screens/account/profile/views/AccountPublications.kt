@@ -29,17 +29,7 @@ fun AccountPublications(
     navigatePublicationDetails: (Publication) -> Unit,
 ) {
     if (publications.isEmpty()) {
-        // TODO: replace with EmptyView
-        Box(
-            modifier = modifier.padding(24.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = "${account.username} didn't publish anything.",
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.headlineSmall,
-            )
-        }
+        NoPublications(modifier, account)
     } else {
         Column(modifier = modifier) {
             Text(
@@ -73,6 +63,21 @@ fun AccountPublications(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun NoPublications(modifier: Modifier, account: AccountUiData) {
+    // TODO: replace with EmptyView
+    Box(
+        modifier = modifier.padding(24.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = "${account.username} didn't publish anything.",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.headlineSmall,
+        )
     }
 }
 

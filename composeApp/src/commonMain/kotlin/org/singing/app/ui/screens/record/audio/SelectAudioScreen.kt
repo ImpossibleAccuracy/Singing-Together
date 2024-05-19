@@ -254,7 +254,7 @@ class SelectAudioScreen : Screen {
 
                 Text(
                     modifier = Modifier.padding(horizontal = 12.dp),
-                    text = "OR",
+                    text = stringResource(Res.string.label_or),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     style = MaterialTheme.typography.titleMedium,
                 )

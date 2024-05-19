@@ -15,8 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.singing.app.composeapp.generated.resources.Res
+import com.singing.app.composeapp.generated.resources.action_see_all_record
 import com.singing.app.composeapp.generated.resources.baseline_navigate_next_24
+import com.singing.app.composeapp.generated.resources.title_recent_records
 import kotlinx.collections.immutable.ImmutableList
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
@@ -79,7 +82,7 @@ private fun RecentRecordsHeader(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
-            text = "Recent records",
+            text = stringResource(Res.string.title_recent_records),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.titleMedium,
         )
@@ -101,14 +104,14 @@ private fun RecentRecordsHeader(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = "See all records",
+                text = stringResource(Res.string.action_see_all_record),
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.labelLarge,
             )
 
             Icon(
                 imageVector = vectorResource(Res.drawable.baseline_navigate_next_24),
-                tint = MaterialTheme.colorScheme.secondaryContainer,
+                tint = MaterialTheme.colorScheme.secondary,
                 contentDescription = "",
             )
         }
