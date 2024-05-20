@@ -13,8 +13,8 @@ import com.singing.app.composeapp.generated.resources.label_finish
 import com.singing.app.composeapp.generated.resources.label_start
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
-import org.singing.app.domain.model.PointAccuracy
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.PointAccuracy
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatFrequency
 import org.singing.app.ui.base.formatTimeString
@@ -104,7 +104,7 @@ fun RecordTimeline(
                         text = stringResource(
                             Res.string.label_expected_note,
                             note(item.first),
-                            note(item.second),
+                            note(item.second!!),
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         style = MaterialTheme.typography.titleSmall,

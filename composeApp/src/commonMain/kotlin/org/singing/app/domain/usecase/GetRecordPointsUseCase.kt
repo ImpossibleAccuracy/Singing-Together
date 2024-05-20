@@ -1,7 +1,7 @@
 package org.singing.app.domain.usecase
 
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.domain.repository.record.RecordRepository
 
 class GetRecordPointsUseCase(

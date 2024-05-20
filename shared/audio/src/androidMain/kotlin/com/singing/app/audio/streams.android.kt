@@ -1,9 +1,9 @@
-package org.singing.app.setup.audio
+package com.singing.app.audio
 
 import com.singing.audio.library.filter.AudioFilter
 import com.singing.audio.library.parser.AudioParser
-import org.singing.app.domain.model.AudioFile
 import com.singing.audio.sampled.model.TimedFrequency
+import com.singing.audio.utils.ComposeFile
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,7 +27,12 @@ actual suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioPars
     }
 }
 
-actual suspend fun createTrackAudioParser(audioFile: AudioFile, filters: List<AudioFilter>): AudioParser<TimedFrequency> {
+actual suspend fun createVoiceAudioParser(
+    file: ComposeFile,
+    filters: List<AudioFilter>
+): AudioParser<TimedFrequency> = createTrackAudioParser(file, filters)
+
+actual suspend fun createTrackAudioParser(file: ComposeFile, filters: List<AudioFilter>): AudioParser<TimedFrequency> {
     return object : AudioParser<TimedFrequency> {
         override fun parse(): Flow<TimedFrequency> {
             return flowOf()

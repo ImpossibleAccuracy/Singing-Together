@@ -20,7 +20,7 @@ import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.Publication
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.ContentContainer

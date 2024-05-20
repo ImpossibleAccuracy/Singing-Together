@@ -17,7 +17,7 @@ import com.singing.app.composeapp.generated.resources.*
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatFrequency
 import org.singing.app.ui.base.formatTimeString
@@ -129,7 +129,7 @@ fun RecordHistory(
                                 Space(4.dp)
 
                                 Text(
-                                    text = "(${note(item.second)})",
+                                    text = "(${note(item.second!!)})",
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                                     style = MaterialTheme.typography.titleMedium,
                                 )
@@ -147,7 +147,7 @@ fun RecordHistory(
                                 Space(4.dp)
 
                                 Text(
-                                    text = "(${formatFrequency(item.second)})",
+                                    text = "(${formatFrequency(item.second!!)})",
                                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                                     style = MaterialTheme.typography.labelMedium,
                                 )

@@ -1,7 +1,7 @@
 package org.singing.app.domain.repository.record
 
 import androidx.compose.runtime.Immutable
-import org.singing.app.domain.model.AudioFile
+import com.singing.app.domain.model.AudioFile
 
 @Immutable
 data class RecordSaveData(

@@ -16,7 +16,7 @@ import com.singing.app.composeapp.generated.resources.action_back
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.domain.repository.record.RecordSaveData
 import org.singing.app.ui.base.cardAppearance
 import org.singing.app.ui.screens.record.create.save.items.RecordInfoScreen

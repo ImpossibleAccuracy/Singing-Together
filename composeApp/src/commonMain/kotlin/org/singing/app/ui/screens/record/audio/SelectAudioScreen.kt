@@ -18,29 +18,18 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.app.composeapp.generated.resources.*
 import com.singing.audio.utils.ComposeFile
-import com.singing.config.note.NotesStore
 import com.singing.config.track.TrackProperties
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.RecentTrack
-import org.singing.app.setup.audio.createTrackAudioParser
-import org.singing.app.setup.audio.processAudioFile
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.setup.file.FilePicker
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.formatTimeString
 import org.singing.app.ui.screens.record.create.RecordingScreen
-import org.singing.app.ui.screens.record.create.viewmodel.model.RecordItem
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioProcessState
 import org.singing.app.ui.views.base.AppFilledButton
 import org.singing.app.ui.views.base.track.TrackListItem
@@ -59,7 +48,7 @@ class SelectAudioScreen : Screen {
         val recentTracks by viewModel.recentFavouriteTracks.collectAsStateSafe()
         val isTracksLoading by viewModel.isRecentFavouriteTracksLoading.collectAsStateSafe()
 
-        var audioProcessState by remember { mutableStateOf<AudioProcessState?>(null) }
+        val audioProcessState by viewModel.audioProcessState.collectAsStateSafe()
 
         Box(
             modifier = Modifier
@@ -100,12 +89,9 @@ class SelectAudioScreen : Screen {
 
                 if (audioProcessStateCapture == null) {
                     SelectAudioViewContainer(
-                        coroutineScope = coroutineScope,
+                        viewModel = viewModel,
                         recentTracks = recentTracks,
                         isTracksLoading = isTracksLoading,
-                        onAudioProcessStateChange = {
-                            audioProcessState = it
-                        },
                     )
                 } else if (audioProcessStateCapture.isParsing) {
                     Box(
@@ -118,7 +104,7 @@ class SelectAudioScreen : Screen {
                     SelectedAudioInfo(
                         audioProcessState = audioProcessStateCapture,
                         onResetState = {
-                            audioProcessState = null
+                            viewModel.resetAudioProcessState()
                         },
                         navigateNext = {
                             navigator.pop()
@@ -179,20 +165,15 @@ class SelectAudioScreen : Screen {
 
     @Composable
     private fun SelectAudioViewContainer(
-        coroutineScope: CoroutineScope,
+        viewModel: SelectAudioViewModel,
         recentTracks: ImmutableList<RecentTrack>,
         isTracksLoading: Boolean,
-        onAudioProcessStateChange: (AudioProcessState) -> Unit,
     ) {
         SelectAudioView(
             recentTracks = recentTracks,
             isTracksLoading = isTracksLoading,
         ) { inputFile ->
-            coroutineScope.launch(Dispatchers.IO) {
-                processAudio(inputFile).collect {
-                    onAudioProcessStateChange(it)
-                }
-            }
+            viewModel.processAudio(inputFile)
         }
     }
 
@@ -341,37 +322,4 @@ class SelectAudioScreen : Screen {
             )
         }
     }
-
-    private fun processAudio(inputFile: ComposeFile) = flow {
-        val audioFile = processAudioFile(inputFile)
-            ?: throw IllegalArgumentException("Cannot process file: $inputFile")
-
-        emit(
-            AudioProcessState(
-                selectedAudio = audioFile,
-                isParsing = true,
-            )
-        )
-
-        val parser = createTrackAudioParser(audioFile, TrackProperties.defaultFilters)
-
-        val data = parser
-            .parse()
-            .map {
-                RecordItem(
-                    note = NotesStore.findNote(it.frequency),
-                    frequency = it.frequency,
-                    time = it.positionMs,
-                )
-            }
-            .toList()
-
-        emit(
-            AudioProcessState(
-                selectedAudio = audioFile,
-                data = data.toImmutableList(),
-                isParsing = false,
-            )
-        )
-    }.flowOn(Dispatchers.IO)
 }

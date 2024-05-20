@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.domain.model.stable.StableInstant
 import org.singing.app.domain.repository.StateRepository
 import org.singing.app.domain.repository.publication.PublicationRepository

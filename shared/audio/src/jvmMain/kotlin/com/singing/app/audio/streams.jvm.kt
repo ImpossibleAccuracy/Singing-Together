@@ -1,9 +1,8 @@
-package org.singing.app.setup.audio
+package com.singing.app.audio
 
 import com.singing.audio.library.filter.AudioFilter
 import com.singing.audio.library.model.AudioParams
 import com.singing.audio.library.parser.AudioParser
-import org.singing.app.domain.model.AudioFile
 import com.singing.audio.sampled.input.toAudioParams
 import com.singing.audio.sampled.model.TimedFrequency
 import com.singing.audio.taros.decoder.TarosDspDecoderImpl
@@ -13,6 +12,7 @@ import com.singing.audio.taros.input.TarosDspInput
 import com.singing.audio.taros.input.createMicrophoneInput
 import com.singing.audio.taros.input.openInputStreamAsTarosDspInput
 import com.singing.audio.taros.parser.TarosDspParser
+import com.singing.audio.utils.ComposeFile
 import com.singing.config.track.TrackProperties
 import com.singing.config.voice.VoiceProperties
 import kotlinx.coroutines.Dispatchers
@@ -55,13 +55,18 @@ actual suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioPars
     )
 }
 
+actual suspend fun createVoiceAudioParser(
+    file: ComposeFile,
+    filters: List<AudioFilter>
+): AudioParser<TimedFrequency> = createTrackAudioParser(file, filters)
+
 actual suspend fun createTrackAudioParser(
-    audioFile: AudioFile,
+    file: ComposeFile,
     filters: List<AudioFilter>
 ): AudioParser<TimedFrequency> {
     val input = withContext(Dispatchers.IO) {
         openInputStreamAsTarosDspInput(
-            inputStream = audioFile.file.inputStream(),
+            inputStream = file.inputStream(),
             bufferSize = TrackProperties.bufferSize,
         )
     }

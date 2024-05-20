@@ -148,7 +148,7 @@ jackson = ["jackson-module", "jackson-annotations"]
 jjwt = ["jjwt-impl", "jjwt-api", "jjwt-jackson"]
 
 voyager = ["voyager-navigator", "voyager-koin", "voyager-transitions"]
-koin = ["koin-core", "koin-compose", "voyager-transitions"]
+koin = ["koin-core", "koin-compose"]
 ktor = ["ktor-client-core", "ktor-serialization", "ktor-client-content-negotiation"]
 
 [plugins]

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.common.player.RecordPlayer

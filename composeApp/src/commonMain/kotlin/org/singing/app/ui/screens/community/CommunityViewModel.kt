@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import org.singing.app.domain.model.PublicationSort
+import com.singing.app.domain.model.PublicationSort
 import org.singing.app.domain.repository.publication.PublicationRepository
 import org.singing.app.domain.store.account.UserContainer
 import org.singing.app.ui.base.AppViewModel

@@ -15,7 +15,7 @@ import com.dokar.chiptextfield.Chip
 import com.dokar.chiptextfield.ChipTextFieldState
 import com.singing.app.composeapp.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
-import org.singing.app.domain.model.PublicationSort
+import com.singing.app.domain.model.PublicationSort
 import org.singing.app.ui.base.Space
 import org.singing.app.ui.base.cardAppearance
 import org.singing.app.ui.views.base.AppChipTextField

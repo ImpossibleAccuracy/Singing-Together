@@ -12,7 +12,7 @@ import com.singing.app.composeapp.generated.resources.Res
 import com.singing.app.composeapp.generated.resources.title_record_points
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.ui.views.base.list.Loader
 import org.singing.app.ui.views.base.record.RecordTimeline
 

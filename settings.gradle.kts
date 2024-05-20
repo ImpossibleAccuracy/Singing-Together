@@ -34,6 +34,11 @@ include(
 )
 
 include(
+    ":shared",
+    ":shared:audio",
+)
+
+include(
     ":composeApp"
 )
 

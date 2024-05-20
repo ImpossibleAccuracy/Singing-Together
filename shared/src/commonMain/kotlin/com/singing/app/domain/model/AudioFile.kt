@@ -1,4 +1,4 @@
-package org.singing.app.domain.model
+package com.singing.app.domain.model
 
 import androidx.compose.runtime.Stable
 import com.singing.audio.utils.ComposeFile

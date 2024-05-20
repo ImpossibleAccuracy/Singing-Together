@@ -14,7 +14,7 @@ import kotlinx.coroutines.async
 import org.singing.app.di.module.viewModels
 import org.singing.app.domain.model.AccountUiData
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.setup.collectAsStateSafe
 import org.singing.app.ui.common.ContentContainer
 import org.singing.app.ui.common.DefaultPagePaddings

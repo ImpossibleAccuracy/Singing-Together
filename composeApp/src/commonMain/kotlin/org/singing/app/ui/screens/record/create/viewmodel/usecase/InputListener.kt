@@ -6,7 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.domain.store.voice.VoiceInput
 import org.singing.app.ui.screens.record.create.viewmodel.model.RecordItem
 import org.singing.app.ui.screens.record.create.viewmodel.state.AudioInputData

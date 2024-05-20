@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.singing.app.domain.model.Publication
 import org.singing.app.domain.model.RecordData
-import org.singing.app.domain.model.RecordPoint
+import com.singing.app.domain.model.RecordPoint
 import org.singing.app.domain.repository.record.RecordRepository
 import org.singing.app.domain.store.account.UserContainer
 import org.singing.app.domain.usecase.*

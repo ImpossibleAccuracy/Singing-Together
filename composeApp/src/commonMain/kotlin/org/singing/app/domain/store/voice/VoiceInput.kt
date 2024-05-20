@@ -1,12 +1,12 @@
 package org.singing.app.domain.store.voice
 
+import com.singing.app.audio.createVoiceAudioParser
 import com.singing.audio.library.parser.AudioParser
 import com.singing.audio.utils.backgroundScope
 import com.singing.config.voice.VoiceProperties
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import org.singing.app.setup.audio.createVoiceAudioParser
 
 @OptIn(ExperimentalCoroutinesApi::class)
 object VoiceInput {

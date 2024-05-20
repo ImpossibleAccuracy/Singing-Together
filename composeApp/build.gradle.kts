@@ -61,6 +61,8 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(project(":config"))
+            implementation(project(":shared"))
+            implementation(project(":shared:audio"))
             implementation(project(":library:utils"))
             implementation(project(":library:audio-library"))
             implementation(project(":library:audio-player"))

@@ -2,7 +2,7 @@ package org.singing.app.ui.screens.record.create.viewmodel.usecase
 
 import com.singing.audio.player.AudioPlayer
 import com.singing.audio.player.PlayerState
-import org.singing.app.domain.model.AudioFile
+import com.singing.app.domain.model.AudioFile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch

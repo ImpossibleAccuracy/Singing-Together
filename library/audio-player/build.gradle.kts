@@ -34,8 +34,6 @@ kotlin {
             implementation(project(":library:utils"))
 
             implementation(libs.kotlinx.coroutines.core)
-
-            implementation(libs.dsp.core)
         }
 
         jvmMain.dependencies {
@@ -45,8 +43,6 @@ kotlin {
             implementation("org.openjfx:javafx-media:21.0.1:win")
             implementation("org.openjfx:javafx-web:21.0.1:win")
             implementation("org.openjfx:javafx-swing:21.0.1:win")
-
-            implementation(libs.dsp.jvm)
         }
     }
 }

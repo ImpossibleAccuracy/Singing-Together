@@ -1,4 +1,4 @@
-package org.singing.app.domain.model
+package com.singing.app.domain.model
 
 enum class PointAccuracy(
     val maxDiff: Float?,
