@@ -61,7 +61,10 @@ fun <T, E, R : Collection<E>> KProperty1<T, R?>.isMember(elem: E) = spec { isMem
 fun <T, E, R : Collection<E>> KProperty1<T, R?>.isNotMember(elem: E) = spec { isNotMember(elem, it) }
 
 // Strings
-fun <T> KProperty1<T, String?>.like(x: String): Specification<T> = spec { like(it, x) }
+fun <T> KProperty1<T, String?>.like(x: String): Specification<T> =
+    if (x.isNotBlank()) spec { path ->
+        like(path, x)
+    } else Specification.where(null)
 
 fun <T> KProperty1<T, String?>.like(x: String, escapeChar: Char): Specification<T> = spec { like(it, x, escapeChar) }
 fun <T> KProperty1<T, String?>.notLike(x: String): Specification<T> = spec { notLike(it, x) }

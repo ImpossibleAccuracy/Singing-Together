@@ -5,17 +5,17 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "role")
-class Role(
+class RoleEntity(
     id: Int? = null
 ) : BaseTitleEntity(id) {
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = Privilege::class)
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = PrivilegeEntity::class)
     @JoinTable(
         name = "privilege_role",
         joinColumns = [JoinColumn(name = "role_id")],
         inverseJoinColumns = [JoinColumn(name = "privilege_id")]
     )
-    var privileges: Set<Privilege> = setOf()
+    var privileges: Set<PrivilegeEntity> = setOf()
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, targetEntity = Account::class)
-    var accounts: Set<Account> = setOf()
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY, targetEntity = AccountEntity::class)
+    var accounts: Set<AccountEntity> = setOf()
 }

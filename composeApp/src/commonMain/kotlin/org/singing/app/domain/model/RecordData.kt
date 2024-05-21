@@ -24,7 +24,7 @@ sealed interface RecordData {
 
     data class Cover(
         val accuracy: Int,
-        val filename: String,
+        val name: String,
         override val duration: Long,
         override val createdAt: StableInstant,
         override val isSavedRemote: Boolean,

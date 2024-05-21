@@ -1,10 +1,10 @@
 package com.singing.api.security.builder.authentication
 
-import com.singing.api.domain.model.Account
+import com.singing.api.domain.model.AccountEntity
 import com.singing.api.security.builder.authentication.AccountAuthentication.Companion.PRIVILEGE_PREFIX
 import com.singing.api.security.builder.authentication.AccountAuthentication.Companion.ROLE_PREFIX
 
-fun buildAuthorities(account: Account): List<String> =
+fun buildAuthorities(account: AccountEntity): List<String> =
     account.roles.let { roles ->
         roles.map { ROLE_PREFIX + it.title }
             .plus(

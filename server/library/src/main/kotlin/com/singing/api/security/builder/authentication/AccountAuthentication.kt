@@ -1,12 +1,12 @@
 package com.singing.api.security.builder.authentication
 
-import com.singing.api.domain.model.Account
+import com.singing.api.domain.model.AccountEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 
 class AccountAuthentication(
-    val account: Account,
+    val account: AccountEntity,
     authorities: List<String>,
     private val credentials: Any?,
     private val details: Any?

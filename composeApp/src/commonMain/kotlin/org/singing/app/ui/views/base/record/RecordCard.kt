@@ -43,7 +43,7 @@ fun RecordCard(
             RecordCard(
                 modifier = modifier,
                 accuracy = record.accuracy,
-                filename = record.filename,
+                filename = record.name,
                 createdAt = HumanReadable.timeAgo(record.createdAt.instant),
                 duration = formatTimeString(record.duration),
                 containerColor = containerColor,

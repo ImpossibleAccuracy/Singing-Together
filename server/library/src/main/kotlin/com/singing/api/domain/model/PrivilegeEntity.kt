@@ -7,10 +7,10 @@ import jakarta.persistence.ManyToMany
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "publication_tag")
-class PublicationTag(
+@Table(name = "privilege")
+class PrivilegeEntity(
     id: Int? = null,
 ) : BaseTitleEntity(id) {
-    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY, targetEntity = Publication::class)
-    var publications: Set<Publication> = setOf()
+    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY, targetEntity = RoleEntity::class)
+    var roles: Set<RoleEntity> = setOf()
 }

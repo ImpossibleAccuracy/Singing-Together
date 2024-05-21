@@ -1,5 +1,6 @@
 package org.singing.app.domain.repository.record
 
+import com.singing.app.domain.model.RecordPoint
 import com.singing.audio.utils.ComposeFile
 import io.ktor.client.*
 import kotlinx.coroutines.Dispatchers
@@ -8,7 +9,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import org.singing.app.domain.model.RecordData
-import com.singing.app.domain.model.RecordPoint
 import org.singing.app.domain.model.stable.StableInstant
 import org.singing.app.domain.repository.StateRepository
 import org.singing.app.domain.repository.publication.PublicationRepository
@@ -24,7 +24,7 @@ class RecordRepository(
             listOf(
                 RecordData.Cover(
                     accuracy = 97,
-                    filename = "ASD.mp3",
+                    name = "ASD.mp3",
                     duration = 133000,
                     createdAt = StableInstant(Clock.System.now().minus(19.days)),
                     isSavedRemote = true,
@@ -40,7 +40,7 @@ class RecordRepository(
                 ),
                 RecordData.Cover(
                     accuracy = 23,
-                    filename = "ASD.mp3",
+                    name = "ASD.mp3",
                     duration = 10000,
                     createdAt = StableInstant(Clock.System.now().minus(12.days)),
                     isSavedRemote = true,
@@ -49,7 +49,7 @@ class RecordRepository(
                 ),
                 RecordData.Cover(
                     accuracy = 78,
-                    filename = "ASD.mp3",
+                    name = "ASD.mp3",
                     duration = 10000,
                     createdAt = StableInstant(Clock.System.now().minus(3.days)),
                     isSavedRemote = true,
@@ -87,7 +87,7 @@ class RecordRepository(
         } else {
             RecordData.Cover(
                 accuracy = 78,
-                filename = data.track.name,
+                name = data.track.name,
                 duration = 10000,
                 createdAt = StableInstant(Clock.System.now()),
                 isSavedRemote = saveRemote,
@@ -146,7 +146,7 @@ class RecordRepository(
             }
         }
 
-    suspend fun markPublished(record: RecordData) =
+    internal suspend fun markPublished(record: RecordData) =
         withContext(Dispatchers.IO) {
             updateSingle(record) {
                 when (record) {

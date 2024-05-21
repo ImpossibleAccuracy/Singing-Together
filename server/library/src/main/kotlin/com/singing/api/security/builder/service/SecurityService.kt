@@ -1,7 +1,7 @@
 package com.singing.api.security.builder.service
 
-import com.singing.api.domain.model.Account
+import com.singing.api.domain.model.AccountEntity
 
 interface SecurityService {
-    suspend fun authUserByRequestToken(token: String): Account?
+    suspend fun authUserByRequestToken(token: String): AccountEntity?
 }

@@ -9,10 +9,10 @@ internal fun <T> throwAccessDenied(message: String? = null): T {
     throw SecurityException(message ?: "Unauthorized")
 }
 
-internal fun getAuthentication(): AccountAuthentication? =
+fun getAuthentication(): AccountAuthentication? =
     SecurityContextHolder.getContext().authentication as? AccountAuthentication
 
-internal fun requireAuthentication(): AccountAuthentication =
+fun requireAuthentication(): AccountAuthentication =
     getAuthentication() ?: throwAccessDenied("Authorization required")
 
 internal fun hasAnyAuthority(

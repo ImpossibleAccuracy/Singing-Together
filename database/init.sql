@@ -48,6 +48,7 @@ CREATE TABLE `record` (
   `created_at` datetime not null DEFAULT now(),
   `account_id` int not null,
   `duration` bigint not null,
+  `accuracy` decimal(5,2),
   `voice_record_id` int not null,
   `track_id` int
 );
@@ -56,8 +57,8 @@ CREATE TABLE `record_item` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `record_id` int not null,
   `time` bigint not null,
-  `frequency` int not null,
-  `track_frequency` int
+  `frequency` decimal(7,2) not null,
+  `track_frequency` decimal(7,2)
 );
 
 CREATE TABLE `publication_tag` (

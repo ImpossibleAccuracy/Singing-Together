@@ -122,7 +122,7 @@ private fun RecordPlayInfo(
         IconLabel(
             leadingIcon = vectorResource(Res.drawable.baseline_folder_music_black_24dp),
             label = when (record) {
-                is RecordData.Cover -> record.filename
+                is RecordData.Cover -> record.name
                 is RecordData.Vocal -> stringResource(Res.string.label_no_track_selected)
             }
         )

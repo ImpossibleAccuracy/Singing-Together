@@ -95,7 +95,7 @@ private fun RecordInfo(
     ) {
         Text(
             text = when (record) {
-                is RecordData.Cover -> record.filename
+                is RecordData.Cover -> record.name
                 is RecordData.Vocal -> "No track selected"
             },
             color = MaterialTheme.colorScheme.onSurface,

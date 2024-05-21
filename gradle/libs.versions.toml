@@ -76,7 +76,9 @@ spring-starter-jpa = { module = "org.springframework.boot:spring-boot-starter-da
 spring-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring" }
 spring-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring" }
 spring-devtools = { module = "org.springframework.boot:spring-boot-devtools", version.ref = "spring" }
-spring-swagger = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-swagger" }
+
+spring-swagger-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "spring-swagger" }
+spring-swagger-api = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "spring-swagger" }
 
 mysql-connector = { module = "mysql:mysql-connector-java", version.ref = "mysql" }
 reactor-extensions = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version.ref = "reactor" }

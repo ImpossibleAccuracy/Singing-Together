@@ -1,107 +1,115 @@
 package com.singing.api.controller.record
 
-import com.singing.api.domain.pojo.RecordDto
-import com.singing.api.enums.Privileges
+import com.singing.api.domain.model.DocumentEntity
+import com.singing.api.domain.model.RecordEntity
+import com.singing.api.domain.model.RecordItemEntity
+import com.singing.api.domain.require
+import com.singing.api.domain.secureDelete
+import com.singing.api.domain.secureRead
+import com.singing.api.domain.toDto
 import com.singing.api.security.requireAuthenticated
 import com.singing.api.security.tryAuthenticate
 import com.singing.api.service.record.RecordService
-import com.singing.config.track.TrackProperties
-import kotlinx.coroutines.coroutineScope
-import org.slf4j.LoggerFactory
-import org.springframework.http.HttpStatus
+import com.singing.api.service.record.data.RecordDataService
+import com.singing.app.domain.dto.RecordDto
+import com.singing.app.domain.dto.RecordPointDto
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
-import org.springframework.web.server.ResponseStatusException
-import java.nio.file.Path
-import java.nio.file.Paths
-import kotlin.io.path.createDirectories
+import java.io.File
+import java.net.URLConnection
 
 
 @RestController
 @RequestMapping("/record")
 class RecordController(
     private val recordService: RecordService,
+    private val recordDataService: RecordDataService,
 ) {
-    companion object {
-        private val Logger = LoggerFactory.getLogger(RecordController::class.java)
-    }
-
-    private val basePath: Path by lazy {
-        Paths.get("TestStore").createDirectories()
-    }
-
-    @GetMapping
-    suspend fun getAvailableRecords(): List<RecordDto> = tryAuthenticate {
-        val canReadAllRecords = hasAnyPrivilege(Privileges.ReadRecords)
-
-        recordService
-            .getPublicRecords(
-                onlyPublished = !canReadAllRecords
-            )
-            .map {
-                RecordDto.fromModel(it)
-            }
-    }
-
     @GetMapping("/my")
+    @SecurityRequirement(name = "bearerAuth")
     suspend fun accountRecords(): List<RecordDto> = requireAuthenticated {
         recordService
-            .getAccountRecords(
-                accountId = account.id!!
-            )
-            .map {
-                RecordDto.fromModel(it)
-            }
+            .accountRecords(accountId = account.id!!)
+            .map(RecordEntity::toDto)
     }
 
-    @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    suspend fun createNewRecord(
-        @RequestParam("voice") voiceRecord: MultipartFile,
-        @RequestParam("track", required = false) audioTrack: MultipartFile?,
-    ): String = tryAuthenticate {
-        coroutineScope {
-            assertFileIsAcceptable(voiceRecord)
+    @GetMapping("/{id}/points")
+    @SecurityRequirement(name = "bearerAuth")
+    suspend fun getRecordPoints(@PathVariable id: Int): List<RecordPointDto> = tryAuthenticate {
+        val record = recordService.get(id).require()
 
-            if (audioTrack != null) {
-                assertFileIsAcceptable(audioTrack)
-            }
+        secureRead(record)
 
-            val voiceFile = basePath.resolve(voiceRecord.originalFilename ?: "voice.raw").also {
-                voiceRecord.transferTo(it)
-            }
-
-            val audioTrackFile = audioTrack?.let { file ->
-                basePath.resolve(file.originalFilename ?: "audio.raw").also {
-                    file.transferTo(it)
-                }
-            }
-
-            Logger.debug("New file received")
-            Logger.debug("Parsing...")
-
-            val record = recordService
-                .buildRecord(
-                    voiceFile.toFile(),
-                    audioTrackFile?.toFile(),
-                )
-                .also {
-                    it.account = account
-                }
-
-            Logger.debug("Parse done!")
-
-            "Success"
-        }
+        recordDataService
+            .recordPoints(record.id!!)
+            .map(RecordItemEntity::toDto)
     }
 
-    private fun assertFileIsAcceptable(file: MultipartFile) {
-        if (file.isEmpty) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "File cannot be empty")
-        }
+    @DeleteMapping("/{id}")
+    @SecurityRequirement(name = "bearerAuth")
+    suspend fun deleteRecord(@PathVariable id: Int): Unit = requireAuthenticated {
+        val record = recordService.get(id).require()
 
-        if (file.contentType == null || file.contentType!! !in TrackProperties.allowedSoundFormatsMimeType) {
-            throw ResponseStatusException(HttpStatus.BAD_REQUEST, "File of unacceptable type")
-        }
+        secureDelete(record)
+
+        recordService.delete(record.id!!)
     }
+
+    @GetMapping("/{id}/voice")
+    @SecurityRequirement(name = "bearerAuth")
+    suspend fun getRecordVoiceFile(
+        @PathVariable id: Int,
+        response: HttpServletResponse,
+    ): Unit = tryAuthenticate {
+        val record = recordService.get(id).require()
+
+        secureRead(record)
+
+        val document = recordDataService.loadRecordVoiceFile(record.id!!)
+
+        sendResponse(document, response)
+    }
+
+    @GetMapping("/{id}/track")
+    @SecurityRequirement(name = "bearerAuth")
+    suspend fun getRecordTrackFile(
+        @PathVariable id: Int,
+        response: HttpServletResponse,
+    ) = tryAuthenticate {
+        val record = recordService.get(id).require()
+
+        secureRead(record)
+
+        val document = recordDataService
+            .loadRecordTrackFile(record.id!!)
+            .require("No track found for Record#${id}")
+
+        sendResponse(document, response)
+    }
+
+    private fun sendResponse(
+        document: DocumentEntity,
+        response: HttpServletResponse,
+    ) {
+        val file = File(document.path!!)
+
+        response.addHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=${file.name}")
+        response.addHeader(HttpHeaders.CONTENT_TYPE, getFileMimeType(document))
+        response.addHeader(HttpHeaders.CONTENT_LENGTH, file.length().toString())
+
+        response.addHeader(HttpHeaders.PRAGMA, "public")
+        response.addHeader(HttpHeaders.EXPIRES, "0")
+        response.addHeader(HttpHeaders.CACHE_CONTROL, "must-revalidate, post-check=0, pre-check=0")
+        response.addHeader(HttpHeaders.CACHE_CONTROL, "public")
+
+        file.inputStream().copyTo(response.outputStream)
+    }
+
+    private fun getFileMimeType(document: DocumentEntity): String =
+        document.type?.mimeType
+            ?: URLConnection.guessContentTypeFromName(document.title!!)
+            ?: MediaType.TEXT_PLAIN_VALUE
 }

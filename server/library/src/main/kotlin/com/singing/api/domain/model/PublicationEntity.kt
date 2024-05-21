@@ -6,7 +6,7 @@ import java.time.Instant
 
 @Entity
 @Table(name = "publication")
-class Publication(
+class PublicationEntity(
     id: Int? = null,
 
     @Column(name = "created_at", nullable = false)
@@ -15,21 +15,21 @@ class Publication(
     @Column(name = "description", nullable = false, columnDefinition = "text")
     var description: String? = null,
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Account::class)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = AccountEntity::class)
     @JoinColumn(name = "account_id", nullable = false)
-    var account: Account? = null,
+    var account: AccountEntity? = null,
 
-    @OneToOne(fetch = FetchType.LAZY, targetEntity = Record::class)
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = RecordEntity::class)
     @JoinColumn(name = "record_id", nullable = false)
-    var record: Record? = null,
+    var record: RecordEntity? = null,
 ) : BaseEntity(id) {
-    @ManyToMany(fetch = FetchType.LAZY, targetEntity = PublicationTag::class)
+    @ManyToMany(fetch = FetchType.LAZY, targetEntity = PublicationTagEntity::class)
     @JoinTable(
         name = "publication_tags",
         joinColumns = [JoinColumn(name = "publication_id")],
         inverseJoinColumns = [JoinColumn(name = "tag_id")]
     )
-    var tags: Set<PublicationTag> = setOf()
+    var tags: Set<PublicationTagEntity> = setOf()
 
 
     override fun toString(): String {

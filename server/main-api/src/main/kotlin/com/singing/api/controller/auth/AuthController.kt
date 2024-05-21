@@ -2,9 +2,13 @@ package com.singing.api.controller.auth
 
 import com.singing.api.domain.exception.OperationRejectedException
 import com.singing.api.domain.exception.ResourceNotFoundException
-import com.singing.api.domain.model.Account
+import com.singing.api.domain.model.AccountEntity
+import com.singing.api.security.requireAuthenticated
 import com.singing.api.service.account.AccountService
 import com.singing.api.service.token.TokenService
+import com.singing.app.domain.payload.AuthRequest
+import com.singing.app.domain.payload.AuthResponse
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -47,7 +51,7 @@ class AuthController(
                 throw OperationRejectedException("User with such email already exists")
             }
 
-        val account = Account(
+        val account = AccountEntity(
             username = body.username,
             password = passwordEncoder.encode(body.password)
         ).let {
@@ -60,13 +64,12 @@ class AuthController(
         )
     }
 
-    data class AuthRequest(
-        val username: String,
-        val password: String,
-    )
-
-    data class AuthResponse(
-        val id: Int,
-        val token: String,
-    )
+    @PostMapping("/token")
+    @SecurityRequirement(name = "bearerAuth")
+    suspend fun tokenUpdate(): AuthResponse = requireAuthenticated {
+        AuthResponse(
+            id = account.id!!,
+            token = tokenService.generateToken(account.username!!)
+        )
+    }
 }

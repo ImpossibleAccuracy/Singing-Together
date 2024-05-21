@@ -28,6 +28,9 @@ javafx {
 }
 
 dependencies {
+    implementation(project(":library:utils"))
+    implementation(project(":shared"))
+    implementation(project(":shared:audio"))
     implementation(project(":server:library"))
 
     // PLATFORM DEPENDENCIES
@@ -47,7 +50,8 @@ dependencies {
     implementation(libs.bundles.jjwt)
 
     // SWAGGER
-    developmentOnly(libs.spring.swagger)
+    implementation(libs.spring.swagger.ui)
+    implementation(libs.spring.swagger.api)
 
     // AUDIO
     implementation(project(":config"))
