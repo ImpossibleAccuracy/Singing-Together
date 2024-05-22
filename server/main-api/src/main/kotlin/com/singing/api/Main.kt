@@ -9,11 +9,8 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
-@SpringBootApplication
-@ComponentScan("com.singing")
+@SpringBootApplication(scanBasePackages = ["com.singing"])
 @ConfigurationPropertiesScan("com.singing")
-@EnableJpaRepositories("com.singing")
-@EntityScan("com.singing")
 class SpringApplication
 
 class JavaFXApplication : Application() {

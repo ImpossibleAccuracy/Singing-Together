@@ -13,6 +13,7 @@ actual object TrackProperties : ITrackProperties {
         "audio/mpeg",
         "audio/wav",
         "audio/wave",
+        "audio/x-wave",
         "audio/x-ms-wma",
         "audio/aac",
     )

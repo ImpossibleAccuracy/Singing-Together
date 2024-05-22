@@ -27,7 +27,7 @@ class RecordServiceImpl(
         val accountOwnRecordsSpec = getAuthentication()?.account?.let {
             where<RecordEntity> { root ->
                 equal(
-                    root.join(RecordEntity::account).get(AccountEntity::id),
+                    root.join(RecordEntity::author).get(AccountEntity::id),
                     it.id,
                 )
             }
@@ -43,7 +43,7 @@ class RecordServiceImpl(
     }
 
     override suspend fun accountRecords(accountId: Int): List<RecordEntity> =
-        recordRepository.findByAccount_Id(
+        recordRepository.findByAuthor_Id(
             id = accountId,
             sort = Sort.by(Sort.Direction.DESC, RecordEntity::createdAt.name)
         )

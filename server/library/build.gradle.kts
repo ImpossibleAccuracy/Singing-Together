@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
 
@@ -29,9 +27,6 @@ dependencies {
     implementation(libs.bundles.jjwt)
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "21"
-    }
+kotlin {
+    jvmToolchain(libs.versions.jvmTargetVersion.get().toInt())
 }

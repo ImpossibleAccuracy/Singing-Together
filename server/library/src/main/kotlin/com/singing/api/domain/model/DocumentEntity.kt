@@ -28,10 +28,20 @@ class DocumentEntity(
     @OneToMany(mappedBy = "avatar", fetch = FetchType.LAZY, targetEntity = AccountEntity::class)
     var avatarAccounts: Set<AccountEntity> = setOf()
 
-    @OneToMany(mappedBy = "voiceRecord", fetch = FetchType.LAZY, targetEntity = RecordEntity::class)
+    @OneToMany(
+        mappedBy = "voiceRecord",
+        orphanRemoval = true,
+        fetch = FetchType.LAZY,
+        targetEntity = RecordEntity::class
+    )
     var voiceRecordRecords: Set<RecordEntity> = setOf()
 
-    @OneToMany(mappedBy = "track", fetch = FetchType.LAZY, targetEntity = RecordEntity::class)
+    @OneToMany(
+        mappedBy = "trackRecord",
+        orphanRemoval = true,
+        fetch = FetchType.LAZY,
+        targetEntity = RecordEntity::class
+    )
     var trackRecords: Set<RecordEntity> = setOf()
 
 

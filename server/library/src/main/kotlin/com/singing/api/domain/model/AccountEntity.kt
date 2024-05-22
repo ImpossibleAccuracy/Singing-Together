@@ -20,17 +20,15 @@ class AccountEntity(
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = DocumentEntity::class)
     @JoinColumn(name = "avatar_id")
-    var avatar: DocumentEntity? = null
-) : BaseEntity(id) {
-    @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity::class)
-    @JoinTable(
+    var avatar: DocumentEntity? = null,
+
+    @ManyToMany(fetch = FetchType.EAGER, targetEntity = RoleEntity::class) @JoinTable(
         name = "role_account",
         joinColumns = [JoinColumn(name = "account_id")],
         inverseJoinColumns = [JoinColumn(name = "role_id")]
-    )
-    var roles: Set<RoleEntity> = setOf()
-
-    @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, targetEntity = RecordEntity::class)
+    ) var roles: Set<RoleEntity> = setOf()
+) : BaseEntity(id) {
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, targetEntity = RecordEntity::class)
     var records: Set<RecordEntity> = setOf()
 
     @OneToMany(mappedBy = "account", fetch = FetchType.LAZY, targetEntity = PublicationEntity::class)

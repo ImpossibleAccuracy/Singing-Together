@@ -15,12 +15,15 @@ import java.io.File
 
 actual suspend fun getFileDuration(file: File): Long {
     val media = Media(file.toURI().toString())
-
     val player = MediaPlayer(media)
 
     player.waitReady()
 
-    return player.totalDuration.toMillis().toLong()
+    val duration = player.totalDuration.toMillis().toLong()
+
+    player.dispose()
+
+    return duration
 }
 
 

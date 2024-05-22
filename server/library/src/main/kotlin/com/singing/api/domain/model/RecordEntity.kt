@@ -2,6 +2,8 @@ package com.singing.api.domain.model
 
 import com.singing.api.domain.model.base.BaseEntity
 import jakarta.persistence.*
+import org.hibernate.annotations.Cascade
+import org.hibernate.annotations.CascadeType
 import java.time.Instant
 
 @Entity
@@ -12,6 +14,9 @@ class RecordEntity(
     @Column(name = "created_at", nullable = false)
     var createdAt: Instant = Instant.now(),
 
+    @Column(name = "title")
+    var title: String? = null,
+
     @Column(name = "duration", nullable = false)
     var duration: Long? = null,
 
@@ -20,16 +25,19 @@ class RecordEntity(
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = AccountEntity::class)
     @JoinColumn(name = "account_id", nullable = false)
-    var account: AccountEntity? = null,
+    var author: AccountEntity? = null,
 
+    @Cascade(CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = DocumentEntity::class)
     @JoinColumn(name = "voice_record_id", nullable = false)
     var voiceRecord: DocumentEntity? = null,
 
+    @Cascade(CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = DocumentEntity::class)
     @JoinColumn(name = "track_id")
-    var track: DocumentEntity? = null,
+    var trackRecord: DocumentEntity? = null,
 ) : BaseEntity(id) {
+    @Cascade(CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE)
     @OneToMany(mappedBy = "record", fetch = FetchType.LAZY, targetEntity = RecordItemEntity::class)
     var points: Set<RecordItemEntity> = setOf()
 
@@ -37,6 +45,6 @@ class RecordEntity(
     var publications: Set<PublicationEntity> = setOf()
 
     override fun toString(): String {
-        return "Record(createdAt=$createdAt, duration=$duration, account=${account?.id})"
+        return "Record(createdAt=$createdAt, duration=$duration, account=${author?.id})"
     }
 }

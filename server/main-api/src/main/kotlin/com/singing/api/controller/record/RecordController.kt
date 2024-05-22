@@ -43,9 +43,9 @@ class RecordController(
 
         secureRead(record)
 
-        recordDataService
-            .recordPoints(record.id!!)
-            .map(RecordItemEntity::toDto)
+        val items = recordDataService.recordPoints(record.id!!)
+
+        items.map(RecordItemEntity::toDto)
     }
 
     @DeleteMapping("/{id}")

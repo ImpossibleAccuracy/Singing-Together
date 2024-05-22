@@ -2,17 +2,22 @@ app:
   token:
     expirationTime: ${TOKEN_EXPIRATION_TIME}
     secret: ${TOKEN_SECRET_KEY}
-  pagination:
-    defaultLimit: 30
-  resources:
-    mediaServerURL: ${MEDIA_SERVER_URL:http://localhost:9000}
+  record:
+    maxParsingDuration: ${MAX_PARSE_DURATION:15s}
+  storage:
+    temp-store-path: ${TEMP_STORE_PATH}
+    regular-store-path: ${REGULAR_STORE_PATH}
+    file-name-pattern: "{FILE_HASH}_{TIMESTAMP}_{USER_UPLOADED}.{EXTENSION}"
 
 server:
   port: ${SERVER_PORT:8000}
   error:
-    include-stacktrace: never
+    include-message: always
 
 spring:
+  mvc:
+    async:
+      request-timeout: ${MAX_REQUEST_TIMEOUT:30s}
   servlet:
     multipart:
       max-file-size: ${MAX_FILE_SIZE:10MB}

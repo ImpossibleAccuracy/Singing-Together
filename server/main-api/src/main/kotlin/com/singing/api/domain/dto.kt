@@ -6,11 +6,11 @@ import com.singing.app.domain.dto.*
 fun RecordEntity.toDto() = RecordDto(
     id = this.id,
     createdAt = this.createdAt,
+    title = this.title,
     duration = this.duration,
-    creatorId = this.account?.id,
+    creatorId = this.author?.id,
     isPublished = this.publications.isNotEmpty(),
     accuracy = this.accuracy,
-    name = this.voiceRecord?.title,
 )
 
 fun RecordItemEntity.toDto() = RecordPointDto(
@@ -34,7 +34,7 @@ fun PublicationEntity.toDto() = PublicationDto(
     id = this.id,
     createdAt = this.createdAt,
     description = this.description,
-    account = this.account?.toDto(),
+    author = this.account?.toDto(),
     record = this.record?.toDto(),
     tags = this.tags.map { it.title!! },
 )

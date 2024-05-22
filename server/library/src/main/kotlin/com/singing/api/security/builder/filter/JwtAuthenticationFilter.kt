@@ -17,8 +17,8 @@ class JwtAuthenticationFilter(
     private val securityService: SecurityService,
 ) : OncePerRequestFilter() {
     companion object {
-        private const val AUTH_HEADER_NAME = "Authorization"
-        private const val JWT_TOKEN_PREFIX = "Bearer "
+        const val AUTH_HEADER_NAME = "Authorization"
+        const val JWT_TOKEN_PREFIX = "Bearer "
     }
 
     @Throws(ServletException::class, IOException::class)

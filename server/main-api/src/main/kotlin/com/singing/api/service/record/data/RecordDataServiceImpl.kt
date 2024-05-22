@@ -1,67 +1,87 @@
 package com.singing.api.service.record.data
 
+import com.singing.api.domain.exception.ParsingCancellationException
 import com.singing.api.domain.model.DocumentEntity
-import com.singing.api.domain.model.DocumentTypeEntity
-import com.singing.api.domain.model.RecordEntity
 import com.singing.api.domain.model.RecordItemEntity
+import com.singing.api.domain.repository.DocumentRepository
 import com.singing.api.domain.repository.RecordItemRepository
 import com.singing.app.audio.createTrackAudioParser
 import com.singing.app.audio.createVoiceAudioParser
 import com.singing.app.audio.getFileDuration
+import com.singing.app.domain.model.PointAccuracy
 import com.singing.audio.sampled.model.TimedFrequency
 import com.singing.audio.utils.ComposeFile
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.withTimeout
 import org.springframework.stereotype.Service
 import java.io.File
-import java.time.Instant
 import java.util.*
+import kotlin.math.abs
+import kotlin.time.toKotlinDuration
 
 @Service
 class RecordDataServiceImpl(
     private val recordPointRepository: RecordItemRepository,
+    private val properties: RecordProcessingProperties, private val documentRepository: DocumentRepository,
 ) : RecordDataService {
+    override suspend fun getDuration(file: File): Long {
+        return getFileDuration(file)
+    }
+
+    override suspend fun computeAccuracy(points: List<RecordItemEntity>): Double {
+        // TODO: extract algorithm
+        val total = points.sumOf {
+            val diff = abs(it.frequency!! - it.trackFrequency!!)
+
+            if (diff > 10000) println(it)
+
+            PointAccuracy.calculateAccuracy(diff.toFloat()).percent.toInt()
+        }
+
+        return total.toDouble() / points.size
+    }
+
     override suspend fun buildRecord(
         voiceFile: File,
         trackFile: File?,
-    ): RecordEntity = coroutineScope {
-        val result = RecordEntity()
-
-        val durationDeferred = async {
-            getFileDuration(voiceFile)
-        }
-
-        val voiceDeferred = async {
-            val parser = createVoiceAudioParser(
-                ComposeFile(voiceFile),
-                filters = listOf(),
-            )
-
-            parser.parse().toList()
-        }
-
-        val trackDeferred = trackFile?.let {
-            async {
-                val parser = createTrackAudioParser(
-                    ComposeFile(it),
+    ): List<RecordItemEntity> = try {
+        withTimeout(properties.maxParsingDuration.toKotlinDuration()) {
+            val voiceDeferred = async(Dispatchers.IO) {
+                val voiceParser = createVoiceAudioParser(
+                    file = ComposeFile(voiceFile),
                     filters = listOf(),
                 )
 
-                parser.parse().toList()
+                voiceParser.parse()
+                    .toList()
+                    .also { voiceParser.release() }
             }
+
+            val trackDeferred = trackFile?.let {
+                async(Dispatchers.IO) {
+                    val trackParser = createTrackAudioParser(
+                        file = ComposeFile(it),
+                        filters = listOf(),
+                    )
+
+                    trackParser.parse()
+                        .toList()
+                        .also { trackParser.release() }
+                }
+            }
+
+            val voiceParserResult = voiceDeferred.await()
+            val trackParserResult = trackDeferred?.await()
+
+            val merged = mergeRecords(voiceParserResult, trackParserResult)
+
+            mapToRecordItems(merged)
         }
-
-        result.duration = durationDeferred.await()
-
-        val voiceParserResult = voiceDeferred.await()
-        val trackParserResult = trackDeferred?.await()
-
-        val merged = mergeRecords(voiceParserResult, trackParserResult)
-
-        result.points = mapToRecordItems(merged).toSet()
-
-        return@coroutineScope result
+    } catch (e: TimeoutCancellationException) {
+        throw ParsingCancellationException(e)
     }
 
     private fun mergeRecords(
@@ -102,25 +122,10 @@ class RecordDataServiceImpl(
     override suspend fun recordPoints(recordId: Int): List<RecordItemEntity> =
         recordPointRepository.findByRecord_IdOrderByTimeAsc(recordId)
 
-    override suspend fun loadRecordVoiceFile(recordId: Int): DocumentEntity {
-        val file =
-            File("C:\\Users\\Gamer\\Desktop\\audio_samples\\Gales-of-Song-English-Version-_Studio-Quality-AcapellaVocals-Only_-_Belle_.wav")
+    override suspend fun loadRecordVoiceFile(recordId: Int): DocumentEntity =
+        documentRepository.findByVoiceRecordRecords_Id(recordId)
+            .orElseThrow()
 
-        return DocumentEntity(
-            id = 1,
-            createdAt = Instant.now(),
-            title = file.nameWithoutExtension,
-            hash = "",
-            path = file.absolutePath,
-            type = DocumentTypeEntity(
-                id = 1,
-                title = "WAV audio",
-                mimeType = "audio/wave"
-            )
-        )
-    }
-
-    override suspend fun loadRecordTrackFile(recordId: Int): Optional<DocumentEntity> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun loadRecordTrackFile(recordId: Int): Optional<DocumentEntity> =
+        documentRepository.findByTrackRecords_Id(recordId)
 }

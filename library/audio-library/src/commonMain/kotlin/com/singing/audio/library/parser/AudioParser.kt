@@ -4,4 +4,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface AudioParser<T> {
     fun parse(): Flow<T>
+
+    fun release() {}
 }

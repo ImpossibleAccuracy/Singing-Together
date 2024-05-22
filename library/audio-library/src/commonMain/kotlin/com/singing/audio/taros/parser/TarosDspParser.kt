@@ -17,6 +17,10 @@ class TarosDspParser<T>(
     private val decoder: TarosDspDecoder<T>,
     private val filters: List<TarosAudioFilter> = listOf(),
 ) : AudioParser<T> {
+    override fun release() {
+        input.dispatcher.stop()
+    }
+
     override fun parse(): Flow<T> = callbackFlow {
         with(input) {
             filters.forEach { filter ->
@@ -34,9 +38,10 @@ class TarosDspParser<T>(
             dispatcher.run()
 
             close()
+            release()
 
             awaitClose {
-                dispatcher.stop()
+                release()
             }
         }
     }

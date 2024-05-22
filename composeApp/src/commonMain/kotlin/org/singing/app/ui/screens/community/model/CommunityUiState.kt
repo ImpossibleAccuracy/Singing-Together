@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.singing.app.domain.model.AccountUiData
-import com.singing.app.domain.model.CategoryInfo
+import org.singing.app.domain.model.CategoryInfo
 import org.singing.app.domain.model.Publication
 
 data class CommunityUiState(

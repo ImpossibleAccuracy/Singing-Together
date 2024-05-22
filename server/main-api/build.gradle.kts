@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     alias(libs.plugins.kotlin.jvm)
 
@@ -21,14 +19,15 @@ allOpen {
     annotation("jakarta.persistence.Embeddable")
 }
 
-// For calculation total duration
 javafx {
-    version = "21"
+    version = libs.versions.jvmTargetVersion.get()
     modules = listOf("javafx.media")
 }
 
 dependencies {
+    implementation(project(":config"))
     implementation(project(":library:utils"))
+    implementation(project(":library:audio-library"))
     implementation(project(":shared"))
     implementation(project(":shared:audio"))
     implementation(project(":server:library"))
@@ -54,10 +53,7 @@ dependencies {
     implementation(libs.spring.swagger.api)
 
     // AUDIO
-    implementation(project(":config"))
-    implementation(project(":library:audio-library"))
-    implementation(project(":library:audio-player"))
-    implementation("org.openjfx:javafx-media:21.0.1:win")
+    implementation("org.openjfx:javafx-media:${libs.versions.jvmTargetVersion.get()}.0.1:win")
     implementation(libs.mp3spi)
     implementation(libs.dsp.core)
     implementation(libs.dsp.jvm)
@@ -76,15 +72,18 @@ dependencies {
     testRuntimeOnly(libs.junit.engine.jupiter)
 
     testImplementation(libs.kotlin.test)
-    testImplementation(libs.spring.test)
+    testImplementation(libs.spring.test) {
+        exclude(module = "junit")
+        exclude(module = "mockito-core")
+    }
+    testImplementation(libs.byte.buddy)
     testImplementation(libs.spring.mockk)
-    testImplementation(libs.h2.connector)
     testImplementation(libs.reactor.test)
+    testImplementation(libs.h2.connector)
+    testImplementation(libs.junit.api)
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions {
-        freeCompilerArgs += "-Xjsr305=strict"
-        jvmTarget = "21"
-    }
+
+kotlin {
+    jvmToolchain(libs.versions.jvmTargetVersion.get().toInt())
 }

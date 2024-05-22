@@ -46,6 +46,7 @@ CREATE TABLE `role_account` (
 CREATE TABLE `record` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `created_at` datetime not null DEFAULT now(),
+  `title` varchar(255) not null,
   `account_id` int not null,
   `duration` bigint not null,
   `accuracy` decimal(5,2),
@@ -98,7 +99,7 @@ ALTER TABLE `record` ADD FOREIGN KEY (`voice_record_id`) REFERENCES `document` (
 
 ALTER TABLE `record` ADD FOREIGN KEY (`track_id`) REFERENCES `document` (`id`);
 
-ALTER TABLE `record_item` ADD FOREIGN KEY (`record_id`) REFERENCES `record` (`id`);
+ALTER TABLE `record_item` ADD FOREIGN KEY (`record_id`) REFERENCES `record` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 ALTER TABLE `publication` ADD FOREIGN KEY (`account_id`) REFERENCES `account` (`id`);
 

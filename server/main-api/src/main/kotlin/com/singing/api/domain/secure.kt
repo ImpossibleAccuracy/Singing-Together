@@ -8,7 +8,7 @@ import com.singing.api.security.scope.PossibleAuthorizedScope
 
 fun PossibleAuthorizedScope.secureRead(record: RecordEntity) {
     if (!hasAnyPrivilege(Privileges.ReadRecords) &&
-        record.account?.id != account?.id &&
+        record.author?.id != account?.id &&
         record.publications.isEmpty()
     ) {
         throw OperationRejectedException("You have no permissions")
@@ -17,14 +17,14 @@ fun PossibleAuthorizedScope.secureRead(record: RecordEntity) {
 
 fun AuthorizedScope.secureWrite(record: RecordEntity) {
     if (!hasAnyPrivilege(Privileges.UpdateRecords) &&
-        record.account?.id != account.id
+        record.author?.id != account.id
     ) {
         throw OperationRejectedException("You have no permissions")
     }
 }
 
 fun AuthorizedScope.secureDelete(record: RecordEntity) {
-    if (!hasAnyPrivilege(Privileges.DeleteRecords) && record.account?.id != account.id) {
+    if (!hasAnyPrivilege(Privileges.DeleteRecords) && record.author?.id != account.id) {
         throw OperationRejectedException("You have no permissions to perform action")
     }
 }

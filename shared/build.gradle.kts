@@ -34,6 +34,8 @@ kotlin {
             implementation(project(":library:utils"))
 
             implementation(libs.kotlinx.coroutines.core)
+
+            implementation(libs.jackson.annotations)
         }
     }
 }

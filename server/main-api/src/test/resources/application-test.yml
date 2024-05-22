@@ -1,0 +1,29 @@
+app:
+  token:
+    expirationTime: 3600000
+    secret: 11111111111111111111111111111111111111111111111111111111
+  record:
+    maxParsingDuration: 5s
+  storage:
+    temp-store-path: TestStore/TempFiles
+    regular-store-path: TestStore/RegularFiles
+    file-name-pattern: "{FILE_NAME}_{FILE_HASH}_{TIMESTAMP}_{USER_UPLOADED}.{EXTENSION}"
+
+server:
+  error:
+    include-message: always
+    include-exception: true
+    include-stacktrace: always
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  datasource:
+    username: sa
+    password:
+    url: jdbc:h2:mem:testdb
+  security:
+    filter:
+      order: 10

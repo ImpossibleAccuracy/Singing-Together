@@ -39,17 +39,17 @@ kotlin {
 
         jvmMain.dependencies {
             //noinspection UseTomlInstead
-            implementation("org.openjfx:javafx-base:21.0.1:win")
+            implementation("org.openjfx:javafx-base:${libs.versions.jvmTargetVersion.get()}.0.1:win")
             //noinspection UseTomlInstead
-            implementation("org.openjfx:javafx-graphics:21.0.1:win")
+            implementation("org.openjfx:javafx-graphics:${libs.versions.jvmTargetVersion.get()}.0.1:win")
             //noinspection UseTomlInstead
-            implementation("org.openjfx:javafx-controls:21.0.1:win")
+            implementation("org.openjfx:javafx-controls:${libs.versions.jvmTargetVersion.get()}.0.1:win")
             //noinspection UseTomlInstead
-            implementation("org.openjfx:javafx-media:21.0.1:win")
+            implementation("org.openjfx:javafx-media:${libs.versions.jvmTargetVersion.get()}.0.1:win")
             //noinspection UseTomlInstead
-            implementation("org.openjfx:javafx-web:21.0.1:win")
+            implementation("org.openjfx:javafx-web:${libs.versions.jvmTargetVersion.get()}.0.1:win")
             //noinspection UseTomlInstead
-            implementation("org.openjfx:javafx-swing:21.0.1:win")
+            implementation("org.openjfx:javafx-swing:${libs.versions.jvmTargetVersion.get()}.0.1:win")
 
             implementation(libs.dsp.jvm)
         }

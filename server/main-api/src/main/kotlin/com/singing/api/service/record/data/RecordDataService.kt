@@ -7,10 +7,14 @@ import java.io.File
 import java.util.*
 
 interface RecordDataService {
+    suspend fun getDuration(file: File): Long
+
+    suspend fun computeAccuracy(points: List<RecordItemEntity>): Double
+
     suspend fun buildRecord(
         voiceFile: File,
         trackFile: File?,
-    ): RecordEntity
+    ): List<RecordItemEntity>
 
     suspend fun recordPoints(recordId: Int): List<RecordItemEntity>
 
