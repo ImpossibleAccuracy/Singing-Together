@@ -11,8 +11,8 @@ import com.singing.api.security.requireAuthenticated
 import com.singing.api.security.tryAuthenticate
 import com.singing.api.service.record.RecordService
 import com.singing.api.service.record.data.RecordDataService
-import com.singing.app.domain.dto.RecordDto
-import com.singing.app.domain.dto.RecordPointDto
+import com.singing.domain.payload.dto.RecordDto
+import com.singing.domain.payload.dto.RecordPointDto
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpHeaders

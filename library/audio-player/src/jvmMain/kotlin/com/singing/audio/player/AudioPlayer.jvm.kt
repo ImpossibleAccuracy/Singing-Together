@@ -1,6 +1,6 @@
 package com.singing.audio.player
 
-import com.singing.audio.utils.ComposeFile
+import com.singing.app.base.ComposeFile
 import com.singing.audio.waitReady
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer

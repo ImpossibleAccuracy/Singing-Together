@@ -15,7 +15,7 @@ allOpen {
     annotation("jakarta.persistence.Embeddable")
 }
 
-group = "com.singing.api"
+group = AppConfig.buildGroup("api")
 
 dependencies {
     // COROUTINES DEPENDENCIES

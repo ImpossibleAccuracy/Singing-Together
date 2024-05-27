@@ -12,17 +12,19 @@ import com.singing.api.service.account.AccountService
 import com.singing.api.service.publication.PublicationService
 import com.singing.api.service.publication.tag.PublicationTagService
 import com.singing.api.service.record.RecordService
-import com.singing.app.domain.dto.CategoryInfoDto
-import com.singing.app.domain.dto.PublicationDto
-import com.singing.app.domain.model.PublicationSort
-import com.singing.app.domain.payload.PublicationSearchRequest
-import com.singing.app.domain.payload.PublishRecordRequest
+import com.singing.domain.model.PublicationSort
+import com.singing.domain.payload.dto.CategoryInfoDto
+import com.singing.domain.payload.dto.PublicationDto
+import com.singing.domain.payload.request.PublicationSearchRequest
+import com.singing.domain.payload.request.PublishRecordRequest
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("/publication")
@@ -33,7 +35,7 @@ class PublicationController(
     private val publicationTagService: PublicationTagService,
 ) {
     companion object {
-        private const val PublicationLatestDays = 2L
+        private const val PUBLICATION_LATEST_DAYS = 2L
     }
 
     @PostMapping
@@ -104,16 +106,23 @@ class PublicationController(
     )
     suspend fun search(
         @Parameter(hidden = true) body: PublicationSearchRequest,
-    ): List<PublicationDto> =
-        publicationService
+    ): List<PublicationDto> {
+        val sort = PublicationSort.entries.firstOrNull { it.name == body.sort }
+            ?: throw ResponseStatusException(
+                HttpStatus.BAD_REQUEST,
+                "Sort must be one of ${PublicationSort.entries.joinToString(", ")}"
+            )
+
+        return publicationService
             .search(
                 page = body.page,
                 tags = body.tags,
                 description = body.description,
                 showOwnPublications = body.showOwnPublications,
-                sort = body.sort,
+                sort = sort,
             )
             .map(PublicationEntity::toDto)
+    }
 
 
     @GetMapping("/record/{id}")
@@ -128,7 +137,7 @@ class PublicationController(
 
     @GetMapping("/random")
     suspend fun getRandomPublication(): PublicationDto? =
-        (publicationService.random(PublicationLatestDays) ?: publicationService.random(null))
+        (publicationService.random(PUBLICATION_LATEST_DAYS) ?: publicationService.random(null))
             ?.toDto()
 
     @GetMapping("/categories")

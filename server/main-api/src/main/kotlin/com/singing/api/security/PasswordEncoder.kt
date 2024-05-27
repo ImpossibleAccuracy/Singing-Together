@@ -11,14 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder
 @Configuration
 class PasswordEncoder {
     @Bean
-    @Profile("prod")
-    fun bcryptPasswordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
+    @Profile("dev")
+    fun noOpPasswordEncoder(): PasswordEncoder {
+        return NoOpPasswordEncoder.getInstance()
     }
 
     @Bean
     @ConditionalOnMissingBean(PasswordEncoder::class)
-    fun noOpPasswordEncoder(): PasswordEncoder {
-        return NoOpPasswordEncoder.getInstance()
+    fun bcryptPasswordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
     }
 }

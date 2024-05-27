@@ -2,7 +2,7 @@ package com.singing.api.service.publication
 
 import com.singing.api.domain.model.PublicationEntity
 import com.singing.api.domain.model.RecordEntity
-import com.singing.app.domain.model.PublicationSort
+import com.singing.domain.model.PublicationSort
 import org.springframework.data.domain.Sort
 
 fun PublicationSort.toOrder() = when (this) {

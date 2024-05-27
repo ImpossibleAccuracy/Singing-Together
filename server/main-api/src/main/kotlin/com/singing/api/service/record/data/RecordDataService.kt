@@ -1,7 +1,6 @@
 package com.singing.api.service.record.data
 
 import com.singing.api.domain.model.DocumentEntity
-import com.singing.api.domain.model.RecordEntity
 import com.singing.api.domain.model.RecordItemEntity
 import java.io.File
 import java.util.*

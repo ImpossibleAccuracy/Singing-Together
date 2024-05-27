@@ -1,10 +1,9 @@
 package com.singing.app.audio
 
-import com.singing.app.domain.model.AudioFile
 import com.singing.audio.library.filter.AudioFilter
 import com.singing.audio.library.parser.AudioParser
 import com.singing.audio.sampled.model.TimedFrequency
-import com.singing.audio.utils.ComposeFile
+import com.singing.app.base.ComposeFile
 
 expect suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioParser<Double>?
 

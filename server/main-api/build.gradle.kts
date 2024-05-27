@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
-group = "com.singing.api"
+group = AppConfig.buildGroup("api")
 
 allOpen {
     annotation("jakarta.persistence.Entity")
@@ -25,12 +25,14 @@ javafx {
 }
 
 dependencies {
-    implementation(project(":config"))
-    implementation(project(":library:utils"))
-    implementation(project(":library:audio-library"))
-    implementation(project(":shared"))
-    implementation(project(":shared:audio"))
-    implementation(project(":server:library"))
+    implementation(project(Modules.SHARED_CONFIG))
+    implementation(project(Modules.SHARED_BASE))
+    implementation(project(Modules.SHARED_MODEL))
+    implementation(project(Modules.SHARED_PAYLOAD))
+    implementation(project(Modules.SHARED_AUDIO))
+    implementation(project(Modules.LIBRARY_AUDIO_DECODER))
+
+    implementation(project(Modules.SERVER_LIBRARY))
 
     // PLATFORM DEPENDENCIES
     implementation(libs.kotlin.stdlib)

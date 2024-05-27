@@ -28,10 +28,14 @@ jackson = "2.16.2"
 jjwt = "0.11.5"
 
 voyager = "1.0.0"
+voyager-koin = "1.1.0-alpha04"
 koin = "3.5.6"
 koin-compose = "1.1.5"
 ktor = "2.3.11"
 sqldelight = "2.0.1"
+
+paging = "3.3.0-alpha02-0.5.1"
+apiresult = "1.0.4"
 
 xtaudio = "2.0"
 mp3spi = "1.9.5.4"
@@ -92,7 +96,7 @@ jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jjwt" }
 jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jjwt" }
 
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
-voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager" }
+voyager-koin = { module = "cafe.adriel.voyager:voyager-koin", version.ref = "voyager-koin" }
 voyager-transitions = { module = "cafe.adriel.voyager:voyager-transitions", version.ref = "voyager" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
@@ -109,6 +113,10 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
 sqldelight-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+
+paging-compose = { module = "app.cash.paging:paging-common", version.ref = "paging" }
+paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }
+apiresult = { module = "pro.respawn.apiresult:core", version.ref = "apiresult" }
 
 # SOUND
 xtaudio = { module = "com.github.sjoerdvankreel:xt.audio", version.ref = "xtaudio" }

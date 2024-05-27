@@ -1,7 +1,7 @@
 package com.singing.app.audio
 
-import com.singing.app.domain.model.AudioFile
-import com.singing.audio.utils.ComposeFile
+import com.singing.app.base.ComposeFile
+import com.singing.domain.model.AudioFile
 import javafx.scene.media.Media
 import javafx.scene.media.MediaPlayer
 import kotlinx.coroutines.Dispatchers

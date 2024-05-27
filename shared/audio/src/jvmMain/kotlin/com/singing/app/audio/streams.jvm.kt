@@ -12,7 +12,7 @@ import com.singing.audio.taros.input.TarosDspInput
 import com.singing.audio.taros.input.createMicrophoneInput
 import com.singing.audio.taros.input.openInputStreamAsTarosDspInput
 import com.singing.audio.taros.parser.TarosDspParser
-import com.singing.audio.utils.ComposeFile
+import com.singing.app.base.ComposeFile
 import com.singing.config.track.TrackProperties
 import com.singing.config.voice.VoiceProperties
 import kotlinx.coroutines.Dispatchers

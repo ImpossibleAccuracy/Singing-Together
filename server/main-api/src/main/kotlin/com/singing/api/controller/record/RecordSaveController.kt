@@ -9,8 +9,8 @@ import com.singing.api.service.record.RecordService
 import com.singing.api.service.record.data.RecordDataService
 import com.singing.api.service.storage.FileStorageService
 import com.singing.api.service.storage.StorageCatalog
-import com.singing.app.domain.dto.RecordDto
 import com.singing.config.track.TrackProperties
+import com.singing.domain.payload.dto.RecordDto
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import kotlinx.coroutines.*
 import org.hibernate.validator.constraints.Length

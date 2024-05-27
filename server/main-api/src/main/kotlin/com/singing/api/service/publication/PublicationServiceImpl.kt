@@ -8,7 +8,7 @@ import com.singing.api.domain.repository.PublicationRepository
 import com.singing.api.domain.repository.pagination.OffsetBasedPageRequest
 import com.singing.api.domain.specifications.*
 import com.singing.api.security.getAuthentication
-import com.singing.app.domain.model.PublicationSort
+import com.singing.domain.model.PublicationSort
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -67,8 +67,8 @@ class PublicationServiceImpl(
         }
 
         val pagination = OffsetBasedPageRequest(
-            (Pagination.PageSize * page).toLong(),
-            Pagination.PageSize,
+            (Pagination.PAGE_SIZE * page).toLong(),
+            Pagination.PAGE_SIZE,
             Sort.by(sort.toOrder())
         )
 

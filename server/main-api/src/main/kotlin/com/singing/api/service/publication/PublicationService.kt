@@ -3,7 +3,7 @@ package com.singing.api.service.publication
 import com.singing.api.domain.model.AccountEntity
 import com.singing.api.domain.model.PublicationEntity
 import com.singing.api.domain.model.RecordEntity
-import com.singing.app.domain.model.PublicationSort
+import com.singing.domain.model.PublicationSort
 import java.util.*
 
 interface PublicationService {

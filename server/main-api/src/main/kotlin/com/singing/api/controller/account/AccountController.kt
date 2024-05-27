@@ -2,7 +2,7 @@ package com.singing.api.controller.account
 
 import com.singing.api.domain.require
 import com.singing.api.service.account.AccountService
-import com.singing.app.domain.dto.AccountInfoDto
+import com.singing.domain.payload.dto.AccountInfoDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping

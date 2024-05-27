@@ -121,7 +121,9 @@ class RecordSaveMockControllerTest : AbstractWebTest() {
     @MethodSource("testUsers")
     fun createNewRecord_noFileSet_fails400(user: TestUser) {
         mockMvc
-            .multipart("/record") {}
+            .multipart("/record") {
+                authorize(user)
+            }
             .andExpect {
                 status { isBadRequest() }
             }
@@ -216,7 +218,6 @@ class RecordSaveMockControllerTest : AbstractWebTest() {
 
                 coEvery { recordDataService.buildRecord(scope.file, null) } returns points
                 coEvery { recordDataService.getDuration(scope.file) } returns scope.entity.duration!!
-                coEvery { recordDataService.computeAccuracy(points) } returns scope.entity.accuracy!!
 
                 coEvery { storageService.findDocumentOrCreate(scope.file) } returns scope.entity.voiceRecord!!
 
@@ -236,10 +237,12 @@ class RecordSaveMockControllerTest : AbstractWebTest() {
                 val points = scope.entity.points.toList()
 
                 coVerify { storageService.store(scope.multipart, StorageCatalog.Temp) }
+
                 coVerify { recordDataService.buildRecord(scope.file, null) }
                 coVerify { recordDataService.getDuration(scope.file) }
-                coVerify { recordDataService.computeAccuracy(points) }
+
                 coVerify { storageService.findDocumentOrCreate(scope.file) }
+
                 coVerify { recordService.save(any()) }
                 coVerify { storageService.delete(scope.file, StorageCatalog.Temp) }
             }

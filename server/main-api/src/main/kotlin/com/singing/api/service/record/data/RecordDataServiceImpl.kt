@@ -8,9 +8,9 @@ import com.singing.api.domain.repository.RecordItemRepository
 import com.singing.app.audio.createTrackAudioParser
 import com.singing.app.audio.createVoiceAudioParser
 import com.singing.app.audio.getFileDuration
-import com.singing.app.domain.model.PointAccuracy
 import com.singing.audio.sampled.model.TimedFrequency
-import com.singing.audio.utils.ComposeFile
+import com.singing.app.base.ComposeFile
+import com.singing.domain.model.PointAccuracy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.async

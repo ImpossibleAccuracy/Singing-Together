@@ -1,8 +1,6 @@
 package com.singing.api.service.record
 
 import com.singing.api.domain.model.RecordEntity
-import com.singing.api.domain.model.RecordItemEntity
-import java.io.File
 import java.util.*
 
 interface RecordService {

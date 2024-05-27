@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
-group = "com.singing.app"
+group = AppConfig.buildGroup("app", "audio")
 
 kotlin {
     targets.configureEach {
@@ -20,17 +20,11 @@ kotlin {
     androidTarget("android")
 
     sourceSets {
-        all {
-            languageSettings {
-                optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
-            }
-        }
-
         commonMain.dependencies {
-            implementation(project(":config"))
-            implementation(project(":shared"))
-            implementation(project(":library:utils"))
-            implementation(project(":library:audio-library"))
+            implementation(project(Modules.SHARED_CONFIG))
+            implementation(project(Modules.SHARED_BASE))
+            implementation(project(Modules.SHARED_MODEL))
+            implementation(project(Modules.LIBRARY_AUDIO_DECODER))
 
             implementation(libs.kotlinx.coroutines.core)
 

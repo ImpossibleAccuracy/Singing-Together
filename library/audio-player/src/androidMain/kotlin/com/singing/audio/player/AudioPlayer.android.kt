@@ -1,6 +1,6 @@
 package com.singing.audio.player
 
-import com.singing.audio.utils.ComposeFile
+import com.singing.app.base.ComposeFile
 import kotlinx.coroutines.flow.Flow
 
 actual class AudioPlayer actual constructor() {

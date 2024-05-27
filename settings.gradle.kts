@@ -23,27 +23,32 @@ dependencyResolutionManagement {
     }
 }
 
-include(
-    ":library:utils",
-    ":library:audio-library",
-    ":library:audio-player",
-)
+include(":library:audio-decoder")
+include(":library:audio-player")
 
-include(
-    ":config",
-)
+include(":shared:base")
+include(":shared:config")
+include(":shared:model")
+include(":shared:payload")
+include(":shared:audio")
 
-include(
-    ":shared",
-    ":shared:audio",
-)
+include(":server:library")
+include(":server:main-api")
 
-include(
-    ":composeApp"
-)
+include(":composeApp:core:data")
+include(":composeApp:core:domain")
+include(":composeApp:core:di")
+include(":composeApp:presenter")
 
-include(
-    ":server",
-    ":server:library",
-    ":server:main-api",
-)
+include(":composeApp:common:base")
+include(":composeApp:common:ui-tools")
+include(":composeApp:common:views")
+include(":composeApp:common:views:extensions")
+include(":composeApp:common:navigation")
+
+include(":composeApp:feature:main:presenter")
+include(":composeApp:feature:main:domain")
+include(":composeApp:feature:main:di")
+
+//include(":composeApp:feature:community:presenter")
+//include(":composeApp:feature:community:di")

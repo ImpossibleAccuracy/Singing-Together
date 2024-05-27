@@ -6,8 +6,8 @@ import com.singing.api.domain.model.AccountEntity
 import com.singing.api.security.requireAuthenticated
 import com.singing.api.service.account.AccountService
 import com.singing.api.service.token.TokenService
-import com.singing.app.domain.payload.AuthRequest
-import com.singing.app.domain.payload.AuthResponse
+import com.singing.domain.payload.request.AuthRequest
+import com.singing.domain.payload.response.AuthResponse
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping

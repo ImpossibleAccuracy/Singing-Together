@@ -1,7 +1,7 @@
 package com.singing.api.domain
 
 import com.singing.api.domain.model.*
-import com.singing.app.domain.dto.*
+import com.singing.domain.payload.dto.*
 
 fun RecordEntity.toDto() = RecordDto(
     id = this.id,

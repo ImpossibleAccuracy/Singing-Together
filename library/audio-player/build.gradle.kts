@@ -1,11 +1,10 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose)
 
     alias(libs.plugins.android.library)
 }
 
-group = "com.singing.audio.player"
+group = AppConfig.buildGroup("audio", "player")
 
 kotlin {
     targets.configureEach {
@@ -21,17 +20,9 @@ kotlin {
     androidTarget()
 
     sourceSets {
-        all {
-            languageSettings {
-                optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
-            }
-        }
-
         commonMain.dependencies {
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-
-            implementation(project(":library:utils"))
+//            implementation(project(":library:utils"))
+            implementation(project(Modules.SHARED_BASE))
 
             implementation(libs.kotlinx.coroutines.core)
         }
