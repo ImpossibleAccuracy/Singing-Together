@@ -9,14 +9,18 @@ import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.flow.Flow
 
 class RecordRepositoryImpl : RecordRepository, StateRepository<RecordData>() {
+    override suspend fun markPublished(record: RecordData): RecordData = TODO()
+
     override suspend fun saveRecord(
         data: RecordSaveData,
         saveRemote: Boolean,
     ): RecordData = TODO()
 
-    override suspend fun markPublished(record: RecordData): RecordData = TODO()
+    override suspend fun getAnyRecord(): RecordData? = TODO()
 
-    override fun getRecords(): Flow<List<RecordData>> = TODO()
+    override fun getRecords(): Flow<PagingData<RecordData>> = TODO()
+
+    override fun getRecentRecords(): Flow<List<RecordData>> = TODO()
 
     override suspend fun uploadRecord(record: RecordData): RecordData = TODO()
 

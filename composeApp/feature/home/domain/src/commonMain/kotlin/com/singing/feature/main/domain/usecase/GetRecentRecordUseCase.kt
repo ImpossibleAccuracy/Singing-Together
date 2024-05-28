@@ -15,7 +15,7 @@ class GetRecentRecordUseCase(
     }
 
     operator fun invoke(limit: Int = DEFAULT_LIMIT): Flow<PersistentList<RecordData>> =
-        recordRepository.getRecords()
+        recordRepository.getRecentRecords()
             .map { items ->
                 items.sortedByDescending { it.createdAt.instant }
             }

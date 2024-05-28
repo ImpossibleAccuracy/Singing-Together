@@ -62,5 +62,8 @@ include(":composeApp:feature:community:di")
 
 include(":composeApp:feature:record-details:views")
 include(":composeApp:feature:record-details:presenter")
-include(":composeApp:feature:record-details:domain")
 include(":composeApp:feature:record-details:di")
+
+include(":composeApp:feature:record-list:presenter")
+include(":composeApp:feature:record-list:domain")
+include(":composeApp:feature:record-list:di")

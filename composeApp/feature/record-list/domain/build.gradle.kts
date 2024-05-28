@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
-group = AppConfig.buildGroup("feature", "record", "domain")
+group = AppConfig.buildGroup("feature", "record", "list", "domain")
 
 kotlin {
     jvm()

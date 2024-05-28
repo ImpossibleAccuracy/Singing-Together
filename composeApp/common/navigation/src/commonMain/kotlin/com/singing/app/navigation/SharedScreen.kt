@@ -11,7 +11,7 @@ sealed interface SharedScreen {
 
     data object Community : SharedScreen
 
-    data class RecordList(val selectedItem: RecordData? = null) : SharedScreen
+    data class RecordList(val record: RecordData? = null) : SharedScreen
 
     data class RecordDetails(val record: RecordData) : SharedScreen
 

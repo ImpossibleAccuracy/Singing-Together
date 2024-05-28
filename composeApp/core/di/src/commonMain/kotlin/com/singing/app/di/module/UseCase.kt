@@ -12,4 +12,5 @@ val useCaseModule = module {
     factoryOf(::GetRecordPointsUseCase)
     factoryOf(::FindRecordPublicationUseCase)
     factoryOf(::FindNoteUseCase)
+    factoryOf(::ListenRecordUpdatesUseCase)
 }

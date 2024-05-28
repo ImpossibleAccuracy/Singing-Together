@@ -41,6 +41,7 @@ object Modules {
 
             val Home = UiFeature(":composeApp:feature:home")
             val Community = UiFeature(":composeApp:feature:community")
+            val RecordList = UiFeature(":composeApp:feature:record-list")
             val RecordDetails = UiFeature(":composeApp:feature:record-details")
         }
     }

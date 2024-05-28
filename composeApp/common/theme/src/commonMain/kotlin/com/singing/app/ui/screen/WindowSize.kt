@@ -8,14 +8,15 @@ import androidx.compose.ui.unit.dp
 val LocalWindowSize = compositionLocalOf { WindowSize.COMPACT }
 val LocalSmallestWindowSize = compositionLocalOf { WindowSize.COMPACT }
 
-enum class WindowSize(val dimens: AppDimens) {
-    COMPACT(compactDimens),
-    MEDIUM(mediumDimens),
-    EXPANDED(expandedDimens)
+enum class WindowSize(
+    val dimens: AppDimens,
+    val width: Dp,
+) {
+    COMPACT(compactDimens, 600.dp),
+    MEDIUM(mediumDimens, 840.dp),
+    EXPANDED(expandedDimens, 0.dp)
 }
 
-fun computeWindowSize(windowWidth: Dp) = when {
-    windowWidth < 600.dp -> WindowSize.COMPACT
-    windowWidth < 840.dp -> WindowSize.MEDIUM
-    else -> WindowSize.EXPANDED
-}
+fun computeWindowSize(windowWidth: Dp) = WindowSize.entries.firstOrNull {
+    it.width < windowWidth
+} ?: WindowSize.EXPANDED

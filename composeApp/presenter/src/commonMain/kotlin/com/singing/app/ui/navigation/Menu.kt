@@ -14,12 +14,11 @@ val NavigationItems = persistentListOf(
         icon = { vectorResource(Res.drawable.baseline_dashboard_24) },
         reference = { SharedScreen.Main },
     ),
-//    NavigationItem(
-//        title = Res.string.title_records,
-//        icon = Res.drawable.baseline_album_24,
-//        isInstance = { it is RecordListScreen },
-//        screenProvider = { RecordListScreen() }
-//    ),
+    NavigationItem(
+        title = { stringResource(Res.string.title_records) },
+        icon = { vectorResource(Res.drawable.baseline_album_24) },
+        reference = { SharedScreen.RecordList() }
+    ),
     NavigationItem(
         title = { stringResource(Res.string.title_community) },
         icon = { vectorResource(Res.drawable.baseline_explore_24) },

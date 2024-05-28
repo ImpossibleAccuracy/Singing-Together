@@ -6,6 +6,7 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 sealed interface RecordData {
+    val id: Int
     val duration: Long
     val createdAt: StableInstant
     val isSavedRemote: Boolean
@@ -13,6 +14,7 @@ sealed interface RecordData {
     val creatorId: Int
 
     data class Vocal(
+        override val id: Int,
         override val duration: Long,
         override val createdAt: StableInstant,
         override val isSavedRemote: Boolean,
@@ -21,6 +23,7 @@ sealed interface RecordData {
     ) : RecordData
 
     data class Cover(
+        override val id: Int,
         val accuracy: Int,
         val name: String,
         override val duration: Long,

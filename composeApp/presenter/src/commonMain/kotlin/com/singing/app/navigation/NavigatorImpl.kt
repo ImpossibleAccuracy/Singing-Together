@@ -4,6 +4,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.singing.app.feature.community.CommunityPage
 import com.singing.feature.main.MainPage
 import com.singing.feature.record.RecordDetailPage
+import com.singing.feature.record.list.RecordListPage
 
 
 class NavigatorImpl(
@@ -14,6 +15,7 @@ class NavigatorImpl(
             when (page) {
                 is MainPage -> SharedScreen.Main
                 is CommunityPage -> SharedScreen.Community
+                is RecordListPage -> SharedScreen.RecordList(page.initialRecord)
                 is RecordDetailPage -> SharedScreen.RecordDetails(page.recordData)
                 else -> TODO()
             }
@@ -22,6 +24,7 @@ class NavigatorImpl(
             when (screen) {
                 SharedScreen.Main -> MainPage()
                 SharedScreen.Community -> CommunityPage()
+                is SharedScreen.RecordList -> RecordListPage(screen.record)
                 is SharedScreen.RecordDetails -> RecordDetailPage(screen.record)
                 else -> TODO()
             }

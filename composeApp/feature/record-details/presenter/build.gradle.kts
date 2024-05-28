@@ -32,9 +32,9 @@ kotlin {
             implementation(project(Modules.App.Common.Theme))
             implementation(project(Modules.App.Common.Views))
 
-            implementation(project(Modules.App.Feature.Base))
             implementation(project(Modules.App.Feature.RecordDetails.resolve("views")))
-            implementation(project(Modules.App.Feature.RecordDetails.Domain))
+            implementation(project(Modules.App.Feature.Base))
+            implementation(project(Modules.App.Domain))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

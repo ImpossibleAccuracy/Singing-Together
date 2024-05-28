@@ -1,4 +1,4 @@
-package com.singing.feature.record.domain.usecase
+package com.singing.app.domain.usecase
 
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.RecordData
