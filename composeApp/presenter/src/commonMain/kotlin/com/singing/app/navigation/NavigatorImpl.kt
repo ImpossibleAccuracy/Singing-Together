@@ -1,22 +1,25 @@
 package com.singing.app.navigation
 
 import cafe.adriel.voyager.core.screen.Screen
-import com.singing.app.feature.main.MainPage
+import com.singing.app.feature.community.CommunityPage
+import com.singing.feature.main.MainPage
 
 
 class NavigatorImpl(
     private val navigator: cafe.adriel.voyager.navigator.Navigator,
 ) : Navigator {
     companion object {
-        fun getScreenByPage(page: Screen): SharedScreen.Main =
+        fun getScreenByPage(page: Screen): SharedScreen =
             when (page) {
                 is MainPage -> SharedScreen.Main
+                is CommunityPage -> SharedScreen.Community
                 else -> TODO()
             }
 
         fun getPageByScreen(screen: SharedScreen): Screen =
             when (screen) {
                 SharedScreen.Main -> MainPage()
+                SharedScreen.Community -> CommunityPage()
                 else -> TODO()
             }
     }

@@ -22,7 +22,7 @@ kotlin {
         commonMain.dependencies {
             implementation(libs.kotlinx.coroutines.core)
 
-            implementation(project(Modules.LIBRARY_AUDIO_DECODER))
+            implementation(project(Modules.Library.AudioDecoder))
         }
     }
 }

@@ -22,7 +22,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(Modules.APP_DOMAIN))
+            implementation(project(Modules.App.Domain))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -35,7 +35,7 @@ kotlin {
 }
 
 android {
-    namespace = AppConfig.APPLICATION_ID
+    namespace = group as String
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

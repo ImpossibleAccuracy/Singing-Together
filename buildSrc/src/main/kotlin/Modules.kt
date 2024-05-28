@@ -1,25 +1,40 @@
+@file:Suppress("ConstPropertyName")
+
 object Modules {
-    const val SHARED_CONFIG = ":shared:config"
-    const val SHARED_BASE = ":shared:base"
-    const val SHARED_MODEL = ":shared:model"
-    const val SHARED_PAYLOAD = ":shared:payload"
-    const val SHARED_AUDIO = ":shared:audio"
+    object Shared {
+        const val Config = ":shared:config"
+        const val Base = ":shared:base"
+        const val Model = ":shared:model"
+        const val Payload = ":shared:payload"
+        const val Audio = ":shared:audio"
+    }
 
-    const val LIBRARY_AUDIO_DECODER = ":library:audio-decoder"
-    const val LIBRARY_AUDIO_PLAYER = ":library:audio-player"
+    object Library {
+        const val AudioDecoder = ":library:audio-decoder"
+        const val Player = ":library:audio-player"
+    }
 
-    const val SERVER_LIBRARY = ":server:library"
+    object Server {
+        const val Library = ":server:library"
+        const val Api = ":server:main-api"
+    }
 
-    const val APP_DOMAIN = ":composeApp:core:domain"
-    const val APP_DATA = ":composeApp:core:data"
-    const val APP_DI = ":composeApp:core:di"
+    object App {
+        const val Domain = ":composeApp:core:domain"
+        const val Data = ":composeApp:core:data"
+        const val Di = ":composeApp:core:di"
 
-    const val APP_COMMON = ":composeApp:common:base"
-    const val APP_UI_TOOLS = ":composeApp:common:ui-tools"
-    const val APP_VIEWS = ":composeApp:common:views"
-    const val APP_VIEWS_EXTENSIONS = ":composeApp:common:views:extensions"
-    const val APP_NAVIGATION = ":composeApp:common:navigation"
+        object Common {
+            const val Base = ":composeApp:common:base"
+            const val UiTools = ":composeApp:common:ui-tools"
+            const val Views = ":composeApp:common:views"
+            const val ViewsExtensions = ":composeApp:common:views:extensions"
+            const val Navigation = ":composeApp:common:navigation"
+        }
 
-    val APP_FEATURE_MAIN = UiFeature(":composeApp:feature:main")
-    val APP_FEATURE_COMMUNITY = UiFeature(":composeApp:feature:community")
+        object Feature{
+            val Home = UiFeature(":composeApp:feature:home")
+            val Community = UiFeature(":composeApp:feature:community")
+        }
+    }
 }

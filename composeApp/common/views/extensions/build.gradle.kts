@@ -28,10 +28,9 @@ kotlin {
         }
 
         commonMain.dependencies {
-            implementation(project(Modules.APP_DOMAIN))
-            implementation(project(Modules.APP_UI_TOOLS))
-            implementation(project(Modules.APP_VIEWS))
-            implementation(project(Modules.SHARED_AUDIO))
+            implementation(project(Modules.App.Domain))
+            implementation(project(Modules.App.Common.UiTools))
+            implementation(project(Modules.App.Common.Views))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -49,7 +48,7 @@ kotlin {
 }
 
 android {
-    namespace = AppConfig.APPLICATION_ID
+    namespace = group as String
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

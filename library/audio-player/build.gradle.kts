@@ -22,7 +22,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
 //            implementation(project(":library:utils"))
-            implementation(project(Modules.SHARED_BASE))
+            implementation(project(Modules.Shared.Base))
 
             implementation(libs.kotlinx.coroutines.core)
         }

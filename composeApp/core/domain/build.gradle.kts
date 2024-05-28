@@ -13,28 +13,30 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(Modules.SHARED_BASE))
-            api(project(Modules.SHARED_MODEL))
-            api(project(Modules.LIBRARY_AUDIO_PLAYER))
+            api(project(Modules.Shared.Base))
+            api(project(Modules.Shared.Model))
+//            api(project(Modules.Library.Player))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
 
             api(libs.kotlinx.coroutines.core)
+
+            api(libs.kotlinx.coroutines.core)
             api(libs.kotlinx.datetime)
             api(libs.kotlinx.collections)
 
-            implementation(libs.paging.compose)
+            api(libs.paging.compose)
         }
 
         androidMain.dependencies {
-            implementation(libs.kotlinx.coroutines.android)
+            api(libs.kotlinx.coroutines.android)
         }
     }
 }
 
 android {
-    namespace = AppConfig.APPLICATION_ID
+    namespace = group as String
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

@@ -28,7 +28,7 @@ kotlin {
         }
 
         commonMain.dependencies {
-            api(project(Modules.APP_UI_TOOLS))
+            api(project(Modules.App.Common.UiTools))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -47,7 +47,7 @@ kotlin {
 }
 
 android {
-    namespace = AppConfig.APPLICATION_ID
+    namespace = group as String
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -59,3 +59,7 @@ android {
         targetCompatibility = JavaVersion.toVersion(libs.versions.jvmTargetVersion.get())
     }
 }
+
+//tasks.withType<GenerateResValues>().configureEach {
+//    resources.Resources.copyResourcesToFeature(rootDir, projectDir)
+//}

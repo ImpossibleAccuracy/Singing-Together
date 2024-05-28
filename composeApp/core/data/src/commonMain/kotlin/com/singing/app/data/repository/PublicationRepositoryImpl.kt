@@ -1,6 +1,7 @@
 package com.singing.app.data.repository
 
 import androidx.paging.PagingData
+import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
@@ -19,7 +20,7 @@ class PublicationRepositoryImpl(
         description: String
     ): Publication = TODO()
 
-    override suspend fun getRandomPublication(): Publication = TODO()
+    override suspend fun getRandomPublication(): Flow<DataState<Publication>> = TODO()
 
     override suspend fun getRecordPublication(record: RecordData): Publication? = TODO()
 

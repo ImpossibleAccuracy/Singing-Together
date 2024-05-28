@@ -1,6 +1,7 @@
 package com.singing.app.domain.repository
 
 import androidx.paging.PagingData
+import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
@@ -13,7 +14,7 @@ interface PublicationRepository {
         description: String,
     ): Publication
 
-    suspend fun getRandomPublication(): Publication
+    suspend fun getRandomPublication(): Flow<DataState<Publication>>
 
     suspend fun getRecordPublication(record: RecordData): Publication?
 

@@ -21,8 +21,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(Modules.APP_DOMAIN))
-            implementation(project(Modules.APP_DATA))
+            implementation(project(Modules.App.Domain))
+            implementation(project(Modules.App.Data))
 
             implementation(libs.bundles.koin)
         }
@@ -30,7 +30,7 @@ kotlin {
 }
 
 android {
-    namespace = AppConfig.APPLICATION_ID
+    namespace = group as String
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

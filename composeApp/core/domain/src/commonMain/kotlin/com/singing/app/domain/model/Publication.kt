@@ -4,6 +4,7 @@ import com.singing.app.domain.model.stable.StableInstant
 import kotlinx.collections.immutable.ImmutableList
 
 data class Publication(
+    val id: Int,
     val author: UserData,
     val createdAt: StableInstant,
     val description: String,

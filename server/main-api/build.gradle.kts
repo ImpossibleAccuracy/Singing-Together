@@ -25,14 +25,14 @@ javafx {
 }
 
 dependencies {
-    implementation(project(Modules.SHARED_CONFIG))
-    implementation(project(Modules.SHARED_BASE))
-    implementation(project(Modules.SHARED_MODEL))
-    implementation(project(Modules.SHARED_PAYLOAD))
-    implementation(project(Modules.SHARED_AUDIO))
-    implementation(project(Modules.LIBRARY_AUDIO_DECODER))
+    implementation(project(Modules.Shared.Config))
+    implementation(project(Modules.Shared.Base))
+    implementation(project(Modules.Shared.Model))
+    implementation(project(Modules.Shared.Payload))
+    implementation(project(Modules.Shared.Audio))
+    implementation(project(Modules.Library.AudioDecoder))
 
-    implementation(project(Modules.SERVER_LIBRARY))
+    implementation(project(Modules.Server.Library))
 
     // PLATFORM DEPENDENCIES
     implementation(libs.kotlin.stdlib)
