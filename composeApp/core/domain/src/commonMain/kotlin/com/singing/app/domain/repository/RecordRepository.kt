@@ -1,5 +1,6 @@
 package com.singing.app.domain.repository
 
+import androidx.paging.PagingData
 import com.singing.app.base.ComposeFile
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.payload.RecordSaveData
@@ -17,7 +18,7 @@ interface RecordRepository {
 
     suspend fun deleteRecord(record: RecordData)
 
-    suspend fun getRecordPoints(record: RecordData): List<RecordPoint> // TODO: add PagingData
+    fun getRecordPoints(record: RecordData): Flow<PagingData<RecordPoint>>
 
     suspend fun getRecordVoiceFile(record: RecordData): ComposeFile
 

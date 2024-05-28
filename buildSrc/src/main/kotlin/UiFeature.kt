@@ -1,15 +1,17 @@
 data class UiFeature(
     val path: String
-)
+) {
+    fun resolve(submodule: String) ="$path:$submodule"
+}
 
 val UiFeature.Domain
-    get() = "$path:domain"
+    get() = resolve("domain")
 
 val UiFeature.Data
-    get() = "$path:data"
+    get() = resolve("data")
 
 val UiFeature.Di
-    get() = "$path:di"
+    get() = resolve("di")
 
 val UiFeature.Presenter
-    get() = "$path:presenter"
+    get() = resolve("presenter")

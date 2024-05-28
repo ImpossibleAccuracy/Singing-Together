@@ -51,13 +51,8 @@ kotlin {
         commonMain.dependencies {
             implementation(project(Modules.App.Common.Navigation))
             implementation(project(Modules.App.Common.Theme))
+            implementation(project(Modules.App.Domain))
             implementation(project(Modules.App.Di))
-
-            implementation(project(Modules.App.Feature.Home.Presenter))
-            implementation(project(Modules.App.Feature.Home.Di))
-
-            implementation(project(Modules.App.Feature.Community.Presenter))
-            implementation(project(Modules.App.Feature.Community.Di))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -72,6 +67,17 @@ kotlin {
 
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.koin)
+
+            // FEATURES --------------------------------------------------------------
+
+            implementation(project(Modules.App.Feature.Home.Presenter))
+            implementation(project(Modules.App.Feature.Home.Di))
+
+            implementation(project(Modules.App.Feature.Community.Presenter))
+            implementation(project(Modules.App.Feature.Community.Di))
+
+            implementation(project(Modules.App.Feature.RecordDetails.Presenter))
+            implementation(project(Modules.App.Feature.RecordDetails.Di))
         }
 
         jvmMain.dependencies {

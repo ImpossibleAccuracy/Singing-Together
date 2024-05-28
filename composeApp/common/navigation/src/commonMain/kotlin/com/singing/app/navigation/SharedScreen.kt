@@ -13,6 +13,8 @@ sealed interface SharedScreen {
 
     data class RecordList(val selectedItem: RecordData? = null) : SharedScreen
 
+    data class RecordDetails(val record: RecordData) : SharedScreen
+
     data class PublicationDetails(val publication: Publication) : SharedScreen
 
     data class UserProfile(val user: UserData) : SharedScreen

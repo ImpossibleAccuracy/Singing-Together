@@ -15,6 +15,7 @@ val SharedScreen.screen: Screen
     get() = NavigatorImpl.getPageByScreen(this)
 
 
+@Suppress("EmptyMethod", "EmptyMethod")
 @Composable
 expect fun NavigationAppearance(
     navigator: Navigator,

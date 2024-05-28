@@ -21,6 +21,7 @@ actual class AudioCapture {
         private const val SAMPLE_RATE_BITS = 24
         private const val INPUT_CHANNELS = 1
 
+        @Suppress("SameParameterValue")
         private fun getXtSamples(sampleSizeInBits: Int): XtSample =
             when (sampleSizeInBits) {
                 8 -> XtSample.UINT8
@@ -127,6 +128,7 @@ actual class AudioCapture {
             }
         }
 
+    @Suppress("SameReturnValue")
     private fun onBuffer(stream: XtStream?, buffer: XtBuffer, user: Any): Int {
         val output = user as OutputStream
         val safe = XtSafeBuffer.get(stream)

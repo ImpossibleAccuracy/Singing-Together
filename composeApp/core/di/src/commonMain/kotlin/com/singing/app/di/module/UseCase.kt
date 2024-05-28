@@ -5,6 +5,7 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val useCaseModule = module {
+    factoryOf(::SearchPublicationUseCase)
     factoryOf(::DeleteRecordUseCase)
     factoryOf(::PublishRecordUseCase)
     factoryOf(::UploadRecordUseCase)

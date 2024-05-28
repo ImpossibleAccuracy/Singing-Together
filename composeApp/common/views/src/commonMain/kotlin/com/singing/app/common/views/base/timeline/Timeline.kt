@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.screen.icon
 import com.singing.app.ui.screen.listSpacing
-import kotlinx.collections.immutable.ImmutableList
 
 
 enum class TimelineNodePosition {
@@ -30,7 +29,7 @@ enum class TimelineNodePosition {
     LAST
 }
 
-private typealias IndicatorView = @Composable (modifier: Modifier, color: Color, position: Int) -> Unit
+typealias IndicatorView = @Composable (modifier: Modifier, color: Color, position: Int) -> Unit
 
 
 val DefaultTimelineIndicator: IndicatorView = @Composable { modifier, color, _ ->
@@ -46,9 +45,9 @@ val DefaultTimelineIndicator: IndicatorView = @Composable { modifier, color, _ -
 
 
 @Composable
-fun <T> Timeline(
+fun Timeline(
     modifier: Modifier = Modifier,
-    nodes: ImmutableList<T>,
+    nodesCount: Int,
     isLazyColumn: Boolean = false,
     startNode: (@Composable () -> Unit)? = null,
     finishNode: (@Composable () -> Unit)? = null,
@@ -56,8 +55,9 @@ fun <T> Timeline(
     nodeSpacing: Dp = MaterialTheme.dimens.listSpacing / 2,
     indicatorSize: Dp = MaterialTheme.dimens.icon,
     indicatorColor: (@Composable (position: Int) -> Color)? = null,
-    nodeLabel: (@Composable (item: T, position: Int) -> Unit)? = null,
-    nodeContent: @Composable (item: T, position: Int) -> Unit,
+    nodeLabel: (@Composable (position: Int) -> Unit)? = null,
+    nodeKey: ((position: Int) -> Any?)? = null,
+    nodeContent: @Composable (position: Int) -> Unit,
 ) {
     val density = LocalDensity.current
     val labelSize = remember { mutableStateOf(0.dp) }
@@ -70,10 +70,14 @@ fun <T> Timeline(
             verticalArrangement = Arrangement.spacedBy(nodeSpacing),
         ) {
             timelineContent(
-                itemWrapper = { item { it() } },
+                itemWrapper = { index, item ->
+                    item(key = nodeKey?.invoke(index)) {
+                        item()
+                    }
+                },
                 density = density.density,
                 labelSize = labelSize,
-                nodes = nodes,
+                nodesCount = nodesCount,
                 startNode = startNode,
                 finishNode = finishNode,
                 indicator = indicator,
@@ -90,10 +94,10 @@ fun <T> Timeline(
             verticalArrangement = Arrangement.spacedBy(nodeSpacing),
         ) {
             timelineContent(
-                itemWrapper = { it() },
+                itemWrapper = { _, item -> item() },
                 density = density.density,
                 labelSize = labelSize,
-                nodes = nodes,
+                nodesCount = nodesCount,
                 startNode = startNode,
                 finishNode = finishNode,
                 indicator = indicator,
@@ -108,24 +112,24 @@ fun <T> Timeline(
 }
 
 
-inline fun <T> timelineContent(
-    itemWrapper: (@Composable () -> Unit) -> Unit,
+inline fun timelineContent(
+    itemWrapper: (Int, @Composable () -> Unit) -> Unit,
     density: Float,
     labelSize: MutableState<Dp>,
-    nodes: ImmutableList<T>,
+    nodesCount: Int,
     noinline startNode: (@Composable () -> Unit)? = null,
     noinline finishNode: (@Composable () -> Unit)? = null,
     crossinline indicator: IndicatorView,
     nodeSpacing: Dp,
     indicatorSize: Dp,
     crossinline indicatorColor: @Composable (position: Int) -> Color,
-    noinline nodeLabel: (@Composable (item: T, position: Int) -> Unit)? = null,
-    noinline nodeContent: @Composable (item: T, position: Int) -> Unit,
+    noinline nodeLabel: (@Composable (position: Int) -> Unit)? = null,
+    noinline nodeContent: @Composable (position: Int) -> Unit,
 ) {
     val nodesOffset = if (startNode == null) 0 else 1
 
     if (startNode != null) {
-        itemWrapper {
+        itemWrapper(0) {
             val nodeIndicatorColor = indicatorColor.invoke(0)
 
             TimelineNode(
@@ -145,14 +149,14 @@ inline fun <T> timelineContent(
         }
     }
 
-    nodes.forEachIndexed { index, item ->
+    repeat(nodesCount) { index ->
         val nodePosition = when {
             (index == 0 && startNode == null) -> TimelineNodePosition.FIRST
-            (index == nodes.lastIndex && finishNode == null) -> TimelineNodePosition.LAST
+            (index == nodesCount - 1 && finishNode == null) -> TimelineNodePosition.LAST
             else -> TimelineNodePosition.MIDDLE
         }
 
-        itemWrapper {
+        itemWrapper(index + nodesOffset) {
             val nodeIndicatorColor = indicatorColor.invoke(index + nodesOffset)
 
             TimelineNode(
@@ -175,19 +179,19 @@ inline fun <T> timelineContent(
                 },
                 label = nodeLabel?.let { label ->
                     {
-                        label(item, index)
+                        label(index)
                     }
                 },
                 content = {
-                    nodeContent(item, index)
+                    nodeContent(index)
                 },
             )
         }
     }
 
     if (finishNode != null) {
-        itemWrapper {
-            val nodeIndicatorColor = indicatorColor(nodes.lastIndex + nodesOffset + 1)
+        itemWrapper(nodesCount + nodesOffset) {
+            val nodeIndicatorColor = indicatorColor(nodesCount + nodesOffset)
 
             TimelineNode(
                 density = density,

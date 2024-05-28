@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.update
 abstract class StateRepository<T>(
     defaultValue: List<T> = listOf()
 ) {
-    private val _items = MutableStateFlow<List<T>>(defaultValue)
+    private val _items = MutableStateFlow(defaultValue)
     protected val items = _items
 
     protected fun addSingle(item: T) {
@@ -28,7 +28,7 @@ abstract class StateRepository<T>(
             function = function,
         )
 
-    protected fun updateSingle(predicate: (T) -> Boolean, function: (T) -> T?): T? {
+    private fun updateSingle(predicate: (T) -> Boolean, function: (T) -> T?): T? {
         val data = _items.value.toMutableList()
 
         val index = data.indexOfFirst(predicate)

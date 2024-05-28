@@ -36,11 +36,12 @@ object Modules {
             const val Navigation = ":composeApp:common:navigation"
         }
 
-        object Feature{
+        object Feature {
             const val Base = ":composeApp:feature:base"
 
             val Home = UiFeature(":composeApp:feature:home")
             val Community = UiFeature(":composeApp:feature:community")
+            val RecordDetails = UiFeature(":composeApp:feature:record-details")
         }
     }
 }

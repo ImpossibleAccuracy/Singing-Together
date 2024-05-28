@@ -2,7 +2,6 @@ package com.singing.api.domain.model
 
 import com.singing.api.domain.model.base.BaseEntity
 import jakarta.persistence.*
-import jakarta.validation.constraints.Digits
 
 @Entity
 @Table(name = "record_item")

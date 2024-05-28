@@ -59,3 +59,8 @@ include(":composeApp:feature:home:di")
 include(":composeApp:feature:community:presenter")
 include(":composeApp:feature:community:domain")
 include(":composeApp:feature:community:di")
+
+include(":composeApp:feature:record-details:views")
+include(":composeApp:feature:record-details:presenter")
+include(":composeApp:feature:record-details:domain")
+include(":composeApp:feature:record-details:di")
