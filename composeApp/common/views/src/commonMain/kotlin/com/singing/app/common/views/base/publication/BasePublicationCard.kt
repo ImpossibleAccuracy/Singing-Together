@@ -14,7 +14,6 @@ import com.singing.app.common.views.base.account.UserAvatar
 import com.singing.app.common.views.model.actions.PublicationCardActions
 import com.singing.app.common.views.model.state.PublicationUiData
 import com.singing.app.ui.plus
-import com.singing.app.ui.utils.Space
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -38,13 +37,14 @@ fun BasePublicationCard(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .clip(shape = MaterialTheme.shapes.small)
-                    .plus(actions.onAuthorClick?.let { Modifier.background(MaterialTheme.colorScheme.surfaceContainer) })
+                    .plus(actions.onAuthorClick != null) {
+                        background(MaterialTheme.colorScheme.surfaceContainer)
+                    }
                     .clickable(enabled = actions.onAuthorClick != null) {
                         actions.onAuthorClick?.invoke()
                     }
-                    .let {
-                        if (actions.onAuthorClick == null) it
-                        else it.padding(
+                    .plus(actions.onAuthorClick != null) {
+                        padding(
                             horizontal = 8.dp,
                             vertical = 4.dp
                         )
@@ -52,7 +52,7 @@ fun BasePublicationCard(
             ) {
                 UserAvatar(avatar = data.author.avatar)
 
-                Space(8.dp)
+                Spacer(Modifier.width(8.dp))
 
                 Column {
                     Text(

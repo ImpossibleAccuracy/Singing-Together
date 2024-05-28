@@ -1,15 +1,12 @@
 package com.singing.app.common.views.base.list
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.singing.app.ui.utils.Space
 
 @Composable
 fun EmptyView(
@@ -39,7 +36,7 @@ fun EmptyView(
         )
 
         action?.let {
-            Space(8.dp)
+            Spacer(Modifier.height(8.dp))
 
             it()
         }

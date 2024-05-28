@@ -2,16 +2,20 @@
 
 object Modules {
     object Shared {
+        const val Audio = ":shared:audio"
         const val Config = ":shared:config"
-        const val Base = ":shared:base"
         const val Model = ":shared:model"
         const val Payload = ":shared:payload"
-        const val Audio = ":shared:audio"
     }
 
     object Library {
-        const val AudioDecoder = ":library:audio-decoder"
-        const val Player = ":library:audio-player"
+        const val Files = ":library:files"
+        const val Notes = ":library:notes"
+
+        object Audio {
+            const val Decoder = ":library:audio:decoder"
+            const val Player = ":library:audio:player"
+        }
     }
 
     object Server {
@@ -25,7 +29,7 @@ object Modules {
         const val Di = ":composeApp:core:di"
 
         object Common {
-            const val Base = ":composeApp:common:base"
+            const val Theme = ":composeApp:common:theme"
             const val UiTools = ":composeApp:common:ui-tools"
             const val Views = ":composeApp:common:views"
             const val ViewsExtensions = ":composeApp:common:views:extensions"
@@ -33,6 +37,8 @@ object Modules {
         }
 
         object Feature{
+            const val Base = ":composeApp:feature:base"
+
             val Home = UiFeature(":composeApp:feature:home")
             val Community = UiFeature(":composeApp:feature:community")
         }

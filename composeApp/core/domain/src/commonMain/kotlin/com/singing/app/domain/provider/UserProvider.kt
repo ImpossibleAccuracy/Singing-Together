@@ -7,6 +7,7 @@ interface UserProvider {
     val userFlow: StateFlow<UserData?>
 
     fun setCurrentUser(userData: UserData)
+
     fun clear()
 }
 

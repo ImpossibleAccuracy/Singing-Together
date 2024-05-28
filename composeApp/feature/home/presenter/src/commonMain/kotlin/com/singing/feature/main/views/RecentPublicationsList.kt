@@ -14,8 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.singing.app.common.feature.rememberRecordPlayer
 import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.publication.PublicationCard
 import com.singing.app.common.views.base.publication.PublicationCardWithPlayer
@@ -28,13 +26,13 @@ import com.singing.app.common.views.toRecordCardData
 import com.singing.app.common.views.toUserUiData
 import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.Publication
-import com.singing.feature.main.viewmodel.MainUiState
+import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
-import com.singing.app.navigation.base.LocalAppPage
 import com.singing.feature.main.presenter.generated.resources.Res
 import com.singing.feature.main.presenter.generated.resources.subtitle_empty_publications
 import com.singing.feature.main.presenter.generated.resources.title_empty_publications
 import com.singing.feature.main.presenter.generated.resources.title_recent_publications
+import com.singing.feature.main.viewmodel.MainUiState
 import kotlinx.collections.immutable.PersistentList
 import org.jetbrains.compose.resources.stringResource
 
@@ -44,13 +42,12 @@ fun RecentPublicationsListContainer(
     uiState: MainUiState,
     navigate: (SharedScreen) -> Unit
 ) {
-    val appPage = LocalAppPage.currentOrThrow
-    val mainRecordPlayer = appPage.rememberRecordPlayer()
+    val mainRecordPlayer = rememberRecordPlayer()
 
     var publicationToPlay by remember { mutableStateOf<Publication?>(null) }
 
     if (publicationToPlay != null) {
-        val dialogRecordPlayer = appPage.rememberRecordPlayer()
+        val dialogRecordPlayer = rememberRecordPlayer()
 
         RecordPlayDialog(
             playerController = dialogRecordPlayer.toPlayerController(publicationToPlay!!.record),

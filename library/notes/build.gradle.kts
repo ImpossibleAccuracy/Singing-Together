@@ -1,11 +1,9 @@
 plugins {
     alias(libs.plugins.multiplatform)
-    alias(libs.plugins.compose)
-
     alias(libs.plugins.android.library)
 }
 
-group = AppConfig.buildGroup("app", "common")
+group = AppConfig.buildGroup("config")
 
 kotlin {
     targets.configureEach {
@@ -18,24 +16,17 @@ kotlin {
 
     jvm()
 
-    androidTarget("android")
+    androidTarget()
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(Modules.App.Domain))
-
-            implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
-
-            implementation(libs.bundles.voyager)
-            implementation(libs.bundles.koin)
+            implementation(libs.kotlinx.coroutines.core)
         }
     }
 }
 
 android {
-    namespace = group as String
+    namespace = group.toString()
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

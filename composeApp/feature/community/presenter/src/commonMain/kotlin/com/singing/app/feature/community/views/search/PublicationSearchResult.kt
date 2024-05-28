@@ -15,8 +15,6 @@ import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.itemContentType
 import app.cash.paging.compose.itemKey
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.singing.app.common.feature.rememberRecordPlayer
 import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.common.views.base.publication.PublicationCard
@@ -31,8 +29,8 @@ import com.singing.app.common.views.toUserUiData
 import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.Publication
 import com.singing.app.feature.community.viewmodel.CommunityUiState
+import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
-import com.singing.app.navigation.base.LocalAppPage
 import com.singing.feature.community.presenter.generated.resources.Res
 import com.singing.feature.community.presenter.generated.resources.subtitle_no_search_result
 import com.singing.feature.community.presenter.generated.resources.title_no_search_result
@@ -46,12 +44,11 @@ fun PublicationSearchResultContainer(
     searchResults: LazyPagingItems<Publication>,
     navigate: (SharedScreen) -> Unit,
 ) {
-    val appPage = LocalAppPage.currentOrThrow
-    val mainRecordPlayer = appPage.rememberRecordPlayer()
+    val mainRecordPlayer = rememberRecordPlayer()
 
     var publicationToPlay by remember { mutableStateOf<Publication?>(null) }
     if (publicationToPlay != null) {
-        val dialogRecordPlayer = appPage.rememberRecordPlayer()
+        val dialogRecordPlayer = rememberRecordPlayer()
 
         RecordPlayDialog(
             playerController = dialogRecordPlayer.toPlayerController(publicationToPlay!!.record),

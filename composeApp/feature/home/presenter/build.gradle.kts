@@ -28,10 +28,11 @@ kotlin {
         }
 
         commonMain.dependencies {
-            implementation(project(Modules.App.Common.Base))
-            implementation(project(Modules.App.Common.Views))
+            implementation(project(Modules.App.Common.Theme))
             implementation(project(Modules.App.Common.ViewsExtensions))
             implementation(project(Modules.App.Common.Navigation))
+
+            implementation(project(Modules.App.Feature.Base))
             implementation(project(Modules.App.Feature.Home.Domain))
 
             implementation(compose.runtime)

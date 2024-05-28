@@ -13,9 +13,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(project(Modules.Shared.Base))
             api(project(Modules.Shared.Model))
-//            api(project(Modules.Library.Player))
 
             implementation(compose.runtime)
             implementation(compose.foundation)

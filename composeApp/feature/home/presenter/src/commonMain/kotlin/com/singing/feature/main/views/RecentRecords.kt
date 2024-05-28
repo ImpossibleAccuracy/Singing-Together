@@ -14,8 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.singing.app.common.feature.rememberRecordPlayer
 import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.record.RecordCard
 import com.singing.app.common.views.shared.record.MainRecordCard
@@ -28,12 +26,12 @@ import com.singing.app.common.views.toRecordCardData
 import com.singing.app.common.views.toUserUiData
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
-import com.singing.feature.main.viewmodel.MainIntent
-import com.singing.feature.main.viewmodel.MainUiState
+import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
-import com.singing.app.navigation.base.LocalAppPage
 import com.singing.app.ui.utils.cardAppearance
 import com.singing.feature.main.presenter.generated.resources.*
+import com.singing.feature.main.viewmodel.MainIntent
+import com.singing.feature.main.viewmodel.MainUiState
 import kotlinx.collections.immutable.ImmutableList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -65,8 +63,7 @@ fun RecentRecordsContainer(
     var recordToPlay by remember { mutableStateOf<RecordData?>(null) }
 
     if (recordToPlay != null) {
-        val appPage = LocalAppPage.currentOrThrow
-        val dialogRecordPlayer = appPage.rememberRecordPlayer()
+        val dialogRecordPlayer = rememberRecordPlayer()
 
         RecordPlayDialog(
             playerController = dialogRecordPlayer.toPlayerController(recordToPlay!!),

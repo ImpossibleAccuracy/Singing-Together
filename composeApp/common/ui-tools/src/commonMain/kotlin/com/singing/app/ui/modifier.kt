@@ -22,6 +22,11 @@ fun Modifier.plus(
     else -> this.then(other)
 }
 
+@Composable
+fun Modifier.plus(expression: Boolean, func: @Composable Modifier.() -> Unit): Modifier = apply {
+    if (expression) func(this)
+}
+
 fun Modifier.connectVerticalNestedScroll(
     maxHeight: Dp,
     scrollState: ScrollState,

@@ -12,8 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.currentOrThrow
-import com.singing.app.common.feature.rememberRecordPlayer
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.common.views.base.publication.PublicationCardWithPlayer
 import com.singing.app.common.views.base.publication.publicationCardAppearance
@@ -25,8 +23,8 @@ import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.Publication
 import com.singing.app.feature.community.viewmodel.CommunityIntent
 import com.singing.app.feature.community.viewmodel.CommunityUiState
+import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
-import com.singing.app.navigation.base.LocalAppPage
 import com.singing.feature.community.presenter.generated.resources.Res
 import com.singing.feature.community.presenter.generated.resources.baseline_shuffle_variant_24
 import com.singing.feature.community.presenter.generated.resources.title_random_latest_publication
@@ -42,8 +40,7 @@ fun RandomPublicationContainer(
     navigate: (SharedScreen) -> Unit,
     newIntent: (CommunityIntent) -> Unit,
 ) {
-    val appPage = LocalAppPage.currentOrThrow
-    val player = appPage.rememberRecordPlayer()
+    val player = rememberRecordPlayer()
 
     LaunchedEffect(uiState.randomPublication) {
         player.reset()

@@ -1,8 +1,6 @@
 package com.singing.app.common.views.base.publication
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,8 +16,6 @@ import com.singing.app.common.views.views.generated.resources.Res
 import com.singing.app.common.views.views.generated.resources.action_see_record
 import com.singing.app.common.views.views.generated.resources.baseline_play_arrow_black_24dp
 import com.singing.app.common.views.views.generated.resources.baseline_stop_black_24dp
-import com.singing.app.ui.utils.Divider
-import com.singing.app.ui.utils.Space
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -53,9 +49,9 @@ fun PublicationCardWithPlayer(
             )
         },
         slotAfterDescription = {
-            Space(4.dp)
+            Spacer(Modifier.height(4.dp))
 
-            Divider()
+            HorizontalDivider()
 
             Row(
                 modifier = Modifier.fillMaxWidth(),

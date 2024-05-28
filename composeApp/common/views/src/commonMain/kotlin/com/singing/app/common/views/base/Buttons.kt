@@ -1,11 +1,12 @@
 package com.singing.app.common.views.base
 
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.singing.app.ui.utils.Space
 
 @Composable
 fun AppTextButton(
@@ -31,7 +32,7 @@ fun AppTextButton(
                 contentDescription = "",
             )
 
-            Space(ButtonDefaults.IconSpacing)
+            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
         }
 
         Text(
@@ -40,7 +41,7 @@ fun AppTextButton(
         )
 
         if (trailingIcon != null) {
-            Space(ButtonDefaults.IconSpacing)
+            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
 
             Icon(
                 imageVector = trailingIcon,
@@ -78,7 +79,7 @@ fun AppFilledButton(
                 contentDescription = "",
             )
 
-            Space(ButtonDefaults.IconSpacing)
+            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
         }
 
         Text(
@@ -88,7 +89,7 @@ fun AppFilledButton(
         )
 
         if (trailingIcon != null) {
-            Space(ButtonDefaults.IconSpacing)
+            Spacer(Modifier.width(ButtonDefaults.IconSpacing))
 
             Icon(
                 imageVector = trailingIcon,

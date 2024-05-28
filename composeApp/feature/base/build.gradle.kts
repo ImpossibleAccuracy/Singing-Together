@@ -1,10 +1,11 @@
 plugins {
     alias(libs.plugins.multiplatform)
+    alias(libs.plugins.compose)
 
     alias(libs.plugins.android.library)
 }
 
-group = AppConfig.buildGroup("audio", "player")
+group = AppConfig.buildGroup("app", "feature")
 
 kotlin {
     targets.configureEach {
@@ -17,25 +18,23 @@ kotlin {
 
     jvm()
 
-    androidTarget()
+    androidTarget("android")
 
     sourceSets {
         commonMain.dependencies {
-//            implementation(project(":library:utils"))
-            implementation(project(Modules.Shared.Base))
+            implementation(project(Modules.App.Common.Navigation))
+            implementation(project(Modules.App.Domain))
 
-            implementation(libs.kotlinx.coroutines.core)
-        }
+            implementation(compose.runtime)
+            implementation(compose.foundation)
 
-        jvmMain.dependencies {
-            implementation("org.openjfx:javafx-base:${libs.versions.jvmTargetVersion.get()}.0.1:win")
-            implementation("org.openjfx:javafx-media:${libs.versions.jvmTargetVersion.get()}.0.1:win")
+            implementation(libs.bundles.koin)
         }
     }
 }
 
 android {
-    namespace = group.toString()
+    namespace = group as String
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {

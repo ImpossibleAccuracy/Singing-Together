@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface RecordPlayer {
     val isPlaying: Flow<Boolean>
+
     val position: StateFlow<Long>
 
     suspend fun play(recordData: RecordData)

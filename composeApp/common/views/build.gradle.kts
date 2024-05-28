@@ -28,6 +28,7 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(project(Modules.App.Common.Theme))
             api(project(Modules.App.Common.UiTools))
 
             implementation(compose.runtime)

@@ -22,8 +22,8 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(Modules.Library.Player))
-            implementation(project(Modules.Shared.Config))
+            implementation(project(Modules.Library.Audio.Player))
+            implementation(project(Modules.Library.Notes))
             implementation(project(Modules.App.Domain))
 
             implementation(compose.runtime)

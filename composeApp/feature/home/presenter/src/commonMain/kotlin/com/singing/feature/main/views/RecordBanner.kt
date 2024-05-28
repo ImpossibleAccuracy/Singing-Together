@@ -17,9 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.AppFilledButton
 import com.singing.app.domain.model.UserData
-import com.singing.feature.main.presenter.generated.resources.*
 import com.singing.app.ui.theme.extended.extended
-import com.singing.app.ui.utils.Space
+import com.singing.feature.main.presenter.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
@@ -41,7 +40,7 @@ fun RecordBanner(
             .background(
                 color = MaterialTheme.extended.mainBannerScrim,
             ),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
@@ -53,8 +52,6 @@ fun RecordBanner(
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Black,
         )
-
-        Space(24.dp)
 
         AppFilledButton(
             containerColor = MaterialTheme.colorScheme.primary,

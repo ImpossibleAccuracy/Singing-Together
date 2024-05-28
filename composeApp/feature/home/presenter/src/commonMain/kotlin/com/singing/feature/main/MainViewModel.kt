@@ -1,7 +1,7 @@
 package com.singing.feature.main
 
+import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.singing.app.common.AppViewModel
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.provider.UserProvider
@@ -9,12 +9,12 @@ import com.singing.app.domain.usecase.DeleteRecordUseCase
 import com.singing.app.domain.usecase.FindRecordPublicationUseCase
 import com.singing.app.domain.usecase.PublishRecordUseCase
 import com.singing.app.domain.usecase.UploadRecordUseCase
-import com.singing.feature.main.viewmodel.MainIntent
-import com.singing.feature.main.viewmodel.MainUiState
 import com.singing.feature.main.domain.usecase.GetRecentPublicationsUseCase
 import com.singing.feature.main.domain.usecase.GetRecentRecordUseCase
 import com.singing.feature.main.domain.usecase.GetRecentTracksUseCase
 import com.singing.feature.main.domain.usecase.UpdateTrackFavouriteUseCase
+import com.singing.feature.main.viewmodel.MainIntent
+import com.singing.feature.main.viewmodel.MainUiState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -30,7 +30,7 @@ class MainViewModel(
     private val updateTrackFavouriteUseCase: UpdateTrackFavouriteUseCase,
     private val findRecordPublicationUseCase: FindRecordPublicationUseCase,
     private val userProvider: UserProvider,
-) : AppViewModel() {
+) : ScreenModel {
     private val _uiState = MutableStateFlow(MainUiState())
     val uiState = _uiState.asStateFlow()
 

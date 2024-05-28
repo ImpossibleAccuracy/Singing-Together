@@ -15,7 +15,6 @@ import com.singing.app.common.views.base.AppFilledButton
 import com.singing.app.common.views.base.progress.TimeProgress
 import com.singing.app.common.views.model.state.PlayerController
 import com.singing.app.common.views.views.generated.resources.*
-import com.singing.app.ui.utils.Space
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -42,7 +41,8 @@ fun PlayerView(
                 top = 4.dp,
                 end = 16.dp,
                 bottom = 12.dp,
-            )
+            ),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         TimeProgress(
             modifier = Modifier.fillMaxWidth(),
@@ -53,8 +53,6 @@ fun PlayerView(
             currentPosition = position,
             onPositionChange = playerController.setPosition,
         )
-
-        Space(12.dp)
 
         Row(
             modifier = Modifier.fillMaxWidth(),

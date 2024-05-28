@@ -2,8 +2,8 @@ package com.singing.app.feature.community
 
 import androidx.compose.runtime.Stable
 import androidx.paging.PagingData
+import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.singing.app.common.AppViewModel
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.payload.PublicationSearchFilters
 import com.singing.app.domain.provider.UserProvider
@@ -24,7 +24,7 @@ class CommunityViewModel(
     private val getPopularPublicationTagsUseCase: GetPopularPublicationTagsUseCase,
     private val getRandomPublicationUseCase: GetRandomPublicationUseCase,
     private val searchPublicationsUseCase: SearchPublicationsUseCase,
-) : AppViewModel() {
+) : ScreenModel {
     private val _uiState = MutableStateFlow(CommunityUiState())
     val uiState = _uiState.asStateFlow()
 

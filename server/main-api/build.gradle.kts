@@ -26,11 +26,9 @@ javafx {
 
 dependencies {
     implementation(project(Modules.Shared.Config))
-    implementation(project(Modules.Shared.Base))
     implementation(project(Modules.Shared.Model))
     implementation(project(Modules.Shared.Payload))
     implementation(project(Modules.Shared.Audio))
-    implementation(project(Modules.Library.AudioDecoder))
 
     implementation(project(Modules.Server.Library))
 

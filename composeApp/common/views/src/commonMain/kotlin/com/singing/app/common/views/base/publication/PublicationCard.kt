@@ -1,9 +1,7 @@
 package com.singing.app.common.views.base.publication
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,7 +19,6 @@ import com.singing.app.common.views.views.generated.resources.Res
 import com.singing.app.common.views.views.generated.resources.action_listen_now
 import com.singing.app.common.views.views.generated.resources.action_see_record
 import com.singing.app.common.views.views.generated.resources.baseline_play_circle_filled_24
-import com.singing.app.ui.utils.Space
 import com.singing.app.ui.utils.cardAppearance
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -71,7 +68,7 @@ fun PublicationCard(
                         }
                     )
 
-                    Space(8.dp)
+                    Spacer(Modifier.width(8.dp))
 
                     AssistChip(
                         label = {

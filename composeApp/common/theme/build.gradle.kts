@@ -5,26 +5,37 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
-group = AppConfig.buildGroup("app", "navigation")
+group = AppConfig.buildGroup("app", "ui")
 
 kotlin {
+    targets.configureEach {
+        compilations.configureEach {
+            compilerOptions.configure {
+                freeCompilerArgs.add("-Xexpect-actual-classes")
+            }
+        }
+    }
+
     jvm()
 
     androidTarget("android")
 
     sourceSets {
-        commonMain.dependencies {
-            implementation(project(Modules.App.Domain))
+        all {
+            languageSettings {
+                optIn("org.jetbrains.compose.resources.ExperimentalResourceApi")
+            }
+        }
 
+        commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
+            implementation(compose.uiTooling)
+        }
 
-            api(libs.voyager.navigator)
-            api(libs.voyager.koin)
-            api(libs.koin.core)
-
-            implementation(libs.kotlinx.collections)
+        androidMain.dependencies {
+            implementation(libs.androidx.compose.lifecycle)
         }
     }
 }

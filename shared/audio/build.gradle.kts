@@ -22,9 +22,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(Modules.Shared.Config))
-            implementation(project(Modules.Shared.Base))
             implementation(project(Modules.Shared.Model))
-            implementation(project(Modules.Library.AudioDecoder))
+            api(project(Modules.Library.Audio.Decoder))
 
             implementation(libs.kotlinx.coroutines.core)
 

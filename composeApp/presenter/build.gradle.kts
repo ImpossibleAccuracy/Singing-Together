@@ -49,10 +49,15 @@ kotlin {
         }
 
         commonMain.dependencies {
-            implementation(project(Modules.App.Common.Base))
-            implementation(project(Modules.App.Common.UiTools))
             implementation(project(Modules.App.Common.Navigation))
+            implementation(project(Modules.App.Common.Theme))
             implementation(project(Modules.App.Di))
+
+            implementation(project(Modules.App.Feature.Home.Presenter))
+            implementation(project(Modules.App.Feature.Home.Di))
+
+            implementation(project(Modules.App.Feature.Community.Presenter))
+            implementation(project(Modules.App.Feature.Community.Di))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -60,12 +65,6 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.uiTooling)
             implementation(compose.components.uiToolingPreview)
-
-            implementation(project(Modules.App.Feature.Home.Presenter))
-            implementation(project(Modules.App.Feature.Home.Di))
-
-            implementation(project(Modules.App.Feature.Home.Presenter))
-            implementation(project(Modules.App.Feature.Home.Di))
 
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlinx.datetime)

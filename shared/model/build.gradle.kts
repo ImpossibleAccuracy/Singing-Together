@@ -22,7 +22,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(Modules.Shared.Base))
+            api(project(Modules.Library.Files))
 
             implementation(compose.runtime)
 
