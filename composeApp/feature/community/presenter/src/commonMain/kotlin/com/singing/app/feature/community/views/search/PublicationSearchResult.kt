@@ -31,6 +31,7 @@ import com.singing.app.domain.model.Publication
 import com.singing.app.feature.community.viewmodel.CommunityUiState
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
+import com.singing.app.ui.screen.dimens
 import com.singing.feature.community.presenter.generated.resources.Res
 import com.singing.feature.community.presenter.generated.resources.subtitle_no_search_result
 import com.singing.feature.community.presenter.generated.resources.title_no_search_result
@@ -98,7 +99,7 @@ fun PublicationSearchResult(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
     ) {
         SearchResults(
             contentPadding = PaddingValues(),
@@ -108,8 +109,8 @@ fun PublicationSearchResult(
                 modifier = gridModifier,
                 contentPadding = padding,
                 columns = StaggeredGridCells.Adaptive(minSize = 360.dp),
-                verticalItemSpacing = 12.dp,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                verticalItemSpacing = MaterialTheme.dimens.dimen1_5,
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
             ) {
                 if (searchResults.itemCount > 0) {
                     item(
@@ -201,7 +202,7 @@ private fun SearchResults(
                         .fillMaxWidth(),
                     icon = {
                         Text(
-                            modifier = Modifier.padding(bottom = 20.dp),
+                            modifier = Modifier.padding(bottom = MaterialTheme.dimens.dimen2_5),
                             text = "(·_·)",
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.displayLarge,
@@ -220,7 +221,7 @@ private fun SearchResults(
                         Loader(
                             Modifier
                                 .fillMaxWidth()
-                                .padding(24.dp, 16.dp)
+                                .padding(MaterialTheme.dimens.dimen3, MaterialTheme.dimens.dimen2)
                         )
                     }
                 }

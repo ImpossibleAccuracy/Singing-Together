@@ -11,10 +11,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.views.generated.resources.Res
 import com.singing.app.common.views.views.generated.resources.baseline_star_24
 import com.singing.app.common.views.views.generated.resources.baseline_star_border_24
+import com.singing.app.ui.screen.dimens
 import org.jetbrains.compose.resources.vectorResource
 
 
@@ -27,9 +27,9 @@ fun TrackListItem(
     onFavouriteChange: (Boolean) -> Unit,
 ) {
     Row(
-        modifier = modifier.height(64.dp),
+        modifier = modifier.height(MaterialTheme.dimens.dimen4 * 2),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
     ) {
         Column(
             modifier = Modifier.weight(1f)

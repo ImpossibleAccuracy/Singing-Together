@@ -6,7 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.singing.app.ui.screen.dimens
 
 @Composable
 fun EmptyView(
@@ -18,7 +18,7 @@ fun EmptyView(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         icon?.invoke()
@@ -36,7 +36,7 @@ fun EmptyView(
         )
 
         action?.let {
-            Spacer(Modifier.height(8.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.dimen1))
 
             it()
         }

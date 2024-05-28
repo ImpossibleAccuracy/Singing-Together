@@ -7,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.progress.TimeProgress
 import com.singing.app.common.views.model.actions.PublicationCardActions
 import com.singing.app.common.views.model.state.PlayerController
@@ -16,6 +15,7 @@ import com.singing.app.common.views.views.generated.resources.Res
 import com.singing.app.common.views.views.generated.resources.action_see_record
 import com.singing.app.common.views.views.generated.resources.baseline_play_arrow_black_24dp
 import com.singing.app.common.views.views.generated.resources.baseline_stop_black_24dp
+import com.singing.app.ui.screen.dimens
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -49,14 +49,14 @@ fun PublicationCardWithPlayer(
             )
         },
         slotAfterDescription = {
-            Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(MaterialTheme.dimens.dimen0_5))
 
             HorizontalDivider()
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5),
             ) {
                 IconButton(
                     onClick = {

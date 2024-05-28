@@ -3,14 +3,17 @@ package com.singing.feature.main
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.currentOrThrow
-import com.singing.feature.main.viewmodel.MainIntent
-import com.singing.feature.main.viewmodel.MainUiState
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
+import com.singing.app.ui.screen.dimens
+import com.singing.feature.main.viewmodel.MainIntent
+import com.singing.feature.main.viewmodel.MainUiState
 import com.singing.feature.main.views.RecentPublicationsListContainer
 import com.singing.feature.main.views.RecentRecordsContainer
 import com.singing.feature.main.views.RecentTracks
@@ -31,7 +34,7 @@ fun MainScreen(
 
     Column(
         modifier = modifier.verticalScroll(state = verticalScroll),
-        verticalArrangement = Arrangement.spacedBy(36.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen4_5),
     ) {
         RecordBanner(
             modifier = Modifier
@@ -69,7 +72,7 @@ fun MainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(max = 500.dp),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3),
             ) {
                 RecentTracks(
                     modifier = Modifier.weight(1f),

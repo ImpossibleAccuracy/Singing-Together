@@ -16,7 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
+import com.singing.app.ui.screen.dimens
 
 
 @Composable
@@ -36,7 +36,7 @@ fun AccountChip(
 ) {
     Row(
         modifier = modifier then Modifier
-            .height(36.dp),
+            .height(MaterialTheme.dimens.dimen4_5),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showAvatar && avatar != null && avatarAtStart) {
@@ -44,7 +44,7 @@ fun AccountChip(
         }
 
         Text(
-            modifier = Modifier.padding(horizontal = 12.dp),
+            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.dimen1_5),
             text = username,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,
@@ -60,7 +60,7 @@ fun AccountChip(
 private fun AccountChipAvatar(avatar: () -> Painter) {
     Image(
         modifier = Modifier
-            .size(size = 36.dp)
+            .size(size = MaterialTheme.dimens.dimen4_5)
             .clip(shape = RoundedCornerShape(50)),
         painter = avatar(),
         contentScale = ContentScale.Crop,

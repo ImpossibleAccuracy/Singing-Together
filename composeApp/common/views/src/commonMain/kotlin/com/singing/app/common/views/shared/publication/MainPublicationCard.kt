@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.progress.TimeProgress
 import com.singing.app.common.views.base.publication.BasePublicationCard
 import com.singing.app.common.views.base.publication.publicationCardAppearance
@@ -22,6 +21,8 @@ import com.singing.app.common.views.model.state.PlayerController
 import com.singing.app.common.views.model.state.PublicationUiData
 import com.singing.app.common.views.model.state.RecordUiData
 import com.singing.app.common.views.views.generated.resources.*
+import com.singing.app.ui.screen.dimens
+import com.singing.app.ui.screen.listSpacing
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -69,16 +70,20 @@ fun MainPublicationCard(
 private fun PublicationCardInfo(data: RecordUiData) {
     FlowRow(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.listSpacing),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.listSpacing),
     ) {
         Box(
             modifier = Modifier
-                .height(36.dp)
-                .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = chipShape)
+                .height(MaterialTheme.dimens.dimen4)
+                .border(
+                    MaterialTheme.dimens.bordersThickness,
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                    shape = chipShape
+                )
                 .clip(shape = chipShape)
                 .background(color = MaterialTheme.colorScheme.surfaceContainerLowest)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = MaterialTheme.dimens.dimen2),
             contentAlignment = Alignment.Center,
         ) {
             Text(
@@ -93,13 +98,17 @@ private fun PublicationCardInfo(data: RecordUiData) {
 
         Row(
             modifier = Modifier
-                .height(36.dp)
-                .border(1.dp, color = MaterialTheme.colorScheme.outlineVariant, shape = chipShape)
+                .height(MaterialTheme.dimens.dimen2)
+                .border(
+                    MaterialTheme.dimens.bordersThickness,
+                    color = MaterialTheme.colorScheme.outlineVariant,
+                    shape = chipShape
+                )
                 .clip(shape = chipShape)
                 .background(color = MaterialTheme.colorScheme.surfaceContainerLowest)
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = MaterialTheme.dimens.dimen2),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
         ) {
             Icon(
                 imageVector = vectorResource(Res.drawable.baseline_access_time_24),
@@ -126,7 +135,7 @@ private fun PublicationCardPlayer(
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5)
     ) {
         IconButton(
             onClick = {

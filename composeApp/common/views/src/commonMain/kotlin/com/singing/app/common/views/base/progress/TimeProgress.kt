@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.singing.app.ui.formatTimeString
+import com.singing.app.ui.screen.dimens
 import kotlin.math.roundToLong
 
 @Composable
@@ -27,7 +27,7 @@ fun TimeProgress(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5),
     ) {
         Text(
             text = formatTimeString(currentPosition),

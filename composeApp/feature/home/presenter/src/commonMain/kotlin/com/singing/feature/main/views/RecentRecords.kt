@@ -28,6 +28,7 @@ import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
+import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
 import com.singing.feature.main.presenter.generated.resources.*
 import com.singing.feature.main.viewmodel.MainIntent
@@ -151,7 +152,7 @@ fun RecentRecords(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
     ) {
         if (data.records.isEmpty()) {
             EmptyView(
@@ -160,11 +161,11 @@ fun RecentRecords(
                     .cardAppearance(
                         shape = MaterialTheme.shapes.small,
                         background = MaterialTheme.colorScheme.primaryContainer,
-                        padding = PaddingValues(24.dp)
+                        padding = PaddingValues(MaterialTheme.dimens.dimen3)
                     ),
                 icon = {
                     Icon(
-                        modifier = Modifier.size(72.dp),
+                        modifier = Modifier.size(MaterialTheme.dimens.dimen4_5 * 2),
                         imageVector = vectorResource(Res.drawable.baseline_volume_up_black_24dp),
                         tint = MaterialTheme.colorScheme.primary,
                         contentDescription = "",
@@ -209,10 +210,10 @@ private fun RecentRecordsHeader(
                     actions.navigateAllRecords()
                 }
                 .padding(
-                    start = 10.dp,
-                    top = 2.dp,
-                    end = 4.dp,
-                    bottom = 2.dp,
+                    start = MaterialTheme.dimens.dimen1,
+                    top = MaterialTheme.dimens.dimen0_25,
+                    end = MaterialTheme.dimens.dimen0_5,
+                    bottom = MaterialTheme.dimens.dimen0_25,
                 ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -240,8 +241,8 @@ private fun RecordsGrid(
 ) {
     LazyVerticalStaggeredGrid(
         modifier = gridModifier,
-        verticalItemSpacing = 12.dp,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalItemSpacing = MaterialTheme.dimens.dimen1_5,
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
         columns = StaggeredGridCells.Adaptive(
             minSize = 380.dp,
         ),

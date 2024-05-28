@@ -12,13 +12,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.model.actions.PublicationCardActions
 import com.singing.app.common.views.model.state.PublicationUiData
 import com.singing.app.common.views.views.generated.resources.Res
 import com.singing.app.common.views.views.generated.resources.action_listen_now
 import com.singing.app.common.views.views.generated.resources.action_see_record
 import com.singing.app.common.views.views.generated.resources.baseline_play_circle_filled_24
+import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -29,9 +29,9 @@ import org.jetbrains.compose.resources.vectorResource
 fun publicationCardAppearance(
     containerColor: Color = MaterialTheme.colorScheme.surface,
     shape: Shape = MaterialTheme.shapes.medium,
-    padding: PaddingValues = PaddingValues(12.dp)
+    padding: PaddingValues = PaddingValues(MaterialTheme.dimens.dimen1_5)
 ) = Modifier.cardAppearance(
-    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+    border = BorderStroke(MaterialTheme.dimens.bordersThickness, MaterialTheme.colorScheme.outlineVariant),
     shape = shape,
     background = containerColor,
     padding = padding,
@@ -68,7 +68,7 @@ fun PublicationCard(
                         }
                     )
 
-                    Spacer(Modifier.width(8.dp))
+                    Spacer(Modifier.width(MaterialTheme.dimens.dimen1))
 
                     AssistChip(
                         label = {

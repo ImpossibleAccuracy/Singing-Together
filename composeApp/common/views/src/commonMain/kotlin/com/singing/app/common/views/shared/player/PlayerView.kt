@@ -15,6 +15,7 @@ import com.singing.app.common.views.base.AppFilledButton
 import com.singing.app.common.views.base.progress.TimeProgress
 import com.singing.app.common.views.model.state.PlayerController
 import com.singing.app.common.views.views.generated.resources.*
+import com.singing.app.ui.screen.dimens
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -37,12 +38,12 @@ fun PlayerView(
             .clip(shape)
             .background(color = containerColor)
             .padding(
-                start = 16.dp,
-                top = 4.dp,
-                end = 16.dp,
-                bottom = 12.dp,
+                start = MaterialTheme.dimens.dimen2,
+                top = MaterialTheme.dimens.dimen0_5,
+                end = MaterialTheme.dimens.dimen2,
+                bottom = MaterialTheme.dimens.dimen1_5,
             ),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
     ) {
         TimeProgress(
             modifier = Modifier.fillMaxWidth(),

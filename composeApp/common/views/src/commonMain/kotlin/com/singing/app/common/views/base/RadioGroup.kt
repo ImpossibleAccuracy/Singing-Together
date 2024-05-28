@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import com.singing.app.ui.screen.dimens
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -33,7 +33,7 @@ fun <T> RadioGroup(
                         onSelectedItemChanged(item)
                     },
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen2),
             ) {
                 Box(Modifier.weight(1f)) {
                     content(item)

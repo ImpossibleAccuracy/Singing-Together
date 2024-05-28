@@ -15,13 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.unit.dp
 import com.dokar.chiptextfield.Chip
 import com.dokar.chiptextfield.ChipTextFieldState
 import com.dokar.chiptextfield.m3.ChipTextFieldDefaults
 import com.dokar.chiptextfield.m3.OutlinedChipTextField
 import com.singing.app.common.views.views.generated.resources.Res
 import com.singing.app.common.views.views.generated.resources.baseline_close_black_24dp
+import com.singing.app.ui.screen.dimens
+import com.singing.app.ui.screen.icon
 import org.jetbrains.compose.resources.vectorResource
 
 
@@ -74,15 +75,15 @@ fun AppChipTextField(
             Box(
                 modifier = Modifier
                     .padding(
-                        top = 2.dp,
-                        end = 4.dp,
+                        top = MaterialTheme.dimens.dimen0_25,
+                        end = MaterialTheme.dimens.dimen0_5,
                     )
-                    .size(24.dp)
+                    .size(MaterialTheme.dimens.icon)
                     .clip(RoundedCornerShape(50))
                     .clickable {
                         onRemove(it)
                     }
-                    .padding(4.dp)
+                    .padding(MaterialTheme.dimens.dimen0_5)
             ) {
                 Icon(
                     modifier = Modifier.fillMaxSize(),

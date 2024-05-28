@@ -18,6 +18,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.singing.app.ui.screen.dimens
+import com.singing.app.ui.screen.icon
+import com.singing.app.ui.screen.listSpacing
 import kotlinx.collections.immutable.ImmutableList
 
 
@@ -50,8 +53,8 @@ fun <T> Timeline(
     startNode: (@Composable () -> Unit)? = null,
     finishNode: (@Composable () -> Unit)? = null,
     indicator: IndicatorView = DefaultTimelineIndicator,
-    nodeSpacing: Dp = 6.dp,
-    indicatorSize: Dp = 24.dp,
+    nodeSpacing: Dp = MaterialTheme.dimens.listSpacing / 2,
+    indicatorSize: Dp = MaterialTheme.dimens.icon,
     indicatorColor: (@Composable (position: Int) -> Color)? = null,
     nodeLabel: (@Composable (item: T, position: Int) -> Unit)? = null,
     nodeContent: @Composable (item: T, position: Int) -> Unit,
@@ -113,8 +116,8 @@ inline fun <T> timelineContent(
     noinline startNode: (@Composable () -> Unit)? = null,
     noinline finishNode: (@Composable () -> Unit)? = null,
     crossinline indicator: IndicatorView,
-    nodeSpacing: Dp = 6.dp,
-    indicatorSize: Dp = 24.dp,
+    nodeSpacing: Dp,
+    indicatorSize: Dp,
     crossinline indicatorColor: @Composable (position: Int) -> Color,
     noinline nodeLabel: (@Composable (item: T, position: Int) -> Unit)? = null,
     noinline nodeContent: @Composable (item: T, position: Int) -> Unit,
@@ -253,11 +256,11 @@ fun TimelineNode(
                     it
                 } else {
                     it.padding(
-                        bottom = 32.dp,
+                        bottom = MaterialTheme.dimens.dimen4,
                     )
                 }
             },
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen2),
     ) {
         if (isLabelsEnabled) {
             Box(

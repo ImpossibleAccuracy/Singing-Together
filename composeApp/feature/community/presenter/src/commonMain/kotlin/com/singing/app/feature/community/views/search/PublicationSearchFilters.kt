@@ -16,6 +16,7 @@ import com.dokar.chiptextfield.ChipTextFieldState
 import com.singing.app.common.views.base.AppChipTextField
 import com.singing.app.feature.community.viewmodel.CommunityIntent
 import com.singing.app.feature.community.viewmodel.CommunityUiState
+import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
 import com.singing.domain.model.PublicationSort
 import com.singing.feature.community.presenter.generated.resources.*
@@ -30,7 +31,7 @@ private fun Modifier.searchChipAppearance(
     padding: PaddingValues,
 ) = height(40.dp)
     .cardAppearance(
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        border = BorderStroke(MaterialTheme.dimens.bordersThickness, MaterialTheme.colorScheme.outlineVariant),
         shape = MaterialTheme.shapes.small,
         background = MaterialTheme.colorScheme.surfaceContainerLow,
         padding = padding,
@@ -153,7 +154,7 @@ fun PublicationSearchFilters(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
     ) {
         Text(
             text = stringResource(Res.string.title_search_publications),
@@ -163,11 +164,11 @@ fun PublicationSearchFilters(
         )
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
             ) {
                 AppChipTextField(
                     modifier = Modifier.weight(1f),
@@ -183,8 +184,8 @@ fun PublicationSearchFilters(
                 )
 
                 Row(
-                    modifier = Modifier.padding(top = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(top = MaterialTheme.dimens.dimen2),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
                 ) {
                     ShowUserPublicationsChip(
                         value = data.showUserPublications,
@@ -254,18 +255,18 @@ private fun ShowUserPublicationsChip(
     Row(
         modifier = Modifier.searchChipAppearance(
             padding = PaddingValues(
-                start = 16.dp,
-                end = 16.dp,
+                start = MaterialTheme.dimens.dimen2,
+                end = MaterialTheme.dimens.dimen2,
             ),
             onClick = {
                 onValueChanged(!value)
             },
         ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
     ) {
         Checkbox(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(MaterialTheme.dimens.dimen3),
             colors = CheckboxDefaults.colors(
                 checkedColor = MaterialTheme.colorScheme.primary,
             ),
@@ -291,13 +292,13 @@ private fun SortChip(
             .widthIn(min = 224.dp)
             .searchChipAppearance(
                 padding = PaddingValues(
-                    start = 16.dp,
-                    end = 16.dp,
+                    start = MaterialTheme.dimens.dimen2,
+                    end = MaterialTheme.dimens.dimen2,
                 ),
                 onClick = onClick,
             ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5, Alignment.CenterHorizontally),
     ) {
         Text(
             text = stringResource(
@@ -309,7 +310,7 @@ private fun SortChip(
         )
 
         Icon(
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(MaterialTheme.dimens.dimen3),
             imageVector = Icons.Default.ArrowDropDown,
             tint = MaterialTheme.colorScheme.onSurface,
             contentDescription = "",

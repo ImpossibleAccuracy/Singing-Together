@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.common.views.base.publication.PublicationCardWithPlayer
 import com.singing.app.common.views.base.publication.publicationCardAppearance
@@ -25,6 +24,7 @@ import com.singing.app.feature.community.viewmodel.CommunityIntent
 import com.singing.app.feature.community.viewmodel.CommunityUiState
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
+import com.singing.app.ui.screen.dimens
 import com.singing.feature.community.presenter.generated.resources.Res
 import com.singing.feature.community.presenter.generated.resources.baseline_shuffle_variant_24
 import com.singing.feature.community.presenter.generated.resources.title_random_latest_publication
@@ -82,13 +82,13 @@ fun RandomPublication(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             shape = shape,
             padding = PaddingValues(
-                start = 16.dp,
-                top = 4.dp,
-                end = 16.dp,
-                bottom = 16.dp,
+                start = MaterialTheme.dimens.dimen2,
+                top = MaterialTheme.dimens.dimen0_5,
+                end = MaterialTheme.dimens.dimen2,
+                bottom = MaterialTheme.dimens.dimen2,
             ),
         ),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5),
     ) {
         RandomPublicationHeader(onReload)
 

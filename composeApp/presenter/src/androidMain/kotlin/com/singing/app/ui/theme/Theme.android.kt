@@ -3,7 +3,10 @@ package com.singing.app.ui.theme
 import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowInsetsControllerCompat
 
 @Composable
@@ -26,3 +29,9 @@ internal actual fun getAppTheme(isDark: Boolean): ExtendedMaterialTheme {
         else -> LightColorScheme
     }
 }
+
+@Composable
+internal actual fun getScreenSize(): DpSize = DpSize(
+    width = LocalConfiguration.current.screenWidthDp.dp,
+    height = LocalConfiguration.current.screenHeightDp.dp,
+)

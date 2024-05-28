@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import com.singing.app.ui.utils.cardAppearance
 import com.singing.feature.community.presenter.generated.resources.Res
@@ -45,9 +46,9 @@ fun WelcomeView(
         modifier = modifier
             .fillMaxWidth()
             .height(height = 276.dp)
-            .clip(shape = RoundedCornerShape(36.dp))
+            .clip(shape = RoundedCornerShape(MaterialTheme.dimens.dimen4_5))
             .background(color = MaterialTheme.colorScheme.primary),
-        horizontalArrangement = Arrangement.spacedBy(24.dp, Alignment.Start),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3, Alignment.Start),
     ) {
         Box(
             modifier = Modifier
@@ -74,8 +75,8 @@ fun WelcomeView(
                     },
                     background = MaterialTheme.extended.communityBannerColor,
                     padding = PaddingValues(
-                        start = 64.dp,
-                        end = 64.dp
+                        start = MaterialTheme.dimens.dimen4 * 2,
+                        end = MaterialTheme.dimens.dimen4 * 2,
                     )
                 ),
             contentAlignment = Alignment.Center,
@@ -94,11 +95,11 @@ fun WelcomeView(
             modifier = Modifier
                 .weight(1f)
                 .padding(
-                    end = 64.dp,
-                    top = 24.dp,
-                    bottom = 24.dp
+                    end = MaterialTheme.dimens.dimen4 * 2,
+                    top = MaterialTheme.dimens.dimen3,
+                    bottom = MaterialTheme.dimens.dimen3
                 ),
-            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.Bottom),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3, Alignment.Bottom),
             horizontalAlignment = Alignment.End,
         ) {
             Text(

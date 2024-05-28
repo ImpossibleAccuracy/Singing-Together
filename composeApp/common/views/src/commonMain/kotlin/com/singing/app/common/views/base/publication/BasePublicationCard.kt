@@ -9,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.account.UserAvatar
 import com.singing.app.common.views.model.actions.PublicationCardActions
 import com.singing.app.common.views.model.state.PublicationUiData
 import com.singing.app.ui.plus
+import com.singing.app.ui.screen.dimens
+import com.singing.app.ui.screen.listSpacing
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -24,10 +25,9 @@ fun BasePublicationCard(
     slotAfterAuthor: @Composable RowScope.() -> Unit,
     slotAfterDescription: @Composable ColumnScope.() -> Unit,
 ) {
-
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -45,14 +45,14 @@ fun BasePublicationCard(
                     }
                     .plus(actions.onAuthorClick != null) {
                         padding(
-                            horizontal = 8.dp,
-                            vertical = 4.dp
+                            horizontal = MaterialTheme.dimens.dimen1,
+                            vertical = MaterialTheme.dimens.dimen0_5,
                         )
                     }
             ) {
                 UserAvatar(avatar = data.author.avatar)
 
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(MaterialTheme.dimens.dimen1))
 
                 Column {
                     Text(
@@ -82,8 +82,8 @@ fun BasePublicationCard(
         )
 
         FlowRow(
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.listSpacing),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.listSpacing),
         ) {
             data.tags.forEach {
                 Text(

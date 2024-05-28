@@ -12,13 +12,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import com.singing.app.ui.screen.dimens
 
 
 @Composable
 fun RecordThumb(
     color: Color = MaterialTheme.colorScheme.surface,
-    size: Dp = 128.dp,
+    size: Dp = MaterialTheme.dimens.dimen4 * 4,
     textStyle: TextStyle = MaterialTheme.typography.titleLarge,
     accuracy: Int?,
 ) {

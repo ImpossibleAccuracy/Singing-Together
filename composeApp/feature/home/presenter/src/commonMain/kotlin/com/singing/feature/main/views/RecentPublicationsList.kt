@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.publication.PublicationCard
@@ -28,6 +27,8 @@ import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.Publication
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
+import com.singing.app.ui.screen.dimens
+import com.singing.app.ui.screen.listSpacing
 import com.singing.feature.main.presenter.generated.resources.Res
 import com.singing.feature.main.presenter.generated.resources.subtitle_empty_publications
 import com.singing.feature.main.presenter.generated.resources.title_empty_publications
@@ -91,12 +92,12 @@ fun RecentPublicationsList(
             .clip(shape = MaterialTheme.shapes.medium)
             .background(color = MaterialTheme.colorScheme.primaryContainer)
             .padding(
-                start = 16.dp,
-                top = 16.dp,
-                end = 16.dp,
-                bottom = 16.dp,
+                start = MaterialTheme.dimens.dimen2,
+                top = MaterialTheme.dimens.dimen2,
+                end = MaterialTheme.dimens.dimen2,
+                bottom = MaterialTheme.dimens.dimen2,
             ),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
     ) {
         if (publications.isNotEmpty()) {
             Text(
@@ -138,7 +139,7 @@ private fun PublicationsList(
 ) {
     LazyColumn(
         modifier = listModifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.listSpacing),
     ) {
         item {
             val item = publications.first()

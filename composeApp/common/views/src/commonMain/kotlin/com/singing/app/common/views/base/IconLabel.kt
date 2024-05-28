@@ -11,7 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.dp
+import com.singing.app.ui.screen.dimens
+import com.singing.app.ui.screen.icon
 
 @Composable
 fun IconLabel(
@@ -28,7 +29,7 @@ fun IconLabel(
         trailing = trailingIcon?.let {
             {
                 Icon(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon),
                     imageVector = it,
                     tint = color,
                     contentDescription = "",
@@ -38,7 +39,7 @@ fun IconLabel(
         leading = leadingIcon?.let {
             {
                 Icon(
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(MaterialTheme.dimens.icon),
                     imageVector = it,
                     tint = color,
                     contentDescription = "",
@@ -59,7 +60,7 @@ fun IconLabel(
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
     ) {
         leading?.invoke()
 

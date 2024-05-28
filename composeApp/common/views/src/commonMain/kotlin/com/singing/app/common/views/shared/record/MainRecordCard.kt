@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.AppFilledButton
 import com.singing.app.common.views.base.IconLabel
 import com.singing.app.common.views.base.account.AccountChip
 import com.singing.app.common.views.model.state.RecordUiData
 import com.singing.app.common.views.model.state.UserUiData
 import com.singing.app.common.views.views.generated.resources.*
+import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -35,17 +35,17 @@ fun MainRecordCard(
             .fillMaxWidth()
             .clip(shape = MaterialTheme.shapes.medium)
             .background(color = MaterialTheme.colorScheme.primaryContainer)
-            .padding(all = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+            .padding(all = MaterialTheme.dimens.dimen2),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
         ) {
             FlowRow(
                 modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
             ) {
                 RecordCardActions(
                     data = data,
@@ -62,15 +62,15 @@ fun MainRecordCard(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
         ) {
             Box(
                 modifier = Modifier
                     .clip(shape = MaterialTheme.shapes.medium)
                     .background(color = MaterialTheme.extended.primaryFixedDim)
                     .padding(
-                        horizontal = 48.dp,
-                        vertical = 24.dp
+                        horizontal = MaterialTheme.dimens.dimen6,
+                        vertical = MaterialTheme.dimens.dimen4
                     )
             ) {
                 val text = when (data.accuracy) {
@@ -89,7 +89,7 @@ fun MainRecordCard(
             }
 
             Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5),
             ) {
                 IconLabel(
                     leadingIcon = vectorResource(Res.drawable.baseline_folder_music_black_24dp),
@@ -114,7 +114,7 @@ fun MainRecordCard(
 private fun MainRecordActions(navigateRecordDetails: () -> Unit, playRecord: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
+        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5, Alignment.End),
     ) {
         TextButton(
             onClick = {

@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import com.singing.app.common.views.base.AppTextButton
 import com.singing.app.common.views.base.IconLabel
 import com.singing.app.common.views.base.account.UserAvatar
 import com.singing.app.common.views.base.progress.TimeProgress
@@ -17,9 +17,9 @@ import com.singing.app.common.views.model.state.PlayerController
 import com.singing.app.common.views.model.state.RecordUiData
 import com.singing.app.common.views.model.state.UserUiData
 import com.singing.app.common.views.views.generated.resources.*
+import com.singing.app.ui.screen.dimens
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
-import com.singing.app.common.views.base.AppTextButton
 
 @Composable
 fun RecordPlayDialog(
@@ -39,13 +39,13 @@ fun RecordPlayDialog(
             val isPlaying by playerController.isPlaying
             val playerPosition by playerController.playerPosition
 
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)) {
                 RecordPlayInfo(record, creator)
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5),
                 ) {
                     IconButton(
                         onClick = {
@@ -96,7 +96,7 @@ private fun RecordPlayInfo(
     creator: UserUiData?,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5)
     ) {
         if (record.accuracy != null) {
             IconLabel(

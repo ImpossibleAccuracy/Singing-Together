@@ -14,9 +14,9 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.AppFilledButton
 import com.singing.app.domain.model.UserData
+import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import com.singing.feature.main.presenter.generated.resources.*
 import org.jetbrains.compose.resources.painterResource
@@ -26,7 +26,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun RecordBanner(
     modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(36.dp),
+    shape: Shape = RoundedCornerShape(MaterialTheme.dimens.dimen4_5),
     user: UserData?,
     onAction: () -> Unit,
 ) {
@@ -40,7 +40,7 @@ fun RecordBanner(
             .background(
                 color = MaterialTheme.extended.mainBannerScrim,
             ),
-        verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(

@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import app.cash.paging.compose.collectAsLazyPagingItems
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.app.feature.community.viewmodel.CommunityUiState
@@ -22,6 +21,7 @@ import com.singing.app.feature.community.views.search.PublicationSearchResultCon
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.navigation.views.ContentContainer
+import com.singing.app.ui.screen.dimens
 
 
 private val sectionShape
@@ -42,7 +42,7 @@ fun CommunityScreen(
     ContentContainer {
         Column(
             modifier = modifier.verticalScroll(state = verticalScroll),
-            verticalArrangement = Arrangement.spacedBy(36.dp),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen4_5),
         ) {
             WelcomeView(
                 modifier = Modifier.fillMaxWidth(),
@@ -61,7 +61,7 @@ fun CommunityScreen(
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3),
             ) {
                 PopularCategories(
                     modifier = Modifier.weight(5f),
@@ -84,7 +84,7 @@ fun CommunityScreen(
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3),
             ) {
                 PublicationSearchFiltersContainer(
                     modifier = Modifier.fillMaxWidth(),

@@ -15,11 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.PublicationTagStatistics
+import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
 import com.singing.feature.community.presenter.generated.resources.*
 import kotlinx.collections.immutable.PersistentList
@@ -35,12 +35,12 @@ fun PopularCategories(
 ) {
     Column(
         modifier = modifier.cardAppearance(
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+            border = BorderStroke(MaterialTheme.dimens.bordersThickness, MaterialTheme.colorScheme.outlineVariant),
             shape = shape,
             background = MaterialTheme.colorScheme.surfaceContainerLow,
-            padding = PaddingValues(16.dp)
+            padding = PaddingValues(MaterialTheme.dimens.dimen2)
         ),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen2),
     ) {
         CategoriesHeader()
 
@@ -74,7 +74,7 @@ fun PopularCategories(
 private fun CategoriesHeader() {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5),
     ) {
         Text(
             text = stringResource(Res.string.title_popular_categories),
@@ -103,7 +103,7 @@ private fun LazyListScope.categoriesList(
     ) { item ->
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
         ) {
             Column(
                 modifier = Modifier.weight(weight = 1f),
