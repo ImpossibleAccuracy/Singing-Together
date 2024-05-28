@@ -52,6 +52,8 @@ include(":composeApp:common:views:extensions")
 include(":composeApp:common:navigation")
 include(":composeApp:feature:base")
 
+// ---------------------------------------------------------------------------
+
 include(":composeApp:feature:home:presenter")
 include(":composeApp:feature:home:domain")
 include(":composeApp:feature:home:di")
@@ -67,3 +69,7 @@ include(":composeApp:feature:record-details:di")
 include(":composeApp:feature:record-list:presenter")
 include(":composeApp:feature:record-list:domain")
 include(":composeApp:feature:record-list:di")
+
+include(":composeApp:feature:account-profile:presenter")
+include(":composeApp:feature:account-profile:domain")
+include(":composeApp:feature:account-profile:di")

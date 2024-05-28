@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.Dp
 import com.seiko.imageloader.rememberImagePainter
 import com.singing.app.common.views.views.generated.resources.Res
 import com.singing.app.common.views.views.generated.resources.baseline_person_24
@@ -20,12 +21,15 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun UserAvatar(
-    modifier: Modifier = Modifier
-        .size(size = MaterialTheme.dimens.largeIcon)
-        .clip(shape = RoundedCornerShape(50)),
+    size: Dp = MaterialTheme.dimens.largeIcon,
+    modifier: Modifier = Modifier.clip(shape = RoundedCornerShape(50)),
     avatar: String?
 ) {
-    Box(modifier = modifier) {
+    Box(
+        modifier = Modifier
+            .size(size)
+            .then(modifier)
+    ) {
         if (avatar == null) {
             Icon(
                 modifier = Modifier.fillMaxSize(),

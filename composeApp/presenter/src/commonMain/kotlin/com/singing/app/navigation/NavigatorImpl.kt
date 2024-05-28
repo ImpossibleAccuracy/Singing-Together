@@ -2,6 +2,7 @@ package com.singing.app.navigation
 
 import cafe.adriel.voyager.core.screen.Screen
 import com.singing.app.feature.community.CommunityPage
+import com.singing.feature.account.profile.AccountProfilePage
 import com.singing.feature.main.MainPage
 import com.singing.feature.record.RecordDetailPage
 import com.singing.feature.record.list.RecordListPage
@@ -17,6 +18,7 @@ class NavigatorImpl(
                 is CommunityPage -> SharedScreen.Community
                 is RecordListPage -> SharedScreen.RecordList(page.initialRecord)
                 is RecordDetailPage -> SharedScreen.RecordDetails(page.recordData)
+                is AccountProfilePage -> SharedScreen.UserProfile(page.account)
                 else -> TODO()
             }
 
@@ -26,6 +28,7 @@ class NavigatorImpl(
                 SharedScreen.Community -> CommunityPage()
                 is SharedScreen.RecordList -> RecordListPage(screen.record)
                 is SharedScreen.RecordDetails -> RecordDetailPage(screen.record)
+                is SharedScreen.UserProfile -> AccountProfilePage(screen.account)
                 else -> TODO()
             }
     }

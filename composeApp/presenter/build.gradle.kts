@@ -81,6 +81,9 @@ kotlin {
 
             implementation(project(Modules.App.Feature.RecordDetails.Presenter))
             implementation(project(Modules.App.Feature.RecordDetails.Di))
+
+            implementation(project(Modules.App.Feature.Profile.Presenter))
+            implementation(project(Modules.App.Feature.Profile.Di))
         }
 
         jvmMain.dependencies {

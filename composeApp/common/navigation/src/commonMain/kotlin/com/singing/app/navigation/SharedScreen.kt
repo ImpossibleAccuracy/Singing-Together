@@ -17,7 +17,7 @@ sealed interface SharedScreen {
 
     data class PublicationDetails(val publication: Publication) : SharedScreen
 
-    data class UserProfile(val user: UserData) : SharedScreen
+    data class UserProfile(val account: UserData) : SharedScreen
 
     data object Auth : SharedScreen
 }
