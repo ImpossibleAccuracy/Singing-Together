@@ -59,7 +59,7 @@ internal fun RecordPointsView(
 }
 
 @Composable
-fun RecordTimeline(
+internal fun RecordTimeline(
     modifier: Modifier = Modifier,
     points: LazyPagingItems<RecordPoint>,
     note: (Double) -> String,

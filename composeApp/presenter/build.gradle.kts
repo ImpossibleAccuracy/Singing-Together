@@ -76,6 +76,9 @@ kotlin {
             implementation(project(Modules.App.Feature.Community.Presenter))
             implementation(project(Modules.App.Feature.Community.Di))
 
+            implementation(project(Modules.App.Feature.PublicationDetails.Presenter))
+            implementation(project(Modules.App.Feature.PublicationDetails.Di))
+
             implementation(project(Modules.App.Feature.RecordList.Presenter))
             implementation(project(Modules.App.Feature.RecordList.Di))
 

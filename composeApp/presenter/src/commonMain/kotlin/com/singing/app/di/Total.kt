@@ -5,6 +5,7 @@ import com.singing.app.di.module.useCaseModule
 import com.singing.feature.account.profile.di.accountProfileModule
 import com.singing.feature.community.di.communityModule
 import com.singing.feature.main.di.mainModule
+import com.singing.feature.publication.details.di.publicationDetailsModule
 import com.singing.feature.record.di.recordDetailModule
 import com.singing.feature.record.list.di.recordListModule
 import com.singing.feature.recording.di.recordingModule
@@ -21,5 +22,6 @@ fun totalAppModules(): List<Module> = mutableListOf<Module>().apply {
     add(recordListModule)
     add(recordDetailModule)
     add(communityModule)
+    add(publicationDetailsModule)
     add(accountProfileModule)
 }

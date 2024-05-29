@@ -17,13 +17,13 @@ import com.singing.app.common.views.base.record.RecordCard
 import com.singing.app.common.views.toRecordCardData
 import com.singing.app.domain.model.RecordData
 import com.singing.app.ui.screen.dimens
-import com.singing.app.ui.screen.smallListSpacing
 
 
 @Composable
 fun RecordsList(
     modifier: Modifier = Modifier,
     records: LazyPagingItems<RecordData>,
+    highlightSelected: Boolean = true,
     selectedRecord: RecordData?,
     onSelectedRecordChange: (RecordData) -> Unit,
 ) {
@@ -51,12 +51,12 @@ fun RecordsList(
 
                         val isSelected = selectedRecord == item
 
-                        val containerColor = when (isSelected) {
+                        val containerColor = when (isSelected && highlightSelected) {
                             true -> MaterialTheme.colorScheme.secondaryContainer
                             false -> Color.Transparent
                         }
 
-                        val accuracyContainerColor = when (isSelected) {
+                        val accuracyContainerColor = when (isSelected && highlightSelected) {
                             true -> MaterialTheme.colorScheme.surface
                             false -> MaterialTheme.colorScheme.surfaceContainerHigh
                         }

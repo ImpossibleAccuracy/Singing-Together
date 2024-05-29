@@ -83,3 +83,7 @@ include(":composeApp:feature:recording:di")
 include(":composeApp:feature:recording-setup:presenter")
 include(":composeApp:feature:recording-setup:domain")
 include(":composeApp:feature:recording-setup:di")
+
+include(":composeApp:feature:publication-details:presenter")
+include(":composeApp:feature:publication-details:domain")
+include(":composeApp:feature:publication-details:di")

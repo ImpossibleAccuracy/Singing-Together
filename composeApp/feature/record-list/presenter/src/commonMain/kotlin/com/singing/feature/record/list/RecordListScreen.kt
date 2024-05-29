@@ -20,14 +20,15 @@ import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.WindowSize
+import com.singing.app.ui.screen.actualScreenSize
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.screen.smallestScreenSize
 import com.singing.feature.record.list.viewmodel.RecordListIntent
 import com.singing.feature.record.list.viewmodel.RecordListUiState
+import com.singing.feature.record.list.views.RecordsList
 import com.singing.feature.record.views.RecordDetails
 import com.singing.feature.record.views.RecordDetailsActions
 import com.singing.feature.record.views.RecordDetailsData
-import com.singing.feature.record.list.views.RecordsList
 import kotlinx.coroutines.launch
 
 
@@ -39,6 +40,7 @@ fun RecordListScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val navigator = AppNavigator.currentOrThrow
+    val windowSize = MaterialTheme.actualScreenSize
 
     Row(
         modifier = Modifier
@@ -51,9 +53,14 @@ fun RecordListScreen(
         RecordsList(
             modifier = modifier.weight(1f),
             records = records,
+            highlightSelected = windowSize == WindowSize.EXPANDED,
             selectedRecord = uiState.selectedRecord.valueOrNull(),
             onSelectedRecordChange = {
                 viewModel.onIntent(RecordListIntent.UpdateSelected(it))
+
+                if (windowSize != WindowSize.EXPANDED) {
+                    navigator.navigate(SharedScreen.RecordDetails(it))
+                }
             }
         )
 

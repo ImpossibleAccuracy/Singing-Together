@@ -25,7 +25,7 @@ import nl.jacobras.humanreadable.HumanReadable
 internal fun RecordDetailsMain(
     modifier: Modifier = Modifier,
     data: RecordDetailsData,
-    actions: RecordDetailsActions,
+    actions: RecordDetailsActions?,
 ) {
     var recordToPublish by remember { mutableStateOf<RecordData?>(null) }
     var recordToDelete by remember { mutableStateOf<RecordData?>(null) }
@@ -69,7 +69,7 @@ internal fun RecordDetailsMain(
                 )
             }
 
-            if (data.editable) {
+            if (data.editable && actions != null) {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
@@ -97,17 +97,19 @@ internal fun RecordDetailsMain(
         }
     }
 
-    PublishDialog(
-        record = recordToPublish,
-        publishRecord = actions.publishRecord,
-        onDismiss = { recordToPublish = null },
-    )
+    if (actions != null) {
+        PublishDialog(
+            record = recordToPublish,
+            publishRecord = actions.publishRecord,
+            onDismiss = { recordToPublish = null },
+        )
 
-    DeleteDialog(
-        record = recordToDelete,
-        deleteRecord = actions.deleteRecord,
-        onDismiss = { recordToDelete = null }
-    )
+        DeleteDialog(
+            record = recordToDelete,
+            deleteRecord = actions.deleteRecord,
+            onDismiss = { recordToDelete = null }
+        )
+    }
 }
 
 @Composable
