@@ -50,6 +50,7 @@ include(":composeApp:common:ui-tools")
 include(":composeApp:common:views")
 include(":composeApp:common:views:extensions")
 include(":composeApp:common:navigation")
+include(":composeApp:common:navigation:dialog")
 include(":composeApp:feature:base")
 
 // ---------------------------------------------------------------------------

@@ -11,7 +11,7 @@ sealed interface RecordData {
     val createdAt: StableInstant
     val isSavedRemote: Boolean
     val isPublished: Boolean
-    val creatorId: Int
+    val creatorId: Int?
 
     data class Vocal(
         override val id: Int,
@@ -19,7 +19,7 @@ sealed interface RecordData {
         override val createdAt: StableInstant,
         override val isSavedRemote: Boolean,
         override val isPublished: Boolean,
-        override val creatorId: Int,
+        override val creatorId: Int?,
     ) : RecordData
 
     data class Cover(
@@ -30,7 +30,7 @@ sealed interface RecordData {
         override val createdAt: StableInstant,
         override val isSavedRemote: Boolean,
         override val isPublished: Boolean,
-        override val creatorId: Int,
+        override val creatorId: Int?,
     ) : RecordData
 }
 

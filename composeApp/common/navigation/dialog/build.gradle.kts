@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
-group = AppConfig.buildGroup("feature", "recording")
+group = AppConfig.buildGroup("app", "navigation", "dialog")
 
 kotlin {
     targets.configureEach {
@@ -29,20 +29,16 @@ kotlin {
 
         commonMain.dependencies {
             implementation(project(Modules.App.Common.Theme))
-            implementation(project(Modules.App.Common.ViewsExtensions))
-            implementation(project(Modules.App.Common.Navigation))
-            implementation(project(Modules.App.Common.NavigationDialog))
-
-            implementation(project(Modules.App.Feature.Base))
-            implementation(project(Modules.App.Feature.Recording.Domain))
+            implementation(project(Modules.App.Common.Views))
+            implementation(project(Modules.App.Common.UiTools))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.components.resources)
 
-            implementation(libs.paging.compose.common)
-            implementation(libs.humanReadable)
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.transitions)
         }
     }
 }

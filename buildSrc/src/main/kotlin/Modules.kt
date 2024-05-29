@@ -34,6 +34,7 @@ object Modules {
             const val Views = ":composeApp:common:views"
             const val ViewsExtensions = ":composeApp:common:views:extensions"
             const val Navigation = ":composeApp:common:navigation"
+            const val NavigationDialog = ":composeApp:common:navigation:dialog"
         }
 
         object Feature {

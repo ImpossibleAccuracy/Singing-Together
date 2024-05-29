@@ -1,6 +1,7 @@
 package com.singing.feature.recording.viewmodel
 
 import com.singing.app.domain.model.TrackParseResult
+import com.singing.app.domain.model.UserData
 import com.singing.domain.model.RecordPoint
 import com.singing.feature.recording.domain.model.RecordState
 import kotlinx.collections.immutable.PersistentList
@@ -12,6 +13,7 @@ sealed interface RecordingUiState {
             when (state.recordState) {
                 RecordState.RECORD -> Recording(
                     recordStartedAt = state.recordStartedAt!!,
+                    user = state.user,
                     playerPosition = state.playerPosition,
                     isPlaying = state.isPlaying,
                     trackData = state.trackData,
@@ -20,6 +22,7 @@ sealed interface RecordingUiState {
 
                 RecordState.COUNTDOWN -> Countdown(
                     recordCountdown = state.recordCountdown,
+                    user = state.user,
                     playerPosition = state.playerPosition,
                     isPlaying = state.isPlaying,
                     trackData = state.trackData,
@@ -27,6 +30,7 @@ sealed interface RecordingUiState {
                 )
 
                 RecordState.STOP -> Stopped(
+                    user = state.user,
                     playerPosition = state.playerPosition,
                     isPlaying = state.isPlaying,
                     trackData = state.trackData,
@@ -35,6 +39,7 @@ sealed interface RecordingUiState {
             }
     }
 
+    val user: UserData?
     val playerPosition: Long
     val isPlaying: Boolean
     val trackData: TrackParseResult?
@@ -42,6 +47,7 @@ sealed interface RecordingUiState {
 
     data class Recording(
         val recordStartedAt: Long,
+        override val user: UserData? = null,
         override val playerPosition: Long = 0,
         override val isPlaying: Boolean = false,
         override val trackData: TrackParseResult? = null,
@@ -50,6 +56,7 @@ sealed interface RecordingUiState {
 
     data class Countdown(
         val recordCountdown: Int?,
+        override val user: UserData? = null,
         override val playerPosition: Long = 0,
         override val isPlaying: Boolean = false,
         override val trackData: TrackParseResult? = null,
@@ -57,6 +64,7 @@ sealed interface RecordingUiState {
     ) : RecordingUiState
 
     data class Stopped(
+        override val user: UserData? = null,
         override val playerPosition: Long = 0,
         override val isPlaying: Boolean = false,
         override val trackData: TrackParseResult? = null,

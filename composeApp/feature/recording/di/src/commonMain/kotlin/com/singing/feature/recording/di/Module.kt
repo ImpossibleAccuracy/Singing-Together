@@ -9,18 +9,22 @@ import com.singing.feature.recording.domain.data.ClockFlowImpl
 import com.singing.feature.recording.domain.data.InputListenerImpl
 import com.singing.feature.recording.domain.data.PlayerHelperImpl
 import com.singing.feature.recording.domain.data.RecordHelperImpl
+import com.singing.feature.recording.save.RecordSaveViewModel
 import org.koin.dsl.module
 
 val recordingModule = module {
     factory {
         RecordingViewModel(
             findNoteUseCase = get(),
+            userProvider = get(),
             inputListener = get(),
             playerHelper = get(),
             recordHelper = get(),
             clockFlow = get(),
         )
     }
+
+    factory { RecordSaveViewModel(get()) }
 
     factory<ClockFlow> { ClockFlowImpl() }
     factory<InputListener> { InputListenerImpl() }

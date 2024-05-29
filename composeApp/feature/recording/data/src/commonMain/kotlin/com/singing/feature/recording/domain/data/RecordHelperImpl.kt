@@ -24,6 +24,7 @@ class RecordHelperImpl : RecordHelper {
     private val _countdown = MutableStateFlow<Int?>(null)
     override val countdown: Flow<Int?> = _countdown.asStateFlow()
 
+    private var recordStart: Long = 0
     private var countdownJob: Job? = null
 
     override suspend fun startRecord() {
@@ -45,6 +46,7 @@ class RecordHelperImpl : RecordHelper {
 
         voiceCapture.capture()
         voiceCapture.awaitStart()
+        recordStart = System.currentTimeMillis()
 
         _recordState.value = RecordState.RECORD
     }
@@ -71,7 +73,11 @@ class RecordHelperImpl : RecordHelper {
     override suspend fun stopRecord() {
         val result = voiceCapture.stop()
 
-        _recordResult.value = RecordResult(result)
+        _recordResult.value = RecordResult(
+            bytes = result,
+            duration = System.currentTimeMillis() - recordStart
+        )
+
         _recordState.value = RecordState.STOP
     }
 }

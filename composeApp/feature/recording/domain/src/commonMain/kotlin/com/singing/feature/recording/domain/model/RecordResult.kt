@@ -5,6 +5,7 @@ import androidx.compose.runtime.Stable
 @Stable
 data class RecordResult(
     val bytes: ByteArray,
+    val duration: Long,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -12,10 +13,15 @@ data class RecordResult(
 
         other as RecordResult
 
-        return bytes.contentEquals(other.bytes)
+        if (!bytes.contentEquals(other.bytes)) return false
+        if (duration != other.duration) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
-        return bytes.contentHashCode()
+        var result = bytes.contentHashCode()
+        result = 31 * result + duration.hashCode()
+        return result
     }
 }

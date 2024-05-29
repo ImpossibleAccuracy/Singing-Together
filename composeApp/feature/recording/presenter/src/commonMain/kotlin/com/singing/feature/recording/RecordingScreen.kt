@@ -8,14 +8,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.currentOrThrow
+import com.singing.app.domain.payload.RecordSaveData
+import com.singing.app.navigation.AppNavigator
+import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
+import com.singing.feature.recording.save.RecordSaveAdditionalInfo
+import com.singing.feature.recording.save.RecordSaveDialog
 import com.singing.feature.recording.viewmodel.RecordingIntent
 import com.singing.feature.recording.viewmodel.RecordingUiState
 import com.singing.feature.recording.views.AudioDisplay
@@ -30,6 +34,8 @@ fun RecordingScreen(
     viewModel: RecordingViewModel,
     uiState: RecordingUiState,
 ) {
+    RecordSave(viewModel, uiState)
+
     Column(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
@@ -90,64 +96,34 @@ fun RecordingScreen(
     }
 }
 
-
-/*@Composable
-    override fun Content() {
-        val viewModel = viewModels<RecordingViewModel>(true)
-
-        LifecycleEffect {
-            viewModel.stopRecordCountdown()
-
-            if (!viewModel.isAnyActionActive) {
-                viewModel.stopActionsAndClearData()
-            }
-        }
-
-        val verticalScrollState = rememberScrollState()
-
-        LaunchedEffect(audio) {
-            if (isNewInstance) {
-                if (audio == null) {
-                    viewModel.stopActionsAndClearData()
-                } else {
-                    viewModel.setProcessedAudio(audio)
-                }
-            }
-        }
-
-        RecordSaveDialogContainer(viewModel)
-
-        ContentContainer {
-        }
-    }*/
-
-/*@Composable
-private fun RecordSaveDialogContainer(
+@Composable
+private fun RecordSave(
     viewModel: RecordingViewModel,
+    uiState: RecordingUiState
 ) {
-    val navigator = LocalNavigator.currentOrThrow
+    val navigator = AppNavigator.currentOrThrow
+    val recordResult by viewModel.recordResult.collectAsState()
 
-    val uiState by viewModel.uiState.collectAsStateSafe()
+    var isDialogVisible by remember { mutableStateOf(false) }
 
-    var isSaveDialogVisible by remember { mutableStateOf(false) }
-
-    LaunchedEffect(uiState.recordSaveData) {
-        isSaveDialogVisible = (uiState.recordSaveData != null)
+    LaunchedEffect(recordResult) {
+        isDialogVisible = recordResult != null
     }
 
-    if (isSaveDialogVisible) {
+    if (recordResult != null && isDialogVisible) {
         RecordSaveDialog(
-            data = uiState.recordSaveData!!,
-            navigateToRecord = {
-                navigator.push(
-                    RecordListScreen(
-                        defaultSelectedRecord = it,
-                    )
-                )
-            },
+            data = RecordSaveAdditionalInfo(
+                saveData = RecordSaveData(recordResult!!.bytes, track = uiState.trackData?.selectedAudio),
+                duration = recordResult!!.duration,
+                user = uiState.user,
+                history = uiState.history,
+            ),
             onDismiss = {
-                isSaveDialogVisible = false
+                isDialogVisible = false
             },
+            onSaved = {
+                navigator.navigate(SharedScreen.RecordList(it))
+            }
         )
     }
-}*/
+}

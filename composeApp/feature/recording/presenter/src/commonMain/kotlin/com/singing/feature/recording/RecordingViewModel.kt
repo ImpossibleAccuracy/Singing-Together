@@ -2,6 +2,7 @@ package com.singing.feature.recording
 
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import com.singing.app.domain.provider.UserProvider
 import com.singing.app.domain.usecase.FindNoteUseCase
 import com.singing.domain.model.RecordPoint
 import com.singing.feature.recording.domain.ClockFlow
@@ -25,6 +26,7 @@ class RecordingViewModel(
     private val playerHelper: PlayerHelper,
     private val recordHelper: RecordHelper,
 
+    private val userProvider: UserProvider,
     private val findNoteUseCase: FindNoteUseCase,
 ) : ScreenModel {
     private val state = MutableStateFlow(RecordingState())
@@ -86,6 +88,12 @@ class RecordingViewModel(
 
     init {
         screenModelScope.launch {
+            launch {
+                userProvider.userFlow.collect { user ->
+                    state.update { it.copy(user = user) }
+                }
+            }
+
             launch {
                 inputListener.init(
                     strategy = InputListener.MergeStrategy.Combine,
