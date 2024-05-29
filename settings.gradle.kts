@@ -73,3 +73,8 @@ include(":composeApp:feature:record-list:di")
 include(":composeApp:feature:account-profile:presenter")
 include(":composeApp:feature:account-profile:domain")
 include(":composeApp:feature:account-profile:di")
+
+include(":composeApp:feature:recording:presenter")
+include(":composeApp:feature:recording:domain")
+include(":composeApp:feature:recording:data")
+include(":composeApp:feature:recording:di")

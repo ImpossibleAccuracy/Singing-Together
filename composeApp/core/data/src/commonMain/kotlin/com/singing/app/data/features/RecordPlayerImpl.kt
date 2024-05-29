@@ -9,12 +9,16 @@ import com.singing.audio.player.PlayerState
 import com.singing.audio.player.multiplyPlayers
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import kotlin.math.max
 
 
 class RecordPlayerImpl(private val recordRepository: RecordRepository) : RecordPlayer {
     companion object {
         private const val POSITION_UPDATE_RATE = 300L
+        private const val RESTART_PERCENT_THRESHOLD = 0.005
+        private const val MIN_RESTART_THRESHOLD = 100.0
     }
+
 
     private val recorderScope = CoroutineScope(Dispatchers.Default)
 
@@ -32,10 +36,13 @@ class RecordPlayerImpl(private val recordRepository: RecordRepository) : RecordP
     override suspend fun play(recordData: RecordData) {
         val voiceFile = recordRepository.getRecordVoiceFile(recordData)
 
-        // TODO: extract magic number
-        _position.value =
-            if (position.value >= recordData.duration * 0.995) 0
-            else position.value
+        _position.value = when (recordData.duration - position.value >= max(
+            MIN_RESTART_THRESHOLD,
+            recordData.duration * RESTART_PERCENT_THRESHOLD,
+        )) {
+            true -> 0
+            false -> position.value
+        }
 
         when (recordData) {
             is RecordData.Vocal -> playSingle(

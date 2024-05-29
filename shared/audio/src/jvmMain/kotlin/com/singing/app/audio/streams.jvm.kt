@@ -1,18 +1,18 @@
 package com.singing.app.audio
 
+import com.singing.app.base.ComposeFile
 import com.singing.audio.library.filter.AudioFilter
 import com.singing.audio.library.model.AudioParams
 import com.singing.audio.library.parser.AudioParser
 import com.singing.audio.sampled.input.toAudioParams
 import com.singing.audio.sampled.model.TimedFrequency
-import com.singing.audio.taros.decoder.TarosDspDecoderImpl
+import com.singing.audio.taros.decoder.impl.NullableTarosDspDecoder
 import com.singing.audio.taros.decoder.timed.TimedTarosDspDecoder
 import com.singing.audio.taros.filter.TarosAudioFilter
 import com.singing.audio.taros.input.TarosDspInput
 import com.singing.audio.taros.input.createMicrophoneInput
 import com.singing.audio.taros.input.openInputStreamAsTarosDspInput
 import com.singing.audio.taros.parser.TarosDspParser
-import com.singing.app.base.ComposeFile
 import com.singing.config.track.TrackProperties
 import com.singing.config.voice.VoiceProperties
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,7 @@ val microphoneInput: TarosDspInput by lazy {
     )
 }
 
-actual suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioParser<Double>? {
+actual suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioParser<Double?>? {
     val input = withContext(Dispatchers.IO) {
         microphoneInput
     }
@@ -50,7 +50,7 @@ actual suspend fun createVoiceAudioParser(filters: List<AudioFilter>): AudioPars
     return TarosDspParser(
         params = params,
         input = input,
-        decoder = TarosDspDecoderImpl(),
+        decoder = NullableTarosDspDecoder(),
         filters = tarosFilters,
     )
 }

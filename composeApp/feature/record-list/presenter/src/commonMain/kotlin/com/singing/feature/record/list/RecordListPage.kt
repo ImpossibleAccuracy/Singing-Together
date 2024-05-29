@@ -16,8 +16,8 @@ import com.singing.app.navigation.base.AppPage
 import com.singing.app.navigation.base.extensions.FabScreen
 import com.singing.app.navigation.base.screenModel
 import com.singing.app.navigation.views.ContentContainer
-import com.singing.feature.record.presenter.generated.resources.Res
-import com.singing.feature.record.presenter.generated.resources.baseline_mic_24
+import com.singing.feature.list.record.presenter.generated.resources.Res
+import com.singing.feature.list.record.presenter.generated.resources.baseline_mic_24
 import org.jetbrains.compose.resources.vectorResource
 
 data class RecordListPage(

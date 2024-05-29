@@ -4,6 +4,7 @@ import be.tarsos.dsp.pitch.PitchDetectionHandler
 import be.tarsos.dsp.pitch.PitchProcessor
 import com.singing.audio.library.model.AudioParams
 import com.singing.audio.library.parser.AudioParser
+import com.singing.audio.taros.decoder.DecoderResult
 import com.singing.audio.taros.decoder.TarosDspDecoder
 import com.singing.audio.taros.filter.TarosAudioFilter
 import com.singing.audio.taros.input.TarosDspInput
@@ -22,27 +23,25 @@ class TarosDspParser<T>(
     }
 
     override fun parse(): Flow<T> = callbackFlow {
-        with(input) {
-            filters.forEach { filter ->
-                dispatcher.addAudioProcessor(filter.toDispatcher())
-            }
+        filters.forEach { filter ->
+            input.dispatcher.addAudioProcessor(filter.toDispatcher())
+        }
 
-            val pitchProcessor = createPitchProcessor {
-                trySend(it)
-            }
+        val pitchProcessor = createPitchProcessor {
+            trySend(it)
+        }
 
-            dispatcher.addAudioProcessor(pitchProcessor)
+        input.dispatcher.addAudioProcessor(pitchProcessor)
 
-            decoder.init()
+        decoder.init()
 
-            dispatcher.run()
+        input.dispatcher.run()
 
-            close()
+        close()
+        release()
+
+        awaitClose {
             release()
-
-            awaitClose {
-                release()
-            }
         }
     }
 
@@ -52,8 +51,8 @@ class TarosDspParser<T>(
         val handler = PitchDetectionHandler { res, e ->
             val result = decoder.transform(res, e)
 
-            if (result != null) {
-                callback(result)
+            if (result is DecoderResult.Data) {
+                callback(result.data)
             }
         }
 

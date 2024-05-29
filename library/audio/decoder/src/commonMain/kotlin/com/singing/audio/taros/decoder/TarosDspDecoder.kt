@@ -6,5 +6,5 @@ import be.tarsos.dsp.pitch.PitchDetectionResult
 interface TarosDspDecoder<T> {
     fun init() {}
 
-    fun transform(pitch: PitchDetectionResult, e: AudioEvent): T?
+    fun transform(pitch: PitchDetectionResult, e: AudioEvent): DecoderResult<T>
 }

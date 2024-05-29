@@ -10,7 +10,6 @@ import com.singing.app.common.views.toPlayerController
 import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
-import com.singing.app.domain.model.isTwoLineRecord
 import com.singing.app.ui.screen.dimens
 import com.singing.domain.model.RecordPoint
 
@@ -57,7 +56,6 @@ fun RecordDetails(
         RecordPointsView(
             modifier = Modifier.fillMaxWidth(),
             points = data.recordPoints,
-            isTwoLineRecord = data.record.isTwoLineRecord(),
             note = data.note,
         )
     }

@@ -44,6 +44,7 @@ object Modules {
             val RecordList = UiFeature(":composeApp:feature:record-list")
             val RecordDetails = UiFeature(":composeApp:feature:record-details")
             val Profile = UiFeature(":composeApp:feature:account-profile")
+            val Recording = UiFeature(":composeApp:feature:recording")
         }
     }
 }

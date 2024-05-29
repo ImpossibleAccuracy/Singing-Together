@@ -21,6 +21,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(project(Modules.App.Feature.RecordDetails.Presenter))
+            implementation(project(Modules.App.Domain))
 
             implementation(libs.bundles.koin)
         }

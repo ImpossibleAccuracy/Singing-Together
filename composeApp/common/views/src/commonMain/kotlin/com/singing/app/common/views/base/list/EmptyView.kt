@@ -6,11 +6,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.singing.app.ui.screen.dimens
 
 @Composable
 fun EmptyView(
     modifier: Modifier = Modifier.fillMaxSize(),
+    contentColor: Color = MaterialTheme.colorScheme.onSurface,
     icon: (@Composable () -> Unit)? = null,
     title: String,
     subtitle: String,
@@ -25,13 +27,13 @@ fun EmptyView(
 
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = contentColor,
             style = MaterialTheme.typography.titleLarge,
         )
 
         Text(
             text = subtitle,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = contentColor,
             style = MaterialTheme.typography.bodyMedium,
         )
 

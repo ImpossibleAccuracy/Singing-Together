@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -30,9 +31,40 @@ fun PlayerView(
     editable: Boolean = true,
     playerController: PlayerController,
 ) {
-    val isPlaying by playerController.isPlaying
-    val position by playerController.playerPosition
+    val isPlaying by remember { playerController.isPlaying }
+    val position by remember { playerController.playerPosition }
 
+    BasePlayerView(
+        modifier = modifier,
+        shape = shape,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        inactiveTrackColor = inactiveTrackColor,
+        editable = editable,
+        isPlaying = isPlaying,
+        position = position,
+        duration = playerController.duration,
+        setPosition = playerController.setPosition,
+        play = playerController.play,
+        stop = playerController.stop,
+    )
+}
+
+@Composable
+fun BasePlayerView(
+    modifier: Modifier = Modifier,
+    shape: Shape = MaterialTheme.shapes.small,
+    containerColor: Color = MaterialTheme.colorScheme.secondary,
+    contentColor: Color = MaterialTheme.colorScheme.onSecondary,
+    inactiveTrackColor: Color = MaterialTheme.colorScheme.secondaryContainer,
+    editable: Boolean = true,
+    isPlaying: Boolean,
+    position: Long,
+    duration: Long,
+    setPosition: (Long) -> Unit,
+    play: () -> Unit,
+    stop: () -> Unit,
+) {
     Column(
         modifier = modifier
             .clip(shape)
@@ -50,9 +82,9 @@ fun PlayerView(
             contentColor = contentColor,
             inactiveTrackColor = inactiveTrackColor,
             editable = editable,
-            totalDuration = playerController.duration,
+            totalDuration = duration,
             currentPosition = position,
-            onPositionChange = playerController.setPosition,
+            onPositionChange = setPosition,
         )
 
         Row(
@@ -80,9 +112,9 @@ fun PlayerView(
                 trailingIcon = icon,
                 onClick = {
                     if (isPlaying) {
-                        playerController.stop()
+                        stop()
                     } else {
-                        playerController.play()
+                        play()
                     }
                 }
             )

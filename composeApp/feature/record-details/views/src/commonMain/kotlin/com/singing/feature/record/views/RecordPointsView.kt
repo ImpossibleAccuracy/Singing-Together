@@ -15,20 +15,21 @@ import app.cash.paging.compose.itemKey
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.common.views.base.timeline.DefaultTimelineIndicator
 import com.singing.app.common.views.base.timeline.Timeline
-import com.singing.app.ui.formatFrequency
 import com.singing.app.ui.formatTimeString
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import com.singing.domain.model.PointAccuracy
 import com.singing.domain.model.RecordPoint
-import com.singing.feature.record.views.generated.resources.*
+import com.singing.feature.record.views.generated.resources.Res
+import com.singing.feature.record.views.generated.resources.label_finish
+import com.singing.feature.record.views.generated.resources.label_start
+import com.singing.feature.record.views.generated.resources.title_record_points
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun RecordPointsView(
     modifier: Modifier = Modifier,
     points: LazyPagingItems<RecordPoint>,
-    isTwoLineRecord: Boolean,
     note: (Double) -> String,
 ) {
     Column(
@@ -150,7 +151,8 @@ private fun RecordTimeline(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
                     ) {
-                        Column(
+                        // TODO)
+                        /*Column(
                             modifier = Modifier.weight(1f)
                         ) {
                             Text(
@@ -176,7 +178,7 @@ private fun RecordTimeline(
                             text = formatFrequency(item.first),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             style = MaterialTheme.typography.titleSmall,
-                        )
+                        )*/
                     }
                 }
             }
