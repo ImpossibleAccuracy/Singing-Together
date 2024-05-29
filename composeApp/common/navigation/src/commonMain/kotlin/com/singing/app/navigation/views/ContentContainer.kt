@@ -6,7 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-// TODO
+// TODO: paddings must be applied only on desktop
 val DefaultPagePaddings = PaddingValues(
     top = 44.dp,
     bottom = 24.dp,

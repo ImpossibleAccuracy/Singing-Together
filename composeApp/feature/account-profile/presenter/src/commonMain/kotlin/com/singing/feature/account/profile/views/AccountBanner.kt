@@ -20,6 +20,7 @@ import com.singing.app.ui.screen.dimens
 import com.singing.feature.account.profile.presenter.generated.resources.Res
 import com.singing.feature.account.profile.presenter.generated.resources.label_account_registered_since
 import com.singing.feature.account.profile.presenter.generated.resources.label_publications_count
+import com.singing.feature.account.profile.presenter.generated.resources.title_cannot_fetch_user_info
 import kotlinx.datetime.Clock
 import nl.jacobras.humanreadable.HumanReadable
 import org.jetbrains.compose.resources.stringResource
@@ -56,7 +57,11 @@ fun AccountBanner(
 
             when (accountInfo) {
                 DataState.Empty, is DataState.Error -> {
-                    Text("Cannot fetch user info")
+                    Text(
+                        text = stringResource(Res.string.title_cannot_fetch_user_info),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
                 }
 
                 DataState.Loading -> {

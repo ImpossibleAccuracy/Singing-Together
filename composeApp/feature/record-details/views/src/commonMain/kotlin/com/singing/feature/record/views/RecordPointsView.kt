@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.itemKey
+import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.common.views.base.timeline.DefaultTimelineIndicator
 import com.singing.app.common.views.base.timeline.Timeline
@@ -20,6 +21,7 @@ import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import com.singing.domain.model.PointAccuracy
 import com.singing.domain.model.RecordPoint
+import com.singing.feature.record.views.generated.resources.*
 import com.singing.feature.record.views.generated.resources.Res
 import com.singing.feature.record.views.generated.resources.label_finish
 import com.singing.feature.record.views.generated.resources.label_start
@@ -71,11 +73,17 @@ internal fun RecordTimeline(
             }
 
             refresh is LoadState.Error || append is LoadState.Error -> {
-                TODO()
+                EmptyView(
+                    title = stringResource(Res.string.common_error_title),
+                    subtitle = stringResource(Res.string.common_error_subtitle),
+                )
             }
 
             refresh is LoadState.NotLoading && points.itemCount < 1 -> {
-                TODO()
+                EmptyView(
+                    title = stringResource(Res.string.common_no_data_title),
+                    subtitle = stringResource(Res.string.common_no_data_subtitle),
+                )
             }
 
             refresh is LoadState.NotLoading -> {

@@ -17,7 +17,10 @@ import com.singing.app.common.views.toRecordCardData
 import com.singing.app.domain.model.RecordData
 import com.singing.app.ui.formatTimeString
 import com.singing.app.ui.screen.dimens
+import com.singing.feature.record.views.generated.resources.Res
+import com.singing.feature.record.views.generated.resources.label_no_selected_track_item
 import nl.jacobras.humanreadable.HumanReadable
+import org.jetbrains.compose.resources.stringResource
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -161,7 +164,7 @@ private fun RecordInfo(
         Text(
             text = when (record) {
                 is RecordData.Cover -> record.name
-                is RecordData.Vocal -> "No track selected"
+                is RecordData.Vocal -> stringResource(Res.string.label_no_selected_track_item)
             },
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleLarge,

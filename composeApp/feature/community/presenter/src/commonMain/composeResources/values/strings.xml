@@ -1,120 +1,38 @@
 <resources>
-    <string name="app_name">Singing Together</string>
+    <string name="common_error_title"/>
+    <string name="common_error_subtitle"/>
+    <string name="common_no_data_title"/>
+    <string name="common_no_data_subtitle"/>
 
-    <!--  TITLE  -->
+    <string name="title_search_results_placeholder"/>
 
-    <string name="title_home">Home</string>
-    <string name="title_records">Records</string>
-    <string name="title_community">Community</string>
+    <string name="error_search_results_title"/>
+    <string name="error_search_results_subtitle"/>
 
-    <string name="title_select_record_type">Select recording method</string>
-    <string name="subtitle_select_record_type">The recording quality will depend on the chosen method.</string>
-    <string name="title_select_track">Select track</string>
-    <string name="subtitle_select_track">Your voice will be compared to the selected track</string>
+    <string name="empty_search_results_title"/>
+    <string name="empty_search_results_subtitle"/>
 
-    <!--  SUBTITLE  -->
+    <string name="empty_popular_tags_title"/>
+    <string name="empty_popular_tags_subtitle"/>
 
-    <string name="title_dialog_record_play">Listen</string>
-    <string name="title_dialog_record_delete">Delete record?</string>
-    <string name="subtitle_dialog_record_delete">Record cannot be restored after delete.</string>
-    <string name="title_dialog_record_publish">Enter description</string>
+    <string name="title_community_banner"/>
+    <string name="subtitle_community_banner"/>
 
-    <string name="title_empty_publications">Empty in publications</string>
-    <string name="subtitle_empty_publications">Record something and publish them and it will show here</string>
+    <string name="title_popular_categories"/>
+    <string name="title_random_latest_publication"/>
+    <string name="title_search_publications"/>
+    <string name="title_no_search_result"/>
+    <string name="subtitle_no_search_result"/>
 
-    <string name="title_empty_tracks">Looks like you didn't open anything</string>
-    <string name="subtitle_empty_tracks">The tracks you used will be shown here</string>
+    <string name="action_lets_start"/>
+    <string name="action_show_my_publications"/>
 
-    <string name="title_empty_records">Get started</string>
-    <string name="subtitle_empty_records">Record something great and your work will be shown here</string>
-
-    <string name="title_no_search_result">No results found</string>
-    <string name="subtitle_no_search_result">Try changing filters or rethinking your query.</string>
-
-
-    <string name="title_user_welcome">Welcome %1$s!</string>
-    <string name="title_record_points">Record nodes</string>
-    <string name="title_recent_records">Recent records</string>
-    <string name="title_recently_used_tracks">Recently used tracks</string>
-    <string name="title_recent_publications">Recent publications</string>
-    <string name="title_community_banner">A space to grow,\nlearn, &amp; share</string>
-    <string name="subtitle_community_banner">
-        Join our community and share your voice with other users and hear them sing back.
-    </string>
-    <string name="title_popular_categories">Popular categories</string>
-    <string name="title_random_latest_publication">Random latest publication</string>
-    <string name="title_search_publications">Search publications</string>
-
-    <string name="choice_select_vocal_title">Vocal</string>
-    <string name="choice_select_vocal_subtitle">
-        Just you and
-        your voice
-    </string>
-    <string name="choice_select_track_title">Cover</string>
-    <string name="choice_select_track_subtitle">
-        Singing training
-        to the music
-    </string>
-
-
-    <!--  ACTIONS  -->
-
-    <string name="action_close">Close</string>
-    <string name="action_back">Back</string>
-    <string name="action_replace">Replace</string>
-    <string name="action_next">Next</string>
-    <string name="action_dismiss">Cancel</string>
-    <string name="action_confirm">OK</string>
-    <string name="action_view_record">View record</string>
-    <string name="action_create_record">Start recording</string>
-    <string name="action_start_now">Start now</string>
-    <string name="action_listen_now">Listen now</string>
-    <string name="action_delete_record">Delete record</string>
-    <string name="action_see_all_record">See all record</string>
-    <string name="action_see_record">See record</string>
-    <string name="action_view_mistakes">View mistakes</string>
-    <string name="action_delete_record">Delete record</string>
-    <string name="action_upload_record">Push to server</string>
-    <string name="action_show_publication">Show publication</string>
-    <string name="action_publish_record">Publish</string>
-    <string name="action_lets_start">Let’s start</string>
-    <string name="action_show_my_publications">Show my publications</string>
-    <string name="label_publication_sort">Sort by %1$s</string>
-    <string name="action_select_track">Select file from device</string>
-    <string name="action_see_more">See more</string>
-    <string name="action_stop_playing">Stop</string>
-    <string name="action_start_playing">Play</string>
-    <string name="action_start_record">Start recording</string>
-    <string name="action_stop_record">Finish record</string>
-
-    <!--  LABELS  -->
-
-    <string name="label_select_record">Select record</string>
-    <string name="label_pick_from_recent">Pick from recent</string>
-    <string name="label_no_saved_track">No saved tracks</string>
-    <string name="label_expected_note">%1$s (expected %2$s)</string>
-    <string name="label_no_track_selected">No track</string>
-    <string name="label_or">OR</string>
-    <string name="label_description">Description</string>
-    <string name="label_accuracy">%1$d% accuracy</string>
-    <string name="label_start">Start</string>
-    <string name="label_finish">Finish</string>
-    <string name="label_publications_count">%1$d publications</string>
-    <string name="label_for_last_day">For the last day</string>
-    <string name="label_search_by_tags">Search by tags</string>
-    <string name="label_search_by_description">Search by description</string>
-    <string name="label_account_no_publications">%1$s didn't publish anything.</string>
-    <string name="label_account_registered_since">Registered since %1$s</string>
-    <string name="label_recording">Recording</string>
-    <string name="label_start_record">Please start recording</string>
-    <string name="label_file_name">File name</string>
-    <string name="label_file_full_path">File full path</string>
-    <string name="label_no_history">Recording history will be displayed after recording starts</string>
-
-    <string name="label_sort_publication_date">Publication Date</string>
-    <string name="label_sort_accuracy">Accuracy</string>
-    <string name="label_sort_duration">Duration</string>
-
-    <!--  OTHER  -->
-    <string name="quest">Quest</string>
+    <string name="label_publication_sort"/>
+    <string name="label_for_last_day"/>
+    <string name="label_search_by_tags"/>
+    <string name="label_search_by_description"/>
+    <string name="label_sort_publication_date"/>
+    <string name="label_sort_accuracy"/>
+    <string name="label_sort_duration"/>
+    <string name="label_publications_count"/>
 </resources>

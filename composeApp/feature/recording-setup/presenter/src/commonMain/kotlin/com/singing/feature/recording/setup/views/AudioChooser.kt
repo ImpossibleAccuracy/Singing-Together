@@ -27,20 +27,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
 
-/*@Composable
-fun SelectAudioViewContainer(
-    viewModel: SelectAudioViewModel,
-    recentTracks: ImmutableList<RecentTrack>,
-    isTracksLoading: Boolean,
-) {
-    SelectAudioView(
-        recentTracks = recentTracks,
-        isTracksLoading = isTracksLoading,
-    ) { inputFile ->
-        viewModel.processAudio(inputFile)
-    }
-}*/
-
 @Composable
 fun AudioChooser(
     recentTracks: PersistentList<RecentTrack>,

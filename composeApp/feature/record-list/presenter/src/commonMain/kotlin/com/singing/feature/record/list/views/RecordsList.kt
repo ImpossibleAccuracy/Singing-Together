@@ -12,11 +12,18 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.itemContentType
 import app.cash.paging.compose.itemKey
+import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.common.views.base.record.RecordCard
 import com.singing.app.common.views.toRecordCardData
 import com.singing.app.domain.model.RecordData
 import com.singing.app.ui.screen.dimens
+import com.singing.feature.list.record.presenter.generated.resources.*
+import com.singing.feature.list.record.presenter.generated.resources.Res
+import com.singing.feature.list.record.presenter.generated.resources.common_error_subtitle
+import com.singing.feature.list.record.presenter.generated.resources.common_error_title
+import com.singing.feature.list.record.presenter.generated.resources.title_empty_records
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -33,9 +40,19 @@ fun RecordsList(
                 Loader(modifier)
             }
 
-            refresh is LoadState.Error || append is LoadState.Error -> TODO()
+            refresh is LoadState.Error || append is LoadState.Error -> {
+                EmptyView(
+                    title = stringResource(Res.string.common_error_title),
+                    subtitle = stringResource(Res.string.common_error_subtitle),
+                )
+            }
 
-            refresh is LoadState.NotLoading && records.itemCount < 1 -> TODO()
+            refresh is LoadState.NotLoading && records.itemCount < 1 -> {
+                EmptyView(
+                    title = stringResource(Res.string.title_empty_records),
+                    subtitle = stringResource(Res.string.subtitle_empty_records),
+                )
+            }
 
             refresh is LoadState.NotLoading -> {
                 LazyColumn(

@@ -1,14 +1,14 @@
 package com.singing.feature.account.profile.views
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -26,9 +26,10 @@ import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.UserData
 import com.singing.app.ui.screen.dimens
-import com.singing.feature.account.profile.presenter.generated.resources.Res
-import com.singing.feature.account.profile.presenter.generated.resources.label_account_no_publications
+import com.singing.app.ui.screen.largeIcon
+import com.singing.feature.account.profile.presenter.generated.resources.*
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.resources.vectorResource
 
 @Suppress("FunctionName")
 fun LazyListScope.AccountPublications(
@@ -46,7 +47,30 @@ fun LazyListScope.AccountPublications(
                 }
             }
 
-            refresh is LoadState.Error || append is LoadState.Error -> TODO()
+            refresh is LoadState.Error || append is LoadState.Error -> {
+                item {
+                    EmptyView(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(MaterialTheme.shapes.medium)
+                            .background(MaterialTheme.colorScheme.errorContainer)
+                            .padding(
+                                horizontal = 16.dp,
+                                vertical = 12.dp
+                            ),
+                        icon = {
+                            Icon(
+                                modifier = Modifier.size(MaterialTheme.dimens.largeIcon),
+                                imageVector = vectorResource(Res.drawable.baseline_error_outline_24),
+                                tint = MaterialTheme.colorScheme.error,
+                                contentDescription = "",
+                            )
+                        },
+                        title = stringResource(Res.string.common_error_title),
+                        subtitle = stringResource(Res.string.common_error_subtitle),
+                    )
+                }
+            }
 
             refresh is LoadState.NotLoading && publications.itemCount < 1 -> {
                 item {
@@ -128,11 +152,8 @@ private fun NoPublications(
             modifier = Modifier
                 .widthIn(min = 300.dp)
                 .fillMaxWidth(0.6f),
-            title = stringResource(
-                Res.string.label_account_no_publications,
-                account.username
-            ),
-            subtitle = "TODO" // TODO
+            title = stringResource(Res.string.empty_account_publications_title),
+            subtitle = stringResource(Res.string.empty_account_publications_subtitle, account.username),
         )
     }
 }

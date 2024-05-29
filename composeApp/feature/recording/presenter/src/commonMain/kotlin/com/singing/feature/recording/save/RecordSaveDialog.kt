@@ -15,6 +15,7 @@ import com.singing.app.domain.model.UserData
 import com.singing.app.domain.payload.RecordSaveData
 import com.singing.app.navigation.dialog.FinalNavigationalDialogScreen
 import com.singing.app.navigation.dialog.NavigationalDialog
+import com.singing.app.ui.screen.dimens
 import com.singing.domain.model.RecordPoint
 import com.singing.feature.recording.presenter.generated.resources.*
 import com.singing.feature.recording.save.items.RecordInfoScreen
@@ -57,7 +58,7 @@ fun RecordSaveDialog(
         onFinish = onSaved,
         onDismiss = onDismiss,
     ) { dialogContent ->
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen2)) {
             Text(
                 text = "Record results",
                 color = MaterialTheme.colorScheme.onSurface,

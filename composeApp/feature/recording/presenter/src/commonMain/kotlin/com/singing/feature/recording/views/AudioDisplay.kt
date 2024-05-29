@@ -22,6 +22,7 @@ import com.singing.app.ui.formatFrequency
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.screen.icon
 import com.singing.feature.recording.domain.model.AudioInputData
+import com.singing.feature.recording.presenter.generated.resources.*
 import com.singing.feature.recording.presenter.generated.resources.Res
 import com.singing.feature.recording.presenter.generated.resources.action_dismiss
 import com.singing.feature.recording.presenter.generated.resources.baseline_mic_24
@@ -74,8 +75,8 @@ fun AudioDisplay(
                     ) {
                         if (input.firstInput == null) {
                             EmptyView(
-                                title = "Sing something...",
-                                subtitle = "Note you sang will be displayed here",
+                                title = stringResource(Res.string.empty_voice_line_title),
+                                subtitle = stringResource(Res.string.empty_voice_line_subtitle),
                                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                             )
                         } else {
@@ -107,8 +108,8 @@ fun AudioDisplay(
                 } else {
                     EmptyView(
                         modifier = Modifier.fillMaxSize(),
-                        title = "No inputs available",
-                        subtitle = "Plug in any microphone to continue",
+                        title = stringResource(Res.string.lines_not_found_title),
+                        subtitle = stringResource(Res.string.lines_not_found_subtitle),
                         contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }

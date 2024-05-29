@@ -1,7 +1,7 @@
 package com.singing.app.navigation
 
 import cafe.adriel.voyager.core.screen.Screen
-import com.singing.app.feature.community.CommunityPage
+import com.singing.feature.community.CommunityPage
 import com.singing.feature.account.profile.AccountProfilePage
 import com.singing.feature.main.MainPage
 import com.singing.feature.main.PublicationDetailsPage

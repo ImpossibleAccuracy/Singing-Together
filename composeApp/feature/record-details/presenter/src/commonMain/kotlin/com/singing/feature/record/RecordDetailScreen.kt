@@ -11,6 +11,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import app.cash.paging.compose.LazyPagingItems
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.domain.model.DataState
 import com.singing.app.feature.rememberRecordPlayer
@@ -18,12 +19,17 @@ import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
 import com.singing.domain.model.RecordPoint
+import com.singing.feature.record.presenter.generated.resources.Res
+import com.singing.feature.record.presenter.generated.resources.common_error_subtitle
+import com.singing.feature.record.presenter.generated.resources.common_error_title
+import com.singing.feature.record.presenter.generated.resources.common_no_data_title
 import com.singing.feature.record.viewmodel.RecordDetailIntent
 import com.singing.feature.record.viewmodel.RecordDetailUiState
 import com.singing.feature.record.views.RecordDetails
 import com.singing.feature.record.views.RecordDetailsActions
 import com.singing.feature.record.views.RecordDetailsData
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -45,11 +51,17 @@ fun RecordDetailScreen(
     ) {
         when (uiState.record) {
             DataState.Empty -> {
-                TODO()
+                EmptyView(
+                    title = stringResource(Res.string.common_no_data_title),
+                    subtitle = stringResource(Res.string.common_no_data_title),
+                )
             }
 
             is DataState.Error -> {
-                TODO()
+                EmptyView(
+                    title = stringResource(Res.string.common_error_title),
+                    subtitle = stringResource(Res.string.common_error_subtitle),
+                )
             }
 
             DataState.Loading -> {

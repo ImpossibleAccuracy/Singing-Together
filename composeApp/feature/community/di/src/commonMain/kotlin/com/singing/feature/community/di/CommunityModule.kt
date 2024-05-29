@@ -1,6 +1,6 @@
 package com.singing.feature.community.di
 
-import com.singing.app.feature.community.CommunityViewModel
+import com.singing.feature.community.CommunityViewModel
 import com.singing.feature.community.domain.usecase.GetPopularPublicationTagsUseCase
 import com.singing.feature.community.domain.usecase.GetRandomPublicationUseCase
 import com.singing.feature.community.domain.usecase.SearchPublicationsUseCase

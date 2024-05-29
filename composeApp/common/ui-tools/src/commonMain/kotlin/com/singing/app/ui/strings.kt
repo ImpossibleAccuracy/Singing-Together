@@ -4,7 +4,6 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 
 
-// TODO
 fun formatTimeString(milliseconds: Long): String {
     val seconds = milliseconds / 1000.0
     val minutes = seconds / 60.0
@@ -18,6 +17,5 @@ fun formatTimeString(milliseconds: Long): String {
     return "$minutesTime:$secondsTime"
 }
 
-// TODO
 fun formatFrequency(frequency: Double): String =
     "${frequency.roundToInt()} Hz"
