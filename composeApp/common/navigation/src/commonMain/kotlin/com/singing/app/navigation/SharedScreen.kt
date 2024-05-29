@@ -10,11 +10,9 @@ sealed interface SharedScreen {
 
     data object Auth : SharedScreen
 
-    data object SelectRecordType : SharedScreen
-    data class Recording(
-        val audio: TrackParseResult?,
-        val isNewInstance: Boolean = true,
-    ) : SharedScreen
+    data object SelectRecordingType : SharedScreen
+    data object SelectRecordingAudio : SharedScreen
+    data class Recording(val audio: TrackParseResult?, val isNewInstance: Boolean = true) : SharedScreen
 
     data class RecordList(val record: RecordData? = null) : SharedScreen
     data class RecordDetails(val record: RecordData) : SharedScreen

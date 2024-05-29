@@ -79,3 +79,7 @@ include(":composeApp:feature:recording:presenter")
 include(":composeApp:feature:recording:domain")
 include(":composeApp:feature:recording:data")
 include(":composeApp:feature:recording:di")
+
+include(":composeApp:feature:recording-setup:presenter")
+include(":composeApp:feature:recording-setup:domain")
+include(":composeApp:feature:recording-setup:di")

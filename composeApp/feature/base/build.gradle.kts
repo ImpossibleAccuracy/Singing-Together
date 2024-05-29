@@ -30,6 +30,12 @@ kotlin {
 
             implementation(libs.bundles.koin)
         }
+
+        jvmMain.dependencies {
+            // FilePicker JVM Implementation
+            //noinspection UseTomlInstead
+            implementation("org.openjfx:javafx-graphics:${libs.versions.jvmTargetVersion.get()}.0.1:win")
+        }
     }
 }
 

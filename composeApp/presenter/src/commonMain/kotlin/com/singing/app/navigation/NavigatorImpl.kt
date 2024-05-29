@@ -7,6 +7,8 @@ import com.singing.feature.main.MainPage
 import com.singing.feature.record.RecordDetailPage
 import com.singing.feature.record.list.RecordListPage
 import com.singing.feature.recording.RecordingPage
+import com.singing.feature.recording.setup.SelectAudioPage
+import com.singing.feature.recording.setup.extra.SelectRecordTypePage
 
 
 class NavigatorImpl(
@@ -21,6 +23,8 @@ class NavigatorImpl(
                 is RecordDetailPage -> SharedScreen.RecordDetails(page.recordData)
                 is AccountProfilePage -> SharedScreen.UserProfile(page.account)
                 is RecordingPage -> SharedScreen.Recording(page.audio, page.isNewInstance)
+                is SelectRecordTypePage -> SharedScreen.SelectRecordingType
+                is SelectAudioPage -> SharedScreen.SelectRecordingAudio
                 else -> TODO()
             }
 
@@ -32,6 +36,8 @@ class NavigatorImpl(
                 is SharedScreen.RecordDetails -> RecordDetailPage(screen.record)
                 is SharedScreen.UserProfile -> AccountProfilePage(screen.account)
                 is SharedScreen.Recording -> RecordingPage(screen.audio, screen.isNewInstance)
+                is SharedScreen.SelectRecordingAudio -> SelectAudioPage()
+                is SharedScreen.SelectRecordingType -> SelectRecordTypePage()
                 else -> TODO()
             }
     }

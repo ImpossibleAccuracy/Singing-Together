@@ -49,7 +49,7 @@ data class RecordListPage(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer,
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             onClick = {
-                navigator.navigate(SharedScreen.SelectRecordType)
+                navigator.navigate(SharedScreen.SelectRecordingType)
             }
         ) {
             Icon(

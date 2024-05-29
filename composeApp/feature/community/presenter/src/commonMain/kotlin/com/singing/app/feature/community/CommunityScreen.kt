@@ -49,7 +49,7 @@ fun CommunityScreen(
                 onActionClick = {
                     if (uiState.isUserAuthorized) {
                         navigator.navigate(
-                            SharedScreen.SelectRecordType
+                            SharedScreen.SelectRecordingType
                         )
                     } else {
                         navigator.navigate(

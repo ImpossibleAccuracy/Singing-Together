@@ -12,6 +12,8 @@ val LocalAppPage = staticCompositionLocalOf<AppPage<*>?> {
     null
 }
 
+typealias BaseAppPage = Screen
+
 abstract class AppPage<T : ScreenModel> : Screen {
     @Composable
     protected abstract fun rememberLocalModelFactory(): T

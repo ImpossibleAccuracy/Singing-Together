@@ -8,6 +8,7 @@ import com.singing.feature.main.di.mainModule
 import com.singing.feature.record.di.recordDetailModule
 import com.singing.feature.record.list.di.recordListModule
 import com.singing.feature.recording.di.recordingModule
+import com.singing.feature.recording.setup.recordingSetupModule
 import org.koin.core.module.Module
 
 fun totalAppModules(): List<Module> = mutableListOf<Module>().apply {
@@ -16,6 +17,7 @@ fun totalAppModules(): List<Module> = mutableListOf<Module>().apply {
 
     add(mainModule)
     add(recordingModule)
+    add(recordingSetupModule)
     add(recordListModule)
     add(recordDetailModule)
     add(communityModule)

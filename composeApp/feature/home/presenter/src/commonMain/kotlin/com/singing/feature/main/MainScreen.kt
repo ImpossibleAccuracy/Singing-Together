@@ -42,7 +42,7 @@ fun MainScreen(
                 .height(256.dp),
             user = uiState.user,
             onAction = {
-                navigator.navigate(SharedScreen.SelectRecordType)
+                navigator.navigate(SharedScreen.SelectRecordingType)
             }
         )
 

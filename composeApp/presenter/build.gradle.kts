@@ -87,6 +87,9 @@ kotlin {
 
             implementation(project(Modules.App.Feature.Recording.Presenter))
             implementation(project(Modules.App.Feature.Recording.Di))
+
+            implementation(project(Modules.App.Feature.RecordingSetup.Presenter))
+            implementation(project(Modules.App.Feature.RecordingSetup.Di))
         }
 
         jvmMain.dependencies {

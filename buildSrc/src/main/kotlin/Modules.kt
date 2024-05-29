@@ -20,7 +20,6 @@ object Modules {
 
     object Server {
         const val Library = ":server:library"
-        const val Api = ":server:main-api"
     }
 
     object App {
@@ -46,6 +45,7 @@ object Modules {
             val RecordDetails = UiFeature(":composeApp:feature:record-details")
             val Profile = UiFeature(":composeApp:feature:account-profile")
             val Recording = UiFeature(":composeApp:feature:recording")
+            val RecordingSetup = UiFeature(":composeApp:feature:recording-setup")
         }
     }
 }
