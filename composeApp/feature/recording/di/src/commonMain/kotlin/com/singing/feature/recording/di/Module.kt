@@ -24,7 +24,7 @@ val recordingModule = module {
         )
     }
 
-    factory { RecordSaveViewModel(get()) }
+    factory { RecordSaveViewModel(get(), get()) }
 
     factory<ClockFlow> { ClockFlowImpl() }
     factory<InputListener> { InputListenerImpl() }

@@ -22,11 +22,18 @@ actual class AudioPlayer {
     private var currentState: PlayerState = PlayerState.STOP
 
     private var player: MediaPlayer? = null
+    private var prevFile: ComposeFile? = null
 
     actual suspend fun play(
         file: ComposeFile,
         initPosition: Long,
     ): Flow<PlayerState> = callbackFlow {
+        if (prevFile != file) {
+            player?.dispose()
+        }
+
+        prevFile = file
+
         val media = Media(file.uri.toString())
 
         player = MediaPlayer(media)
@@ -90,15 +97,13 @@ actual class AudioPlayer {
 
         lock.lock()
 
-        if (player == null) {
+        if (player == null || player?.status == MediaPlayer.Status.STOPPED) {
             lock.unlock()
             return
         }
 
-        if (player!!.status != MediaPlayer.Status.DISPOSED) {
+        if (player!!.status != MediaPlayer.Status.STOPPED) {
             player?.stop()
-            player?.dispose() // TODO: dispose only on next play
-            player = null
 
             currentState = PlayerState.STOP
         }

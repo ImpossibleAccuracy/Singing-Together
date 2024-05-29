@@ -34,6 +34,8 @@ kotlin {
         jvmMain.dependencies {
             // FilePicker JVM Implementation
             //noinspection UseTomlInstead
+            implementation("org.openjfx:javafx-base:${libs.versions.jvmTargetVersion.get()}.0.1:win")
+            //noinspection UseTomlInstead
             implementation("org.openjfx:javafx-graphics:${libs.versions.jvmTargetVersion.get()}.0.1:win")
         }
     }

@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import app.cash.paging.compose.collectAsLazyPagingItems
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.valueOrNull
@@ -23,6 +24,7 @@ import com.singing.app.ui.screen.WindowSize
 import com.singing.app.ui.screen.actualScreenSize
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.screen.smallestScreenSize
+import com.singing.feature.list.record.presenter.generated.resources.*
 import com.singing.feature.record.list.viewmodel.RecordListIntent
 import com.singing.feature.record.list.viewmodel.RecordListUiState
 import com.singing.feature.record.list.views.RecordsList
@@ -30,6 +32,7 @@ import com.singing.feature.record.views.RecordDetails
 import com.singing.feature.record.views.RecordDetailsActions
 import com.singing.feature.record.views.RecordDetailsData
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.stringResource
 
 
 @Composable
@@ -68,9 +71,19 @@ fun RecordListScreen(
             (records.itemCount > 0 || uiState.selectedRecord is DataState.Success)
         ) {
             when (val state = uiState.selectedRecord) {
-                DataState.Empty -> TODO()
+                DataState.Empty -> {
+                    EmptyView(
+                        title = stringResource(Res.string.common_no_data_title),
+                        subtitle = stringResource(Res.string.common_no_data_subtitle),
+                    )
+                }
 
-                is DataState.Error -> TODO()
+                is DataState.Error -> {
+                    EmptyView(
+                        title = stringResource(Res.string.common_error_title),
+                        subtitle = stringResource(Res.string.common_error_subtitle),
+                    )
+                }
 
                 DataState.Loading -> {
                     Loader(Modifier.fillMaxSize())

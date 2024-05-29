@@ -14,6 +14,7 @@ import com.singing.app.common.views.shared.record.RecordThumb
 import com.singing.app.common.views.shared.record.dialog.DeleteRecordDialog
 import com.singing.app.common.views.shared.record.dialog.PublishRecordDialog
 import com.singing.app.common.views.toRecordCardData
+import com.singing.app.domain.model.MAX_PUBLICATION_DESCRIPTION_LENGTH
 import com.singing.app.domain.model.RecordData
 import com.singing.app.ui.formatTimeString
 import com.singing.app.ui.screen.dimens
@@ -123,7 +124,7 @@ private fun PublishDialog(
 ) {
     if (record != null) {
         PublishRecordDialog(
-            maxLength = 255, // TODO: extract
+            maxLength = MAX_PUBLICATION_DESCRIPTION_LENGTH,
             onConfirm = {
                 publishRecord(it)
 

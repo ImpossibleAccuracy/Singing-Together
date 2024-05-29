@@ -4,8 +4,6 @@ import com.singing.app.base.ComposeFile
 import kotlinx.coroutines.flow.Flow
 
 expect class AudioPlayer() {
-    // TODO: add prepare(file) fun
-
     /**
      * Start to play a new file
      * @return Flow with player states

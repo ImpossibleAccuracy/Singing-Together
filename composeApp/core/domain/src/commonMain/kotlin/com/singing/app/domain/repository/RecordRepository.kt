@@ -14,6 +14,8 @@ interface RecordRepository {
 
     suspend fun getAnyRecord(): RecordData?
 
+    suspend fun listenRecordUpdates(): Flow<RecordData?>
+
     fun getRecords(): Flow<PagingData<RecordData>>
 
     fun getRecentRecords(): Flow<List<RecordData>>

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
@@ -16,16 +15,13 @@ import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.common.views.base.timeline.DefaultTimelineIndicator
 import com.singing.app.common.views.base.timeline.Timeline
+import com.singing.app.common.views.shared.record.RecordTimelineItem
 import com.singing.app.ui.formatTimeString
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import com.singing.domain.model.PointAccuracy
 import com.singing.domain.model.RecordPoint
 import com.singing.feature.record.views.generated.resources.*
-import com.singing.feature.record.views.generated.resources.Res
-import com.singing.feature.record.views.generated.resources.label_finish
-import com.singing.feature.record.views.generated.resources.label_start
-import com.singing.feature.record.views.generated.resources.title_record_points
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -154,42 +150,11 @@ internal fun RecordTimeline(
                 ) { index ->
                     val item = points[index]!!
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
-                    ) {
-                        // TODO)
-                        /*Column(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            Text(
-                                text = note(item.first),
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.titleMedium,
-                            )
-
-                            if (item.second != null) {
-                                Text(
-                                    text = stringResource(
-                                        Res.string.label_expected_note,
-                                        note(item.first),
-                                        note(item.second!!),
-                                    ),
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    style = MaterialTheme.typography.titleSmall,
-                                )
-                            }
-                        }
-
-                        Text(
-                            text = formatFrequency(item.first),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.titleSmall,
-                        )*/
-                    }
+                    RecordTimelineItem(item.first, item.second, note)
                 }
             }
         }
     }
 }
+
+

@@ -9,7 +9,7 @@ sealed interface DataState<out T> {
 
     data class Error(
         val message: String,
-        val throwable: Throwable?
+        val throwable: Throwable? = null,
     ) : DataState<Nothing>
 
     data class Success<T>(val data: T) : DataState<T>

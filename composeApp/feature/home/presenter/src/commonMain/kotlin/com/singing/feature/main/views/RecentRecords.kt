@@ -24,6 +24,7 @@ import com.singing.app.common.views.shared.record.dialog.RecordPlayDialog
 import com.singing.app.common.views.toPlayerController
 import com.singing.app.common.views.toRecordCardData
 import com.singing.app.common.views.toUserUiData
+import com.singing.app.domain.model.MAX_PUBLICATION_DESCRIPTION_LENGTH
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
 import com.singing.app.feature.rememberRecordPlayer
@@ -128,7 +129,7 @@ fun RecentRecordsContainer(
 
     if (recordToPublish != null) {
         PublishRecordDialog(
-            maxLength = 300, // TODO: extract constant
+            maxLength = MAX_PUBLICATION_DESCRIPTION_LENGTH,
             onConfirm = {
                 newIntent(MainIntent.PublishRecord(recordToPublish!!, it))
 

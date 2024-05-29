@@ -7,8 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.koin.koinScreenModel
 import com.singing.app.common.views.base.timeline.DefaultTimelineIndicator
 import com.singing.app.common.views.base.timeline.Timeline
+import com.singing.app.common.views.shared.record.RecordTimelineItem
 import com.singing.app.domain.model.RecordData
 import com.singing.app.navigation.dialog.SkippableNavigationalDialogScreen
 import com.singing.app.ui.formatTimeString
@@ -18,6 +20,7 @@ import com.singing.domain.model.PointAccuracy
 import com.singing.domain.model.RecordPoint
 import com.singing.feature.recording.save.RecordSaveAdditionalInfo
 import com.singing.feature.recording.save.RecordSaveStrategy
+import com.singing.feature.recording.save.RecordSaveViewModel
 
 
 data class RecordPointsScreen(
@@ -35,15 +38,14 @@ data class RecordPointsScreen(
 
     @Composable
     override fun Content() {
+        val viewModel = koinScreenModel<RecordSaveViewModel>()
+
         RecordTimeline(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight(),
             points = data.history,
-            note = {
-                "TODO" // TODO
-//                NotesStore.findNote(it)
-            }
+            note = viewModel::getNote,
         )
     }
 
@@ -98,34 +100,11 @@ data class RecordPointsScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
             ) {
-                // TODO)
-                /*Column(
-                    modifier = Modifier.weight(1f)
-                ) {
-                    Text(
-                        text = note(item.first),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.titleMedium,
-                    )
-
-                    if (item.second != null) {
-                        Text(
-                            text = stringResource(
-                                Res.string.label_expected_note,
-                                note(item.first),
-                                note(item.second!!),
-                            ),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            style = MaterialTheme.typography.titleSmall,
-                        )
-                    }
-                }
-
-                Text(
-                    text = formatFrequency(item.first),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    style = MaterialTheme.typography.titleSmall,
-                )*/
+                RecordTimelineItem(
+                    first = item.first,
+                    second = item.second,
+                    note = note,
+                )
             }
         }
     }
