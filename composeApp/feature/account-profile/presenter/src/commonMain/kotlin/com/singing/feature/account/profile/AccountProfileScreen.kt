@@ -38,7 +38,7 @@ fun AccountProfileScreen(
         item {
             AccountBanner(
                 account = uiState.account,
-                accountInfo = uiState.accountInfo
+                userInfo = uiState.userInfo
             )
         }
 

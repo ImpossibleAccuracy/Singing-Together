@@ -23,7 +23,13 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
@@ -65,6 +71,7 @@ class PublicationController(
     @GetMapping("/account/{id}")
     suspend fun accountPublications(
         @PathVariable id: Int,
+        @RequestParam("page", required = false) page: Int = 0,
         @RequestParam("sort", required = false) sort: PublicationSort = PublicationSort.DateCreated,
     ): List<PublicationDto> {
         val account = accountService.get(id).require()
@@ -72,6 +79,7 @@ class PublicationController(
         return publicationService
             .byAccount(
                 accountId = account.id!!,
+                page = page,
                 sort = sort,
             )
             .map(PublicationEntity::toDto)
@@ -80,8 +88,18 @@ class PublicationController(
     @GetMapping
     @Operation(
         parameters = [
-            Parameter(name = "page", required = false, `in` = ParameterIn.QUERY, schema = Schema(type = "integer")),
-            Parameter(name = "tags", required = false, `in` = ParameterIn.QUERY, schema = Schema(type = "array")),
+            Parameter(
+                name = "page",
+                required = false,
+                `in` = ParameterIn.QUERY,
+                schema = Schema(type = "integer")
+            ),
+            Parameter(
+                name = "tags",
+                required = false,
+                `in` = ParameterIn.QUERY,
+                schema = Schema(type = "array")
+            ),
             Parameter(
                 name = "description",
                 required = false,
@@ -126,7 +144,7 @@ class PublicationController(
 
 
     @GetMapping("/record/{id}")
-    suspend fun getRecordPublication(@PathVariable("id") recordId: Int): PublicationDto? {
+    suspend fun getRecordPublication(@PathVariable("id") recordId: Int): PublicationDto {
         val record = recordService.get(recordId).require()
 
         return publicationService
@@ -140,7 +158,7 @@ class PublicationController(
         (publicationService.random(PUBLICATION_LATEST_DAYS) ?: publicationService.random(null))
             ?.toDto()
 
-    @GetMapping("/categories")
+    @GetMapping("/tags")
     suspend fun getPopularCategories(): List<CategoryInfoDto> =
         publicationTagService
             .getPopularCategories()

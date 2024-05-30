@@ -4,9 +4,8 @@ import androidx.paging.PagingSource
 import app.cash.paging.PagingState
 import pro.respawn.apiresult.fold
 
-abstract class BasePagingSource<Model : Any, DTO : Any>(
-    private val dataFetcher: DataFetcher<DTO>,
-    private val dataMapper: DataMapper<DTO, Model>,
+abstract class BasePagingSource<Model : Any>(
+    private val dataFetcher: DataFetcher<Model>,
     private val baseStartingPageIndex: Int = 0,
 ) : PagingSource<Int, Model>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Model> {
@@ -16,7 +15,7 @@ abstract class BasePagingSource<Model : Any, DTO : Any>(
             .fold(
                 onSuccess = {
                     LoadResult.Page(
-                        data = it.map(dataMapper::map),
+                        data = it,
                         prevKey = if (position == 1) null else position - 1,
                         nextKey = if (it.isEmpty()) null else position + 1
                     )

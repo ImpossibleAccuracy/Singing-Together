@@ -6,6 +6,8 @@ import kotlinx.coroutines.flow.StateFlow
 interface UserProvider {
     val userFlow: StateFlow<UserData?>
 
+    val token: String?
+
     fun setCurrentUser(userData: UserData)
 
     fun clear()

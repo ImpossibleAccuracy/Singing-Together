@@ -3,9 +3,19 @@ plugins {
     alias(libs.plugins.compose)
 
     alias(libs.plugins.android.library)
+
+    alias(libs.plugins.sqldelight)
 }
 
 group = AppConfig.buildGroup("app", "data")
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("$group.database")
+        }
+    }
+}
 
 kotlin {
     targets.configureEach {
@@ -24,11 +34,17 @@ kotlin {
         commonMain.dependencies {
             implementation(project(Modules.Library.Audio.Player))
             implementation(project(Modules.Library.Notes))
+            implementation(project(Modules.Shared.Payload))
             implementation(project(Modules.App.Domain))
 
             implementation(compose.runtime)
             implementation(compose.foundation)
 
+            implementation(libs.kotlinx.datetime)
+
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.bundles.ktor)
+            implementation(libs.sqldelight.coroutines)
             implementation(libs.paging.compose)
             implementation(libs.apiresult)
         }
@@ -37,6 +53,14 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
 
             implementation(libs.bundles.android)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.ktor.client.android)
+            implementation(libs.sqldelight.driver.android)
+        }
+
+        jvmMain.dependencies {
+            implementation(libs.ktor.client.cio)
+            implementation(libs.sqldelight.driver.sqlite)
         }
     }
 }

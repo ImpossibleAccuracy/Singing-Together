@@ -3,7 +3,7 @@ package com.singing.api.service.record.data
 import com.singing.api.domain.model.DocumentEntity
 import com.singing.api.domain.model.RecordItemEntity
 import java.io.File
-import java.util.*
+import java.util.Optional
 
 interface RecordDataService {
     suspend fun getDuration(file: File): Long
@@ -15,7 +15,7 @@ interface RecordDataService {
         trackFile: File?,
     ): List<RecordItemEntity>
 
-    suspend fun recordPoints(recordId: Int): List<RecordItemEntity>
+    suspend fun recordPoints(recordId: Int, page: Int): List<RecordItemEntity>
 
     suspend fun loadRecordVoiceFile(recordId: Int): DocumentEntity
 

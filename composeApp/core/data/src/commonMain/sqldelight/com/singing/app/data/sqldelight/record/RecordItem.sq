@@ -1,0 +1,18 @@
+CREATE TABLE recordItemEntity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  recordId INTEGER NOT NULL,
+  time INTEGER NOT NULL,
+  frequency REAL,
+  trackFrequency REAL,
+  FOREIGN KEY (recordId) REFERENCES recordEntity(id)
+);
+
+selectByRecordId:
+SELECT *
+FROM recordItemEntity
+WHERE recordId = ?
+LIMIT ? OFFSET ?;
+
+insert:
+INSERT INTO recordItemEntity (recordId, time, frequency,trackFrequency)
+VALUES (?, ?, ?, ?);

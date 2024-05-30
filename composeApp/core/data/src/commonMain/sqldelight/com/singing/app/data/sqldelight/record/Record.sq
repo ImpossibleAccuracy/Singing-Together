@@ -1,0 +1,63 @@
+CREATE TABLE recordEntity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  remoteId INTEGER,
+  createdAt TEXT NOT NULL,
+  title TEXT,
+  isPublished INTEGER NOT NULL,
+  duration INTEGER NOT NULL,
+  voiceRecordId INTEGER NOT NULL,
+  trackId INTEGER,
+  FOREIGN KEY (voiceRecordId) REFERENCES documentEntity(id) ON DELETE CASCADE,
+  FOREIGN KEY (trackId) REFERENCES documentEntity(id) ON DELETE CASCADE
+);
+
+selectAll:
+SELECT *
+FROM recordEntity;
+
+selectOne:
+SELECT *
+FROM recordEntity
+WHERE recordEntity.id = ?;
+
+selectAny:
+SELECT *
+FROM recordEntity;
+
+selectPaginated:
+SELECT *
+FROM recordEntity
+LIMIT ? OFFSET ?;
+
+selectLastInserted:
+SELECT *
+FROM recordEntity
+WHERE id = last_insert_rowid();
+
+selectVoiceRecordId:
+SELECT voiceRecordId
+FROM recordEntity
+WHERE recordEntity.id = ?;
+
+selectTrackId:
+SELECT trackId
+FROM recordEntity
+WHERE recordEntity.id = ?;
+
+updateRemoteId:
+UPDATE recordEntity
+SET remoteId = ?
+WHERE id = ?;
+
+updatePublished:
+UPDATE recordEntity
+SET isPublished = ?
+WHERE id = ?;
+
+insert:
+INSERT INTO recordEntity (remoteId, createdAt, title, isPublished, duration, voiceRecordId, trackId)
+VALUES (?, ?, ?, ?, ?, ?, ?);
+
+deleteOne:
+DELETE FROM recordEntity
+WHERE id = ?;

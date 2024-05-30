@@ -6,29 +6,34 @@ import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
 sealed interface RecordData {
-    val id: Int
-    val duration: Long
+    val key: ExtendedKey
     val createdAt: StableInstant
-    val isSavedRemote: Boolean
+    val name: String?
+    val duration: Long
     val isPublished: Boolean
     val creatorId: Int?
 
+    val isSavedRemote: Boolean
+        get() = key.remoteId != null
+
+    val isSavedLocally: Boolean
+        get() = key.localId != null
+
     data class Vocal(
-        override val id: Int,
-        override val duration: Long,
+        override val key: ExtendedKey,
         override val createdAt: StableInstant,
-        override val isSavedRemote: Boolean,
+        override val name: String?,
+        override val duration: Long,
         override val isPublished: Boolean,
         override val creatorId: Int?,
     ) : RecordData
 
     data class Cover(
-        override val id: Int,
-        val accuracy: Int,
-        val name: String,
-        override val duration: Long,
+        override val key: ExtendedKey,
         override val createdAt: StableInstant,
-        override val isSavedRemote: Boolean,
+        val accuracy: Int,
+        override val name: String?,
+        override val duration: Long,
         override val isPublished: Boolean,
         override val creatorId: Int?,
     ) : RecordData

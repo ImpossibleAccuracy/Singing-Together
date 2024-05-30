@@ -6,14 +6,19 @@ import com.singing.api.domain.model.PublicationEntity
 import com.singing.api.domain.model.RecordEntity
 import com.singing.api.domain.repository.PublicationRepository
 import com.singing.api.domain.repository.pagination.OffsetBasedPageRequest
-import com.singing.api.domain.specifications.*
+import com.singing.api.domain.specifications.and
+import com.singing.api.domain.specifications.get
+import com.singing.api.domain.specifications.`in`
+import com.singing.api.domain.specifications.join
+import com.singing.api.domain.specifications.like
+import com.singing.api.domain.specifications.where
 import com.singing.api.security.getAuthentication
 import com.singing.domain.model.PublicationSort
 import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.*
+import java.util.Optional
 import kotlin.random.Random.Default.nextLong
 
 @Service
@@ -37,13 +42,18 @@ class PublicationServiceImpl(
     override suspend fun all(): List<PublicationEntity> =
         publicationRepository.findAll()
 
-    override suspend fun byAccount(accountId: Int, sort: PublicationSort): List<PublicationEntity> {
-        val sortBy = Sort.by(sort.toOrder())
+    override suspend fun byAccount(
+        accountId: Int,
+        page: Int,
+        sort: PublicationSort
+    ): List<PublicationEntity> {
+        TODO()
+        /*val sortBy = Sort.by(sort.toOrder())
 
         return publicationRepository.findByAccount_Id(
             id = accountId,
             sort = sortBy,
-        )
+        )*/
     }
 
     override suspend fun search(
@@ -55,7 +65,8 @@ class PublicationServiceImpl(
     ): List<PublicationEntity> {
         val tagsSearch = tags?.let { PublicationEntity::tags.`in`(tags) }
 
-        val descriptionSearch = description?.let { PublicationEntity::description.like(description) }
+        val descriptionSearch =
+            description?.let { PublicationEntity::description.like(description) }
 
         val userAccount = getAuthentication()?.account
         val showOwnPublicationsSearch = if (userAccount == null || showOwnPublications) null
@@ -120,7 +131,10 @@ class PublicationServiceImpl(
                             OffsetBasedPageRequest(
                                 offset = random,
                                 limit = 1,
-                                sort = Sort.by(Sort.Direction.DESC, PublicationEntity::createdAt.name)
+                                sort = Sort.by(
+                                    Sort.Direction.DESC,
+                                    PublicationEntity::createdAt.name
+                                )
                             )
                         )
 

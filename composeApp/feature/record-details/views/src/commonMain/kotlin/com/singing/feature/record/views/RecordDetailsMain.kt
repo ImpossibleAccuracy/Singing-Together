@@ -1,10 +1,20 @@
 package com.singing.feature.record.views
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.singing.app.common.views.base.account.AccountChip
@@ -162,11 +172,13 @@ private fun RecordInfo(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_25)
     ) {
+        val recordName = when (record) {
+            is RecordData.Cover -> record.name
+            is RecordData.Vocal -> null
+        }
+
         Text(
-            text = when (record) {
-                is RecordData.Cover -> record.name
-                is RecordData.Vocal -> stringResource(Res.string.label_no_selected_track_item)
-            },
+            text = recordName ?: stringResource(Res.string.label_no_selected_track_item),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleLarge,
             maxLines = 1,

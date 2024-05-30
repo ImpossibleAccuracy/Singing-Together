@@ -9,6 +9,9 @@ import java.net.URI
 actual data class ComposeFile(
     val file: File,
 ) {
+    actual val name: String
+        get() = file.nameWithoutExtension
+
     actual val fullPath: String
         get() = file.absolutePath
 
@@ -17,4 +20,14 @@ actual data class ComposeFile(
 
     val uri: URI
         get() = file.toURI()
+
+    actual fun readAll(): ByteArray {
+        return file.readBytes()
+    }
+}
+
+actual fun openFile(path: String): ComposeFile {
+    return ComposeFile(
+        File(path)
+    )
 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.singing.app.common.views.base.account.UserAvatar
-import com.singing.app.domain.model.AccountInfo
+import com.singing.app.domain.model.UserInfo
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.UserData
 import com.singing.app.ui.screen.dimens
@@ -30,7 +30,7 @@ import org.jetbrains.compose.resources.stringResource
 fun AccountBanner(
     modifier: Modifier = Modifier,
     account: UserData,
-    accountInfo: DataState<AccountInfo>,
+    userInfo: DataState<UserInfo>,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -55,7 +55,7 @@ fun AccountBanner(
                 )
             )
 
-            when (accountInfo) {
+            when (userInfo) {
                 DataState.Empty, is DataState.Error -> {
                     Text(
                         text = stringResource(Res.string.title_cannot_fetch_user_info),
@@ -72,7 +72,7 @@ fun AccountBanner(
                 }
 
                 is DataState.Success -> {
-                    AccountInfoSection(accountInfo.data)
+                    AccountInfoSection(userInfo.data)
                 }
             }
         }
@@ -81,12 +81,12 @@ fun AccountBanner(
 
 
 @Composable
-private fun AccountInfoSection(accountInfo: AccountInfo) {
+private fun AccountInfoSection(userInfo: UserInfo) {
     Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5)) {
         Text(
             text = stringResource(
                 resource = Res.string.label_publications_count,
-                accountInfo.publicationsCount
+                userInfo.publicationsCount
             ),
             color = MaterialTheme.colorScheme.onBackground,
             lineHeight = 1.43.em,
@@ -96,7 +96,7 @@ private fun AccountInfoSection(accountInfo: AccountInfo) {
         Text(
             text = stringResource(
                 resource = Res.string.label_account_registered_since,
-                HumanReadable.duration(Clock.System.now() - accountInfo.registeredAt.instant)
+                HumanReadable.duration(Clock.System.now() - userInfo.registeredAt.instant)
             ),
             color = MaterialTheme.colorScheme.onBackground,
             lineHeight = 1.43.em,

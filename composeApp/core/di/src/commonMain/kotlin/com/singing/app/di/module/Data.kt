@@ -6,10 +6,11 @@ import com.singing.app.data.repository.*
 import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.provider.UserProvider
 import com.singing.app.domain.repository.*
+import org.koin.core.scope.get
 import org.koin.dsl.module
 
 val dataModule = module {
-    factory<RecordPlayer> { RecordPlayerImpl(get()) }
+    /*factory<RecordPlayer> { RecordPlayerImpl(get()) }
     single<UserProvider> { UserProviderImpl() }
 
     factory<NoteRepository> { NoteRepositoryImpl() }
@@ -18,5 +19,5 @@ val dataModule = module {
     factory<PublicationTagRepository> { PublicationTagRepositoryImpl() }
     factory<RecordRepository> { RecordRepositoryImpl() }
     factory<RecentTrackRepository> { RecentTrackRepositoryImpl() }
-    factory<AccountRepository> { AccountRepositoryImpl() }
+    factory<AccountRepository> { AccountRepositoryImpl() }*/
 }

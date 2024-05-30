@@ -1,0 +1,29 @@
+CREATE TABLE recentTrackEntity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  createdAt TEXT NOT NULL,
+  isFavourute INTEGER NOT NULL,
+  path TEXT NOT NULL
+);
+
+selectAll:
+SELECT *
+FROM recentTrackEntity;
+
+selectFavourites:
+SELECT *
+FROM recentTrackEntity
+WHERE isFavourute > 0;
+
+insert:
+INSERT INTO recentTrackEntity(createdAt, isFavourute, path)
+VALUES (?, ?, ?);
+
+updateFavouriteState:
+UPDATE recentTrackEntity
+SET isFavourute = ?
+WHERE id = ?;
+
+selectById:
+SELECT *
+FROM recentTrackEntity
+WHERE id = ?;

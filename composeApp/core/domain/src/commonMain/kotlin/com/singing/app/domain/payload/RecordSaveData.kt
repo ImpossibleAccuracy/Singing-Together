@@ -5,6 +5,7 @@ import com.singing.domain.model.AudioFile
 
 @Immutable
 data class RecordSaveData(
+    val title: String?,
     val record: ByteArray,
     val track: AudioFile?,
 ) {

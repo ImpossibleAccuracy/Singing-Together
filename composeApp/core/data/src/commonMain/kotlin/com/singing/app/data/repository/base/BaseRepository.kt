@@ -8,8 +8,8 @@ import com.singing.app.data.datasource.paging.base.BasePagingSource
 import kotlinx.coroutines.flow.Flow
 
 abstract class BaseRepository {
-    protected fun <Model : Any, DTO : Any> doPagingRequest(
-        pagingSource: BasePagingSource<Model, DTO>,
+    protected fun <Model : Any> doPagingRequest(
+        pagingSource: BasePagingSource<Model>,
         pageSize: Int = Constants.MAX_PAGE_SIZE,
         prefetchDistance: Int = Constants.PREFETCH_DISTANCE,
         enablePlaceholders: Boolean = true,

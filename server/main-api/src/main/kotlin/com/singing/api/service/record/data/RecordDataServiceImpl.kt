@@ -8,8 +8,8 @@ import com.singing.api.domain.repository.RecordItemRepository
 import com.singing.app.audio.createTrackAudioParser
 import com.singing.app.audio.createVoiceAudioParser
 import com.singing.app.audio.getFileDuration
-import com.singing.audio.sampled.model.TimedFrequency
 import com.singing.app.base.ComposeFile
+import com.singing.audio.sampled.model.TimedFrequency
 import com.singing.domain.model.PointAccuracy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
@@ -18,14 +18,15 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withTimeout
 import org.springframework.stereotype.Service
 import java.io.File
-import java.util.*
+import java.util.Optional
 import kotlin.math.abs
 import kotlin.time.toKotlinDuration
 
 @Service
 class RecordDataServiceImpl(
     private val recordPointRepository: RecordItemRepository,
-    private val properties: RecordProcessingProperties, private val documentRepository: DocumentRepository,
+    private val properties: RecordProcessingProperties,
+    private val documentRepository: DocumentRepository,
 ) : RecordDataService {
     override suspend fun getDuration(file: File): Long {
         return getFileDuration(file)
@@ -119,8 +120,8 @@ class RecordDataServiceImpl(
                 )
             }
 
-    override suspend fun recordPoints(recordId: Int): List<RecordItemEntity> =
-        recordPointRepository.findByRecord_IdOrderByTimeAsc(recordId)
+    override suspend fun recordPoints(recordId: Int, page: Int): List<RecordItemEntity> = TODO()
+//        recordPointRepository.findByRecord_IdOrderByTimeAsc(recordId)
 
     override suspend fun loadRecordVoiceFile(recordId: Int): DocumentEntity =
         documentRepository.findByVoiceRecordRecords_Id(recordId)

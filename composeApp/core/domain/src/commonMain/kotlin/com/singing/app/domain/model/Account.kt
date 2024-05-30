@@ -8,7 +8,7 @@ data class UserData(
     val avatar: String?,
 )
 
-data class AccountInfo(
+data class UserInfo(
     val publicationsCount: Int,
     val registeredAt: StableInstant,
 )

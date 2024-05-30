@@ -1,0 +1,21 @@
+CREATE TABLE documentEntity (
+  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  createdAt TEXT NOT NULL,
+  path TEXT NOT NULL
+);
+
+CREATE INDEX document_path ON documentEntity(path);
+
+selectPath:
+SELECT path
+FROM documentEntity
+WHERE id = ?;
+
+selectLastInserted:
+SELECT *
+FROM documentEntity
+WHERE id = last_insert_rowid();
+
+insert:
+INSERT INTO documentEntity (createdAt, path)
+VALUES (?, ?);

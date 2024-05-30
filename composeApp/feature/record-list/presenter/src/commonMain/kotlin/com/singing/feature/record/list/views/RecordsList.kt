@@ -61,7 +61,7 @@ fun RecordsList(
                 ) {
                     items(
                         count = records.itemCount,
-                        key = records.itemKey { it.id },
+                        key = records.itemKey { it.key },
                         contentType = records.itemContentType(),
                     ) { index ->
                         val item = records[index]!!

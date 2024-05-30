@@ -4,7 +4,7 @@ import com.singing.api.domain.model.AccountEntity
 import com.singing.api.domain.model.PublicationEntity
 import com.singing.api.domain.model.RecordEntity
 import com.singing.domain.model.PublicationSort
-import java.util.*
+import java.util.Optional
 
 interface PublicationService {
     suspend fun isPublished(record: RecordEntity): Boolean
@@ -17,7 +17,7 @@ interface PublicationService {
 
     suspend fun all(): List<PublicationEntity>
 
-    suspend fun byAccount(accountId: Int, sort: PublicationSort): List<PublicationEntity>
+    suspend fun byAccount(accountId: Int, page: Int, sort: PublicationSort): List<PublicationEntity>
 
     suspend fun search(
         page: Int,

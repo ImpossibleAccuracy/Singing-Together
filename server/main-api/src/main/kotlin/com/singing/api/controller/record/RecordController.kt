@@ -30,20 +30,29 @@ class RecordController(
 ) {
     @GetMapping("/my")
     @SecurityRequirement(name = "bearerAuth")
-    suspend fun accountRecords(): List<RecordDto> = requireAuthenticated {
+    suspend fun myRecords(): List<RecordDto> = requireAuthenticated {
         recordService
             .accountRecords(accountId = account.id!!)
             .map(RecordEntity::toDto)
     }
 
+    @GetMapping("/account/{id}")
+    suspend fun accountRecords(@PathVariable accountId: Int): List<RecordDto> =
+        recordService
+            .accountRecords(accountId = accountId)
+            .map(RecordEntity::toDto)
+
     @GetMapping("/{id}/points")
     @SecurityRequirement(name = "bearerAuth")
-    suspend fun getRecordPoints(@PathVariable id: Int): List<RecordPointDto> = tryAuthenticate {
+    suspend fun getRecordPoints(
+        @PathVariable id: Int,
+        @RequestParam("page", required = false) page: Int = 0,
+    ): List<RecordPointDto> = tryAuthenticate {
         val record = recordService.get(id).require()
 
         secureRead(record)
 
-        val items = recordDataService.recordPoints(record.id!!)
+        val items = recordDataService.recordPoints(record.id!!, page)
 
         items.map(RecordItemEntity::toDto)
     }

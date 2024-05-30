@@ -31,6 +31,8 @@ voyager = "1.0.0"
 voyager-koin = "1.1.0-alpha04"
 koin = "3.5.6"
 koin-compose = "1.1.5"
+ktor = "2.3.11"
+sqldelight = "2.0.1"
 
 paging = "3.3.0-alpha02-0.5.1"
 apiresult = "1.0.4"
@@ -101,6 +103,16 @@ koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-com
 koin-compose-jvm = { module = "io.insert-koin:koin-compose-jvm", version.ref = "koin-compose" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
 
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+ktor-jackson = { module = "io.ktor:ktor-serialization-jackson", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+
+sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+
 paging-compose = { module = "app.cash.paging:paging-common", version.ref = "paging" }
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }
 apiresult = { module = "pro.respawn.apiresult:core", version.ref = "apiresult" }
@@ -135,6 +147,7 @@ android = ["androidx-compose-activity", "androidx-compose-lifecycle"]
 
 voyager = ["voyager-navigator", "voyager-koin", "voyager-transitions"]
 koin = ["koin-core", "koin-compose"]
+ktor = ["ktor-client-core", "ktor-jackson", "ktor-client-content-negotiation"]
 
 spring = [
     "spring-boot-starter",
@@ -165,3 +178,5 @@ compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
+
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }

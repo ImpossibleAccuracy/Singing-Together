@@ -24,7 +24,7 @@ fun <T> DataState<T>.valueOrNull(): T? = when (this) {
     else -> null
 }
 
-fun <T, R> DataState<T>.mapData(mapper: (T) -> R): DataState<R> =
+fun <T, R> DataState<T>.map(mapper: (T) -> R): DataState<R> =
     when (this) {
         is DataState.Success -> {
             DataState.Success(mapper(this.data))

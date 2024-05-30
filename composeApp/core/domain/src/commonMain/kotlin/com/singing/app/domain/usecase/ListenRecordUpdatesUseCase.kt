@@ -13,7 +13,7 @@ class ListenRecordUpdatesUseCase(
     operator fun invoke(recordData: RecordData): Flow<DataState<RecordData>> = flow {
         emit(DataState.Loading)
 
-        recordRepository.listenRecordUpdates()
+        recordRepository.listenRecordUpdates(recordData)
             .catch {
                 DataState.Error(it.message ?: "Error")
             }
