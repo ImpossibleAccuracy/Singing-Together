@@ -113,7 +113,7 @@
     <!--  LABELS  -->
 
     <string name="label_pick_from_recent">Pick from recent</string>
-    <string name="label_no_saved_track">No saved tracks</string>
+    <string name="label_no_saved_tracks">No saved tracks</string>
     <string name="label_or">OR</string>
     <string name="label_file_name">File name</string>
     <string name="label_file_full_path">File full path</string>
@@ -131,7 +131,6 @@
     <string name="label_account_no_publications">%1$s didn't publish anything.</string>
     <string name="label_account_registered_since">Registered since %1$s</string>
     <string name="label_description">Description</string>
-    <string name="label_no_track">No track</string>
     <string name="label_accuracy">%1$d% accuracy</string>
     <string name="label_start">Start</string>
     <string name="label_finish">Finish</string>

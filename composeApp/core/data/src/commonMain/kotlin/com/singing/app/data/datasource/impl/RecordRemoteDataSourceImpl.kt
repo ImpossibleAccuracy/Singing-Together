@@ -1,11 +1,10 @@
 package com.singing.app.data.datasource.impl
 
+import com.singing.app.data.datamapper.impl.map
 import com.singing.app.data.datasource.declaration.RecordDataSource
 import com.singing.app.data.datasource.declaration.RecordFileDataSource
 import com.singing.app.data.datasource.impl.api.ApiScheme
-import com.singing.app.data.datasource.utils.DataMapper
 import com.singing.app.data.datasource.utils.authHeader
-import com.singing.app.data.datasource.utils.mapBody
 import com.singing.app.data.datasource.utils.requireAuth
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.provider.UserProvider
@@ -26,11 +25,10 @@ import pro.respawn.apiresult.orNull
 import pro.respawn.apiresult.require
 
 class RecordRemoteDataSourceImpl(
+    private val localRecordDataSource: RecordDataSource.Local,
     private val recordFileDataSource: RecordFileDataSource,
     private val userProvider: UserProvider,
     private val httpClient: HttpClient,
-    private val recordDataMapper: DataMapper<RecordDto, RecordData>,
-    private val recordPointDataMapper: DataMapper<RecordPointDto, RecordPoint>,
 ) : RecordDataSource.Remote {
     override suspend fun uploadRecord(record: RecordData): ApiResult<RecordData> = ApiResult {
         if (record.isSavedRemote) return record.asResult
@@ -59,7 +57,13 @@ class RecordRemoteDataSourceImpl(
 
                 parameter("title", record.name)
             }
-            .mapBody(recordDataMapper)
+            .body<RecordDto>()
+            .let {
+                map(
+                    it,
+                    localRecordDataSource.getLocalIdByRemoteId(it.id!!)
+                )
+            }
     }
 
     override suspend fun deleteRecord(record: RecordData) {
@@ -82,6 +86,6 @@ class RecordRemoteDataSourceImpl(
                 parameter("page", page)
             }
             .body<List<RecordPointDto>>()
-            .map { recordPointDataMapper.map(it) }
+            .map(::map)
     }
 }

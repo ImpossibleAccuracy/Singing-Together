@@ -11,8 +11,19 @@ internal expect fun createDriver(
     parameters: DatabaseParameters
 ): SqlDriver
 
-fun setupAppDatabase(init: PlatformInitParams, parameters: DatabaseParameters): AppDatabase {
+suspend fun setupAppDatabase(
+    init: PlatformInitParams,
+    parameters: DatabaseParameters
+): AppDatabase {
     val driver = createDriver(init, parameters)
+
+    try {
+        AppDatabase.Schema.create(driver).await()
+    } catch (e: Exception) {
+        if (!e.message!!.contains("already exists")) {
+            throw e
+        }
+    }
 
     return AppDatabase(driver)
 }

@@ -15,10 +15,10 @@ class ListenRecordUpdatesUseCase(
 
         recordRepository.listenRecordUpdates(recordData)
             .catch {
-                DataState.Error(it.message ?: "Error")
+                emit(DataState.Error(it.message ?: "Error"))
             }
             .collect {
-                DataState.of(it)
+                emit(DataState.of(it))
             }
     }
 }

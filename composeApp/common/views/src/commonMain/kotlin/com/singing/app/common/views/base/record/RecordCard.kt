@@ -1,6 +1,9 @@
 package com.singing.app.common.views.base.record
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import com.singing.app.common.views.model.state.RecordUiData
 import com.singing.app.common.views.shared.record.RecordThumb
 import com.singing.app.common.views.views.generated.resources.Res
-import com.singing.app.common.views.views.generated.resources.label_no_track_selected
+import com.singing.app.common.views.views.generated.resources.label_no_selected_track_item
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
 import org.jetbrains.compose.resources.stringResource
@@ -25,11 +28,13 @@ fun RecordCard(
 ) {
     Row(
         modifier = modifier
-            .heightIn(min = MaterialTheme.dimens.dimen5_5 * 2)
             .cardAppearance(
                 shape = MaterialTheme.shapes.medium,
                 background = containerColor,
-                padding = PaddingValues(horizontal = MaterialTheme.dimens.dimen2),
+                padding = PaddingValues(
+                    horizontal = MaterialTheme.dimens.dimen2,
+                    vertical = MaterialTheme.dimens.dimen1_5,
+                ),
                 onClick = onClick,
             ),
         verticalAlignment = Alignment.CenterVertically,
@@ -49,7 +54,7 @@ fun RecordCard(
         ) {
             Text(
                 text = data.filename
-                    ?: stringResource(Res.string.label_no_track_selected),
+                    ?: stringResource(Res.string.label_no_selected_track_item),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyLarge,
                 maxLines = 1,

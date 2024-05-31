@@ -2,6 +2,7 @@ package com.singing.app.data.repository
 
 import androidx.paging.PagingData
 import com.singing.app.data.datasource.declaration.PublicationDataSource
+import com.singing.app.data.repository.base.PagingRepository
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.RecordData
@@ -13,17 +14,18 @@ import pro.respawn.apiresult.ApiResult
 class PublicationRepositoryImpl(
     private val recordRepository: RecordRepository,
     private val dataSource: PublicationDataSource.Remote,
-) : PublicationRepository {
+) : PublicationRepository, PagingRepository() {
     override suspend fun publishRecord(
         record: RecordData,
-        description: String
+        description: String,
+        tags: List<String>,
     ): DataState<Publication> {
         if (record.isPublished) throw IllegalArgumentException("Record already published")
 
         return dataSource.create(
             record.key.remoteId!!,
             description,
-            listOf() // TODO
+            tags,
         ).asDataState.also {
             if (it is DataState.Success) {
                 recordRepository.markPublished(it.data.record)
@@ -46,5 +48,8 @@ class PublicationRepositoryImpl(
     override suspend fun getLatestUserPublications(limit: Int): DataState<List<Publication>> =
         dataSource.fetchLatestOwned().asDataState
 
-    override fun getAccountPublications(accountId: Int): Flow<PagingData<Publication>> = TODO()
+    override fun getAccountPublications(accountId: Int): Flow<PagingData<Publication>> =
+        doPagingRequest { page ->
+            dataSource.fetchByUser(page, accountId)
+        }
 }

@@ -37,8 +37,6 @@ class RecordDataServiceImpl(
         val total = points.sumOf {
             val diff = abs(it.frequency!! - it.trackFrequency!!)
 
-            if (diff > 10000) println(it)
-
             PointAccuracy.calculateAccuracy(diff.toFloat()).percent.toInt()
         }
 

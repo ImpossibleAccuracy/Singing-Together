@@ -94,7 +94,7 @@ fun MainRecordCard(
                 IconLabel(
                     leadingIcon = vectorResource(Res.drawable.baseline_folder_music_black_24dp),
                     label = when (data.filename) {
-                        null -> stringResource(Res.string.label_no_track_selected)
+                        null -> stringResource(Res.string.label_no_selected_track_item)
                         else -> data.filename
                     },
                 )

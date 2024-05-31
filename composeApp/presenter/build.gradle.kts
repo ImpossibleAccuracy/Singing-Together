@@ -52,6 +52,7 @@ kotlin {
             implementation(project(Modules.App.Common.Navigation))
             implementation(project(Modules.App.Common.Theme))
             implementation(project(Modules.App.Domain))
+            implementation(project(Modules.App.Data))
             implementation(project(Modules.App.Di))
 
             implementation(compose.runtime)

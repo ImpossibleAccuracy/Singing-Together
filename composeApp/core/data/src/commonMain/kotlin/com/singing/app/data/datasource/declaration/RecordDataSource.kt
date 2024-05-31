@@ -12,10 +12,14 @@ sealed interface RecordDataSource {
     suspend fun getRecordPoints(page: Int, record: RecordData): ApiResult<List<RecordPoint>>
 
     interface Local : RecordDataSource {
+        suspend fun getLocalIdByRemoteId(remoteId: Int): Int?
+
         suspend fun saveRecord(
             data: RecordSaveData,
-            remoteId: Long?,
+            remoteId: Int?,
+            creatorId: Int?,
             duration: Long,
+            accuracy: Double?,
             points: List<RecordPoint>
         ): ApiResult<RecordData>
 
@@ -27,7 +31,7 @@ sealed interface RecordDataSource {
 
         fun getRecentRecords(): Flow<List<RecordData>>
 
-        suspend fun getAnyRecord(): ApiResult<RecordData>
+        suspend fun getAnyRecord(): ApiResult<RecordData?>
 
         suspend fun listenRecordUpdates(record: RecordData): Flow<RecordData?>
     }

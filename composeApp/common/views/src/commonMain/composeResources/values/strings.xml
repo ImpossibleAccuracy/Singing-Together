@@ -20,7 +20,7 @@
     <string name="action_next" />
     <string name="action_close" />
 
-    <string name="label_no_track_selected" />
+    <string name="label_no_selected_track_item" />
     <string name="label_accuracy" />
     <string name="label_description" />
 </resources>

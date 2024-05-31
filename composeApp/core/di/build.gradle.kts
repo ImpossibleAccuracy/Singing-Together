@@ -21,10 +21,13 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            implementation(project(Modules.App.Domain))
+            api(project(Modules.App.Domain))
+
+            implementation(project(Modules.Shared.Payload))
             implementation(project(Modules.App.Data))
 
             implementation(libs.bundles.koin)
+            implementation(libs.bundles.ktor)
         }
     }
 }

@@ -1,22 +1,23 @@
-package com.singing.app.data.datasource.paging.base
+package com.singing.app.data.repository.base
 
 import androidx.paging.PagingSource
 import app.cash.paging.PagingState
+import pro.respawn.apiresult.ApiResult
 import pro.respawn.apiresult.fold
 
-abstract class BasePagingSource<Model : Any>(
-    private val dataFetcher: DataFetcher<Model>,
+class BasePagingSource<Model : Any>(
+    private val fetch: suspend (page: Int) -> ApiResult<List<Model>>,
     private val baseStartingPageIndex: Int = 0,
 ) : PagingSource<Int, Model>() {
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Model> {
         val position = params.key ?: baseStartingPageIndex
 
-        return dataFetcher.fetch(position)
+        return fetch(position)
             .fold(
                 onSuccess = {
                     LoadResult.Page(
                         data = it,
-                        prevKey = if (position == 1) null else position - 1,
+                        prevKey = if (position == baseStartingPageIndex) null else position - 1,
                         nextKey = if (it.isEmpty()) null else position + 1
                     )
                 },

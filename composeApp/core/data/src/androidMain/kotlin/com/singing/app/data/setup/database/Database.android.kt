@@ -17,7 +17,7 @@ internal actual fun createDriver(
     AndroidSqliteDriver(
         schema = AppDatabase.Schema,
         context = init.context,
-        name = "${parameters.name}.db",
+        name = parameters.name,
         callback = object : AndroidSqliteDriver.Callback(AppDatabase.Schema) {
             override fun onOpen(db: SupportSQLiteDatabase) {
                 db.setForeignKeyConstraintsEnabled(true)

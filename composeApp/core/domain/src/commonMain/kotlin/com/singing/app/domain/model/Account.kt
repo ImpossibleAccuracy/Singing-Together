@@ -9,6 +9,6 @@ data class UserData(
 )
 
 data class UserInfo(
-    val publicationsCount: Int,
+    val publicationsCount: Long,
     val registeredAt: StableInstant,
 )

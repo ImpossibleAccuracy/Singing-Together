@@ -1,12 +1,17 @@
 package com.singing.app.navigation.views
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 // TODO: paddings must be applied only on desktop
+@Deprecated("JVM specific paddings")
 val DefaultPagePaddings = PaddingValues(
     top = 44.dp,
     bottom = 24.dp,

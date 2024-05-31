@@ -6,12 +6,10 @@ import app.cash.sqldelight.coroutines.mapToOneNotNull
 import com.singing.app.base.ComposeFile
 import com.singing.app.data.Constants
 import com.singing.app.data.database.AppDatabase
+import com.singing.app.data.datamapper.impl.map
 import com.singing.app.data.datasource.declaration.RecordDataSource
-import com.singing.app.data.datasource.utils.DataMapper
 import com.singing.app.data.setup.file.FileStore
 import com.singing.app.data.sqldelight.record.DocumentEntity
-import com.singing.app.data.sqldelight.record.RecordEntity
-import com.singing.app.data.sqldelight.record.RecordItemEntity
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.payload.RecordSaveData
 import com.singing.domain.model.RecordPoint
@@ -26,13 +24,20 @@ import java.io.ByteArrayInputStream
 class RecordLocalDataSourceImpl(
     private val appDatabase: AppDatabase,
     private val fileStore: FileStore,
-    private val recordDataMapper: DataMapper<RecordEntity, RecordData>,
-    private val recordPointDataMapper: DataMapper<RecordItemEntity, RecordPoint>,
+//    private val recordPointDataMapper: DataMapper<RecordItemEntity, RecordPoint>,
 ) : RecordDataSource.Local {
+    override suspend fun getLocalIdByRemoteId(remoteId: Int): Int? =
+        appDatabase.recordQueries
+            .selectLocalIdByRemoteId(remoteId.toLong())
+            .executeAsOneOrNull()
+            ?.toInt()
+
     override suspend fun saveRecord(
         data: RecordSaveData,
-        remoteId: Long?,
+        remoteId: Int?,
+        creatorId: Int?,
         duration: Long,
+        accuracy: Double?,
         points: List<RecordPoint>
     ): ApiResult<RecordData> = ApiResult {
         val voiceFile = fileStore.storeFile(ByteArrayInputStream(data.record))
@@ -42,13 +47,15 @@ class RecordLocalDataSourceImpl(
         val trackDocument = trackFile?.let { saveDocument(it) }
 
         appDatabase.recordQueries.insert(
-            remoteId = remoteId,
+            remoteId = remoteId?.toLong(),
             createdAt = Clock.System.now().toString(),
             title = data.title,
+            accuracy = accuracy,
             isPublished = 0,
             duration = duration,
             voiceRecordId = voiceDocument.id,
             trackId = trackDocument?.id,
+            creatorId = creatorId?.toLong(),
         )
 
         val recordEntity = appDatabase.recordQueries.selectLastInserted()
@@ -63,7 +70,7 @@ class RecordLocalDataSourceImpl(
             )
         }
 
-        recordDataMapper.map(recordEntity)
+        map(recordEntity)
     }
 
     private fun saveDocument(file: ComposeFile): DocumentEntity {
@@ -92,10 +99,11 @@ class RecordLocalDataSourceImpl(
         appDatabase.recordQueries.updatePublished(1, record.key.localId!!.toLong())
     }
 
-    private fun getRecord(recordId: Int): RecordData {
-        val entity = appDatabase.recordQueries.selectOne(recordId.toLong()).executeAsOne()
-        return recordDataMapper.map(entity)
-    }
+    private suspend fun getRecord(recordId: Int): RecordData =
+        appDatabase.recordQueries
+            .selectOne(recordId.toLong())
+            .executeAsOne()
+            .let(::map)
 
     override suspend fun getRecords(page: Int): ApiResult<List<RecordData>> = ApiResult {
         appDatabase.recordQueries
@@ -104,7 +112,7 @@ class RecordLocalDataSourceImpl(
                 Constants.MAX_PAGE_SIZE * page.toLong()
             )
             .executeAsList()
-            .map { recordDataMapper.map(it) }
+            .map(::map)
     }
 
     override fun getRecentRecords(): Flow<List<RecordData>> =
@@ -113,14 +121,17 @@ class RecordLocalDataSourceImpl(
             .asFlow()
             .mapToList(Dispatchers.IO)
             .map { items ->
-                items.map(recordDataMapper::map)
+                items.map(::map)
                     .sortedByDescending { it.createdAt.instant }
             }
 
-    override suspend fun getAnyRecord(): ApiResult<RecordData> = ApiResult {
-        val item = appDatabase.recordQueries.selectAny().executeAsOne()
+    override suspend fun getAnyRecord(): ApiResult<RecordData?> = ApiResult {
+        val item = appDatabase.recordQueries
+            .selectAny()
+            .executeAsList()
+            .firstOrNull()
 
-        recordDataMapper.map(item)
+        item?.let(::map)
     }
 
     override suspend fun listenRecordUpdates(record: RecordData): Flow<RecordData?> {
@@ -131,7 +142,7 @@ class RecordLocalDataSourceImpl(
             .asFlow()
             .mapToOneNotNull(Dispatchers.IO)
             .filterNotNull()
-            .map { recordDataMapper.map(it) }
+            .map(::map)
     }
 
     override suspend fun deleteRecord(record: RecordData) {
@@ -153,6 +164,6 @@ class RecordLocalDataSourceImpl(
                 Constants.MAX_PAGE_SIZE * page.toLong()
             )
             .executeAsList()
-            .map(recordPointDataMapper::map)
+            .map(::map)
     }
 }

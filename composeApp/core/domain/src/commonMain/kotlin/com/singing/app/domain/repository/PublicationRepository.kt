@@ -10,6 +10,7 @@ interface PublicationRepository {
     suspend fun publishRecord(
         record: RecordData,
         description: String,
+        tags: List<String>,
     ): DataState<Publication>
 
     suspend fun getRandomPublication(): DataState<Publication>

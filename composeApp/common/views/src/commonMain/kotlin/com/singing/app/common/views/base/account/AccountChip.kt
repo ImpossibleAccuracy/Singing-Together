@@ -32,7 +32,7 @@ fun AccountChip(
 ) {
     Row(
         modifier = modifier then Modifier
-            .height(MaterialTheme.dimens.dimen4_5),
+            .height(MaterialTheme.dimens.dimen4),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (showAvatar && avatar != null && avatarAtStart) {
@@ -40,7 +40,7 @@ fun AccountChip(
         }
 
         Text(
-            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.dimen1_5),
+            modifier = Modifier.padding(horizontal = MaterialTheme.dimens.dimen2),
             text = username,
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.labelLarge,

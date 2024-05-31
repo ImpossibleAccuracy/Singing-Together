@@ -2,7 +2,9 @@ CREATE TABLE recentTrackEntity (
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   createdAt TEXT NOT NULL,
   isFavourute INTEGER NOT NULL,
-  path TEXT NOT NULL
+  path TEXT NOT NULL,
+  duration INTEGER NOT NULL,
+  name TEXT NOT NULL
 );
 
 selectAll:
@@ -15,8 +17,8 @@ FROM recentTrackEntity
 WHERE isFavourute > 0;
 
 insert:
-INSERT INTO recentTrackEntity(createdAt, isFavourute, path)
-VALUES (?, ?, ?);
+INSERT INTO recentTrackEntity(createdAt, isFavourute, path, duration, name)
+VALUES (?, ?, ?, ?, ?);
 
 updateFavouriteState:
 UPDATE recentTrackEntity

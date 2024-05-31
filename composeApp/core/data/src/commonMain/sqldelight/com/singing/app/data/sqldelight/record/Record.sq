@@ -3,10 +3,12 @@ CREATE TABLE recordEntity (
   remoteId INTEGER,
   createdAt TEXT NOT NULL,
   title TEXT,
+  accuracy REAL,
   isPublished INTEGER NOT NULL,
   duration INTEGER NOT NULL,
   voiceRecordId INTEGER NOT NULL,
   trackId INTEGER,
+  creatorId INTEGER,
   FOREIGN KEY (voiceRecordId) REFERENCES documentEntity(id) ON DELETE CASCADE,
   FOREIGN KEY (trackId) REFERENCES documentEntity(id) ON DELETE CASCADE
 );
@@ -44,6 +46,11 @@ SELECT trackId
 FROM recordEntity
 WHERE recordEntity.id = ?;
 
+selectLocalIdByRemoteId:
+SELECT id
+FROM recordEntity
+WHERE remoteId = ?;
+
 updateRemoteId:
 UPDATE recordEntity
 SET remoteId = ?
@@ -55,8 +62,8 @@ SET isPublished = ?
 WHERE id = ?;
 
 insert:
-INSERT INTO recordEntity (remoteId, createdAt, title, isPublished, duration, voiceRecordId, trackId)
-VALUES (?, ?, ?, ?, ?, ?, ?);
+INSERT INTO recordEntity (remoteId, createdAt, title, accuracy, isPublished, duration, voiceRecordId, trackId,creatorId)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteOne:
 DELETE FROM recordEntity

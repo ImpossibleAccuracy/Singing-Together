@@ -1,21 +1,21 @@
 package com.singing.app.data.repository.base
 
+import androidx.paging.PagingData
 import app.cash.paging.Pager
 import app.cash.paging.PagingConfig
-import app.cash.paging.PagingData
 import com.singing.app.data.Constants
-import com.singing.app.data.datasource.paging.base.BasePagingSource
 import kotlinx.coroutines.flow.Flow
+import pro.respawn.apiresult.ApiResult
 
-abstract class BaseRepository {
+abstract class PagingRepository {
     protected fun <Model : Any> doPagingRequest(
-        pagingSource: BasePagingSource<Model>,
         pageSize: Int = Constants.MAX_PAGE_SIZE,
         prefetchDistance: Int = Constants.PREFETCH_DISTANCE,
         enablePlaceholders: Boolean = true,
         initialLoadSize: Int = pageSize * 3,
         maxSize: Int = Int.MAX_VALUE,
-        jumpThreshold: Int = Int.MIN_VALUE
+        jumpThreshold: Int = Int.MIN_VALUE,
+        fetch: suspend (page: Int) -> ApiResult<List<Model>>,
     ): Flow<PagingData<Model>> {
         return Pager(
             config = PagingConfig(
@@ -26,9 +26,7 @@ abstract class BaseRepository {
                 maxSize,
                 jumpThreshold
             ),
-            pagingSourceFactory = {
-                pagingSource
-            }
+            pagingSourceFactory = { BasePagingSource(fetch) }
         ).flow
     }
 }

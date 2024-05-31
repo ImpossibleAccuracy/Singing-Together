@@ -17,6 +17,8 @@ enum class WindowSize(
     EXPANDED(expandedDimens, 0.dp)
 }
 
-fun computeWindowSize(windowWidth: Dp) = WindowSize.entries.firstOrNull {
-    it.width < windowWidth
-} ?: WindowSize.EXPANDED
+fun computeWindowSize(windowWidth: Dp) = WindowSize.entries
+    .asReversed()
+    .first {
+        it.width <= windowWidth
+    }

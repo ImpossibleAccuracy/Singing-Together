@@ -1,10 +1,10 @@
 package com.singing.app.data.datasource.impl
 
+import com.singing.app.data.datamapper.impl.map
 import com.singing.app.data.datasource.declaration.PublicationDataSource
+import com.singing.app.data.datasource.declaration.RecordDataSource
 import com.singing.app.data.datasource.impl.api.ApiScheme
-import com.singing.app.data.datasource.utils.DataMapper
 import com.singing.app.data.datasource.utils.authHeader
-import com.singing.app.data.datasource.utils.mapBody
 import com.singing.app.data.datasource.utils.requireAuth
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.PublicationTagStatistics
@@ -26,9 +26,13 @@ import pro.respawn.apiresult.ApiResult
 class PublicationRemoteDataSourceImpl(
     private val userProvider: UserProvider,
     private val httpClient: HttpClient,
-    private val publicationDataMapper: DataMapper<PublicationDto, Publication>,
-    private val publicationTagInfoDataMapper: DataMapper<CategoryInfoDto, PublicationTagStatistics>,
+    private val localRecordDataSource: RecordDataSource.Local,
 ) : PublicationDataSource.Remote {
+    private suspend fun mapPublicationDto(source: PublicationDto): Publication = map(
+        source,
+        localRecordDataSource.getLocalIdByRemoteId(source.id!!)
+    )
+
     override suspend fun create(
         recordId: Int,
         description: String,
@@ -48,7 +52,8 @@ class PublicationRemoteDataSourceImpl(
                     )
                 )
             }
-            .mapBody(publicationDataMapper)
+            .body<PublicationDto>()
+            .let { mapPublicationDto(it) }
     }
 
     override suspend fun search(
@@ -66,7 +71,9 @@ class PublicationRemoteDataSourceImpl(
                 parameter("sort", filters.sort)
             }
             .body<List<PublicationDto>>()
-            .map(publicationDataMapper::map)
+            .map {
+                mapPublicationDto(it)
+            }
     }
 
     override suspend fun fetchLatestOwned(): ApiResult<List<Publication>> = ApiResult {
@@ -83,7 +90,9 @@ class PublicationRemoteDataSourceImpl(
                 parameter("sort", PublicationSort.DateCreated)
             }
             .body<List<PublicationDto>>()
-            .map(publicationDataMapper::map)
+            .map {
+                mapPublicationDto(it)
+            }
     }
 
     override suspend fun fetchByUser(page: Int, userId: Int): ApiResult<List<Publication>> =
@@ -98,7 +107,9 @@ class PublicationRemoteDataSourceImpl(
                     parameter("sort", PublicationSort.DateCreated)
                 }
                 .body<List<PublicationDto>>()
-                .map(publicationDataMapper::map)
+                .map {
+                    mapPublicationDto(it)
+                }
         }
 
     override suspend fun fetchRandom(): ApiResult<Publication> = ApiResult {
@@ -106,7 +117,8 @@ class PublicationRemoteDataSourceImpl(
             .get(ApiScheme.Publication.RandomPublication) {
                 authHeader(userProvider)
             }
-            .mapBody(publicationDataMapper)
+            .body<PublicationDto>()
+            .let { mapPublicationDto(it) }
     }
 
     override suspend fun fetchByRecord(recordId: Int): ApiResult<Publication> = ApiResult {
@@ -114,7 +126,8 @@ class PublicationRemoteDataSourceImpl(
             .get(ApiScheme.Publication.RecordPublication(recordId)) {
                 authHeader(userProvider)
             }
-            .mapBody(publicationDataMapper)
+            .body<PublicationDto>()
+            .let { mapPublicationDto(it) }
     }
 
     override suspend fun fetchPopularTags(): ApiResult<List<PublicationTagStatistics>> = ApiResult {
@@ -123,6 +136,6 @@ class PublicationRemoteDataSourceImpl(
                 authHeader(userProvider)
             }
             .body<List<CategoryInfoDto>>()
-            .map(publicationTagInfoDataMapper::map)
+            .map(::map)
     }
 }

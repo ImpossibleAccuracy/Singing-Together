@@ -6,7 +6,7 @@ import com.singing.app.data.setup.PlatformInitParams
 import java.util.Properties
 
 actual class DatabaseParameters(
-    val path: String,
+    val name: String,
 )
 
 internal actual fun createDriver(
@@ -14,6 +14,6 @@ internal actual fun createDriver(
     parameters: DatabaseParameters
 ): SqlDriver =
     JdbcSqliteDriver(
-        url = "jdbc:sqlite:${parameters.path}.db",
+        url = parameters.name,
         properties = Properties().apply { put("foreign_keys", "true") },
     )

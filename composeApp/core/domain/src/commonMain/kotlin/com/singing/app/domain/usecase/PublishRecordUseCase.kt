@@ -18,7 +18,8 @@ class PublishRecordUseCase(
         // FIXME: add DataState to ViewModel
         return (publicationRepository.publishRecord(
             actualRecord,
-            description
+            description,
+            listOf(), // TODO: ADD TAGS
         ) as DataState.Success).data
     }
 }
