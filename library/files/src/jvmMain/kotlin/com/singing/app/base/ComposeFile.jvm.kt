@@ -31,3 +31,11 @@ actual fun openFile(path: String): ComposeFile {
         File(path)
     )
 }
+
+actual fun exists(file: ComposeFile): Boolean {
+    return file.file.exists()
+}
+
+actual fun exists(path: String): Boolean {
+    return File(path).exists()
+}

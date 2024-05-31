@@ -1,7 +1,14 @@
 package com.singing.feature.main.views
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
@@ -9,7 +16,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,11 +39,18 @@ import com.singing.app.common.views.toUserUiData
 import com.singing.app.domain.model.MAX_PUBLICATION_DESCRIPTION_LENGTH
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
+import com.singing.app.feature.rememberRecordCardActions
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
-import com.singing.feature.main.presenter.generated.resources.*
+import com.singing.feature.main.presenter.generated.resources.Res
+import com.singing.feature.main.presenter.generated.resources.action_see_all_record
+import com.singing.feature.main.presenter.generated.resources.baseline_navigate_next_24
+import com.singing.feature.main.presenter.generated.resources.baseline_volume_up_black_24dp
+import com.singing.feature.main.presenter.generated.resources.subtitle_empty_records
+import com.singing.feature.main.presenter.generated.resources.title_empty_records
+import com.singing.feature.main.presenter.generated.resources.title_recent_records
 import com.singing.feature.main.viewmodel.MainIntent
 import com.singing.feature.main.viewmodel.MainUiState
 import kotlinx.collections.immutable.ImmutableList
@@ -59,7 +78,8 @@ fun RecentRecordsContainer(
     navigateToRecordPublication: (RecordData) -> Unit,
     navigate: (SharedScreen) -> Unit
 ) {
-    var showMainRecord by remember { mutableStateOf(true) }
+    var showMainRecord by rememberSaveable { mutableStateOf(true) }
+
     var recordToDelete by remember { mutableStateOf<RecordData?>(null) }
     var recordToPublish by remember { mutableStateOf<RecordData?>(null) }
     var recordToPlay by remember { mutableStateOf<RecordData?>(null) }
@@ -272,6 +292,7 @@ private fun RecordsGrid(
                     navigateRecordDetails = {
                         actions.navigateRecordDetails(mainItem)
                     },
+                    availableActions = rememberRecordCardActions(data.user, mainItem),
                     playRecord = {
                         actions.onPlayRecord(mainItem)
                     },

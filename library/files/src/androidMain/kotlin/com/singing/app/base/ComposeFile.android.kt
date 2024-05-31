@@ -18,3 +18,11 @@ actual class ComposeFile {
 actual fun openFile(path: String): ComposeFile {
     TODO("Not yet implemented")
 }
+
+actual fun exists(file: ComposeFile): Boolean {
+    TODO("Not yet implemented")
+}
+
+actual fun exists(path: String): Boolean {
+    TODO("Not yet implemented")
+}

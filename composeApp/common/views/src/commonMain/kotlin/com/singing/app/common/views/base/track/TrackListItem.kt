@@ -3,7 +3,7 @@ package com.singing.app.common.views.base.track
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -23,11 +23,11 @@ fun TrackListItem(
     modifier: Modifier = Modifier,
     filename: String,
     duration: String,
-    isFavourite: Boolean,
-    onFavouriteChange: (Boolean) -> Unit,
+    isFavourite: Boolean? = null,
+    onFavouriteChange: ((Boolean) -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier.height(MaterialTheme.dimens.dimen4 * 2),
+        modifier = modifier.heightIn(min = MaterialTheme.dimens.dimen5),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
     ) {
@@ -36,30 +36,34 @@ fun TrackListItem(
         ) {
             Text(
                 text = filename,
+                maxLines = 1,
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.bodyMedium,
             )
 
             Text(
                 text = duration,
+                maxLines = 1,
                 color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
 
-        IconButton(
-            onClick = {
-                onFavouriteChange(!isFavourite)
+        if (isFavourite != null) {
+            IconButton(
+                onClick = {
+                    onFavouriteChange?.invoke(!isFavourite)
+                }
+            ) {
+                Icon(
+                    imageVector = vectorResource(
+                        if (isFavourite) Res.drawable.baseline_star_24
+                        else Res.drawable.baseline_star_border_24
+                    ),
+                    tint = MaterialTheme.colorScheme.tertiary,
+                    contentDescription = "",
+                )
             }
-        ) {
-            Icon(
-                imageVector = vectorResource(
-                    if (isFavourite) Res.drawable.baseline_star_24
-                    else Res.drawable.baseline_star_border_24
-                ),
-                tint = MaterialTheme.colorScheme.tertiary,
-                contentDescription = "",
-            )
         }
     }
 }

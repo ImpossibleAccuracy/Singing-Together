@@ -11,6 +11,8 @@ interface Navigator {
 
     fun navigate(screen: SharedScreen)
 
+    fun replace(screen: SharedScreen)
+
     fun pop()
 
     fun popToRoot()

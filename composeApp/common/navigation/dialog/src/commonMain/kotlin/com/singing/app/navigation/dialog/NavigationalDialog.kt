@@ -1,6 +1,11 @@
 package com.singing.app.navigation.dialog
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -95,11 +100,11 @@ fun <T> NavigationalDialog(
 
                                 onFinish(result)
                             } else {
-                                val nextScreen = (currentScreen as SkippableNavigationalDialogScreen)
-                                    .buildNextPage()
+                                val nextScreen =
+                                    (currentScreen as SkippableNavigationalDialogScreen)
+                                        .buildNextPage()
 
-                                navigator.popUntilRoot()
-                                navigator.replace(nextScreen)
+                                navigator.push(nextScreen)
                             }
                         }
                     )

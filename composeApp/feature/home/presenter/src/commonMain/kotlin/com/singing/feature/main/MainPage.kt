@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
@@ -16,7 +17,6 @@ import com.singing.app.navigation.base.AppPage
 import com.singing.app.navigation.base.extensions.FabScreen
 import com.singing.app.navigation.base.screenModel
 import com.singing.app.navigation.views.ContentContainer
-import com.singing.app.navigation.views.DefaultPagePaddings
 import com.singing.feature.main.presenter.generated.resources.Res
 import com.singing.feature.main.presenter.generated.resources.baseline_mic_24
 import org.jetbrains.compose.resources.vectorResource
@@ -35,7 +35,12 @@ class MainPage : AppPage<MainViewModel>(), FabScreen {
             MainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(DefaultPagePaddings),
+                    .padding(
+                        top = 44.dp,
+                        bottom = 24.dp,
+                        start = 12.dp,
+                        end = 12.dp,
+                    ),
                 viewModel = screenModel,
                 uiState = uiState,
             )

@@ -1,5 +1,6 @@
 package com.singing.feature.recording.setup
 
+import com.singing.feature.recording.setup.usecase.AddRecentTrackUseCase
 import com.singing.feature.recording.setup.usecase.GetFavouriteTracksUseCase
 import com.singing.feature.recording.setup.usecase.GetTrackListUseCase
 import com.singing.feature.recording.setup.usecase.ParseAudioUseCase
@@ -11,4 +12,5 @@ val recordingSetupModule = module {
     factoryOf(::GetFavouriteTracksUseCase)
     factoryOf(::GetTrackListUseCase)
     factoryOf(::ParseAudioUseCase)
+    factoryOf(::AddRecentTrackUseCase)
 }

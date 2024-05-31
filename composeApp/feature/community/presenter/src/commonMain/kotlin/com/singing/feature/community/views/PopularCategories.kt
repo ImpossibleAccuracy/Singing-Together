@@ -1,7 +1,11 @@
 package com.singing.feature.community.views
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
@@ -22,7 +26,15 @@ import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.PublicationTagStatistics
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
-import com.singing.feature.community.presenter.generated.resources.*
+import com.singing.feature.community.presenter.generated.resources.Res
+import com.singing.feature.community.presenter.generated.resources.baseline_navigate_next_24
+import com.singing.feature.community.presenter.generated.resources.common_error_subtitle
+import com.singing.feature.community.presenter.generated.resources.common_error_title
+import com.singing.feature.community.presenter.generated.resources.empty_popular_tags_subtitle
+import com.singing.feature.community.presenter.generated.resources.empty_popular_tags_title
+import com.singing.feature.community.presenter.generated.resources.label_for_last_day
+import com.singing.feature.community.presenter.generated.resources.label_publications_count
+import com.singing.feature.community.presenter.generated.resources.title_popular_categories
 import kotlinx.collections.immutable.PersistentList
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
@@ -31,12 +43,16 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 fun PopularCategories(
     modifier: Modifier = Modifier,
+    listModifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     categories: DataState<PersistentList<PublicationTagStatistics>>,
 ) {
     Column(
         modifier = modifier.cardAppearance(
-            border = BorderStroke(MaterialTheme.dimens.bordersThickness, MaterialTheme.colorScheme.outlineVariant),
+            border = BorderStroke(
+                MaterialTheme.dimens.bordersThickness,
+                MaterialTheme.colorScheme.outlineVariant
+            ),
             shape = shape,
             background = MaterialTheme.colorScheme.surfaceContainerLow,
             padding = PaddingValues(MaterialTheme.dimens.dimen2)
@@ -45,7 +61,7 @@ fun PopularCategories(
     ) {
         CategoriesHeader()
 
-        LazyColumn {
+        LazyColumn(modifier = listModifier) {
             when (categories) {
                 DataState.Loading -> {
                     item {

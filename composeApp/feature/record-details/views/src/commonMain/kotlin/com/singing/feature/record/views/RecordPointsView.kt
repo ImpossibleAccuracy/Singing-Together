@@ -1,7 +1,12 @@
 package com.singing.feature.record.views
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,13 +26,21 @@ import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import com.singing.domain.model.PointAccuracy
 import com.singing.domain.model.RecordPoint
-import com.singing.feature.record.views.generated.resources.*
+import com.singing.feature.record.views.generated.resources.Res
+import com.singing.feature.record.views.generated.resources.common_error_subtitle
+import com.singing.feature.record.views.generated.resources.common_error_title
+import com.singing.feature.record.views.generated.resources.common_no_data_subtitle
+import com.singing.feature.record.views.generated.resources.common_no_data_title
+import com.singing.feature.record.views.generated.resources.label_finish
+import com.singing.feature.record.views.generated.resources.label_start
+import com.singing.feature.record.views.generated.resources.title_record_points
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 internal fun RecordPointsView(
     modifier: Modifier = Modifier,
     points: LazyPagingItems<RecordPoint>,
+    isLazyColumn: Boolean,
     note: (Double) -> String,
 ) {
     Column(
@@ -51,6 +64,7 @@ internal fun RecordPointsView(
 
         RecordTimeline(
             points = points,
+            isLazyColumn = isLazyColumn,
             note = note,
         )
     }
@@ -60,6 +74,7 @@ internal fun RecordPointsView(
 internal fun RecordTimeline(
     modifier: Modifier = Modifier,
     points: LazyPagingItems<RecordPoint>,
+    isLazyColumn: Boolean,
     note: (Double) -> String,
 ) {
     with(points.loadState) {
@@ -85,7 +100,7 @@ internal fun RecordTimeline(
             refresh is LoadState.NotLoading -> {
                 Timeline(
                     modifier = modifier,
-                    isLazyColumn = true,
+                    isLazyColumn = isLazyColumn,
                     nodesCount = points.itemCount,
                     startNode = {
                         Text(
@@ -99,7 +114,10 @@ internal fun RecordTimeline(
                             Loader(
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(MaterialTheme.dimens.dimen3, MaterialTheme.dimens.dimen2)
+                                    .padding(
+                                        MaterialTheme.dimens.dimen3,
+                                        MaterialTheme.dimens.dimen2
+                                    )
                             )
                         } else {
                             Text(

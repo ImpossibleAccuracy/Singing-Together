@@ -1,10 +1,13 @@
 package com.singing.feature.record.views
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import app.cash.paging.compose.LazyPagingItems
+import com.singing.app.common.views.shared.record.RecordCardActionsState
 import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.UserData
@@ -18,6 +21,7 @@ data class RecordDetailsData(
     val player: RecordPlayer?,
     val editable: Boolean,
     val recordPoints: LazyPagingItems<RecordPoint>,
+    val isRecordPointsStatic: Boolean = false,
     val note: (Double) -> String,
 )
 
@@ -34,29 +38,32 @@ fun RecordDetails(
     modifier: Modifier = Modifier,
     data: RecordDetailsData,
     actions: RecordDetailsActions?,
+    availableActions: RecordCardActionsState,
 ) {
     Column(
-        modifier = modifier.padding(vertical = MaterialTheme.dimens.dimen2),
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen2)
     ) {
         RecordDetailsMain(
             data = data,
             actions = actions,
+            availableActions = availableActions,
         )
 
-        Spacer(Modifier.height(MaterialTheme.dimens.dimen1_5))
+        Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)) {
+            if (data.player != null) {
+                RecordDetailsPlayer(
+                    player = data.player,
+                    record = data.record,
+                )
+            }
 
-        if (data.player != null) {
-            RecordDetailsPlayer(
-                player = data.player,
-                record = data.record,
+            RecordPointsView(
+                modifier = Modifier.fillMaxWidth(),
+                points = data.recordPoints,
+                isLazyColumn = !data.isRecordPointsStatic,
+                note = data.note,
             )
         }
-
-        RecordPointsView(
-            modifier = Modifier.fillMaxWidth(),
-            points = data.recordPoints,
-            note = data.note,
-        )
     }
 }

@@ -1,4 +1,4 @@
-CREATE TABLE recentTrackEntity (
+CREATE TABLE IF NOT EXISTS recentTrackEntity (
   id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   createdAt TEXT NOT NULL,
   isFavourute INTEGER NOT NULL,
@@ -6,6 +6,11 @@ CREATE TABLE recentTrackEntity (
   duration INTEGER NOT NULL,
   name TEXT NOT NULL
 );
+
+existsByPath:
+SELECT COUNT(*) > 0
+FROM recentTrackEntity
+WHERE path = ?;
 
 selectAll:
 SELECT *
@@ -16,6 +21,11 @@ SELECT *
 FROM recentTrackEntity
 WHERE isFavourute > 0;
 
+selectById:
+SELECT *
+FROM recentTrackEntity
+WHERE id = ?;
+
 insert:
 INSERT INTO recentTrackEntity(createdAt, isFavourute, path, duration, name)
 VALUES (?, ?, ?, ?, ?);
@@ -25,7 +35,6 @@ UPDATE recentTrackEntity
 SET isFavourute = ?
 WHERE id = ?;
 
-selectById:
-SELECT *
-FROM recentTrackEntity
+deleteById:
+DELETE FROM recentTrackEntity
 WHERE id = ?;

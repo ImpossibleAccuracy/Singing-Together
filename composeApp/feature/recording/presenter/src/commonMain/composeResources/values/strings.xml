@@ -17,5 +17,5 @@
     <string name="label_start_record" />
     <string name="label_no_history" />
     <string name="label_accuracy" />
-    <string name="label_no_track_selected" />
+    <string name="label_no_selected_track_item" />
 </resources>

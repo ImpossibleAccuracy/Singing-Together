@@ -3,6 +3,7 @@ package com.singing.feature.record
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -14,6 +15,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.list.Loader
 import com.singing.app.domain.model.DataState
+import com.singing.app.feature.rememberRecordCardActions
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
@@ -46,10 +48,12 @@ fun RecordDetailScreen(
     val verticalScroll = rememberScrollState()
 
     Column(
-        modifier = modifier.verticalScroll(state = verticalScroll),
+        modifier = Modifier
+            .verticalScroll(state = verticalScroll)
+            .then(modifier),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen4_5),
     ) {
-        when (uiState.record) {
+        when (val state = uiState.record) {
             DataState.Empty -> {
                 EmptyView(
                     title = stringResource(Res.string.common_no_data_title),
@@ -70,15 +74,18 @@ fun RecordDetailScreen(
 
             is DataState.Success -> {
                 RecordDetails(
-                    modifier = modifier.fillMaxSize(),
+                    modifier = modifier
+                        .fillMaxSize()
+                        .padding(vertical = MaterialTheme.dimens.dimen2),
                     data = RecordDetailsData(
                         user = uiState.user,
-                        record = uiState.record.data,
+                        record = state.data,
                         player = player,
                         editable = true,
                         recordPoints = recordPoints,
                         note = viewModel::getNote,
                     ),
+                    availableActions = rememberRecordCardActions(uiState.user, state.data),
                     actions = RecordDetailsActions(
                         uploadRecord = {
                             viewModel.onIntent(RecordDetailIntent.UploadRecord)

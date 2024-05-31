@@ -1,11 +1,24 @@
 package com.singing.app.common.views.base.timeline
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
@@ -71,7 +84,15 @@ fun Timeline(
         ) {
             timelineContent(
                 itemWrapper = { index, item ->
-                    item(key = nodeKey?.invoke(index)) {
+                    item(key = {
+                        when {
+                            startNode != null && index == 0 -> "START_NODE"
+                            finishNode != null && index == nodesCount + (if (startNode == null) 1 else 2) -> "FINISH_NODE"
+
+                            startNode != null && index > 0 -> nodeKey?.invoke(index - 1)
+                            else -> nodeKey?.invoke(index)
+                        }
+                    }) {
                         item()
                     }
                 },

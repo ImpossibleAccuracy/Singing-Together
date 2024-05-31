@@ -12,3 +12,10 @@ expect class ComposeFile {
 }
 
 expect fun openFile(path: String): ComposeFile
+
+expect fun exists(file: ComposeFile): Boolean
+
+expect fun exists(path: String): Boolean
+
+val ComposeFile.exists: Boolean
+    get() = exists(this)

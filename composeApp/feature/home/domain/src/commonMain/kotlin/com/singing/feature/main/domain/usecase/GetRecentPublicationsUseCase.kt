@@ -4,6 +4,7 @@ import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.repository.PublicationRepository
 import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -21,6 +22,8 @@ class GetRecentPublicationsUseCase(
 
         if (data is DataState.Success) {
             emit(data.data.toPersistentList())
+        } else {
+            emit(persistentListOf())
         }
     }
 }

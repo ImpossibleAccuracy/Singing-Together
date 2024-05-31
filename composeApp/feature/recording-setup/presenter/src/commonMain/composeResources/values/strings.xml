@@ -15,7 +15,7 @@
     <string name="action_next" />
 
     <string name="label_pick_from_recent" />
-    <string name="label_no_saved_track" />
+    <string name="label_no_saved_tracks" />
     <string name="label_or" />
     <string name="label_file_name" />
     <string name="label_file_full_path" />

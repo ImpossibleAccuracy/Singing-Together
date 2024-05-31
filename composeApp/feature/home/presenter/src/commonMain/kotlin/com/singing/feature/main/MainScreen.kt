@@ -1,6 +1,12 @@
 package com.singing.feature.main
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +39,9 @@ fun MainScreen(
     val verticalScroll = rememberScrollState()
 
     Column(
-        modifier = modifier.verticalScroll(state = verticalScroll),
+        modifier = Modifier
+            .verticalScroll(state = verticalScroll)
+            .then(modifier),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen4_5),
     ) {
         RecordBanner(
@@ -67,31 +75,29 @@ fun MainScreen(
             )
         }
 
-        if (uiState.latestPublications.isNotEmpty()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 500.dp),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3),
-            ) {
-                RecentTracks(
-                    modifier = Modifier.weight(1f),
-                    tracks = uiState.recentTracks,
-                    onFavouriteChange = { track, isFavourite ->
-                        viewModel.onIntent(
-                            MainIntent.UpdateTrackFavourite(track, isFavourite)
-                        )
-                    }
-                )
-
-                Box(modifier = Modifier.weight(2f)) {
-                    RecentPublicationsListContainer(
-                        uiState = uiState,
-                        navigate = {
-                            navigator.navigate(it)
-                        }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 500.dp),
+            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3),
+        ) {
+            RecentTracks(
+                modifier = Modifier.weight(1f),
+                tracks = uiState.recentTracks,
+                onFavouriteChange = { track, isFavourite ->
+                    viewModel.onIntent(
+                        MainIntent.UpdateTrackFavourite(track, isFavourite)
                     )
                 }
+            )
+
+            Box(modifier = Modifier.weight(2f)) {
+                RecentPublicationsListContainer(
+                    uiState = uiState,
+                    navigate = {
+                        navigator.navigate(it)
+                    }
+                )
             }
         }
     }

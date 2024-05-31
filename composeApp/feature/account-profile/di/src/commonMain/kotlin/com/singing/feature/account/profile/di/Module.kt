@@ -10,6 +10,7 @@ val accountProfileModule = module {
         AccountProfileViewModel(
             accountProfile = param.get(),
             getAccountPublicationsUseCase = get(),
+            getUserInfoUseCase = get(),
         )
     }
 

@@ -12,8 +12,9 @@ val recordListModule = module {
 
     factory { params ->
         RecordListViewModel(
-            initialRecordData = params.get(),
+            initialRecordData = params.getOrNull(),
             userProvider = get(),
+            getRecordPointsUseCase = get(),
             getRecordListUseCase = get(),
             getAnyRecordUseCase = get(),
             findNoteUseCase = get(),

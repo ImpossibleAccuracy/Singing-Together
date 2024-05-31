@@ -1,8 +1,8 @@
 package com.singing.app.common.views.base.track
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,23 +18,23 @@ fun TrackCard(
     data: TrackUiData,
     onFavouriteChange: (Boolean) -> Unit,
 ) {
-    Box(
+    TrackListItem(
         modifier = modifier
+            .height(MaterialTheme.dimens.dimen6)
             .cardAppearance(
-                border = BorderStroke(MaterialTheme.dimens.bordersThickness, MaterialTheme.colorScheme.outlineVariant),
+                border = BorderStroke(
+                    MaterialTheme.dimens.bordersThickness,
+                    MaterialTheme.colorScheme.outlineVariant
+                ),
                 shape = shape,
                 background = MaterialTheme.colorScheme.surfaceContainerLow,
                 padding = PaddingValues(
                     horizontal = MaterialTheme.dimens.dimen1_5,
-                    vertical = MaterialTheme.dimens.dimen1,
                 )
-            )
-    ) {
-        TrackListItem(
-            filename = data.filename,
-            duration = data.duration,
-            isFavourite = data.isFavourite,
-            onFavouriteChange = onFavouriteChange,
-        )
-    }
+            ),
+        filename = data.filename,
+        duration = data.duration,
+        isFavourite = data.isFavourite,
+        onFavouriteChange = onFavouriteChange,
+    )
 }

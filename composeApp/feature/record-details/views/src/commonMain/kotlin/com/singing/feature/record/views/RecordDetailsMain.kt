@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import com.singing.app.common.views.base.account.AccountChip
 import com.singing.app.common.views.shared.record.RecordCardActions
 import com.singing.app.common.views.shared.record.RecordCardActionsCallbacks
+import com.singing.app.common.views.shared.record.RecordCardActionsState
 import com.singing.app.common.views.shared.record.RecordThumb
 import com.singing.app.common.views.shared.record.dialog.DeleteRecordDialog
 import com.singing.app.common.views.shared.record.dialog.PublishRecordDialog
@@ -40,6 +41,7 @@ internal fun RecordDetailsMain(
     modifier: Modifier = Modifier,
     data: RecordDetailsData,
     actions: RecordDetailsActions?,
+    availableActions: RecordCardActionsState,
 ) {
     var recordToPublish by remember { mutableStateOf<RecordData?>(null) }
     var recordToDelete by remember { mutableStateOf<RecordData?>(null) }
@@ -48,7 +50,7 @@ internal fun RecordDetailsMain(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = MaterialTheme.shapes.small)
-            .background(color = MaterialTheme.colorScheme.surfaceContainerHigh)
+            .background(color = MaterialTheme.colorScheme.surfaceContainer)
             .padding(
                 horizontal = MaterialTheme.dimens.dimen3,
                 vertical = MaterialTheme.dimens.dimen2,
@@ -91,6 +93,7 @@ internal fun RecordDetailsMain(
                 ) {
                     RecordCardActions(
                         data = data.record.toRecordCardData(),
+                        state = availableActions,
                         actions = RecordCardActionsCallbacks(
                             onUploadRecord = {
                                 actions.uploadRecord()
@@ -172,13 +175,8 @@ private fun RecordInfo(
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_25)
     ) {
-        val recordName = when (record) {
-            is RecordData.Cover -> record.name
-            is RecordData.Vocal -> null
-        }
-
         Text(
-            text = recordName ?: stringResource(Res.string.label_no_selected_track_item),
+            text = record.name ?: stringResource(Res.string.label_no_selected_track_item),
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.titleLarge,
             maxLines = 1,

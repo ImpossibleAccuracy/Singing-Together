@@ -1,12 +1,22 @@
 package com.singing.feature.community.views.search
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,7 +41,12 @@ import com.singing.app.domain.model.Publication
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
-import com.singing.feature.community.presenter.generated.resources.*
+import com.singing.feature.community.presenter.generated.resources.Res
+import com.singing.feature.community.presenter.generated.resources.error_search_results_subtitle
+import com.singing.feature.community.presenter.generated.resources.error_search_results_title
+import com.singing.feature.community.presenter.generated.resources.subtitle_no_search_result
+import com.singing.feature.community.presenter.generated.resources.title_no_search_result
+import com.singing.feature.community.presenter.generated.resources.title_search_results_placeholder
 import com.singing.feature.community.viewmodel.CommunityUiState
 import org.jetbrains.compose.resources.stringResource
 
@@ -39,6 +54,7 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun PublicationSearchResultContainer(
     modifier: Modifier = Modifier,
+    gridModifier: Modifier = Modifier,
     uiState: CommunityUiState,
     searchResults: LazyPagingItems<Publication>,
     navigate: (SharedScreen) -> Unit,
@@ -62,6 +78,7 @@ fun PublicationSearchResultContainer(
     if (uiState.isSearchResultsInit) {
         PublicationSearchResult(
             modifier = modifier,
+            gridModifier = gridModifier,
             searchResults = searchResults,
             player = mainRecordPlayer,
             playPublication = {

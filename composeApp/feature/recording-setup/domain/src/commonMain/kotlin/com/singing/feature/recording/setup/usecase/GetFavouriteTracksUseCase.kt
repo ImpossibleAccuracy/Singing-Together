@@ -5,6 +5,7 @@ import com.singing.app.domain.repository.RecentTrackRepository
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 
 class GetFavouriteTracksUseCase(
@@ -16,5 +17,8 @@ class GetFavouriteTracksUseCase(
 
     operator fun invoke(limit: Int = DEFAULT_LIMIT): Flow<PersistentList<RecentTrack>> =
         trackRepository.getFavouriteTracks(limit)
+            .combine(trackRepository.getRecentTracks(limit)) { favourites, recent ->
+                favourites.ifEmpty { recent }
+            }
             .map { it.toPersistentList() }
 }

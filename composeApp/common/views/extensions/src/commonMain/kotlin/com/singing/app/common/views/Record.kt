@@ -9,7 +9,7 @@ import kotlin.time.Duration.Companion.seconds
 
 fun RecordData.toRecordCardData() = RecordUiData(
     accuracy = if (this.isTwoLineRecord()) this.accuracy else null,
-    filename = if (this.isTwoLineRecord()) this.name else null,
+    filename = this.name,
     createdAt = HumanReadable.timeAgo(this.createdAt.instant),
     duration = HumanReadable.duration(
         this.duration.milliseconds

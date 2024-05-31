@@ -5,6 +5,6 @@ import org.koin.dsl.module
 
 val publicationDetailsModule = module {
     factory { params ->
-        PublicationDetailsViewModel(params.get(), get(), get())
+        PublicationDetailsViewModel(params.get(), get(), get(), get())
     }
 }

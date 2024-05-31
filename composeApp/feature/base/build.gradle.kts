@@ -22,6 +22,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
+            implementation(project(Modules.App.Common.Views))
             implementation(project(Modules.App.Common.Navigation))
             implementation(project(Modules.App.Domain))
 

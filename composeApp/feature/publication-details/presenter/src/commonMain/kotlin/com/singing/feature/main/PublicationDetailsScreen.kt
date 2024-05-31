@@ -16,6 +16,7 @@ import com.singing.app.common.views.model.actions.PublicationCardActions
 import com.singing.app.common.views.shared.player.PlayerView
 import com.singing.app.common.views.toPlayerController
 import com.singing.app.common.views.toPublicationCardData
+import com.singing.app.feature.rememberRecordCardActions
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
@@ -50,6 +51,7 @@ fun PublicationDetailsScreen(
                 note = viewModel::getNote,
             ),
             actions = null,
+            availableActions = rememberRecordCardActions(uiState.user, uiState.publication.record),
         )
 
         Column(

@@ -82,7 +82,7 @@ data class RecordInfoScreen(
 
             IconLabel(
                 leadingIcon = vectorResource(Res.drawable.baseline_folder_music_black_24dp),
-                label = data.saveData.track?.name ?: stringResource(Res.string.label_no_track_selected),
+                label = data.saveData.track?.name ?: stringResource(Res.string.label_no_selected_track_item),
             )
 
             IconLabel(

@@ -1,7 +1,13 @@
 package com.singing.feature.recording.setup
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,15 +73,15 @@ fun SelectAudioScreen(
                 )
             }
 
-            if (uiState.trackData == null) {
+            if (uiState.isParsing) {
+                Loader(Modifier.fillMaxWidth())
+            } else if (uiState.trackData == null) {
                 AudioChooser(
                     recentTracks = uiState.tracks,
                     onFileSelected = {
                         viewModel.onIntent(SelectAudioIntent.ProcessAudio(it))
                     }
                 )
-            } else if (uiState.isParsing) {
-                Loader(Modifier.fillMaxSize())
             } else {
                 SelectedAudioInfo(
                     audioProcessState = uiState.trackData,
@@ -83,9 +89,7 @@ fun SelectAudioScreen(
                         viewModel.onIntent(SelectAudioIntent.ClearTrackData)
                     },
                     navigateNext = {
-                        navigator.pop()
-
-                        navigator.navigate(SharedScreen.Recording(uiState.trackData, true))
+                        navigator.replace(SharedScreen.Recording(uiState.trackData, true))
                     }
                 )
             }

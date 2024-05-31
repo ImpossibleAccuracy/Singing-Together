@@ -10,17 +10,21 @@ import com.singing.app.domain.usecase.FindRecordPublicationUseCase
 import com.singing.app.domain.usecase.PublishRecordUseCase
 import com.singing.app.domain.usecase.UploadRecordUseCase
 import com.singing.feature.main.domain.usecase.GetRecentPublicationsUseCase
-import com.singing.feature.main.domain.usecase.GetRecentRecordUseCase
+import com.singing.feature.main.domain.usecase.GetRecentRecordListUseCase
 import com.singing.feature.main.domain.usecase.GetRecentTracksUseCase
 import com.singing.feature.main.domain.usecase.UpdateTrackFavouriteUseCase
 import com.singing.feature.main.viewmodel.MainIntent
 import com.singing.feature.main.viewmodel.MainUiState
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
 class MainViewModel(
-    getRecentRecordUseCase: GetRecentRecordUseCase,
+    getRecentRecordListUseCase: GetRecentRecordListUseCase,
     getRecentTracksUseCase: GetRecentTracksUseCase,
     getRecentPublicationsUseCase: GetRecentPublicationsUseCase,
 
@@ -38,7 +42,7 @@ class MainViewModel(
         screenModelScope.launch {
             combine(
                 userProvider.userFlow,
-                getRecentRecordUseCase(),
+                getRecentRecordListUseCase(),
                 getRecentTracksUseCase(),
                 getRecentPublicationsUseCase()
             ) { user, records, tracks, publications ->
@@ -59,8 +63,15 @@ class MainViewModel(
             when (intent) {
                 is MainIntent.UploadRecord -> uploadRecordUseCase(intent.record)
                 is MainIntent.DeleteRecord -> deleteRecordUseCase(intent.record)
-                is MainIntent.PublishRecord -> publishRecordUseCase(intent.record, intent.description)
-                is MainIntent.UpdateTrackFavourite -> updateTrackFavouriteUseCase(intent.track, intent.isFavourite)
+                is MainIntent.PublishRecord -> publishRecordUseCase(
+                    intent.record,
+                    intent.description
+                )
+
+                is MainIntent.UpdateTrackFavourite -> updateTrackFavouriteUseCase(
+                    intent.track,
+                    intent.isFavourite
+                )
             }
         }
     }

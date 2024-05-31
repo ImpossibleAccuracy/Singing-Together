@@ -7,7 +7,7 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetRecentRecordUseCase(
+class GetRecentRecordListUseCase(
     private val recordRepository: RecordRepository,
 ) {
     companion object {
@@ -16,9 +16,6 @@ class GetRecentRecordUseCase(
 
     operator fun invoke(limit: Int = DEFAULT_LIMIT): Flow<PersistentList<RecordData>> =
         recordRepository.getRecentRecords()
-            .map { items ->
-                items.sortedByDescending { it.createdAt.instant }
-            }
             .map {
                 if (it.size <= limit) it
                 else it.subList(0, limit)
