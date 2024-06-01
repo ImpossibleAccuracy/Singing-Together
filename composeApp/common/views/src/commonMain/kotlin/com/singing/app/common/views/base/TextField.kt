@@ -43,7 +43,11 @@ fun AppChipTextField(
         modifier = modifier,
         state = state,
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if (value.isEmpty() || it.isNotEmpty()) {
+                onValueChange(it)
+            }
+        },
         onSubmit = onSubmit,
         readOnlyChips = readOnlyChips,
         shape = shape,

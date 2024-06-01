@@ -99,7 +99,7 @@ class RecordLocalDataSourceImpl(
         appDatabase.recordQueries.updatePublished(1, record.key.localId!!.toLong())
     }
 
-    private suspend fun getRecord(recordId: Int): RecordData =
+    private fun getRecord(recordId: Int): RecordData =
         appDatabase.recordQueries
             .selectOne(recordId.toLong())
             .executeAsOne()
@@ -146,8 +146,6 @@ class RecordLocalDataSourceImpl(
     }
 
     override suspend fun deleteRecord(record: RecordData) {
-        if (!record.isSavedLocally) return
-
         appDatabase.recordQueries.deleteOne(record.key.localId!!.toLong())
     }
 
@@ -155,8 +153,6 @@ class RecordLocalDataSourceImpl(
         page: Int,
         record: RecordData
     ): ApiResult<List<RecordPoint>> = ApiResult {
-        if (!record.isSavedLocally) throw IllegalArgumentException("Record not saved locally")
-
         appDatabase.recordItemQueries
             .selectByRecordId(
                 record.key.localId!!.toLong(),

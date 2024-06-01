@@ -1,7 +1,7 @@
 package com.singing.api.domain
 
 import com.singing.api.domain.exception.ResourceNotFoundException
-import java.util.*
+import java.util.Optional
 
 inline fun <reified T> Optional<T>.require(): T =
     orElseThrow {

@@ -1,10 +1,12 @@
 package com.singing.api.service.record.data
 
+import com.singing.api.constants.Pagination
 import com.singing.api.domain.exception.ParsingCancellationException
 import com.singing.api.domain.model.DocumentEntity
 import com.singing.api.domain.model.RecordItemEntity
 import com.singing.api.domain.repository.DocumentRepository
 import com.singing.api.domain.repository.RecordItemRepository
+import com.singing.api.domain.repository.pagination.OffsetBasedPageRequest
 import com.singing.app.audio.createTrackAudioParser
 import com.singing.app.audio.createVoiceAudioParser
 import com.singing.app.audio.getFileDuration
@@ -16,9 +18,10 @@ import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withTimeout
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.io.File
-import java.util.Optional
+import java.util.*
 import kotlin.math.abs
 import kotlin.time.toKotlinDuration
 
@@ -118,8 +121,15 @@ class RecordDataServiceImpl(
                 )
             }
 
-    override suspend fun recordPoints(recordId: Int, page: Int): List<RecordItemEntity> = TODO()
-//        recordPointRepository.findByRecord_IdOrderByTimeAsc(recordId)
+    override suspend fun recordPoints(recordId: Int, page: Int): List<RecordItemEntity> =
+        recordPointRepository.findByRecord_IdOrderByTimeAsc(
+            id = recordId,
+            pageable = OffsetBasedPageRequest(
+                (Pagination.RECORD_POINT_PAGE_SIZE * page).toLong(),
+                Pagination.RECORD_POINT_PAGE_SIZE,
+                Sort.by(RecordItemEntity::time.name)
+            )
+        )
 
     override suspend fun loadRecordVoiceFile(recordId: Int): DocumentEntity =
         documentRepository.findByVoiceRecordRecords_Id(recordId)

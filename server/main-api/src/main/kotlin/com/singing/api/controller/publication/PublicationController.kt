@@ -23,13 +23,7 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 @RestController
@@ -134,7 +128,7 @@ class PublicationController(
         return publicationService
             .search(
                 page = body.page,
-                tags = body.tags,
+                tags = body.tags?.split(";"),
                 description = body.description,
                 showOwnPublications = body.showOwnPublications,
                 sort = sort,
@@ -163,4 +157,11 @@ class PublicationController(
         publicationTagService
             .getPopularCategories()
             .map(CategoryInfoEntity::toDto)
+
+    @DeleteMapping("/{id}")
+    suspend fun delete(@PathVariable id: Int) {
+        val publication = publicationService.get(id).require()
+
+        publicationService.delete(publication.id!!)
+    }
 }

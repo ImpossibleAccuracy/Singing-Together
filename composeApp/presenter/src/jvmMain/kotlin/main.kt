@@ -6,6 +6,7 @@ import com.singing.app.App
 import com.singing.app.data.setup.PlatformInitParams
 import com.singing.app.data.setup.database.DatabaseParameters
 import com.singing.app.data.setup.file.FileStoreProperties
+import com.singing.app.data.setup.ktor.ApiParameters
 import com.singing.app.di.totalAppModules
 import com.singing.app.presenter.generated.resources.Res
 import com.singing.app.presenter.generated.resources.app_name
@@ -24,13 +25,15 @@ fun main() = application {
             exitApplication()
         },
     ) {
-        window.minimumSize = minSize
+//        window.minimumSize = minSize
 
+        // TODO: move params to BuildConfig
         KoinApplication(
             application = {
                 modules(
                     totalAppModules(
                         init = PlatformInitParams(),
+                        apiParameters = ApiParameters(baseUrl = "http://localhost:8000/"),
                         databaseParameters = DatabaseParameters("jdbc:sqlite:appDatabase.sqlite"),
                         storeProperties = FileStoreProperties(
                             normalStorePath = Path("store/files"),

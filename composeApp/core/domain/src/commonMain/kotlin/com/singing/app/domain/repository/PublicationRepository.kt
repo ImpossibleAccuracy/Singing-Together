@@ -15,9 +15,11 @@ interface PublicationRepository {
 
     suspend fun getRandomPublication(): DataState<Publication>
 
-    suspend fun getRecordPublication(record: RecordData): Publication?
+    suspend fun getRecordPublication(record: RecordData): Publication
 
     suspend fun getLatestUserPublications(limit: Int): DataState<List<Publication>>
 
     fun getAccountPublications(accountId: Int): Flow<PagingData<Publication>>
+
+    suspend fun deletePublication(publication: Publication)
 }

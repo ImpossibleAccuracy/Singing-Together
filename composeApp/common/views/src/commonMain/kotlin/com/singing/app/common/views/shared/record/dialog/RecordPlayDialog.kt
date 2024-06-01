@@ -18,6 +18,7 @@ import com.singing.app.common.views.model.state.RecordUiData
 import com.singing.app.common.views.model.state.UserUiData
 import com.singing.app.common.views.views.generated.resources.*
 import com.singing.app.ui.screen.dimens
+import com.singing.app.ui.screen.icon
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
@@ -110,16 +111,13 @@ private fun RecordPlayInfo(
 
         IconLabel(
             leadingIcon = vectorResource(Res.drawable.baseline_folder_music_black_24dp),
-            label = when (record.filename) {
-                null -> stringResource(Res.string.label_no_selected_track_item)
-                else -> record.filename
-            }
+            label = record.filename ?: stringResource(Res.string.label_no_selected_track_item)
         )
 
         if (creator != null) {
             IconLabel(
                 leading = {
-                    UserAvatar(avatar = creator.avatar)
+                    UserAvatar(avatar = creator.avatar, size = MaterialTheme.dimens.icon)
                 },
                 label = creator.username,
             )

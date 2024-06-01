@@ -3,6 +3,7 @@ package com.singing.app.di
 import com.singing.app.data.setup.PlatformInitParams
 import com.singing.app.data.setup.database.DatabaseParameters
 import com.singing.app.data.setup.file.FileStoreProperties
+import com.singing.app.data.setup.ktor.ApiParameters
 import com.singing.app.di.module.dataModule
 import com.singing.app.di.module.useCaseModule
 import com.singing.app.domain.model.UserData
@@ -22,6 +23,7 @@ import org.koin.dsl.module
 
 fun totalAppModules(
     init: PlatformInitParams,
+    apiParameters: ApiParameters,
     databaseParameters: DatabaseParameters,
     storeProperties: FileStoreProperties,
 ): List<Module> = mutableListOf<Module>().apply {
@@ -47,7 +49,14 @@ fun totalAppModules(
     )
 
     add(useCaseModule)
-    add(dataModule(init, databaseParameters, storeProperties))
+    add(
+        dataModule(
+            init = init,
+            apiParameters = apiParameters,
+            databaseParameters = databaseParameters,
+            storeProperties = storeProperties
+        )
+    )
 
     add(mainModule)
     add(recordingModule)

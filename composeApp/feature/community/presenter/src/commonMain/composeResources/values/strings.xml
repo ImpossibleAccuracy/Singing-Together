@@ -21,8 +21,6 @@
     <string name="title_popular_categories"/>
     <string name="title_random_latest_publication"/>
     <string name="title_search_publications"/>
-    <string name="title_no_search_result"/>
-    <string name="subtitle_no_search_result"/>
 
     <string name="action_lets_start"/>
     <string name="action_show_my_publications"/>

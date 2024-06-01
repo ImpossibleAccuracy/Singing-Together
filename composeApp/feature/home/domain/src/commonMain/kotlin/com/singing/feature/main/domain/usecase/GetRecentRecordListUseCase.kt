@@ -11,7 +11,7 @@ class GetRecentRecordListUseCase(
     private val recordRepository: RecordRepository,
 ) {
     companion object {
-        const val DEFAULT_LIMIT = 15
+        const val DEFAULT_LIMIT = 6
     }
 
     operator fun invoke(limit: Int = DEFAULT_LIMIT): Flow<PersistentList<RecordData>> =

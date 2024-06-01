@@ -2,7 +2,8 @@ package com.singing.feature.account.profile.views
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import com.singing.app.common.views.toRecordCardData
 import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.UserData
+import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.screen.largeIcon
 import com.singing.feature.account.profile.presenter.generated.resources.*
@@ -32,9 +34,8 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
 @Suppress("FunctionName")
-fun LazyListScope.AccountPublications(
+fun LazyStaggeredGridScope.AccountPublications(
     account: UserData,
-    recordPlayer: RecordPlayer,
     publications: LazyPagingItems<Publication>,
     playPublication: (Publication) -> Unit,
     openPublicationDetails: (Publication) -> Unit,
@@ -42,13 +43,13 @@ fun LazyListScope.AccountPublications(
     with(publications.loadState) {
         when {
             refresh is LoadState.Loading -> {
-                item {
+                item(span = StaggeredGridItemSpan.FullLine) {
                     Loader()
                 }
             }
 
             refresh is LoadState.Error || append is LoadState.Error -> {
-                item {
+                item(span = StaggeredGridItemSpan.FullLine) {
                     EmptyView(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -73,19 +74,22 @@ fun LazyListScope.AccountPublications(
             }
 
             refresh is LoadState.NotLoading && publications.itemCount < 1 -> {
-                item {
+                item(span = StaggeredGridItemSpan.FullLine) {
                     NoPublications(account = account)
                 }
             }
 
             refresh is LoadState.NotLoading -> {
-                item(
+                item(span = StaggeredGridItemSpan.FullLine,
                     key = publications.itemKey { it.id },
-                    contentType = publications.itemContentType { "MAIN" }) {
+                    contentType = publications.itemContentType { "MAIN" }
+                ) {
+                    val player = rememberRecordPlayer()
+
                     val item = publications[0]!!
 
                     MainPublicationCard(
-                        playerController = recordPlayer.toPlayerController(item.record),
+                        playerController = player.toPlayerController(item.record),
                         recordUiData = item.record.toRecordCardData(),
                         publicationData = item.toPublicationCardData(false),
                         actions = PublicationCardActions(
@@ -109,7 +113,7 @@ fun LazyListScope.AccountPublications(
                         val item = publications[index + 1]!!
 
                         PublicationCard(
-                            data = item.toPublicationCardData(false),
+                            data = item.toPublicationCardData(true),
                             actions = PublicationCardActions(
                                 onPlay = {
                                     playPublication(item)
@@ -123,7 +127,7 @@ fun LazyListScope.AccountPublications(
                 }
 
                 if (append is LoadState.Loading) {
-                    item {
+                    item(span = StaggeredGridItemSpan.FullLine) {
                         Loader(
                             Modifier
                                 .fillMaxWidth()

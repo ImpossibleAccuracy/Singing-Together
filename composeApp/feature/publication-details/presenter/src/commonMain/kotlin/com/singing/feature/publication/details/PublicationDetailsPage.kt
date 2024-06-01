@@ -1,4 +1,4 @@
-package com.singing.feature.main
+package com.singing.feature.publication.details
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

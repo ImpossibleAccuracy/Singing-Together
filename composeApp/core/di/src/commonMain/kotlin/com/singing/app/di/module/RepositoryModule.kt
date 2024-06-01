@@ -20,7 +20,7 @@ import org.koin.core.module.dsl.new
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<RecordPlayer> { new(::RecordPlayerImpl) }
+    factory<RecordPlayer> { new(::RecordPlayerImpl) }
 
     single<AccountRepository> { new(::AccountRepositoryImpl) }
     single<NoteRepository> { new(::NoteRepositoryImpl) }

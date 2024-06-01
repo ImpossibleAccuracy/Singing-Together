@@ -21,6 +21,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.singing.app.ui.screen.WindowSize
+import com.singing.app.ui.screen.actualScreenSize
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.theme.extended.extended
 import com.singing.app.ui.utils.cardAppearance
@@ -102,12 +104,14 @@ fun WelcomeView(
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3, Alignment.Bottom),
             horizontalAlignment = Alignment.End,
         ) {
-            Text(
-                text = stringResource(Res.string.subtitle_community_banner),
-                color = MaterialTheme.colorScheme.onPrimary,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.End,
-            )
+            if (MaterialTheme.actualScreenSize == WindowSize.EXPANDED) {
+                Text(
+                    text = stringResource(Res.string.subtitle_community_banner),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = MaterialTheme.typography.titleLarge,
+                    textAlign = TextAlign.End,
+                )
+            }
 
             FilledTonalButton(
                 modifier = Modifier

@@ -19,17 +19,16 @@ data class RecordDetailsData(
     val user: UserData?,
     val record: RecordData,
     val player: RecordPlayer?,
-    val editable: Boolean,
     val recordPoints: LazyPagingItems<RecordPoint>,
     val isRecordPointsStatic: Boolean = false,
     val note: (Double) -> String,
 )
 
 data class RecordDetailsActions(
-    val uploadRecord: () -> Unit,
-    val navigatePublication: () -> Unit,
-    val publishRecord: (String) -> Unit,
-    val deleteRecord: () -> Unit,
+    val uploadRecord: (() -> Unit)? = null,
+    val navigatePublication: (() -> Unit)? = null,
+    val publishRecord: ((String) -> Unit)? = null,
+    val deleteRecord: (() -> Unit)? = null,
 )
 
 

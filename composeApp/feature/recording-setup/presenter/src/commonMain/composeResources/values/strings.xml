@@ -13,6 +13,7 @@
     <string name="action_select_track" />
     <string name="action_replace" />
     <string name="action_next" />
+    <string name="action_dismiss" />
 
     <string name="label_pick_from_recent" />
     <string name="label_no_saved_tracks" />

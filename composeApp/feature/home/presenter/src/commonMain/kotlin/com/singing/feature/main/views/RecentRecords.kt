@@ -25,9 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.record.RecordCard
+import com.singing.app.common.views.base.record.recordCardAppearance
 import com.singing.app.common.views.shared.record.MainRecordCard
 import com.singing.app.common.views.shared.record.RecordCardActionsCallbacks
 import com.singing.app.common.views.shared.record.dialog.DeleteRecordDialog
@@ -306,12 +308,15 @@ private fun RecordsGrid(
             val item = data.records[index + offset]
 
             RecordCard(
-                data = item.toRecordCardData(),
-                containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                modifier = Modifier.recordCardAppearance(
+                    showBorder = true,
+                    containerColor = MaterialTheme.colorScheme.surfaceContainer,
+                    onClick = {
+                        actions.navigateRecordDetails(item)
+                    },
+                ),
                 accuracyContainerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                onClick = {
-                    actions.navigateRecordDetails(item)
-                }
+                data = item.toRecordCardData(),
             )
         }
     }

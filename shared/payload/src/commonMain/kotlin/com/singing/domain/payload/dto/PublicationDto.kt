@@ -1,14 +1,13 @@
 package com.singing.domain.payload.dto
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.time.Instant
 
 class PublicationDto(
     @JsonProperty("i")
     var id: Int? = null,
 
     @JsonProperty("c")
-    var createdAt: Instant? = null,
+    var createdAt: String? = null,
 
     @JsonProperty("d")
     var description: String? = null,

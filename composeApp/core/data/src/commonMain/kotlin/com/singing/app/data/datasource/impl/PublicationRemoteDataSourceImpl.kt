@@ -15,12 +15,9 @@ import com.singing.domain.model.PublicationSort
 import com.singing.domain.payload.dto.CategoryInfoDto
 import com.singing.domain.payload.dto.PublicationDto
 import com.singing.domain.payload.request.PublishRecordRequest
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
-import io.ktor.client.request.parameter
-import io.ktor.client.request.post
-import io.ktor.client.request.setBody
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
 import pro.respawn.apiresult.ApiResult
 
 class PublicationRemoteDataSourceImpl(
@@ -30,7 +27,7 @@ class PublicationRemoteDataSourceImpl(
 ) : PublicationDataSource.Remote {
     private suspend fun mapPublicationDto(source: PublicationDto): Publication = map(
         source,
-        localRecordDataSource.getLocalIdByRemoteId(source.id!!)
+        localRecordDataSource.getLocalIdByRemoteId(source.record!!.id!!)
     )
 
     override suspend fun create(
@@ -65,7 +62,7 @@ class PublicationRemoteDataSourceImpl(
                 authHeader(userProvider)
 
                 parameter("page", page)
-                filters.tags?.let { parameter("tags", it) }
+                filters.tags?.let { parameter("tags", it.joinToString(";")) }
                 filters.description?.let { parameter("description", it) }
                 parameter("showOwnPublications", filters.showOwnPublications)
                 parameter("sort", filters.sort)
@@ -137,5 +134,11 @@ class PublicationRemoteDataSourceImpl(
             }
             .body<List<CategoryInfoDto>>()
             .map(::map)
+    }
+
+    override suspend fun deletePublication(publicationId: Int) {
+        httpClient.delete(ApiScheme.Publication.DeletePublication(publicationId)) {
+            authHeader(userProvider)
+        }
     }
 }

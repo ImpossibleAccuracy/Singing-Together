@@ -1,6 +1,7 @@
 package com.singing.app.common.views.base.account
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -21,20 +22,22 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun UserAvatar(
+    modifier: Modifier = Modifier,
     size: Dp = MaterialTheme.dimens.largeIcon,
-    modifier: Modifier = Modifier.clip(shape = RoundedCornerShape(50)),
     avatar: String?
 ) {
     Box(
         modifier = Modifier
             .size(size)
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.colorScheme.surfaceContainerHigh)
             .then(modifier)
     ) {
         if (avatar == null) {
             Icon(
                 modifier = Modifier.fillMaxSize(),
                 imageVector = vectorResource(Res.drawable.baseline_person_24),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 contentDescription = "Avatar",
             )
         } else {

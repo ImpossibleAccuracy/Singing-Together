@@ -2,6 +2,7 @@ package com.singing.app.common.views.base
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -65,6 +66,8 @@ fun IconLabel(
         leading?.invoke()
 
         Text(
+            modifier = Modifier.fillMaxWidth(),
+            maxLines = 1,
             text = label,
             color = color,
             style = MaterialTheme.typography.labelLarge,

@@ -11,6 +11,7 @@ import com.singing.feature.recording.setup.usecase.GetTrackListUseCase
 import com.singing.feature.recording.setup.usecase.ParseAudioUseCase
 import com.singing.feature.recording.setup.viewmodel.SelectAudioIntent
 import com.singing.feature.recording.setup.viewmodel.SelectAudioUiState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -42,13 +43,13 @@ class SelectAudioViewModel(
     }
 
     fun onIntent(intent: SelectAudioIntent) {
-        screenModelScope.launch {
-            when (intent) {
-                SelectAudioIntent.ClearTrackData -> {
-                    _uiState.update { it.copy(trackData = null) }
-                }
+        when (intent) {
+            SelectAudioIntent.ClearTrackData -> {
+                _uiState.update { it.copy(trackData = null) }
+            }
 
-                is SelectAudioIntent.ProcessAudio -> {
+            is SelectAudioIntent.ProcessAudio -> {
+                screenModelScope.launch(Dispatchers.Default) {
                     processAudio(intent.file)
                 }
             }

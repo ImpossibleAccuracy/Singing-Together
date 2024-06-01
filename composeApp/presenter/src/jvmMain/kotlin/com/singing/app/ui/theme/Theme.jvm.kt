@@ -2,9 +2,8 @@ package com.singing.app.ui.theme
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.platform.LocalWindowInfo
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 
 @Composable
 internal actual fun SystemAppearance(scheme: ExtendedMaterialTheme, isDark: Boolean) {
@@ -18,8 +17,8 @@ internal actual fun getAppTheme(isDark: Boolean): ExtendedMaterialTheme =
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-internal actual fun getScreenSize(): DpSize =
-    DpSize(
-        width = LocalWindowInfo.current.containerSize.width.dp,
-        height = LocalWindowInfo.current.containerSize.height.dp,
+internal actual fun getScreenSize(): Size =
+    Size(
+        width = LocalWindowInfo.current.containerSize.width.toFloat(),
+        height = LocalWindowInfo.current.containerSize.height.toFloat(),
     )

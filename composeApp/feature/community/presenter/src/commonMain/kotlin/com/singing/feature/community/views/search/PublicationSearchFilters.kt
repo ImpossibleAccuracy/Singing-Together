@@ -14,11 +14,10 @@ import androidx.compose.ui.unit.em
 import com.dokar.chiptextfield.Chip
 import com.dokar.chiptextfield.ChipTextFieldState
 import com.singing.app.common.views.base.AppChipTextField
-import com.singing.feature.community.viewmodel.CommunityIntent
-import com.singing.feature.community.viewmodel.CommunityUiState
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.utils.cardAppearance
 import com.singing.domain.model.PublicationSort
+import com.singing.feature.community.model.PublicationsSearchFilters
 import com.singing.feature.community.presenter.generated.resources.*
 import kotlinx.collections.immutable.toImmutableList
 import org.jetbrains.compose.resources.stringResource
@@ -59,86 +58,71 @@ data class PublicationSearchActions(
 @Composable
 fun PublicationSearchFiltersContainer(
     modifier: Modifier = Modifier,
-    uiState: CommunityUiState,
-    newIntent: (CommunityIntent) -> Unit,
+    searchFilters: PublicationsSearchFilters,
+    onFiltersUpdate: (PublicationsSearchFilters) -> Unit,
 ) {
-    val filters = uiState.searchFilters
-
-    val tags by remember {
-        derivedStateOf {
-            ChipTextFieldState(filters.tags.map(::Chip))
-        }
+    val tags = remember(searchFilters.tags) {
+        ChipTextFieldState(searchFilters.tags.map(::Chip))
     }
 
     PublicationSearchFilters(
         modifier = modifier,
         data = PublicationSearchData(
-            currentTagText = filters.currentTagText,
+            currentTagText = searchFilters.currentTagText,
             tags = tags,
-            showUserPublications = filters.showOwnPublications,
-            sortType = filters.sort,
-            description = filters.description,
+            showUserPublications = searchFilters.showOwnPublications,
+            sortType = searchFilters.sort,
+            description = searchFilters.description,
         ),
         actions = PublicationSearchActions(
             onTagTextUpdated = {
-                newIntent(
-                    CommunityIntent.UpdateSearchFilters(
-                        uiState.searchFilters.copy(
-                            currentTagText = it
-                        )
+                onFiltersUpdate(
+                    searchFilters.copy(
+                        currentTagText = it
                     )
                 )
             },
             onTagSubmit = {
-                newIntent(
-                    CommunityIntent.UpdateSearchFilters(
-                        uiState.searchFilters.copy(
-                            tags = filters.tags
-                                .plus(it)
-                                .toImmutableList()
-                        )
+                onFiltersUpdate(
+                    searchFilters.copy(
+                        currentTagText = "",
+                        tags = searchFilters.tags
+                            .plus(it)
+                            .toImmutableList()
                     )
                 )
 
                 Chip(it)
             },
             onTagRemove = { chip ->
-                newIntent(
-                    CommunityIntent.UpdateSearchFilters(
-                        uiState.searchFilters.copy(
-                            tags = filters.tags
-                                .filter { it != chip.text }
-                                .toImmutableList()
-                        )
+                onFiltersUpdate(
+                    searchFilters.copy(
+                        tags = searchFilters.tags
+                            .filter { it != chip.text }
+                            .toImmutableList()
                     )
                 )
 
                 tags.removeChip(chip)
             },
             onShowUserPublicationsChanged = {
-                newIntent(
-                    CommunityIntent.UpdateSearchFilters(
-                        uiState.searchFilters.copy(
-                            showOwnPublications = it
-                        )
+                onFiltersUpdate(
+                    searchFilters.copy(
+                        showOwnPublications = it
                     )
                 )
             },
             onSortTypeChanged = {
-                newIntent(
-                    CommunityIntent.UpdateSearchFilters(
-                        uiState.searchFilters.copy(
-                            sort = it
-                        )
+                onFiltersUpdate(
+                    searchFilters.copy(
+                        sort = it
                     )
                 )
             },
             onDescriptionUpdated = {
-                newIntent(
-                    CommunityIntent.UpdateSearchFilters(
-                        uiState.searchFilters.copy(
-                            description = it
-                        )
+                onFiltersUpdate(
+                    searchFilters.copy(
+                        description = it
                     )
                 )
             }

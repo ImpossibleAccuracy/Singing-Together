@@ -11,6 +11,7 @@ import com.singing.audio.taros.input.TarosDspInput
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.yield
 
 class TarosDspParser<T>(
     private val params: AudioParams,

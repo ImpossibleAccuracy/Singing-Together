@@ -1,12 +1,6 @@
 package com.singing.feature.community.views.search
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridItemSpan
@@ -36,17 +30,11 @@ import com.singing.app.common.views.toPlayerController
 import com.singing.app.common.views.toPublicationCardData
 import com.singing.app.common.views.toRecordCardData
 import com.singing.app.common.views.toUserUiData
-import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.Publication
 import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
-import com.singing.feature.community.presenter.generated.resources.Res
-import com.singing.feature.community.presenter.generated.resources.error_search_results_subtitle
-import com.singing.feature.community.presenter.generated.resources.error_search_results_title
-import com.singing.feature.community.presenter.generated.resources.subtitle_no_search_result
-import com.singing.feature.community.presenter.generated.resources.title_no_search_result
-import com.singing.feature.community.presenter.generated.resources.title_search_results_placeholder
+import com.singing.feature.community.presenter.generated.resources.*
 import com.singing.feature.community.viewmodel.CommunityUiState
 import org.jetbrains.compose.resources.stringResource
 
@@ -76,25 +64,90 @@ fun PublicationSearchResultContainer(
     }
 
     if (uiState.isSearchResultsInit) {
-        PublicationSearchResult(
+        Column(
             modifier = modifier,
-            gridModifier = gridModifier,
-            searchResults = searchResults,
-            player = mainRecordPlayer,
-            playPublication = {
-                publicationToPlay = it
-            },
-            onAuthorClick = {
-                navigate(
-                    SharedScreen.UserProfile(it.author)
-                )
-            },
-            navigatePublicationDetails = {
-                navigate(
-                    SharedScreen.PublicationDetails(it)
-                )
-            },
-        )
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
+        ) {
+            SearchResults(
+                contentPadding = PaddingValues(),
+                searchResults = searchResults
+            ) { padding, loader ->
+                LazyVerticalStaggeredGrid(
+                    modifier = gridModifier,
+                    contentPadding = padding,
+                    columns = StaggeredGridCells.Adaptive(minSize = 360.dp),
+                    verticalItemSpacing = MaterialTheme.dimens.dimen1_5,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
+                ) {
+                    if (searchResults.itemCount > 0) {
+                        item(
+                            span = StaggeredGridItemSpan.FullLine,
+                            contentType = "PrimaryResult"
+                        ) {
+                            val mainPublication = searchResults[0]
+
+                            if (mainPublication != null) {
+                                MainPublicationCard(
+                                    playerController = mainRecordPlayer.toPlayerController(mainPublication.record),
+                                    recordUiData = mainPublication.record.toRecordCardData(),
+                                    publicationData = mainPublication.toPublicationCardData(false),
+                                    actions = PublicationCardActions(
+                                        onAuthorClick = {
+                                            navigate(
+                                                SharedScreen.UserProfile(mainPublication.author)
+                                            )
+                                        },
+                                        navigatePublicationDetails = {
+                                            navigate(
+                                                SharedScreen.PublicationDetails(mainPublication)
+                                            )
+                                        },
+                                    ),
+                                )
+                            }
+                        }
+                    }
+
+                    if (searchResults.itemCount > 1) {
+                        items(
+                            count = searchResults.itemCount - 1,
+                            key = searchResults.itemKey(),
+                            contentType = searchResults.itemContentType()
+                        ) { index ->
+                            val item = searchResults[index + 1]
+
+                            if (item != null) {
+                                PublicationCard(
+                                    modifier = publicationCardAppearance(
+                                        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                                    ),
+                                    data = item.toPublicationCardData(true),
+                                    actions = PublicationCardActions(
+                                        onPlay = {
+                                            publicationToPlay = item
+                                        },
+                                        onAuthorClick = {
+                                            navigate(
+                                                SharedScreen.UserProfile(item.author)
+                                            )
+                                        },
+                                        navigatePublicationDetails = {
+                                            navigate(
+                                                SharedScreen.PublicationDetails(item)
+                                            )
+                                        },
+                                    ),
+                                )
+                            }
+                        }
+                    }
+
+                    item {
+                        loader()
+                    }
+                }
+            }
+        }
     } else {
         Text(
             text = stringResource(Res.string.title_search_results_placeholder)
@@ -102,92 +155,6 @@ fun PublicationSearchResultContainer(
     }
 }
 
-
-@Composable
-fun PublicationSearchResult(
-    modifier: Modifier = Modifier,
-    gridModifier: Modifier = Modifier,
-    player: RecordPlayer,
-    searchResults: LazyPagingItems<Publication>,
-    playPublication: (Publication) -> Unit,
-    onAuthorClick: (Publication) -> Unit,
-    navigatePublicationDetails: (Publication) -> Unit,
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5),
-    ) {
-        SearchResults(
-            contentPadding = PaddingValues(),
-            searchResults = searchResults
-        ) { padding, loader ->
-            LazyVerticalStaggeredGrid(
-                modifier = gridModifier,
-                contentPadding = padding,
-                columns = StaggeredGridCells.Adaptive(minSize = 360.dp),
-                verticalItemSpacing = MaterialTheme.dimens.dimen1_5,
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1_5)
-            ) {
-                if (searchResults.itemCount > 0) {
-                    item(
-                        span = StaggeredGridItemSpan.FullLine,
-                        contentType = "PrimaryResult"
-                    ) {
-                        val mainPublication = searchResults[0]
-
-                        if (mainPublication != null) {
-                            MainPublicationCard(
-                                playerController = player.toPlayerController(mainPublication.record),
-                                recordUiData = mainPublication.record.toRecordCardData(),
-                                publicationData = mainPublication.toPublicationCardData(false),
-                                actions = PublicationCardActions(
-                                    onAuthorClick = {
-                                        onAuthorClick(mainPublication)
-                                    },
-                                    navigatePublicationDetails = {
-                                        navigatePublicationDetails(mainPublication)
-                                    },
-                                ),
-                            )
-                        }
-                    }
-                }
-
-                if (searchResults.itemCount > 1) {
-                    items(
-                        count = searchResults.itemCount - 1,
-                        key = searchResults.itemKey(),
-                        contentType = searchResults.itemContentType()
-                    ) { index ->
-                        val item = searchResults[index + 1]
-
-                        if (item != null) {
-                            PublicationCard(
-                                modifier = publicationCardAppearance(
-                                    containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-                                ),
-                                data = item.toPublicationCardData(false),
-                                actions = PublicationCardActions(
-                                    onPlay = {
-                                        playPublication(item)
-                                    },
-                                    onAuthorClick = {
-                                        onAuthorClick(item)
-                                    },
-                                    navigatePublicationDetails = {
-                                        navigatePublicationDetails(item)
-                                    }
-                                ),
-                            )
-                        }
-                    }
-                }
-
-                item { loader() }
-            }
-        }
-    }
-}
 
 @Composable
 private fun SearchResults(
@@ -201,6 +168,7 @@ private fun SearchResults(
                 Loader(
                     Modifier
                         .fillMaxSize()
+                        .heightIn(min = 600.dp)
                         .padding(contentPadding)
                 )
             }
@@ -229,8 +197,8 @@ private fun SearchResults(
                             fontWeight = FontWeight.Bold,
                         )
                     },
-                    title = stringResource(Res.string.title_no_search_result),
-                    subtitle = stringResource(Res.string.subtitle_no_search_result),
+                    title = stringResource(Res.string.empty_search_results_title),
+                    subtitle = stringResource(Res.string.empty_search_results_subtitle),
                 )
             }
 

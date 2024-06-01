@@ -8,7 +8,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -27,17 +26,22 @@ import org.jetbrains.compose.resources.vectorResource
 @Composable
 @ReadOnlyComposable
 fun publicationCardAppearance(
+    modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surface,
     shape: Shape = MaterialTheme.shapes.medium,
     padding: PaddingValues = PaddingValues(MaterialTheme.dimens.dimen1_5)
-) = Modifier.cardAppearance(
-    border = BorderStroke(MaterialTheme.dimens.bordersThickness, MaterialTheme.colorScheme.outlineVariant),
+) = modifier.cardAppearance(
+    border = BorderStroke(
+        MaterialTheme.dimens.bordersThickness,
+        MaterialTheme.colorScheme.outlineVariant
+    ),
     shape = shape,
     background = containerColor,
     padding = padding,
 )
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun PublicationCard(
     modifier: Modifier = publicationCardAppearance(),
@@ -51,9 +55,9 @@ fun PublicationCard(
         slotAfterAuthor = {},
         slotAfterDescription = {
             if (data.showActions) {
-                Row(
+                FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
                 ) {
                     AssistChip(
                         label = {
@@ -67,8 +71,6 @@ fun PublicationCard(
                             actions.navigatePublicationDetails()
                         }
                     )
-
-                    Spacer(Modifier.width(MaterialTheme.dimens.dimen1))
 
                     AssistChip(
                         label = {

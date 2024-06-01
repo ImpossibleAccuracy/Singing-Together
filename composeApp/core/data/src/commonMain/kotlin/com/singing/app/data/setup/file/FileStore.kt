@@ -11,10 +11,16 @@ expect class FileStore(init: PlatformInitParams, properties: FileStoreProperties
 
     fun copyToStore(data: ComposeFile): ComposeFile
 
+    fun getFile(
+        recordId: Int,
+        type: String,
+    ): ComposeFile?
+
     // TODO: cache files must be deleted after user leaves application
     fun createRecordTempFile(
         recordId: Int,
         type: String,
+        extension: String,
         data: InputStream
     ): ComposeFile
 }

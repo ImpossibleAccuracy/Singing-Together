@@ -23,7 +23,6 @@ import com.singing.domain.payload.dto.RecordDto
 import com.singing.domain.payload.dto.RecordPointDto
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.datetime.Instant
-import kotlinx.datetime.toKotlinInstant
 
 fun map(source: AccountDto): UserData =
     UserData(
@@ -35,7 +34,7 @@ fun map(source: AccountDto): UserData =
 fun map(source: AccountInfoDto): UserInfo =
     UserInfo(
         publicationsCount = source.publicationsCount!!,
-        registeredAt = StableInstant(source.registeredAt!!.toKotlinInstant()),
+        registeredAt = StableInstant(Instant.parse(source.registeredAt!!)),
     )
 
 fun map(source: CategoryInfoDto): PublicationTagStatistics =
@@ -48,7 +47,7 @@ fun map(source: PublicationDto, localRecordId: Int?): Publication =
     Publication(
         id = source.id!!,
         author = map(source.author!!),
-        createdAt = StableInstant(source.createdAt!!.toKotlinInstant()),
+        createdAt = StableInstant(Instant.parse(source.createdAt!!)),
         description = source.description!!,
         record = map(source.record!!, localRecordId),
         tags = source.tags!!
@@ -63,7 +62,7 @@ fun map(source: RecordDto, localId: Int?): RecordData =
                 localId = localId,
                 remoteId = source.id!!,
             ),
-            createdAt = StableInstant(source.createdAt!!.toKotlinInstant()),
+            createdAt = StableInstant(Instant.parse(source.createdAt!!)),
             name = source.title,
             duration = source.duration!!,
             isPublished = source.isPublished!!,
@@ -75,7 +74,7 @@ fun map(source: RecordDto, localId: Int?): RecordData =
                 localId = localId,
                 remoteId = source.id!!,
             ),
-            createdAt = StableInstant(source.createdAt!!.toKotlinInstant()),
+            createdAt = StableInstant(Instant.parse(source.createdAt!!)),
             name = source.title,
             accuracy = source.accuracy!!.toInt(),
             duration = source.duration!!,

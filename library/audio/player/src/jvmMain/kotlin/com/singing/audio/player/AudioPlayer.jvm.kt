@@ -3,6 +3,7 @@ package com.singing.audio.player
 import com.singing.app.base.ComposeFile
 import com.singing.audio.waitReady
 import javafx.scene.media.Media
+import javafx.scene.media.MediaException
 import javafx.scene.media.MediaPlayer
 import javafx.util.Duration
 import kotlinx.coroutines.channels.awaitClose
@@ -34,7 +35,12 @@ actual class AudioPlayer {
 
         prevFile = file
 
-        val media = Media(file.uri.toString())
+        val media = try {
+            Media(file.uri.toString())
+        } catch (e: MediaException) {
+            println("Error while playing ${file.uri}")
+            throw e
+        }
 
         player = MediaPlayer(media)
         player!!.waitReady()

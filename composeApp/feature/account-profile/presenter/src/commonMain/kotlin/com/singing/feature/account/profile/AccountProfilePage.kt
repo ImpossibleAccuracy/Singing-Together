@@ -1,7 +1,6 @@
 package com.singing.feature.account.profile
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -26,9 +25,8 @@ data class AccountProfilePage(
             val uiState by screenModel.uiState.collectAsState()
 
             AccountProfileScreen(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(DefaultPagePaddings),
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = DefaultPagePaddings,
                 viewModel = screenModel,
                 uiState = uiState,
             )

@@ -9,7 +9,7 @@ import java.time.Instant
 import java.util.*
 
 interface PublicationRepository : JpaRepository<PublicationEntity, Int>, JpaSpecificationExecutor<PublicationEntity> {
-    fun findByAccount_Id(id: Int, sort: Sort): List<PublicationEntity>
+    fun findByAccount_Id(id: Int, pageable: Pageable): List<PublicationEntity>
 
     fun findByRecord_Id(id: Int): Optional<PublicationEntity>
 

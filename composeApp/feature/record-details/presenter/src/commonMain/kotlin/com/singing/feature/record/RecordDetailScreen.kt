@@ -21,10 +21,7 @@ import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
 import com.singing.domain.model.RecordPoint
-import com.singing.feature.record.presenter.generated.resources.Res
-import com.singing.feature.record.presenter.generated.resources.common_error_subtitle
-import com.singing.feature.record.presenter.generated.resources.common_error_title
-import com.singing.feature.record.presenter.generated.resources.common_no_data_title
+import com.singing.feature.record.presenter.generated.resources.*
 import com.singing.feature.record.viewmodel.RecordDetailIntent
 import com.singing.feature.record.viewmodel.RecordDetailUiState
 import com.singing.feature.record.views.RecordDetails
@@ -57,7 +54,7 @@ fun RecordDetailScreen(
             DataState.Empty -> {
                 EmptyView(
                     title = stringResource(Res.string.common_no_data_title),
-                    subtitle = stringResource(Res.string.common_no_data_title),
+                    subtitle = stringResource(Res.string.common_no_data_subtitle),
                 )
             }
 
@@ -81,7 +78,6 @@ fun RecordDetailScreen(
                         user = uiState.user,
                         record = state.data,
                         player = player,
-                        editable = true,
                         recordPoints = recordPoints,
                         note = viewModel::getNote,
                     ),

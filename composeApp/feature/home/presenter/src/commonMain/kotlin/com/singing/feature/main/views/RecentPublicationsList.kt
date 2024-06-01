@@ -40,6 +40,8 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun RecentPublicationsListContainer(
+    modifier: Modifier = Modifier,
+    listModifier: Modifier = Modifier,
     uiState: MainUiState,
     navigate: (SharedScreen) -> Unit
 ) {
@@ -53,7 +55,7 @@ fun RecentPublicationsListContainer(
         RecordPlayDialog(
             playerController = dialogRecordPlayer.toPlayerController(publicationToPlay!!.record),
             record = publicationToPlay!!.record.toRecordCardData(),
-            creator = uiState.user?.toUserUiData(),
+            creator = publicationToPlay!!.author.toUserUiData(),
             onDismiss = {
                 publicationToPlay = null
             }
@@ -61,7 +63,8 @@ fun RecentPublicationsListContainer(
     }
 
     RecentPublicationsList(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier,
+        listModifier = listModifier,
         publications = uiState.latestPublications,
         player = mainRecordPlayer,
         playPublication = {
@@ -138,7 +141,7 @@ private fun PublicationsList(
     navigatePublicationDetails: (Publication) -> Unit
 ) {
     LazyColumn(
-        modifier = listModifier.fillMaxWidth(),
+        modifier = listModifier,
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.listSpacing),
     ) {
         item {

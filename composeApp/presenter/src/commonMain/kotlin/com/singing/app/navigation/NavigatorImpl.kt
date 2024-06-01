@@ -4,7 +4,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import com.singing.feature.account.profile.AccountProfilePage
 import com.singing.feature.community.CommunityPage
 import com.singing.feature.main.MainPage
-import com.singing.feature.main.PublicationDetailsPage
+import com.singing.feature.publication.details.PublicationDetailsPage
 import com.singing.feature.record.RecordDetailPage
 import com.singing.feature.record.list.RecordListPage
 import com.singing.feature.recording.RecordingPage

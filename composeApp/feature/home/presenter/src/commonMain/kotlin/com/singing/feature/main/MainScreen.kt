@@ -1,22 +1,20 @@
 package com.singing.feature.main
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.movableContentWithReceiverOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
+import com.singing.app.ui.screen.WindowSize
+import com.singing.app.ui.screen.actualScreenSize
 import com.singing.app.ui.screen.dimens
 import com.singing.feature.main.viewmodel.MainIntent
 import com.singing.feature.main.viewmodel.MainUiState
@@ -27,6 +25,7 @@ import com.singing.feature.main.views.RecordBanner
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
@@ -75,29 +74,51 @@ fun MainScreen(
             )
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(max = 500.dp),
-            horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3),
-        ) {
-            RecentTracks(
-                modifier = Modifier.weight(1f),
-                tracks = uiState.recentTracks,
-                onFavouriteChange = { track, isFavourite ->
-                    viewModel.onIntent(
-                        MainIntent.UpdateTrackFavourite(track, isFavourite)
+        if (uiState.recentTracks.isNotEmpty()) {
+            val recentTracksContent = remember {
+                movableContentWithReceiverOf<Modifier> {
+                    RecentTracks(
+                        modifier = this.widthIn(min = 300.dp),
+                        tracks = uiState.recentTracks,
+                        onFavouriteChange = { track, isFavourite ->
+                            viewModel.onIntent(
+                                MainIntent.UpdateTrackFavourite(track, isFavourite)
+                            )
+                        }
                     )
                 }
-            )
+            }
 
-            Box(modifier = Modifier.weight(2f)) {
-                RecentPublicationsListContainer(
-                    uiState = uiState,
-                    navigate = {
-                        navigator.navigate(it)
+            val recentPublications = remember {
+                movableContentWithReceiverOf<Modifier> {
+                    RecentPublicationsListContainer(
+                        modifier = this,
+                        listModifier = Modifier,
+                        uiState = uiState,
+                        navigate = navigator::navigate,
+                    )
+                }
+            }
+
+            if (MaterialTheme.actualScreenSize <= WindowSize.MEDIUM) {
+                recentTracksContent(Modifier.fillMaxWidth().heightIn(max = 1000.dp))
+
+                if (uiState.user != null && uiState.latestPublications.isNotEmpty()) {
+                    recentPublications(Modifier.fillMaxWidth().heightIn(max = 1000.dp))
+                }
+            } else {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 500.dp),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen3),
+                ) {
+                    recentTracksContent(Modifier.weight(1f))
+
+                    if (uiState.user != null && uiState.latestPublications.isNotEmpty()) {
+                        recentPublications(Modifier.weight(2f))
                     }
-                )
+                }
             }
         }
     }

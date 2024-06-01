@@ -26,6 +26,7 @@ object ApiScheme {
         fun RecordPublication(id: Int) = "$base/record/$id"
         const val RandomPublication = "$base/random"
         const val PopularTags = "$base/tags"
+        fun DeletePublication(id: Int) = "$base/$id"
     }
 
     object Record {

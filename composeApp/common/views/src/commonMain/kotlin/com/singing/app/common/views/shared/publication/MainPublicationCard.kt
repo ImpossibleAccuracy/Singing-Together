@@ -98,7 +98,7 @@ private fun PublicationCardInfo(data: RecordUiData) {
 
         Row(
             modifier = Modifier
-                .height(MaterialTheme.dimens.dimen2)
+                .height(MaterialTheme.dimens.dimen4)
                 .border(
                     MaterialTheme.dimens.bordersThickness,
                     color = MaterialTheme.colorScheme.outlineVariant,

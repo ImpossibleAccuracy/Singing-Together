@@ -27,5 +27,7 @@ sealed interface PublicationDataSource {
         suspend fun fetchByRecord(recordId: Int): ApiResult<Publication>
 
         suspend fun fetchPopularTags(): ApiResult<List<PublicationTagStatistics>>
+
+        suspend fun deletePublication(publicationId: Int)
     }
 }

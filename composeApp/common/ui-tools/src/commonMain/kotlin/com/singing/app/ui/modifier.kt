@@ -19,8 +19,9 @@ fun Modifier.plus(
 }
 
 @Composable
-fun Modifier.plus(expression: Boolean, func: @Composable Modifier.() -> Unit): Modifier = apply {
+fun Modifier.plus(expression: Boolean, func: @Composable Modifier.() -> Modifier): Modifier = run {
     if (expression) func(this)
+    else this
 }
 
 fun Modifier.connectVerticalNestedScroll(

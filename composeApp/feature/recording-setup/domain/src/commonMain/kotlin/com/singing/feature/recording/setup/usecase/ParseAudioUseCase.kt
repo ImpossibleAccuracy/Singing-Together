@@ -8,6 +8,7 @@ import com.singing.config.track.TrackProperties
 import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.yield
 
 class ParseAudioUseCase {
     suspend operator fun invoke(file: ComposeFile): TrackParseResult {

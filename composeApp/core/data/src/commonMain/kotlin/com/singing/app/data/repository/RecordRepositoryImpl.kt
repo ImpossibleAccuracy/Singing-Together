@@ -11,6 +11,7 @@ import com.singing.app.domain.repository.RecordRepository
 import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
+import pro.respawn.apiresult.ApiResult
 
 class RecordRepositoryImpl(
     private val localDataSource: RecordDataSource.Local,

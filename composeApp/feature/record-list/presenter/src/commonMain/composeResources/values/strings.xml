@@ -9,4 +9,6 @@
 
     <string name="title_empty_tracks"/>
     <string name="subtitle_empty_tracks"/>
+
+    <string name="action_start_record"/>
 </resources>

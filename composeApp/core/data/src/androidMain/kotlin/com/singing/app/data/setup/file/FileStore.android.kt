@@ -18,9 +18,17 @@ actual class FileStore actual constructor(
         TODO("Not yet implemented")
     }
 
+    actual fun getFile(
+        recordId: Int,
+        type: String
+    ): ComposeFile? {
+        TODO("Not yet implemented")
+    }
+
     actual fun createRecordTempFile(
         recordId: Int,
         type: String,
+        extension: String,
         data: InputStream
     ): ComposeFile {
         TODO("Not yet implemented")

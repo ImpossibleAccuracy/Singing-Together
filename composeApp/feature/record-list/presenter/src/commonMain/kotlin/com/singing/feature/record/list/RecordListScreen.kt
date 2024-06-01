@@ -1,16 +1,15 @@
 package com.singing.feature.record.list
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
 import app.cash.paging.compose.collectAsLazyPagingItems
 import cafe.adriel.voyager.navigator.currentOrThrow
 import com.singing.app.common.views.base.list.EmptyView
@@ -35,7 +34,7 @@ import com.singing.feature.record.views.RecordDetailsData
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
-private val breakpoint = WindowSize.MEDIUM
+private val breakpoint = WindowSize.EXPANDED
 
 @Composable
 fun RecordListScreen(
@@ -44,18 +43,23 @@ fun RecordListScreen(
     viewModel: RecordListViewModel,
     uiState: RecordListUiState,
 ) {
+    val player = rememberRecordPlayer()
+
     val coroutineScope = rememberCoroutineScope()
     val navigator = AppNavigator.currentOrThrow
-    val windowSize = MaterialTheme.actualScreenSize
 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen2),
     ) {
+        val windowSize = MaterialTheme.actualScreenSize
+
         val records = viewModel.records.collectAsLazyPagingItems()
 
         RecordsList(
-            modifier = Modifier.weight(2f),
+            modifier = Modifier
+                .weight(2f)
+                .fillMaxHeight(),
             contentPadding = contentPadding,
             records = records,
             onSelectedRecordChange = {
@@ -63,12 +67,19 @@ fun RecordListScreen(
 
                 if (windowSize < breakpoint) {
                     navigator.navigate(SharedScreen.RecordDetails(it))
+                } else {
+                    coroutineScope.launch {
+                        player.reset()
+                    }
                 }
+            },
+            navigateRecording = {
+                navigator.navigate(SharedScreen.SelectRecordingType)
             }
         )
 
-        if (MaterialTheme.actualScreenSize >= breakpoint &&
-            (records.itemCount > 0 || uiState.selectedRecord is DataState.Success)
+        if (windowSize >= breakpoint &&
+            (records.loadState.refresh !is LoadState.NotLoading || records.itemCount != 0)
         ) {
             val detailsModifier = Modifier.weight(3f)
 
@@ -88,7 +99,9 @@ fun RecordListScreen(
                 }
 
                 is DataState.Success -> {
-                    val player = rememberRecordPlayer()
+                    LaunchedEffect(state.data.key) {
+                        player.reset()
+                    }
 
                     val recordPoints = viewModel.recordPoints.collectAsLazyPagingItems()
 
@@ -101,7 +114,6 @@ fun RecordListScreen(
                             user = uiState.user,
                             record = state.data,
                             player = player,
-                            editable = true,
                             recordPoints = recordPoints,
                             isRecordPointsStatic = true,
                             note = viewModel::getNote

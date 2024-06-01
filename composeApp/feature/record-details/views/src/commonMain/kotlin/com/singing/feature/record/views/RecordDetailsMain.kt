@@ -1,20 +1,10 @@
 package com.singing.feature.record.views
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import com.singing.app.common.views.base.account.AccountChip
@@ -85,7 +75,7 @@ internal fun RecordDetailsMain(
                 )
             }
 
-            if (data.editable && actions != null) {
+            if (actions != null) {
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen1),
@@ -96,10 +86,10 @@ internal fun RecordDetailsMain(
                         state = availableActions,
                         actions = RecordCardActionsCallbacks(
                             onUploadRecord = {
-                                actions.uploadRecord()
+                                actions.uploadRecord?.invoke()
                             },
                             showPublication = {
-                                actions.navigatePublication()
+                                actions.navigatePublication?.invoke()
                             },
                             onPublishRecord = {
                                 recordToPublish = data.record
@@ -114,13 +104,15 @@ internal fun RecordDetailsMain(
         }
     }
 
-    if (actions != null) {
+    if (actions?.publishRecord != null && availableActions.canPublish) {
         PublishDialog(
             record = recordToPublish,
             publishRecord = actions.publishRecord,
             onDismiss = { recordToPublish = null },
         )
+    }
 
+    if (actions?.deleteRecord != null && availableActions.canDelete) {
         DeleteDialog(
             record = recordToDelete,
             deleteRecord = actions.deleteRecord,

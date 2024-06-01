@@ -1,14 +1,16 @@
 package com.singing.feature.main.views
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.singing.app.common.views.base.list.EmptyView
 import com.singing.app.common.views.base.track.TrackCard
@@ -66,9 +68,11 @@ fun RecentTracks(
                 fontWeight = FontWeight.Medium,
             )
 
-            LazyColumn(
+            LazyVerticalGrid(
                 modifier = listModifier,
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallListSpacing),
+                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.smallListSpacing),
+                columns = GridCells.Adaptive(minSize = 300.dp),
             ) {
                 items(tracks) { item ->
                     TrackCard(

@@ -3,14 +3,13 @@ package com.singing.api.service.publication
 import com.singing.api.constants.Pagination
 import com.singing.api.domain.model.AccountEntity
 import com.singing.api.domain.model.PublicationEntity
+import com.singing.api.domain.model.PublicationTagEntity
 import com.singing.api.domain.model.RecordEntity
 import com.singing.api.domain.repository.PublicationRepository
 import com.singing.api.domain.repository.pagination.OffsetBasedPageRequest
 import com.singing.api.domain.specifications.and
 import com.singing.api.domain.specifications.get
-import com.singing.api.domain.specifications.`in`
 import com.singing.api.domain.specifications.join
-import com.singing.api.domain.specifications.like
 import com.singing.api.domain.specifications.where
 import com.singing.api.security.getAuthentication
 import com.singing.domain.model.PublicationSort
@@ -18,13 +17,16 @@ import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.Optional
+import java.util.*
 import kotlin.random.Random.Default.nextLong
 
 @Service
 class PublicationServiceImpl(
     private val publicationRepository: PublicationRepository
 ) : PublicationService {
+    override suspend fun get(publicationId: Int): Optional<PublicationEntity> =
+        publicationRepository.findById(publicationId)
+
     override suspend fun isPublished(record: RecordEntity): Boolean =
         publicationRepository.existsByRecord_Id(record.id!!)
 
@@ -47,13 +49,16 @@ class PublicationServiceImpl(
         page: Int,
         sort: PublicationSort
     ): List<PublicationEntity> {
-        TODO()
-        /*val sortBy = Sort.by(sort.toOrder())
+        val sortBy = Sort.by(sort.toOrder())
 
         return publicationRepository.findByAccount_Id(
             id = accountId,
-            sort = sortBy,
-        )*/
+            pageable = OffsetBasedPageRequest(
+                (Pagination.PUBLICATION_PAGE_SIZE * page).toLong(),
+                Pagination.PUBLICATION_PAGE_SIZE,
+                sort = sortBy,
+            )
+        )
     }
 
     override suspend fun search(
@@ -63,10 +68,23 @@ class PublicationServiceImpl(
         showOwnPublications: Boolean,
         sort: PublicationSort
     ): List<PublicationEntity> {
-        val tagsSearch = tags?.let { PublicationEntity::tags.`in`(tags) }
+        val tagsSearch = tags?.let {
+            where<PublicationEntity> {
+                it.join(PublicationEntity::tags)
+                    .get(PublicationTagEntity::title)
+                    .`in`(tags)
+            }
+        }
 
         val descriptionSearch =
-            description?.let { PublicationEntity::description.like(description) }
+            description?.let {
+                where<PublicationEntity> {
+                    like(
+                        lower(it.get(PublicationEntity::description)),
+                        "%${description.lowercase()}%",
+                    )
+                }
+            }
 
         val userAccount = getAuthentication()?.account
         val showOwnPublicationsSearch = if (userAccount == null || showOwnPublications) null
@@ -78,8 +96,8 @@ class PublicationServiceImpl(
         }
 
         val pagination = OffsetBasedPageRequest(
-            (Pagination.PAGE_SIZE * page).toLong(),
-            Pagination.PAGE_SIZE,
+            (Pagination.PUBLICATION_PAGE_SIZE * page).toLong(),
+            Pagination.PUBLICATION_PAGE_SIZE,
             Sort.by(sort.toOrder())
         )
 
@@ -98,6 +116,10 @@ class PublicationServiceImpl(
         return when (period) {
             null -> {
                 val count = publicationRepository.count()
+
+                if (count == 0L) {
+                    return null
+                }
 
                 val random = nextLong(0, count)
 
@@ -141,5 +163,9 @@ class PublicationServiceImpl(
                 list.firstOrNull()
             }
         }
+    }
+
+    override suspend fun delete(publicationId: Int) {
+        publicationRepository.deleteById(publicationId)
     }
 }

@@ -1,5 +1,6 @@
 package com.singing.api.controller.account
 
+import com.singing.api.domain.makeAccountInfoDto
 import com.singing.api.domain.require
 import com.singing.api.domain.toDto
 import com.singing.api.service.account.AccountService
@@ -27,8 +28,10 @@ class AccountController(
             .get(id)
             .require()
 
-        return AccountInfoDto(
-            publicationsCount = accountService.getPublicationsCount(account.id!!),
+        val publicationsCount = accountService.getPublicationsCount(account.id!!)
+
+        return makeAccountInfoDto(
+            publicationsCount = publicationsCount,
             registeredAt = account.createdAt,
         )
     }

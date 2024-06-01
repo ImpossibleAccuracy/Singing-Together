@@ -79,18 +79,28 @@ class RecordFileDataSourceImpl(
     private suspend fun getRecordVoiceFileRemote(
         url: String,
         recordId: Int,
-        fileType: String
+        fileType: String,
     ): ComposeFile {
-        val bodyChannel =
-            httpClient
-                .get(url) {
-                    authHeader(userProvider)
-                }
-                .bodyAsChannel()
+        val cache = fileStore.getFile(recordId, fileType)
+
+        if (cache != null) {
+            return cache
+        }
+
+        val response = httpClient.get(url) {
+            authHeader(userProvider)
+        }
+
+        val contentDisposition = response.headers["Content-Disposition"]!!
+        val fileName = contentDisposition.substringAfterLast("filename=")
+        val fileExtension = fileName.substringAfterLast(".")
+
+        val bodyChannel = response.bodyAsChannel()
 
         return fileStore.createRecordTempFile(
             recordId = recordId,
             type = fileType,
+            extension = fileExtension,
             data = bodyChannel.toInputStream()
         )
     }

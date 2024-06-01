@@ -62,7 +62,7 @@ SET isPublished = ?
 WHERE id = ?;
 
 insert:
-INSERT INTO recordEntity (remoteId, createdAt, title, accuracy, isPublished, duration, voiceRecordId, trackId,creatorId)
+INSERT INTO recordEntity (remoteId, createdAt, title, accuracy, isPublished, duration, voiceRecordId, trackId, creatorId)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 deleteOne:

@@ -5,6 +5,7 @@ import com.singing.app.data.setup.PlatformInitParams
 import java.io.InputStream
 import java.nio.file.Path
 import kotlin.io.path.createFile
+import kotlin.io.path.createParentDirectories
 import kotlin.io.path.exists
 
 actual class FileStoreProperties(
@@ -52,15 +53,32 @@ actual class FileStore actual constructor(
         return ComposeFile(file)
     }
 
+    actual fun getFile(
+        recordId: Int,
+        type: String
+    ): ComposeFile? {
+        val tempDirectory = properties.tempPath.toFile()
+
+        return tempDirectory.listFiles()
+            ?.firstOrNull {
+                it.name.startsWith("${recordId}_$type")
+            }?.let {
+                ComposeFile(it)
+            }
+    }
+
     actual fun createRecordTempFile(
         recordId: Int,
         type: String,
+        extension: String,
         data: InputStream
     ): ComposeFile {
-        val filePath = properties.tempPath.resolve("${recordId}_$type")
+        val filePath = properties.tempPath.resolve("${recordId}_$type.$extension")
 
         if (filePath.exists())
             return ComposeFile(filePath.toFile())
+
+        filePath.createParentDirectories()
 
         val file = filePath.createFile().toFile()
 

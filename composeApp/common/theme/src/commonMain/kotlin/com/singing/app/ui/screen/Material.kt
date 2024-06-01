@@ -9,11 +9,6 @@ val MaterialTheme.actualScreenSize
     @ReadOnlyComposable
     get() = LocalWindowSize.current
 
-val MaterialTheme.smallestScreenSize
-    @Composable
-    @ReadOnlyComposable
-    get() = LocalSmallestWindowSize.current
-
 val MaterialTheme.dimens
     @Composable
     @ReadOnlyComposable

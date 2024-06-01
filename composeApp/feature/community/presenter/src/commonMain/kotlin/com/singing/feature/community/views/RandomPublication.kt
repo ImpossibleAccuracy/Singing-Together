@@ -6,7 +6,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -21,50 +20,11 @@ import com.singing.app.common.views.toPublicationCardData
 import com.singing.app.domain.features.RecordPlayer
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.Publication
-import com.singing.app.feature.rememberRecordPlayer
-import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
 import com.singing.feature.community.presenter.generated.resources.*
-import com.singing.feature.community.viewmodel.CommunityIntent
-import com.singing.feature.community.viewmodel.CommunityUiState
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.vectorResource
 
-
-@Composable
-fun RandomPublicationContainer(
-    modifier: Modifier = Modifier,
-    sectionShape: Shape,
-    uiState: CommunityUiState,
-    navigate: (SharedScreen) -> Unit,
-    newIntent: (CommunityIntent) -> Unit,
-) {
-    val player = rememberRecordPlayer()
-
-    LaunchedEffect(uiState.randomPublication) {
-        player.reset()
-    }
-
-    RandomPublication(
-        modifier = modifier,
-        shape = sectionShape,
-        player = player,
-        publication = uiState.randomPublication,
-        onReload = {
-            newIntent(CommunityIntent.ReloadRandomPublication)
-        },
-        onAuthorClick = {
-            navigate(
-                SharedScreen.UserProfile(it.author)
-            )
-        },
-        navigatePublicationDetails = {
-            navigate(
-                SharedScreen.PublicationDetails(it)
-            )
-        },
-    )
-}
 
 @Composable
 fun RandomPublication(
@@ -78,6 +38,7 @@ fun RandomPublication(
 ) {
     Column(
         modifier = publicationCardAppearance(
+            modifier = modifier,
             containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
             shape = shape,
             padding = PaddingValues(
@@ -112,7 +73,7 @@ fun RandomPublication(
 
             is DataState.Success -> {
                 PublicationCardWithPlayer(
-                    modifier = modifier,
+                    modifier = Modifier,
                     playerController = player.toPlayerController(publication.data.record),
                     data = publication.data.toPublicationCardData(false),
                     actions = PublicationCardActions(

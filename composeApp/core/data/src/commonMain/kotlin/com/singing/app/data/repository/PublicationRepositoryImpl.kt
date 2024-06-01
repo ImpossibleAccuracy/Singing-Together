@@ -9,7 +9,6 @@ import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.repository.PublicationRepository
 import com.singing.app.domain.repository.RecordRepository
 import kotlinx.coroutines.flow.Flow
-import pro.respawn.apiresult.ApiResult
 
 class PublicationRepositoryImpl(
     private val recordRepository: RecordRepository,
@@ -36,13 +35,13 @@ class PublicationRepositoryImpl(
     override suspend fun getRandomPublication(): DataState<Publication> =
         dataSource.fetchRandom().asDataState
 
-    override suspend fun getRecordPublication(record: RecordData): Publication? {
-        if (!record.isSavedRemote || !record.isPublished) throw IllegalArgumentException("Record not published")
+    override suspend fun getRecordPublication(record: RecordData): Publication {
+        if (!record.isSavedRemote) throw IllegalArgumentException("Record not uploaded")
+        if (!record.isPublished) throw IllegalArgumentException("Record not published")
 
-        return when (val result = dataSource.fetchByRecord(record.key.remoteId!!)) {
-            is ApiResult.Success -> result.result
-            else -> null
-        }
+        val result = dataSource.fetchByRecord(record.key.remoteId!!)
+
+        return !result
     }
 
     override suspend fun getLatestUserPublications(limit: Int): DataState<List<Publication>> =
@@ -52,4 +51,8 @@ class PublicationRepositoryImpl(
         doPagingRequest { page ->
             dataSource.fetchByUser(page, accountId)
         }
+
+    override suspend fun deletePublication(publication: Publication) {
+        dataSource.deletePublication(publication.id)
+    }
 }

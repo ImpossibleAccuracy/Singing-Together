@@ -4,9 +4,11 @@ import com.singing.api.domain.model.AccountEntity
 import com.singing.api.domain.model.PublicationEntity
 import com.singing.api.domain.model.RecordEntity
 import com.singing.domain.model.PublicationSort
-import java.util.Optional
+import java.util.*
 
 interface PublicationService {
+    suspend fun get(publicationId: Int): Optional<PublicationEntity>
+
     suspend fun isPublished(record: RecordEntity): Boolean
 
     suspend fun publishRecord(
@@ -30,4 +32,6 @@ interface PublicationService {
     suspend fun byRecord(recordId: Int): Optional<PublicationEntity>
 
     suspend fun random(period: Long?): PublicationEntity?
+
+    suspend fun delete(publicationId: Int)
 }

@@ -3,7 +3,7 @@ package com.singing.app.domain.model
 sealed interface DataState<out T> {
     companion object {
         fun <T> of(value: T?): DataState<T> =
-            if (value == null) Empty
+            if (value == null || (value is List<Any?> && value.isEmpty())) Empty
             else Success(value)
     }
 
