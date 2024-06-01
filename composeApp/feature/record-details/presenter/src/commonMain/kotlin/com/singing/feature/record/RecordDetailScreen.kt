@@ -102,6 +102,7 @@ fun RecordDetailScreen(
                         },
                         deleteRecord = {
                             viewModel.onIntent(RecordDetailIntent.DeleteRecord)
+                            navigator.pop()
                         },
                     ),
                 )

@@ -7,9 +7,3 @@ import com.singing.feature.main.MainPage
 @Composable
 actual fun getStartDestination(): Screen =
     MainPage()
-
-actual fun isRootScreen(screen: Screen): Boolean =
-    when (screen) {
-        is MainPage -> true
-        else -> false
-    }

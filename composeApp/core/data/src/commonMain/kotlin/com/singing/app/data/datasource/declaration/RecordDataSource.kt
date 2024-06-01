@@ -23,7 +23,7 @@ sealed interface RecordDataSource {
             points: List<RecordPoint>
         ): ApiResult<RecordData>
 
-        suspend fun markUploaded(record: RecordData, remoteId: Long): ApiResult<RecordData>
+        suspend fun markUploaded(record: RecordData, remoteId: Int): ApiResult<RecordData>
 
         suspend fun markPublished(record: RecordData)
 

@@ -1,6 +1,14 @@
 package com.singing.feature.main
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
@@ -75,7 +83,7 @@ fun MainScreen(
         }
 
         if (uiState.recentTracks.isNotEmpty()) {
-            val recentTracksContent = remember {
+            val recentTracksContent = remember(uiState.recentTracks) {
                 movableContentWithReceiverOf<Modifier> {
                     RecentTracks(
                         modifier = this.widthIn(min = 300.dp),
@@ -89,12 +97,12 @@ fun MainScreen(
                 }
             }
 
-            val recentPublications = remember {
+            val recentPublications = remember(uiState.latestPublications) {
                 movableContentWithReceiverOf<Modifier> {
                     RecentPublicationsListContainer(
                         modifier = this,
                         listModifier = Modifier,
-                        uiState = uiState,
+                        latestPublications = uiState.latestPublications,
                         navigate = navigator::navigate,
                     )
                 }
@@ -103,7 +111,7 @@ fun MainScreen(
             if (MaterialTheme.actualScreenSize <= WindowSize.MEDIUM) {
                 recentTracksContent(Modifier.fillMaxWidth().heightIn(max = 1000.dp))
 
-                if (uiState.user != null && uiState.latestPublications.isNotEmpty()) {
+                if (uiState.user != null) {
                     recentPublications(Modifier.fillMaxWidth().heightIn(max = 1000.dp))
                 }
             } else {
@@ -115,7 +123,7 @@ fun MainScreen(
                 ) {
                     recentTracksContent(Modifier.weight(1f))
 
-                    if (uiState.user != null && uiState.latestPublications.isNotEmpty()) {
+                    if (uiState.user != null) {
                         recentPublications(Modifier.weight(2f))
                     }
                 }

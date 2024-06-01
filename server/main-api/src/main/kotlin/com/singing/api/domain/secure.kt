@@ -1,6 +1,7 @@
 package com.singing.api.domain
 
 import com.singing.api.domain.exception.OperationRejectedException
+import com.singing.api.domain.model.PublicationEntity
 import com.singing.api.domain.model.RecordEntity
 import com.singing.api.enums.Privileges
 import com.singing.api.security.scope.AuthorizedScope
@@ -25,6 +26,13 @@ fun AuthorizedScope.secureWrite(record: RecordEntity) {
 
 fun AuthorizedScope.secureDelete(record: RecordEntity) {
     if (!hasAnyPrivilege(Privileges.DeleteRecords) && record.author?.id != account.id) {
+        throw OperationRejectedException("You have no permissions to perform action")
+    }
+}
+
+
+fun AuthorizedScope.secureDelete(publication: PublicationEntity) {
+    if (!hasAnyPrivilege(Privileges.DeleteRecords) && publication.account?.id != account.id) {
         throw OperationRejectedException("You have no permissions to perform action")
     }
 }

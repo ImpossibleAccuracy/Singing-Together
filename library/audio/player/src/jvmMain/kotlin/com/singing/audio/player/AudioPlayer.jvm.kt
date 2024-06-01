@@ -29,24 +29,25 @@ actual class AudioPlayer {
         file: ComposeFile,
         initPosition: Long,
     ): Flow<PlayerState> = callbackFlow {
+        lock.lock()
+
         if (prevFile != file) {
             player?.dispose()
+
+            val media = try {
+                Media(file.uri.toString())
+            } catch (e: MediaException) {
+                println("Error while playing ${file.uri}")
+                throw e
+            }
+
+            player = MediaPlayer(media)
+            player!!.waitReady()
+
+            prevFile = file
         }
 
-        prevFile = file
-
-        val media = try {
-            Media(file.uri.toString())
-        } catch (e: MediaException) {
-            println("Error while playing ${file.uri}")
-            throw e
-        }
-
-        player = MediaPlayer(media)
-        player!!.waitReady()
         player!!.seek(Duration.millis(initPosition.toDouble()))
-
-        lock.lock()
 
         val localPlayer = player ?: return@callbackFlow
 
@@ -109,7 +110,7 @@ actual class AudioPlayer {
         }
 
         if (player!!.status != MediaPlayer.Status.STOPPED) {
-            player?.stop()
+            player?.pause()
 
             currentState = PlayerState.STOP
         }

@@ -2,20 +2,13 @@ package com.singing.feature.record.list
 
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.filter
+import androidx.paging.map
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
-import com.singing.app.domain.model.DataState
-import com.singing.app.domain.model.Publication
-import com.singing.app.domain.model.RecordData
-import com.singing.app.domain.model.valueOrNull
+import com.singing.app.domain.model.*
 import com.singing.app.domain.provider.UserProvider
-import com.singing.app.domain.usecase.DeleteRecordUseCase
-import com.singing.app.domain.usecase.FindNoteUseCase
-import com.singing.app.domain.usecase.FindRecordPublicationUseCase
-import com.singing.app.domain.usecase.GetRecordPointsUseCase
-import com.singing.app.domain.usecase.ListenRecordUpdatesUseCase
-import com.singing.app.domain.usecase.PublishRecordUseCase
-import com.singing.app.domain.usecase.UploadRecordUseCase
+import com.singing.app.domain.usecase.*
 import com.singing.domain.model.RecordPoint
 import com.singing.feature.record.list.domain.usecase.GetAnyRecordUseCase
 import com.singing.feature.record.list.domain.usecase.GetRecordListUseCase
@@ -23,13 +16,11 @@ import com.singing.feature.record.list.viewmodel.RecordListIntent
 import com.singing.feature.record.list.viewmodel.RecordListUiState
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.sample
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+
+private const val DisplayDelay = 100L
 
 class RecordListViewModel(
     initialRecordData: RecordData?,
@@ -45,6 +36,9 @@ class RecordListViewModel(
     private val findRecordPublicationUseCase: FindRecordPublicationUseCase,
     private val listenRecordUpdatesUseCase: ListenRecordUpdatesUseCase,
 ) : ScreenModel {
+    private val deletedRecords = MutableStateFlow<List<RecordData>>(listOf())
+    private val updatedRecords = MutableStateFlow<Map<ExtendedKey, RecordData>>(mapOf())
+
     private val _uiState = MutableStateFlow(
         RecordListUiState(
             selectedRecord = DataState.of(initialRecordData)
@@ -99,11 +93,13 @@ class RecordListViewModel(
 
     fun getNote(frequency: Double) = findNoteUseCase(frequency)
 
-    suspend fun getRecordPublication(record: RecordData): Publication? {
+    suspend fun getRecordPublication(record: RecordData): Publication {
         return findRecordPublicationUseCase(record)
     }
 
     private suspend fun loadRecords() {
+        deletedRecords.value = listOf()
+
         getRecordListUseCase()
             .cachedIn(screenModelScope)
             .onEach {
@@ -115,6 +111,22 @@ class RecordListViewModel(
                             updateSelectedRecord(item)
                         }
                     }
+                }
+            }
+            .combine(deletedRecords) { paging, deletedRecords ->
+                paging.filter {
+                    !deletedRecords.contains(it)
+                }
+            }
+            .combine(updatedRecords) { paging, updatedRecords ->
+                paging.map { item ->
+                    val key = updatedRecords.keys.firstOrNull {
+                        (it.localId != null && it.localId == item.key.localId) ||
+                                (it.remoteId != null && it.remoteId == item.key.remoteId)
+                    }
+
+                    if (key == null) item
+                    else updatedRecords[key]!!
                 }
             }
             .collect {
@@ -135,7 +147,7 @@ class RecordListViewModel(
         listenSelectedRecordJob = screenModelScope.launch {
             launch {
                 listenRecordUpdatesUseCase(record)
-                    .sample(3000)
+                    .sample(DisplayDelay)
                     .collect { update ->
                         _uiState.update {
                             it.copy(selectedRecord = update)
@@ -173,21 +185,29 @@ class RecordListViewModel(
         val update = uploadRecordUseCase(record)
 
         _uiState.update {
-            it.copy(selectedRecord = DataState.Success(update))
+            it.copy(selectedRecord = update)
+        }
+
+        updatedRecords.update {
+            it.plus(record.key to record)
         }
     }
 
     private suspend fun deleteRecord(record: RecordData) {
+        listenSelectedRecordJob?.cancel()
+
         _uiState.update {
             it.copy(selectedRecord = DataState.Loading)
         }
 
         deleteRecordUseCase(record)
 
+        deletedRecords.update {
+            it.plus(record)
+        }
+
         _uiState.update {
             it.copy(selectedRecord = DataState.Empty)
         }
-
-        loadRecords()
     }
 }

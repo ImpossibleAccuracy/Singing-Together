@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.Clock
 import pro.respawn.apiresult.ApiResult
 import java.io.ByteArrayInputStream
@@ -84,11 +85,11 @@ class RecordLocalDataSourceImpl(
 
     override suspend fun markUploaded(
         record: RecordData,
-        remoteId: Long
+        remoteId: Int,
     ): ApiResult<RecordData> = ApiResult {
         if (!record.isSavedLocally) throw IllegalArgumentException("Record not saved locally")
 
-        appDatabase.recordQueries.updateRemoteId(remoteId, record.key.localId!!.toLong())
+        appDatabase.recordQueries.updateRemoteId(remoteId.toLong(), record.key.localId!!.toLong())
 
         getRecord(record.key.localId!!)
     }

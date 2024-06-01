@@ -3,6 +3,7 @@ package com.singing.app.domain.usecase
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.RecordData
+import com.singing.app.domain.model.orThrow
 import com.singing.app.domain.repository.PublicationRepository
 
 class PublishRecordUseCase(
@@ -12,7 +13,7 @@ class PublishRecordUseCase(
     suspend operator fun invoke(record: RecordData, description: String): Publication {
         val actualRecord = when (record.isSavedRemote) {
             true -> record
-            false -> uploadRecordUseCase(record)
+            false -> uploadRecordUseCase(record).orThrow()
         }
 
         // FIXME: add DataState to ViewModel

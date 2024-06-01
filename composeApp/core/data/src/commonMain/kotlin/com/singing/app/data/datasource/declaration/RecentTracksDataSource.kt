@@ -15,8 +15,6 @@ sealed interface RecentTracksDataSource {
 
         fun observeRecentTracks(): Flow<List<RecentTrack>>
 
-        fun observeFavouriteTracks(): Flow<List<RecentTrack>>
-
         suspend fun updateTrackFavourite(
             track: RecentTrack,
             isFavourite: Boolean

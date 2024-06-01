@@ -47,16 +47,6 @@ class RecentTracksLocalDataSourceImpl(
                     .sortedByDescending { it.createdAt.instant }
             }
 
-    override fun observeFavouriteTracks(): Flow<List<RecentTrack>> =
-        appDatabase.recentTrackQueries.selectFavourites()
-            .asFlow()
-            .mapToList(Dispatchers.IO)
-            .map { items ->
-                items
-                    .map(::map)
-                    .sortedByDescending { it.createdAt.instant }
-            }
-
     override suspend fun updateTrackFavourite(
         track: RecentTrack,
         isFavourite: Boolean

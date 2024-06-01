@@ -49,14 +49,12 @@ fun totalAppModules(
     )
 
     add(useCaseModule)
-    add(
-        dataModule(
-            init = init,
-            apiParameters = apiParameters,
-            databaseParameters = databaseParameters,
-            storeProperties = storeProperties
-        )
-    )
+    add(dataModule(
+        init = init,
+        apiParameters = apiParameters,
+        databaseParameters = databaseParameters,
+        storeProperties = storeProperties
+    ))
 
     add(mainModule)
     add(recordingModule)

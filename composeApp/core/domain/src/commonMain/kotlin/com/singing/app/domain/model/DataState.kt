@@ -24,6 +24,13 @@ fun <T> DataState<T>.valueOrNull(): T? = when (this) {
     else -> null
 }
 
+fun <T> DataState<T>.orThrow(): T = when (this) {
+    is DataState.Success -> data
+    DataState.Empty -> throw NullPointerException()
+    is DataState.Error -> throw IllegalStateException(message, throwable)
+    DataState.Loading -> throw IllegalStateException()
+}
+
 fun <T, R> DataState<T>.map(mapper: (T) -> R): DataState<R> =
     when (this) {
         is DataState.Success -> {

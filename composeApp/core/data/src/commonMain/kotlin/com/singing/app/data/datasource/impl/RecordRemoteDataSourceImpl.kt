@@ -11,14 +11,11 @@ import com.singing.app.domain.provider.UserProvider
 import com.singing.domain.model.RecordPoint
 import com.singing.domain.payload.dto.RecordDto
 import com.singing.domain.payload.dto.RecordPointDto
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.forms.formData
-import io.ktor.client.request.forms.submitFormWithBinaryData
-import io.ktor.client.request.get
-import io.ktor.client.request.parameter
-import io.ktor.http.Headers
-import io.ktor.http.HttpHeaders
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.client.request.forms.*
+import io.ktor.http.*
 import pro.respawn.apiresult.ApiResult
 import pro.respawn.apiresult.asResult
 import pro.respawn.apiresult.orNull
@@ -44,11 +41,13 @@ class RecordRemoteDataSourceImpl(
                 formData = formData {
                     append("voice", voiceFile.readAll(), Headers.build {
                         append(HttpHeaders.ContentDisposition, "filename=${voiceFile.name}")
+                        append(HttpHeaders.ContentType, "audio/wav")
                     })
 
                     if (trackFile != null) {
                         append("track", trackFile.readAll(), Headers.build {
                             append(HttpHeaders.ContentDisposition, "filename=${trackFile.name}")
+                            appendAll(HttpHeaders.ContentType, ContentType.fromFileExtension(trackFile.name).map { it.contentType })
                         })
                     }
                 }

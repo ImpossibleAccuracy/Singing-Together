@@ -10,6 +10,7 @@ import com.singing.domain.model.AudioFile
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 
 class RecentTrackRepositoryImpl(
     private val dataSource: RecentTracksDataSource.Local,

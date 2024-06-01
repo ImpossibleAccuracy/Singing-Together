@@ -5,13 +5,13 @@ import com.singing.app.base.ComposeFile
 import com.singing.app.data.datasource.declaration.RecordDataSource
 import com.singing.app.data.datasource.declaration.RecordFileDataSource
 import com.singing.app.data.repository.base.PagingRepository
+import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.payload.RecordSaveData
 import com.singing.app.domain.repository.RecordRepository
 import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import pro.respawn.apiresult.ApiResult
 
 class RecordRepositoryImpl(
     private val localDataSource: RecordDataSource.Local,
@@ -55,10 +55,18 @@ class RecordRepositoryImpl(
     override fun getRecentRecords(): Flow<List<RecordData>> =
         localDataSource.getRecentRecords() // TODO: add fetch from remote
 
-    override suspend fun uploadRecord(record: RecordData): RecordData {
-        if (record.isSavedRemote) return record
+    override suspend fun uploadRecord(record: RecordData): DataState<RecordData> {
+        if (record.isSavedRemote) return DataState.of(record)
 
-        return !remoteDataSource.uploadRecord(record) // TODO: add state handler
+        val result = remoteDataSource.uploadRecord(record).asDataState
+
+        if (result is DataState.Success) {
+            localDataSource.markUploaded(record, result.data.key.remoteId!!)
+
+            return result
+        } else {
+            return result
+        }
     }
 
     override suspend fun deleteRecord(record: RecordData) {

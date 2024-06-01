@@ -17,7 +17,7 @@ interface PublicationRepository {
 
     suspend fun getRecordPublication(record: RecordData): Publication
 
-    suspend fun getLatestUserPublications(limit: Int): DataState<List<Publication>>
+    fun getLatestUserPublications(limit: Int): Flow<DataState<List<Publication>>>
 
     fun getAccountPublications(accountId: Int): Flow<PagingData<Publication>>
 

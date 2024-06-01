@@ -7,8 +7,17 @@ import com.singing.app.domain.repository.RecordRepository
 import com.singing.audio.player.AudioPlayer
 import com.singing.audio.player.PlayerState
 import com.singing.audio.player.multiplyPlayers
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlin.math.max
 
 
@@ -36,12 +45,12 @@ class RecordPlayerImpl(private val recordRepository: RecordRepository) : RecordP
     override suspend fun play(recordData: RecordData) {
         val voiceFile = recordRepository.getRecordVoiceFile(recordData)
 
-        _position.value = when (recordData.duration - position.value >= max(
-            MIN_RESTART_THRESHOLD,
-            recordData.duration * RESTART_PERCENT_THRESHOLD,
-        )) {
-            true -> 0
-            false -> position.value
+        if (recordData.duration - position.value <= max(
+                MIN_RESTART_THRESHOLD,
+                recordData.duration * RESTART_PERCENT_THRESHOLD,
+            )
+        ) {
+            _position.value = 0
         }
 
         when (recordData) {
@@ -70,23 +79,24 @@ class RecordPlayerImpl(private val recordRepository: RecordRepository) : RecordP
             }
     }
 
-    private suspend fun playWithTrack(voiceFile: ComposeFile, trackFile: ComposeFile) = coroutineScope {
-        val result = multiplyPlayers(
-            player1, player2,
-            { it.play(voiceFile, position.value) },
-            { it.play(trackFile, position.value) }
-        )
+    private suspend fun playWithTrack(voiceFile: ComposeFile, trackFile: ComposeFile) =
+        coroutineScope {
+            val result = multiplyPlayers(
+                player1, player2,
+                { it.play(voiceFile, position.value) },
+                { it.play(trackFile, position.value) }
+            )
 
-        result
-            .distinctUntilChanged()
-            .collect { playerState ->
-                if (playerState == PlayerState.PLAY) {
-                    startPlayerLoop()
+            result
+                .distinctUntilChanged()
+                .collect { playerState ->
+                    if (playerState == PlayerState.PLAY) {
+                        startPlayerLoop()
+                    }
+
+                    _isPlaying.value = playerState == PlayerState.PLAY
                 }
-
-                _isPlaying.value = playerState == PlayerState.PLAY
-            }
-    }
+        }
 
     private suspend fun startPlayerLoop() {
         positionLoopJob?.cancel()

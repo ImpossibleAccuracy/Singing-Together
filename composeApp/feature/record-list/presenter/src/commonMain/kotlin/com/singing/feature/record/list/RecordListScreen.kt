@@ -127,11 +127,9 @@ fun RecordListScreen(
                                 coroutineScope.launch {
                                     val publication = viewModel.getRecordPublication(state.data)
 
-                                    if (publication != null) {
-                                        navigator.navigate(
-                                            SharedScreen.PublicationDetails(publication)
-                                        )
-                                    }
+                                    navigator.navigate(
+                                        SharedScreen.PublicationDetails(publication)
+                                    )
                                 }
                             },
                             publishRecord = {

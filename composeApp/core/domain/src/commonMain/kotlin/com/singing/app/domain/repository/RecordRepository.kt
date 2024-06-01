@@ -2,6 +2,7 @@ package com.singing.app.domain.repository
 
 import androidx.paging.PagingData
 import com.singing.app.base.ComposeFile
+import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.payload.RecordSaveData
 import com.singing.domain.model.RecordPoint
@@ -20,7 +21,7 @@ interface RecordRepository {
 
     fun getRecentRecords(): Flow<List<RecordData>>
 
-    suspend fun uploadRecord(record: RecordData): RecordData
+    suspend fun uploadRecord(record: RecordData): DataState<RecordData>
 
     suspend fun deleteRecord(record: RecordData)
 

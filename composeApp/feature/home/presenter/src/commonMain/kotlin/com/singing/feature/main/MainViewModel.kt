@@ -62,7 +62,9 @@ class MainViewModel(
         screenModelScope.launch {
             when (intent) {
                 is MainIntent.UploadRecord -> uploadRecordUseCase(intent.record)
+
                 is MainIntent.DeleteRecord -> deleteRecordUseCase(intent.record)
+
                 is MainIntent.PublishRecord -> publishRecordUseCase(
                     intent.record,
                     intent.description

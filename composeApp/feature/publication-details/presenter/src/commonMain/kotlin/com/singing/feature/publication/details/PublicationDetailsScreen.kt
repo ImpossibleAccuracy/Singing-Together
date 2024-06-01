@@ -25,7 +25,11 @@ import com.singing.app.feature.rememberRecordPlayer
 import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
-import com.singing.feature.publication.details.presenter.generated.resources.*
+import com.singing.feature.publication.details.presenter.generated.resources.Res
+import com.singing.feature.publication.details.presenter.generated.resources.common_error_subtitle
+import com.singing.feature.publication.details.presenter.generated.resources.common_error_title
+import com.singing.feature.publication.details.presenter.generated.resources.common_no_data_subtitle
+import com.singing.feature.publication.details.presenter.generated.resources.common_no_data_title
 import com.singing.feature.publication.details.viewmodel.PublicationDetailsIntent
 import com.singing.feature.publication.details.viewmodel.PublicationDetailsUiState
 import com.singing.feature.record.views.RecordDetails
@@ -76,6 +80,7 @@ fun PublicationDetailsScreen(
                         user = state.data.author,
                         record = state.data.record,
                         player = null,
+                        isRecordPointsStatic = true,
                         recordPoints = recordPoints,
                         note = viewModel::getNote,
                     ),
@@ -90,6 +95,7 @@ fun PublicationDetailsScreen(
                     ),
                     availableActions = rememberPublicationCardActions(uiState.user, state.data),
                 )
+
                 Column(
                     modifier = Modifier
                         .weight(3f)

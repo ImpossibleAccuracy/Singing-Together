@@ -75,12 +75,14 @@ class FileStorageServiceImpl(
     }
 
     private fun getDocumentType(file: File): DocumentTypeEntity =
-        URLConnection.guessContentTypeFromName(file.name).let { mimeType ->
-            documentTypeRepository.findByMimeType(mimeType)
+        URLConnection.guessContentTypeFromName(file.name).let { mimeType: String? ->
+            val actualMimeType = mimeType ?: "audio/wav"
+
+            documentTypeRepository.findByMimeType(actualMimeType)
                 .orElseGet {
                     DocumentTypeEntity(
-                        title = "From MIME type $mimeType",
-                        mimeType = mimeType,
+                        title = "From MIME type $actualMimeType",
+                        mimeType = actualMimeType,
                     ).let(documentTypeRepository::save)
                 }
         }
