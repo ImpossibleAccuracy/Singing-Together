@@ -4,6 +4,7 @@ import androidx.paging.cachedIn
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
 import com.singing.app.domain.model.UserData
+import com.singing.app.domain.provider.UserProvider
 import com.singing.feature.account.profile.domain.usecase.GetAccountPublicationsUseCase
 import com.singing.feature.account.profile.domain.usecase.GetUserInfoUseCase
 import com.singing.feature.account.profile.viewmodel.AccountProfileIntent
@@ -17,10 +18,15 @@ import kotlinx.coroutines.launch
 class AccountProfileViewModel(
     accountProfile: UserData,
 
+    private val userProvider: UserProvider,
     getUserInfoUseCase: GetUserInfoUseCase,
     getAccountPublicationsUseCase: GetAccountPublicationsUseCase,
 ) : ScreenModel {
-    private val _uiState = MutableStateFlow(AccountProfileUiState(accountProfile))
+    private val _uiState = MutableStateFlow(
+        AccountProfileUiState(
+            account = accountProfile,
+        )
+    )
     val uiState = _uiState.asStateFlow()
 
     val publications = getAccountPublicationsUseCase(accountProfile).cachedIn(screenModelScope)
@@ -33,12 +39,25 @@ class AccountProfileViewModel(
                 it.copy(userInfo = info)
             }
         }
+
+        screenModelScope.launch {
+            userProvider.userFlow.collect { user ->
+                _uiState.update { it.copy(user = user) }
+            }
+        }
     }
 
     fun onIntent(intent: AccountProfileIntent) {
         screenModelScope.launch {
-//            when (intent) {
-//            }
+            when (intent) {
+                AccountProfileIntent.Logout -> {
+                    val state = uiState.value
+
+                    if (state.account == state.user) {
+                        userProvider.logout()
+                    }
+                }
+            }
         }
     }
 }

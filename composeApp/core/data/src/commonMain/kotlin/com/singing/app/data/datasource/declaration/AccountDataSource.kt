@@ -8,6 +8,8 @@ sealed interface AccountDataSource {
     interface Remote : AccountDataSource {
         suspend fun fetchAccount(id: Int): ApiResult<UserData>
 
+        suspend fun fetchAccount(username: String): ApiResult<UserData>
+
         suspend fun fetchAccountInfo(id: Int): ApiResult<UserInfo>
     }
 }

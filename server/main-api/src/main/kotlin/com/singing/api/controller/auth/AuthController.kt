@@ -27,7 +27,7 @@ class AuthController(
         @RequestBody body: AuthRequest,
     ): AuthResponse {
         val account = accountService
-            .getByEmail(body.username)
+            .getByUsername(body.username)
             .orElseThrow {
                 ResourceNotFoundException("Account not found")
             }
@@ -46,7 +46,7 @@ class AuthController(
     suspend fun signUp(
         @RequestBody body: AuthRequest,
     ): AuthResponse {
-        accountService.getByEmail(body.username)
+        accountService.getByUsername(body.username)
             .ifPresent {
                 throw OperationRejectedException("User with such email already exists")
             }

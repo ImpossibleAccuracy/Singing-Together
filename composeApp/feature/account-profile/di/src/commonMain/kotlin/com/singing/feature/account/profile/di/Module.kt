@@ -10,6 +10,7 @@ val accountProfileModule = module {
     factory { param ->
         AccountProfileViewModel(
             accountProfile = param.get(),
+            userProvider = get(),
             getAccountPublicationsUseCase = get(),
             getUserInfoUseCase = get(),
         )

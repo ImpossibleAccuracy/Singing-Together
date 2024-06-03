@@ -2,6 +2,7 @@ package com.singing.app.navigation
 
 import cafe.adriel.voyager.core.screen.Screen
 import com.singing.feature.account.profile.AccountProfilePage
+import com.singing.feature.auth.AuthPage
 import com.singing.feature.community.CommunityPage
 import com.singing.feature.main.MainPage
 import com.singing.feature.publication.details.PublicationDetailsPage
@@ -27,12 +28,14 @@ class NavigatorImpl(
                 is SelectRecordTypePage -> SharedScreen.SelectRecordingType
                 is SelectAudioPage -> SharedScreen.SelectRecordingAudio
                 is PublicationDetailsPage -> SharedScreen.PublicationDetails(page.publication)
+                is AuthPage -> SharedScreen.Auth
                 else -> TODO()
             }
 
         fun getPageByScreen(screen: SharedScreen): Screen =
             when (screen) {
                 SharedScreen.Main -> MainPage()
+                SharedScreen.Auth -> AuthPage()
                 SharedScreen.Community -> CommunityPage()
                 is SharedScreen.RecordList -> RecordListPage(screen.record)
                 is SharedScreen.RecordDetails -> RecordDetailPage(screen.record)
@@ -41,7 +44,6 @@ class NavigatorImpl(
                 is SharedScreen.SelectRecordingAudio -> SelectAudioPage()
                 is SharedScreen.SelectRecordingType -> SelectRecordTypePage()
                 is SharedScreen.PublicationDetails -> PublicationDetailsPage(screen.publication)
-                else -> TODO()
             }
     }
 
@@ -56,6 +58,14 @@ class NavigatorImpl(
     override fun replace(screen: SharedScreen) {
         val page = getPageByScreen(screen)
         navigator.replace(page)
+    }
+
+    override fun backOrReplace(screen: SharedScreen) {
+        if (navigator.canPop) {
+            pop()
+        } else {
+            navigate(screen)
+        }
     }
 
     override fun pop() {

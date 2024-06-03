@@ -69,10 +69,15 @@ kotlin {
             implementation(libs.bundles.voyager)
             implementation(libs.bundles.koin)
 
+            implementation(libs.composeImageLoader)
+
             // FEATURES --------------------------------------------------------------
 
             implementation(project(Modules.App.Feature.Home.Presenter))
             implementation(project(Modules.App.Feature.Home.Di))
+
+            implementation(project(Modules.App.Feature.Auth.Presenter))
+            implementation(project(Modules.App.Feature.Auth.Di))
 
             implementation(project(Modules.App.Feature.Community.Presenter))
             implementation(project(Modules.App.Feature.Community.Di))

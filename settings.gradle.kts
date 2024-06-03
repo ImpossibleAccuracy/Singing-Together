@@ -40,10 +40,11 @@ include(":server:main-api")
 
 
 include(":composeApp")
+include(":composeApp:presenter")
 include(":composeApp:core:data")
 include(":composeApp:core:domain")
 include(":composeApp:core:di")
-include(":composeApp:presenter")
+include(":composeApp:core:auth")
 
 include(":composeApp:common:theme")
 include(":composeApp:common:ui-tools")
@@ -87,3 +88,7 @@ include(":composeApp:feature:recording-setup:di")
 include(":composeApp:feature:publication-details:presenter")
 include(":composeApp:feature:publication-details:domain")
 include(":composeApp:feature:publication-details:di")
+
+include(":composeApp:feature:auth:presenter")
+include(":composeApp:feature:auth:domain")
+include(":composeApp:feature:auth:di")

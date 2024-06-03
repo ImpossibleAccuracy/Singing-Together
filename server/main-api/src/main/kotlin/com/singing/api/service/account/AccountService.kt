@@ -8,7 +8,7 @@ interface AccountService {
 
     suspend fun getPublicationsCount(id: Int): Long
 
-    suspend fun getByEmail(username: String): Optional<AccountEntity>
+    suspend fun getByUsername(username: String): Optional<AccountEntity>
 
     suspend fun save(account: AccountEntity): AccountEntity
 }

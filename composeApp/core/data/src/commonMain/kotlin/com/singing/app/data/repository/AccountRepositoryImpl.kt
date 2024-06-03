@@ -16,6 +16,12 @@ class AccountRepositoryImpl(
             else -> null
         }
 
+    override suspend fun findAccount(username: String): UserData? =
+        when (val result = dataSource.fetchAccount(username)) {
+            is ApiResult.Success -> result.result
+            else -> null
+        }
+
     override suspend fun getAccountInfo(accountId: Int): DataState<UserInfo> =
         dataSource.fetchAccountInfo(accountId).asDataState
 }

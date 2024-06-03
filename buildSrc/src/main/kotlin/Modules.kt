@@ -25,6 +25,7 @@ object Modules {
     object App {
         const val Domain = ":composeApp:core:domain"
         const val Data = ":composeApp:core:data"
+        const val Auth = ":composeApp:core:auth"
         const val Di = ":composeApp:core:di"
 
         object Common {
@@ -40,6 +41,7 @@ object Modules {
             const val Base = ":composeApp:feature:base"
 
             val Home = UiFeature(":composeApp:feature:home")
+            val Auth = UiFeature(":composeApp:feature:auth")
             val Community = UiFeature(":composeApp:feature:community")
             val PublicationDetails = UiFeature(":composeApp:feature:publication-details")
             val RecordList = UiFeature(":composeApp:feature:record-list")

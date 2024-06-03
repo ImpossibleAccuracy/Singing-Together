@@ -25,6 +25,7 @@ kotlin {
 
             implementation(project(Modules.Shared.Payload))
             implementation(project(Modules.App.Data))
+            implementation(project(Modules.App.Auth))
 
             implementation(libs.bundles.koin)
             implementation(libs.bundles.ktor)

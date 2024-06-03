@@ -1,5 +1,6 @@
 package com.singing.feature.account.profile.views
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -7,20 +8,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.singing.app.common.views.base.AppTextButton
 import com.singing.app.common.views.base.account.UserAvatar
-import com.singing.app.domain.model.UserInfo
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.UserData
+import com.singing.app.domain.model.UserInfo
 import com.singing.app.ui.screen.dimens
-import com.singing.feature.account.profile.presenter.generated.resources.Res
-import com.singing.feature.account.profile.presenter.generated.resources.label_account_registered_since
-import com.singing.feature.account.profile.presenter.generated.resources.label_publications_count
-import com.singing.feature.account.profile.presenter.generated.resources.title_cannot_fetch_user_info
+import com.singing.feature.account.profile.presenter.generated.resources.*
 import kotlinx.datetime.Clock
 import nl.jacobras.humanreadable.HumanReadable
 import org.jetbrains.compose.resources.stringResource
@@ -29,8 +29,10 @@ import org.jetbrains.compose.resources.stringResource
 @Composable
 fun AccountBanner(
     modifier: Modifier = Modifier,
+    currentUser: UserData?,
     account: UserData,
     userInfo: DataState<UserInfo>,
+    onLogout: () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -75,6 +77,14 @@ fun AccountBanner(
                     AccountInfoSection(userInfo.data)
                 }
             }
+        }
+
+        if (currentUser == account) {
+            AppTextButton(
+                label = stringResource(Res.string.action_logout),
+                onClick = onLogout,
+                contentColor = MaterialTheme.colorScheme.primary,
+            )
         }
     }
 }

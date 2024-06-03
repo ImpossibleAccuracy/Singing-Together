@@ -14,8 +14,9 @@ javafx-plugin = "0.1.0"
 
 
 kotlinx-datetime = "0.5.0"
-kotlinx-collections = "0.3.7"
 kotlinx-coroutines = "1.8.1"
+kotlinx-collections = "0.3.7"
+kotlinx-serialization = "1.6.3"
 
 agp = "8.2.0" # 8.4.0 is not supported by Intellij Idea
 androidx-compose-activity = "1.9.0"
@@ -33,6 +34,7 @@ koin = "3.5.6"
 koin-compose = "1.1.5"
 ktor = "2.3.11"
 sqldelight = "2.0.1"
+multiplatformSettings = "1.1.1"
 
 paging = "3.3.0-alpha02-0.5.1"
 apiresult = "1.0.4"
@@ -58,6 +60,7 @@ kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.re
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 kotlinx-collections = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections" }
+kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 
 # COROUTINES
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -112,6 +115,10 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 sqldelight-driver-android = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
 sqldelight-driver-sqlite = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
 sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+
+settings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
+settings-coroutines = { module = "com.russhwolf:multiplatform-settings-coroutines", version.ref = "multiplatformSettings" }
+settings-serialization = { module = "com.russhwolf:multiplatform-settings-serialization", version.ref = "multiplatformSettings" }
 
 paging-compose = { module = "app.cash.paging:paging-common", version.ref = "paging" }
 paging-compose-common = { module = "app.cash.paging:paging-compose-common", version.ref = "paging" }

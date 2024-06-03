@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
@@ -30,22 +33,16 @@ actual fun NavigationAppearance(
         bottomBar = {
             if (currentScreen !is NoNavigationScreen) {
                 NavigationBar {
-                    NavigationItems.forEach {
-                        val title = it.title()
-                        val icon = it.icon()
-
+                    NavigationItems().forEach {
                         NavigationBarItem(
                             selected = if (currentScreen == null) {
                                 false
                             } else {
                                 areScreensSame(currentScreen, it.reference())
                             },
-                            label = { Text(title) },
+                            label = { it.title() },
                             icon = {
-                                Icon(
-                                    imageVector = icon,
-                                    contentDescription = title,
-                                )
+                                it.icon()
                             },
                             onClick = {
                                 val screen = it.reference().screen

@@ -9,4 +9,6 @@
     <string name="label_account_no_publications"/>
     <string name="label_account_registered_since"/>
     <string name="label_publications_count"/>
+
+    <string name="action_logout"/>
 </resources>

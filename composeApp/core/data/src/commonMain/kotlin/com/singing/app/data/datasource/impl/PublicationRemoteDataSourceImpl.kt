@@ -18,6 +18,7 @@ import com.singing.domain.payload.request.PublishRecordRequest
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import pro.respawn.apiresult.ApiResult
 
 class PublicationRemoteDataSourceImpl(
@@ -40,6 +41,8 @@ class PublicationRemoteDataSourceImpl(
         httpClient
             .post(ApiScheme.Publication.PublishRecord) {
                 authHeader(userProvider)
+
+                contentType(ContentType.Application.Json)
 
                 setBody(
                     PublishRecordRequest(

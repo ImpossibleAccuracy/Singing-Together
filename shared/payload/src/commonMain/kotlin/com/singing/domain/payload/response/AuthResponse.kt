@@ -1,6 +1,6 @@
 package com.singing.domain.payload.response
 
 data class AuthResponse(
-    val id: Int,
-    val token: String,
+    val id: Int? = null,
+    val token: String? = null,
 )

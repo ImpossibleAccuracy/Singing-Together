@@ -17,7 +17,7 @@ class AccountServiceImpl(
     override suspend fun getPublicationsCount(id: Int): Long =
         publicationRepository.countByAccount_Id(id)
 
-    override suspend fun getByEmail(username: String): Optional<AccountEntity> =
+    override suspend fun getByUsername(username: String): Optional<AccountEntity> =
         Optional.ofNullable(accountRepository.findByUsernameIgnoreCase(username))
 
     override suspend fun save(account: AccountEntity): AccountEntity =

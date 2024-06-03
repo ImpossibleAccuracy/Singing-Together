@@ -2,19 +2,20 @@ package com.singing.app.data.datasource.impl.api
 
 @Suppress("ConstPropertyName", "FunctionName")
 object ApiScheme {
-    object Account {
-        private const val base = "/account"
-
-        fun Details(id: Int) = "$base/$id"
-        fun Info(id: Int) = "$base/$id/info"
-    }
-
     object Auth {
         private const val base = "/auth"
 
         const val SignIn = "$base/signIn"
         const val SignUp = "$base/signUp"
         const val TokenRefresh = "$base/token"
+    }
+
+    object Account {
+        private const val base = "/account"
+
+        fun Details(id: Int) = "$base/$id"
+        const val ByUsername = "$base/username"
+        fun Info(id: Int) = "$base/$id/info"
     }
 
     object Publication {

@@ -23,6 +23,7 @@ import com.singing.app.navigation.AppNavigator
 import com.singing.app.navigation.SharedScreen
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.screen.listSpacing
+import com.singing.feature.account.profile.viewmodel.AccountProfileIntent
 import com.singing.feature.account.profile.viewmodel.AccountProfileUiState
 import com.singing.feature.account.profile.views.AccountBanner
 import com.singing.feature.account.profile.views.AccountPublications
@@ -63,8 +64,14 @@ fun AccountProfileScreen(
     ) {
         item(span = StaggeredGridItemSpan.FullLine) {
             AccountBanner(
+                currentUser = uiState.user,
                 account = uiState.account,
-                userInfo = uiState.userInfo
+                userInfo = uiState.userInfo,
+                onLogout = {
+                    viewModel.onIntent(AccountProfileIntent.Logout)
+
+                    navigator.popToRoot()
+                }
             )
 
             Spacer(Modifier.height(MaterialTheme.dimens.dimen1_5))

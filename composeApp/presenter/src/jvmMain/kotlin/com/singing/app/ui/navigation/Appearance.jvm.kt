@@ -33,7 +33,7 @@ actual fun NavigationAppearance(
 
             if (currentScreen !is NoNavigationScreen) {
                 AppNavigationRail(
-                    items = NavigationItems,
+                    items = NavigationItems(),
                     isSelected = {
                         if (currentScreen == null) {
                             false

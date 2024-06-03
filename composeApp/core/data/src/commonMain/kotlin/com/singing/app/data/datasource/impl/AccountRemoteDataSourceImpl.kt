@@ -9,9 +9,9 @@ import com.singing.app.domain.model.UserInfo
 import com.singing.app.domain.provider.UserProvider
 import com.singing.domain.payload.dto.AccountDto
 import com.singing.domain.payload.dto.AccountInfoDto
-import io.ktor.client.HttpClient
-import io.ktor.client.call.body
-import io.ktor.client.request.get
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
 import pro.respawn.apiresult.ApiResult
 
 class AccountRemoteDataSourceImpl(
@@ -22,6 +22,17 @@ class AccountRemoteDataSourceImpl(
         httpClient
             .get(ApiScheme.Account.Details(id)) {
                 authHeader(userProvider)
+            }
+            .body<AccountDto>()
+            .let(::map)
+    }
+
+    override suspend fun fetchAccount(username: String): ApiResult<UserData> = ApiResult {
+        httpClient
+            .get(ApiScheme.Account.ByUsername) {
+                authHeader(userProvider)
+
+                parameter("username", username)
             }
             .body<AccountDto>()
             .let(::map)

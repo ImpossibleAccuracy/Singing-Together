@@ -7,5 +7,7 @@ import com.singing.app.domain.model.UserInfo
 interface AccountRepository {
     suspend fun findAccount(accountId: Int): UserData?
 
+    suspend fun findAccount(username: String): UserData?
+
     suspend fun getAccountInfo(accountId: Int): DataState<UserInfo>
 }
