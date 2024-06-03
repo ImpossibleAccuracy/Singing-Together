@@ -6,15 +6,19 @@ CREATE TABLE IF NOT EXISTS documentEntity (
 
 CREATE INDEX document_path ON documentEntity(path);
 
+selectOne:
+SELECT *
+FROM documentEntity
+WHERE id = ?;
+
 selectPath:
 SELECT path
 FROM documentEntity
 WHERE id = ?;
 
 selectLastInserted:
-SELECT *
-FROM documentEntity
-WHERE id = last_insert_rowid();
+SELECT MAX(id)
+FROM documentEntity;
 
 insert:
 INSERT INTO documentEntity (createdAt, path)

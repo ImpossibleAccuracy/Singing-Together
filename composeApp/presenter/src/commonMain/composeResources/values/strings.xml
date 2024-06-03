@@ -91,6 +91,14 @@
     <string name="subtitle_registration">Create your account</string>
     <string name="title_auth_success">Success</string>
 
+    <string name="title_save_record">Record results</string>
+    <string name="subtitle_save_record">Please check your record data before proceeding.</string>
+
+    <string name="title_save_record_done">Record saved</string>
+
+    <string name="error_save_record_title">Record save error</string>
+    <string name="error_save_record_subtitle">An error occurred while saving the recording</string>
+
     <!--  ACTIONS  -->
 
     <string name="action_select_track">Select file from device</string>
@@ -120,6 +128,8 @@
     <string name="action_sign_up">Sign up</string>
     <string name="action_back_to_app">Back to app</string>
     <string name="action_logout">Logout</string>
+    <string name="action_push_to_server">Push to server</string>
+    <string name="action_save_locally">Save locally</string>
 
     <!--  LABELS  -->
 
@@ -154,6 +164,10 @@
     <string name="label_too_long">Too long</string>
     <string name="label_password_mismatch">Wrong password</string>
     <string name="label_your_account">Your account is:</string>
+    <string name="label_push_to_server">Recording will be saved in your account</string>
+    <string name="label_save_locally">Recording will be saved on current device</string>
+    <string name="label_saved_locally">Saved to your device</string>
+    <string name="label_saved_remote">Saved to %1$s account</string>
 
     <string name="quest">Quest</string>
 </resources>

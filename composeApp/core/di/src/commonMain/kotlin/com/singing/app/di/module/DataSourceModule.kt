@@ -13,4 +13,5 @@ val dataSourceModule = module {
     single<RecordFileDataSource> { new(::RecordFileDataSourceImpl) }
     single<RecordDataSource.Local> { new(::RecordLocalDataSourceImpl) }
     single<RecordDataSource.Remote> { new(::RecordRemoteDataSourceImpl) }
+    single<RecordInfoDataSource> { new(::RecordInfoDataSourceImpl) }
 }

@@ -60,9 +60,9 @@ class FileStorageServiceImpl(
     override fun buildDocument(file: File): DocumentEntity =
         DocumentEntity(
             createdAt = Instant.now(),
-            title = file.name,
+            title = substring(file.name, DocumentEntity.MAX_TITLE_LENGTH),
             hash = getFileHash(file.readBytes()),
-            path = file.absolutePath,
+            path = substring(file.absolutePath, DocumentEntity.MAX_PATH_LENGTH),
             type = getDocumentType(file),
         )
 
@@ -73,6 +73,10 @@ class FileStorageServiceImpl(
 
         return digest.toHexString()
     }
+
+    private fun substring(string: String, maxLength: Int): String =
+        if (string.length <= maxLength) string
+        else string.substring(0, maxLength)
 
     private fun getDocumentType(file: File): DocumentTypeEntity =
         URLConnection.guessContentTypeFromName(file.name).let { mimeType: String? ->

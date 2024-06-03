@@ -8,6 +8,7 @@ import com.singing.app.data.datasource.utils.authHeader
 import com.singing.app.data.datasource.utils.requireAuth
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.provider.UserProvider
+import com.singing.config.track.TrackProperties
 import com.singing.domain.model.RecordPoint
 import com.singing.domain.payload.dto.RecordDto
 import com.singing.domain.payload.dto.RecordPointDto
@@ -47,7 +48,13 @@ class RecordRemoteDataSourceImpl(
                     if (trackFile != null) {
                         append("track", trackFile.readAll(), Headers.build {
                             append(HttpHeaders.ContentDisposition, "filename=${trackFile.name}")
-                            appendAll(HttpHeaders.ContentType, ContentType.fromFileExtension(trackFile.name).map { it.contentType })
+
+                            val mimeType = TrackProperties
+                                .allowedSoundFormats[trackFile.extension]
+                                ?.firstOrNull()
+                                ?: throw IllegalArgumentException("No MIME-TYPE found for file $trackFile")
+
+                            appendAll(HttpHeaders.ContentType, listOf(mimeType))
                         })
                     }
                 }

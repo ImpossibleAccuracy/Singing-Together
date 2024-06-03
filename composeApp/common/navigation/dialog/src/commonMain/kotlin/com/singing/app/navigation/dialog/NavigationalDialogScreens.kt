@@ -8,7 +8,6 @@ abstract class NavigationalDialogScreen<T> : Screen {
 
     fun navigate(screen: NavigationalDialogScreen<T>) {
         screen.navigator = navigator
-        navigator?.popUntilRoot()
         navigator?.replace(screen)
     }
 }

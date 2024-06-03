@@ -10,11 +10,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import java.io.File
 
 
-actual suspend fun getFileDuration(file: File): Long {
-    val media = Media(file.toURI().toString())
+actual suspend fun getFileDuration(composeFile: ComposeFile): Long {
+    val media = Media(composeFile.file.toURI().toString())
     val player = MediaPlayer(media)
 
     player.waitReady()
@@ -50,7 +49,7 @@ actual suspend fun processAudioFile(inputFile: ComposeFile): AudioFile? {
     val file = inputFile.file
 
     val duration = withContext(Dispatchers.IO) {
-        getFileDuration(file)
+        getFileDuration(inputFile)
     }
 
     return AudioFile(

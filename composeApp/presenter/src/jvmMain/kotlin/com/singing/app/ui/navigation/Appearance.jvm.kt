@@ -42,6 +42,7 @@ actual fun NavigationAppearance(
                         }
                     },
                     navigate = {
+                        navigator.popUntilRoot()
                         navigator.push(it.reference().screen)
                     },
                     action = {

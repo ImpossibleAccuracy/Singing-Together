@@ -1,11 +1,6 @@
 package com.singing.app.navigation.dialog
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -29,7 +24,7 @@ fun <T> NavigationalDialog(
     confirmButtonText: @Composable (NavigationalDialogScreen<T>) -> String,
     onDismiss: () -> Unit,
     onFinish: (T) -> Unit,
-    content: @Composable (@Composable () -> Unit) -> Unit,
+    content: @Composable (item: NavigationalDialogScreen<T>, @Composable () -> Unit) -> Unit,
 ) {
     Navigator(
         screen = startScreen(),
@@ -60,7 +55,7 @@ fun <T> NavigationalDialog(
                 ),
                 verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
-                content {
+                content(currentScreen) {
                     SlideTransition(navigator = navigator) {
                         it.Content()
                     }

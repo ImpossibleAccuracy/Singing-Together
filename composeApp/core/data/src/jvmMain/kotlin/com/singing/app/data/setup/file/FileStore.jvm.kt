@@ -32,7 +32,13 @@ actual class FileStore actual constructor(
     actual fun storeFile(data: InputStream): ComposeFile {
         val name = getRandomString(properties.filenameLength)
 
-        val file = properties.normalStorePath.resolve(name).toFile()
+        val file = properties.normalStorePath
+            .resolve("$name.wav")
+            .createParentDirectories()
+            .createFile()
+            .toFile()
+
+        file.createNewFile()
 
         file.outputStream().use {
             data.copyTo(it)
@@ -44,7 +50,11 @@ actual class FileStore actual constructor(
     actual fun copyToStore(data: ComposeFile): ComposeFile {
         val name = getRandomString(properties.filenameLength)
 
-        val file = properties.normalStorePath.resolve(name).toFile()
+        val file = properties.normalStorePath
+            .resolve("$name.${data.file.extension}")
+            .createParentDirectories()
+            .createFile()
+            .toFile()
 
         file.outputStream().use {
             data.inputStream().copyTo(it)

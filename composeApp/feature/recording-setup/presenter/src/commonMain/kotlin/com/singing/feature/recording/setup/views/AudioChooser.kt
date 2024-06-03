@@ -1,29 +1,12 @@
 package com.singing.feature.recording.setup.views
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,12 +20,7 @@ import com.singing.app.ui.formatTimeString
 import com.singing.app.ui.screen.dimens
 import com.singing.app.ui.screen.listSpacing
 import com.singing.config.track.TrackProperties
-import com.singing.feature.recording.setup.presenter.generated.resources.Res
-import com.singing.feature.recording.setup.presenter.generated.resources.action_select_track
-import com.singing.feature.recording.setup.presenter.generated.resources.baseline_folder_open_black_24dp
-import com.singing.feature.recording.setup.presenter.generated.resources.label_no_saved_tracks
-import com.singing.feature.recording.setup.presenter.generated.resources.label_or
-import com.singing.feature.recording.setup.presenter.generated.resources.label_pick_from_recent
+import com.singing.feature.recording.setup.presenter.generated.resources.*
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.toPersistentList
 import org.jetbrains.compose.resources.stringResource
@@ -58,7 +36,10 @@ fun AudioChooser(
 
     FilePicker(
         show = showAudioTrackPicker,
-        fileExtensions = TrackProperties.allowedSoundFormats.toPersistentList(),
+        fileExtensions = TrackProperties
+            .allowedSoundFormats
+            .keys
+            .toPersistentList(),
         onFileSelected = { inputFile ->
             if (inputFile != null) {
                 onFileSelected(inputFile)

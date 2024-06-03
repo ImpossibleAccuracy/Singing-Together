@@ -13,11 +13,15 @@ internal object DefaultTrackProperties : ITrackProperties {
         HighPassAudioFilter("Default HighPass Filter", 80f, inputSampleRate.toFloat()),
     )
 
-    override val allowedSoundFormats: List<String> = listOf(
-        "m4a",
-        "mp3",
-        "wav",
-        "wma",
-        "aac",
+    override val allowedSoundFormats: Map<String, List<String>> = mapOf(
+        "m4a" to listOf("audio/mp4"),
+        "mp3" to listOf("audio/mpeg"),
+        "wav" to listOf(
+            "audio/wav",
+            "audio/wave",
+            "audio/x-wave",
+        ),
+        "wma" to listOf("audio/x-ms-wma"),
+        "aac" to listOf("audio/aac"),
     )
 }

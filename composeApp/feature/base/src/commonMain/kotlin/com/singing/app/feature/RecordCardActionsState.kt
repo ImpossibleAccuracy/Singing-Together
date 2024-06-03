@@ -12,7 +12,7 @@ fun rememberRecordCardActions(user: UserData?, record: RecordData) =
     remember(user, record) {
         RecordCardActionsState(
             canUpload = user != null && record.creatorId == user.id && !record.isSavedRemote,
-            canDelete = record.isSavedLocally || (record.isSavedRemote && user != null && user.id == record.creatorId),
+            canDelete = !record.isSavedRemote || (user != null && user.id == record.creatorId),
             canPublish = user != null && (user.id == record.creatorId || record.isSavedLocally),
             canOpenPublication = record.isPublished,
         )

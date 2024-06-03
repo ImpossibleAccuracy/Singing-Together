@@ -1,7 +1,7 @@
 package com.singing.app.data.datasource.declaration
 
+import com.singing.app.base.ComposeFile
 import com.singing.app.domain.model.RecordData
-import com.singing.app.domain.payload.RecordSaveData
 import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.flow.Flow
 import pro.respawn.apiresult.ApiResult
@@ -15,12 +15,11 @@ sealed interface RecordDataSource {
         suspend fun getLocalIdByRemoteId(remoteId: Int): Int?
 
         suspend fun saveRecord(
-            data: RecordSaveData,
+            voiceFile: ComposeFile,
+            trackFile: ComposeFile?,
+            title: String?,
             remoteId: Int?,
             creatorId: Int?,
-            duration: Long,
-            accuracy: Double?,
-            points: List<RecordPoint>
         ): ApiResult<RecordData>
 
         suspend fun markUploaded(record: RecordData, remoteId: Int): ApiResult<RecordData>

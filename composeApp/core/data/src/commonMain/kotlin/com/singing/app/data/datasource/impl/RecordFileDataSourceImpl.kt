@@ -9,12 +9,16 @@ import com.singing.app.data.datasource.utils.authHeader
 import com.singing.app.data.setup.file.FileStore
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.model.isTwoLineRecord
+import com.singing.app.domain.payload.RecordSaveData
 import com.singing.app.domain.provider.UserProvider
-import io.ktor.client.HttpClient
-import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsChannel
-import io.ktor.utils.io.jvm.javaio.toInputStream
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.utils.io.jvm.javaio.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import pro.respawn.apiresult.ApiResult
+import java.io.ByteArrayInputStream
 
 class RecordFileDataSourceImpl(
     private val appDatabase: AppDatabase,
@@ -22,6 +26,16 @@ class RecordFileDataSourceImpl(
     private val userProvider: UserProvider,
     private val fileStore: FileStore,
 ) : RecordFileDataSource {
+    override suspend fun storeVoiceFile(data: RecordSaveData): ComposeFile =
+        withContext(Dispatchers.IO) {
+            fileStore.storeFile(ByteArrayInputStream(data.record))
+        }
+
+    override suspend fun storeTrackFile(data: RecordSaveData): ComposeFile =
+        withContext(Dispatchers.IO) {
+            fileStore.copyToStore(data.track!!.file)
+        }
+
     override suspend fun getRecordVoiceFile(record: RecordData): ApiResult<ComposeFile> =
         ApiResult {
             if (record.isSavedLocally) {

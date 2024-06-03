@@ -25,6 +25,11 @@ class DocumentEntity(
     @JoinColumn(name = "type_id", nullable = false)
     var type: DocumentTypeEntity? = null,
 ) : BaseEntity(id) {
+    companion object {
+        const val MAX_PATH_LENGTH = 1000
+        const val MAX_TITLE_LENGTH = 255
+    }
+
     @OneToMany(mappedBy = "avatar", fetch = FetchType.LAZY, targetEntity = AccountEntity::class)
     var avatarAccounts: Set<AccountEntity> = setOf()
 

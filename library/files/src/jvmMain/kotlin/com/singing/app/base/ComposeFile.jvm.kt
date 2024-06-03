@@ -12,6 +12,9 @@ actual data class ComposeFile(
     actual val name: String
         get() = file.nameWithoutExtension
 
+    actual val extension: String
+        get() = file.extension
+
     actual val fullPath: String
         get() = file.absolutePath
 

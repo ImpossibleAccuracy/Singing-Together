@@ -8,34 +8,55 @@ import com.singing.app.data.repository.base.PagingRepository
 import com.singing.app.domain.model.DataState
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.payload.RecordSaveData
+import com.singing.app.domain.provider.UserProvider
+import com.singing.app.domain.provider.currentUser
 import com.singing.app.domain.repository.RecordRepository
 import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class RecordRepositoryImpl(
+    private val userProvider: UserProvider,
     private val localDataSource: RecordDataSource.Local,
     private val remoteDataSource: RecordDataSource.Remote,
     private val recordFileDataSource: RecordFileDataSource,
 ) : RecordRepository, PagingRepository() {
     override suspend fun markPublished(record: RecordData) {
-        if (record.isPublished) return
-
         localDataSource.markPublished(record)
     }
 
     override suspend fun saveRecord(
         data: RecordSaveData,
         saveRemote: Boolean,
-    ): RecordData {
-        // TODO: insert audio analyzer algorithm
-//        localDataSource.saveRecord(data)
+    ): DataState<RecordData> {
+        val voiceFile = recordFileDataSource.storeVoiceFile(data)
+        val trackFile = data.track?.let { recordFileDataSource.storeTrackFile(data) }
 
-        if (saveRemote) {
-//            remoteDataSource.uploadRecord()
+        val record = localDataSource
+            .saveRecord(
+                voiceFile = voiceFile,
+                trackFile = trackFile,
+                title = data.title,
+                remoteId = null,
+                creatorId = userProvider.currentUser?.id,
+            )
+            .asDataState
+
+        return when {
+            saveRemote && record is DataState.Success -> {
+                val uploaded = remoteDataSource.uploadRecord(record.data).asDataState
+
+                if (uploaded is DataState.Success) {
+                    localDataSource
+                        .markUploaded(record.data, uploaded.data.key.remoteId!!)
+                        .asDataState
+                } else {
+                    uploaded
+                }
+            }
+
+            else -> record
         }
-
-        TODO()
     }
 
     override suspend fun getAnyRecord(): RecordData? =

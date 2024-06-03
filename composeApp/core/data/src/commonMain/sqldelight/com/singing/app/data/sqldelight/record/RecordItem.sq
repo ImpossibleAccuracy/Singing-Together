@@ -1,10 +1,10 @@
 CREATE TABLE IF NOT EXISTS recordItemEntity (
-  id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  _id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   recordId INTEGER NOT NULL,
   time INTEGER NOT NULL,
   frequency REAL,
   trackFrequency REAL,
-  FOREIGN KEY (recordId) REFERENCES recordEntity(id)
+  FOREIGN KEY (recordId) REFERENCES recordEntity(id) ON DELETE CASCADE
 );
 
 selectByRecordId:

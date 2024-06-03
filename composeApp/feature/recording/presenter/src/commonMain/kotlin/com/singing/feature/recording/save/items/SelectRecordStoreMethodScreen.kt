@@ -13,14 +13,20 @@ import androidx.compose.ui.unit.dp
 import com.singing.app.common.views.base.RadioGroup
 import com.singing.app.domain.model.RecordData
 import com.singing.app.navigation.dialog.SkippableNavigationalDialogScreen
+import com.singing.feature.recording.presenter.generated.resources.*
+import com.singing.feature.recording.presenter.generated.resources.Res
+import com.singing.feature.recording.presenter.generated.resources.action_push_to_server
+import com.singing.feature.recording.presenter.generated.resources.action_save_locally
+import com.singing.feature.recording.presenter.generated.resources.label_push_to_server
 import com.singing.feature.recording.save.RecordSaveAdditionalInfo
 import com.singing.feature.recording.save.RecordSaveStrategy
 import kotlinx.collections.immutable.persistentListOf
+import org.jetbrains.compose.resources.stringResource
 
 
 data class SelectRecordStoreMethodScreen(
     val data: RecordSaveAdditionalInfo,
-) : SkippableNavigationalDialogScreen<RecordData>() {
+) : SkippableNavigationalDialogScreen<RecordData?>() {
     private val saveRemote = mutableStateOf(true)
 
     override fun buildNextPage() = ProcessRecordSaveScreen(
@@ -56,8 +62,8 @@ data class SelectRecordStoreMethodScreen(
             ) {
                 Text(
                     text = when (isSavedRemote) {
-                        true -> "Push to server"
-                        false -> "Save locally"
+                        true -> stringResource(Res.string.action_push_to_server)
+                        false -> stringResource(Res.string.action_save_locally)
                     },
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyLarge,
@@ -65,8 +71,8 @@ data class SelectRecordStoreMethodScreen(
 
                 Text(
                     text = when (isSavedRemote) {
-                        true -> "Recording will be saved in your account"
-                        false -> "Recording will be saved on current device"
+                        true -> stringResource(Res.string.label_push_to_server)
+                        false -> stringResource(Res.string.label_save_locally)
                     },
                     color = MaterialTheme.colorScheme.onSurface,
                     style = MaterialTheme.typography.bodyLarge,

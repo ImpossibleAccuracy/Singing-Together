@@ -35,7 +35,7 @@ fun RecordsList(
 ) {
     Box(
         modifier = modifier,
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         with(records.loadState) {
             when {
@@ -78,7 +78,7 @@ fun RecordsList(
 
                 refresh is LoadState.NotLoading -> {
                     LazyColumn(
-                        modifier = Modifier,
+                        modifier = Modifier.fillMaxSize(),
                         contentPadding = contentPadding,
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen0_5),
                     ) {

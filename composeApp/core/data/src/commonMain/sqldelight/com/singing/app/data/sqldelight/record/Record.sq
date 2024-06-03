@@ -32,9 +32,8 @@ FROM recordEntity
 LIMIT ? OFFSET ?;
 
 selectLastInserted:
-SELECT *
-FROM recordEntity
-WHERE id = last_insert_rowid();
+SELECT MAX(id)
+FROM recordEntity;
 
 selectVoiceRecordId:
 SELECT voiceRecordId

@@ -34,6 +34,10 @@ class RecordSaveController(
     private val recordService: RecordService,
 ) {
     companion object {
+        private val allowedSoundFormatsMimeType = TrackProperties.allowedSoundFormats.flatMap {
+            it.value
+        }
+
         private val Logger = LoggerFactory.getLogger(RecordSaveController::class.java)
     }
 
@@ -165,7 +169,7 @@ class RecordSaveController(
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "File cannot be empty")
         }
 
-        if (file.contentType == null || file.contentType!! !in TrackProperties.allowedSoundFormatsMimeType) {
+        if (file.contentType == null || file.contentType!! !in allowedSoundFormatsMimeType) {
             throw ResponseStatusException(HttpStatus.BAD_REQUEST, "File of unacceptable type")
         }
     }

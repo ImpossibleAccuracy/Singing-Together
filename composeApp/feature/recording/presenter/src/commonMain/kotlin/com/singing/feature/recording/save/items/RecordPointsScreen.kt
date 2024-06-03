@@ -25,7 +25,7 @@ import com.singing.feature.recording.save.RecordSaveViewModel
 
 data class RecordPointsScreen(
     val data: RecordSaveAdditionalInfo,
-) : SkippableNavigationalDialogScreen<RecordData>() {
+) : SkippableNavigationalDialogScreen<RecordData?>() {
     override fun buildNextPage() =
         when (data.user) {
             null -> ProcessRecordSaveScreen(

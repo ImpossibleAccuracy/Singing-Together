@@ -27,7 +27,7 @@ import kotlin.time.Duration.Companion.seconds
 
 data class RecordInfoScreen(
     val data: RecordSaveAdditionalInfo
-) : SkippableNavigationalDialogScreen<RecordData>() {
+) : SkippableNavigationalDialogScreen<RecordData?>() {
     override fun buildNextPage() =
         RecordPointsScreen(data)
 

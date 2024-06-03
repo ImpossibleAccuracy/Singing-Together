@@ -19,6 +19,8 @@ import com.singing.app.ui.screen.dimens
 import com.singing.domain.model.RecordPoint
 import com.singing.feature.recording.presenter.generated.resources.*
 import com.singing.feature.recording.save.items.RecordInfoScreen
+import com.singing.feature.recording.save.items.RecordSaveErrorScreen
+import com.singing.feature.recording.save.items.RecordSavedScreen
 import kotlinx.collections.immutable.PersistentList
 import org.jetbrains.compose.resources.stringResource
 
@@ -34,6 +36,7 @@ data class RecordSaveAdditionalInfo(
 fun RecordSaveDialog(
     data: RecordSaveAdditionalInfo,
     onSaved: (RecordData) -> Unit,
+    onError: () -> Unit,
     onDismiss: () -> Unit,
 ) {
     NavigationalDialog(
@@ -42,40 +45,60 @@ fun RecordSaveDialog(
         },
         backButtonText = { stringResource(Res.string.action_back) },
         dismissButtonText = { screen ->
-            if (screen is FinalNavigationalDialogScreen) {
+            if (screen is RecordSavedScreen) {
                 stringResource(Res.string.action_close)
             } else {
                 stringResource(Res.string.action_dismiss)
             }
         },
         confirmButtonText = { screen ->
-            if (screen is FinalNavigationalDialogScreen) {
+            if (screen is RecordSavedScreen) {
                 stringResource(Res.string.action_view_record)
+            } else if (screen is RecordSaveErrorScreen) {
+                stringResource(Res.string.action_confirm)
             } else {
                 stringResource(Res.string.action_next)
             }
         },
-        onFinish = onSaved,
+        onFinish = {
+            if (it == null) {
+                onError()
+            } else {
+                onSaved(it)
+            }
+        },
         onDismiss = onDismiss,
-    ) { dialogContent ->
+    ) { screen, dialogContent ->
         Column(verticalArrangement = Arrangement.spacedBy(MaterialTheme.dimens.dimen2)) {
+            val title = when (screen) {
+                is RecordSaveErrorScreen -> stringResource(Res.string.error_save_record_title)
+                is RecordSavedScreen -> stringResource(Res.string.title_save_record_done)
+                else -> stringResource(Res.string.title_save_record)
+            }
+
+            val subtitle = when (screen) {
+                is RecordSaveErrorScreen -> stringResource(Res.string.error_save_record_subtitle)
+                is RecordSavedScreen -> null
+                else -> stringResource(Res.string.subtitle_save_record)
+            }
+
             Text(
-                text = "Record results",
+                text = title,
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleLarge,
                 fontSize = 24.sp,
             )
 
-            Text(
-                text = "Please check your record data before proceeding.",
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            if (subtitle != null) {
+                Text(
+                    text = subtitle,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
 
-        Box(
-            modifier = Modifier.heightIn(max = 450.dp)
-        ) {
+        Box(modifier = Modifier.heightIn(max = 450.dp)) {
             dialogContent()
         }
     }

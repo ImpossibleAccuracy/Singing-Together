@@ -315,10 +315,12 @@ private fun AuthFormContainer(
 
         if (subtitle != null) {
             Text(
-                maxLines = 1,
                 text = subtitle,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 style = MaterialTheme.typography.bodyMedium,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Spacer(Modifier.height(0.dp))

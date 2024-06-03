@@ -34,6 +34,8 @@ kotlin {
         commonMain.dependencies {
             implementation(project(Modules.Library.Audio.Player))
             implementation(project(Modules.Library.Notes))
+            implementation(project(Modules.Shared.Config))
+            implementation(project(Modules.Shared.Audio))
             implementation(project(Modules.Shared.Payload))
             implementation(project(Modules.App.Domain))
 

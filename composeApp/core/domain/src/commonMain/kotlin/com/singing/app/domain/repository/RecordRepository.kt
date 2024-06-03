@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 interface RecordRepository {
     suspend fun markPublished(record: RecordData)
 
-    suspend fun saveRecord(data: RecordSaveData, saveRemote: Boolean): RecordData
+    suspend fun saveRecord(data: RecordSaveData, saveRemote: Boolean): DataState<RecordData>
 
     suspend fun getAnyRecord(): RecordData?
 

@@ -75,6 +75,8 @@ class RecordListViewModel(
     fun onIntent(intent: RecordListIntent) {
         screenModelScope.launch {
             when (intent) {
+                RecordListIntent.ReloadRecords -> loadRecords()
+
                 is RecordListIntent.UpdateSelected -> {
                     updateSelectedRecord(intent.record)
                 }
@@ -98,7 +100,7 @@ class RecordListViewModel(
     }
 
     private suspend fun loadRecords() {
-        deletedRecords.value = listOf()
+        _records.value = PagingData.empty()
 
         getRecordListUseCase()
             .cachedIn(screenModelScope)

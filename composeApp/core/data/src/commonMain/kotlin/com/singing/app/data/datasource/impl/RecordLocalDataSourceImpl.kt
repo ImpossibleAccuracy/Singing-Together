@@ -3,28 +3,26 @@ package com.singing.app.data.datasource.impl
 import app.cash.sqldelight.coroutines.asFlow
 import app.cash.sqldelight.coroutines.mapToList
 import app.cash.sqldelight.coroutines.mapToOneNotNull
+import com.singing.app.audio.getFileDuration
 import com.singing.app.base.ComposeFile
 import com.singing.app.data.Constants
 import com.singing.app.data.database.AppDatabase
 import com.singing.app.data.datamapper.impl.map
 import com.singing.app.data.datasource.declaration.RecordDataSource
-import com.singing.app.data.setup.file.FileStore
+import com.singing.app.data.datasource.declaration.RecordInfoDataSource
 import com.singing.app.data.sqldelight.record.DocumentEntity
 import com.singing.app.domain.model.RecordData
-import com.singing.app.domain.payload.RecordSaveData
 import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.datetime.Clock
 import pro.respawn.apiresult.ApiResult
-import java.io.ByteArrayInputStream
 
 class RecordLocalDataSourceImpl(
     private val appDatabase: AppDatabase,
-    private val fileStore: FileStore,
+    private val recordInfoDataSource: RecordInfoDataSource,
 //    private val recordPointDataMapper: DataMapper<RecordItemEntity, RecordPoint>,
 ) : RecordDataSource.Local {
     override suspend fun getLocalIdByRemoteId(remoteId: Int): Int? =
@@ -34,15 +32,15 @@ class RecordLocalDataSourceImpl(
             ?.toInt()
 
     override suspend fun saveRecord(
-        data: RecordSaveData,
+        voiceFile: ComposeFile,
+        trackFile: ComposeFile?,
+        title: String?,
         remoteId: Int?,
         creatorId: Int?,
-        duration: Long,
-        accuracy: Double?,
-        points: List<RecordPoint>
     ): ApiResult<RecordData> = ApiResult {
-        val voiceFile = fileStore.storeFile(ByteArrayInputStream(data.record))
-        val trackFile = data.track?.file?.let { fileStore.copyToStore(it) }
+        val points = recordInfoDataSource.computeRecordPoints(voiceFile, trackFile)
+        val accuracy = recordInfoDataSource.computeRecordAccuracy(points)
+        val duration = getFileDuration(voiceFile)
 
         val voiceDocument = saveDocument(voiceFile)
         val trackDocument = trackFile?.let { saveDocument(it) }
@@ -50,7 +48,7 @@ class RecordLocalDataSourceImpl(
         appDatabase.recordQueries.insert(
             remoteId = remoteId?.toLong(),
             createdAt = Clock.System.now().toString(),
-            title = data.title,
+            title = title,
             accuracy = accuracy,
             isPublished = 0,
             duration = duration,
@@ -59,7 +57,12 @@ class RecordLocalDataSourceImpl(
             creatorId = creatorId?.toLong(),
         )
 
-        val recordEntity = appDatabase.recordQueries.selectLastInserted()
+        val insertedId = appDatabase.recordQueries
+            .selectLastInserted()
+            .executeAsOne()
+
+        val recordEntity = appDatabase.recordQueries
+            .selectOne(insertedId.MAX!!)
             .executeAsOne()
 
         for (point in points) {
@@ -80,7 +83,13 @@ class RecordLocalDataSourceImpl(
             file.fullPath,
         )
 
-        return appDatabase.documentQueries.selectLastInserted().executeAsOne()
+        val recordId = appDatabase.documentQueries
+            .selectLastInserted()
+            .executeAsOne()
+
+        return appDatabase.documentQueries
+            .selectOne(recordId.MAX!!)
+            .executeAsOne()
     }
 
     override suspend fun markUploaded(

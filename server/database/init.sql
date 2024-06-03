@@ -9,7 +9,7 @@ CREATE TABLE `document` (
   `created_at` datetime not null DEFAULT now(),
   `title` varchar(255) not null,
   `hash` varchar(255) not null UNIQUE,
-  `path` varchar(255) not null UNIQUE,
+  `path` varchar(2048) not null,
   `type_id` int not null
 );
 

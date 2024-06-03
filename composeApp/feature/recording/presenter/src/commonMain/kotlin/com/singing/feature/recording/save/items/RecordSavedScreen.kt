@@ -13,15 +13,19 @@ import com.singing.app.common.views.base.IconLabel
 import com.singing.app.common.views.base.account.UserAvatar
 import com.singing.app.domain.model.RecordData
 import com.singing.app.navigation.dialog.FinalNavigationalDialogScreen
+import com.singing.feature.recording.presenter.generated.resources.Res
+import com.singing.feature.recording.presenter.generated.resources.label_saved_locally
+import com.singing.feature.recording.presenter.generated.resources.label_saved_remote
 import com.singing.feature.recording.save.RecordSaveAdditionalInfo
 import com.singing.feature.recording.save.RecordSaveStrategy
+import org.jetbrains.compose.resources.stringResource
 
 
 data class RecordSavedScreen(
     val data: RecordSaveAdditionalInfo,
     val strategy: RecordSaveStrategy,
     val record: RecordData,
-) : FinalNavigationalDialogScreen<RecordData>() {
+) : FinalNavigationalDialogScreen<RecordData?>() {
     override val result: RecordData
         get() = record
 
@@ -31,7 +35,7 @@ data class RecordSavedScreen(
             RecordSaveStrategy.Locally -> {
                 IconLabel(
                     leadingIcon = Icons.Filled.Warning,
-                    label = "Saved to your device"
+                    label = stringResource(Res.string.label_saved_locally),
                 )
             }
 
@@ -46,7 +50,7 @@ data class RecordSavedScreen(
                     )
 
                     Text(
-                        text = "Saved to ${data.user?.username} account",
+                        text = stringResource(Res.string.label_saved_remote, data.user!!.username),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.labelLarge,
                     )

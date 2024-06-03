@@ -64,7 +64,7 @@ class NavigatorImpl(
         if (navigator.canPop) {
             pop()
         } else {
-            navigate(screen)
+            replace(screen)
         }
     }
 

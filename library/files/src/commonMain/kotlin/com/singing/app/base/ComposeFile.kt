@@ -6,6 +6,8 @@ import androidx.compose.runtime.Stable
 expect class ComposeFile {
     val name: String
 
+    val extension: String
+
     val fullPath: String
 
     fun readAll(): ByteArray
