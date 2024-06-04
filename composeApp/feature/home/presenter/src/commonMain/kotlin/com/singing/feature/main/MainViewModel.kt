@@ -67,7 +67,8 @@ class MainViewModel(
 
                 is MainIntent.PublishRecord -> publishRecordUseCase(
                     intent.record,
-                    intent.description
+                    intent.description,
+                    intent.tags,
                 )
 
                 is MainIntent.UpdateTrackFavourite -> updateTrackFavouriteUseCase(

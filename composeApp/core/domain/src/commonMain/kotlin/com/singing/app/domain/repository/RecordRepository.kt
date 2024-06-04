@@ -9,7 +9,7 @@ import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.flow.Flow
 
 interface RecordRepository {
-    suspend fun markPublished(record: RecordData)
+    suspend fun markPublished(record: RecordData, published: Boolean)
 
     suspend fun saveRecord(data: RecordSaveData, saveRemote: Boolean): DataState<RecordData>
 

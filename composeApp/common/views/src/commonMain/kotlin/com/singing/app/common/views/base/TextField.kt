@@ -28,16 +28,17 @@ import org.jetbrains.compose.resources.vectorResource
 
 @Composable
 fun AppChipTextField(
-    modifier: Modifier = Modifier,
-    shape: Shape = MaterialTheme.shapes.small,
-    borderColor: Color = MaterialTheme.colorScheme.outline,
-    readOnlyChips: Boolean = true,
-    label: String? = null,
     value: String,
     state: ChipTextFieldState<Chip>,
     onValueChange: (String) -> Unit,
     onSubmit: (String) -> Chip?,
     onRemove: (Chip) -> Unit,
+    readOnlyChips: Boolean = true,
+    label: String? = null,
+    modifier: Modifier = Modifier,
+    shape: Shape = MaterialTheme.shapes.small,
+    borderColor: Color = MaterialTheme.colorScheme.outline,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLow,
 ) {
     OutlinedChipTextField(
         modifier = modifier,
@@ -52,9 +53,8 @@ fun AppChipTextField(
         readOnlyChips = readOnlyChips,
         shape = shape,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            focusedContainerColor = containerColor,
+            unfocusedContainerColor = containerColor,
             focusedLabelColor = MaterialTheme.colorScheme.primary,
             unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
             unfocusedTextColor = MaterialTheme.colorScheme.onSurface,

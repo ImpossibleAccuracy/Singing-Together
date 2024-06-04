@@ -8,11 +8,9 @@ import com.singing.app.domain.model.Publication
 import com.singing.app.domain.model.RecordData
 import com.singing.app.domain.repository.PublicationRepository
 import com.singing.app.domain.repository.RecordRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 private val deletedPublications = MutableStateFlow<List<Int>>(listOf())
 
@@ -34,7 +32,7 @@ class PublicationRepositoryImpl(
             tags,
         ).asDataState.also {
             if (it is DataState.Success) {
-                recordRepository.markPublished(it.data.record)
+                recordRepository.markPublished(it.data.record, true)
             }
         }
     }
@@ -73,8 +71,11 @@ class PublicationRepositoryImpl(
             dataSource.fetchByUser(page, accountId)
         }
 
-    override suspend fun deletePublication(publication: Publication) {
-        dataSource.deletePublication(publication.id)
+    override suspend fun deletePublication(publication: Publication) = coroutineScope {
+        // FIXME: Delete request with ktor never completes
+        launch { dataSource.deletePublication(publication.id) }
+
+        recordRepository.markPublished(publication.record, false)
 
         deletedPublications.update { it.plus(publication.id) }
     }

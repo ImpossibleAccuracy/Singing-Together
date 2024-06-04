@@ -9,7 +9,11 @@ sealed interface RecordListIntent {
 
     data class UploadRecord(val record: RecordData) : RecordListIntent
 
-    data class PublishRecord(val record: RecordData, val description: String) : RecordListIntent
+    data class PublishRecord(
+        val record: RecordData,
+        val description: String,
+        val tags: List<String>,
+    ) : RecordListIntent
 
     data class DeleteRecord(val record: RecordData) : RecordListIntent
 }

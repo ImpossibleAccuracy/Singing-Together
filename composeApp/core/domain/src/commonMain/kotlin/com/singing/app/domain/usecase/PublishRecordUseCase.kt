@@ -10,7 +10,11 @@ class PublishRecordUseCase(
     private val uploadRecordUseCase: UploadRecordUseCase,
     private val publicationRepository: PublicationRepository,
 ) {
-    suspend operator fun invoke(record: RecordData, description: String): Publication {
+    suspend operator fun invoke(
+        record: RecordData,
+        description: String,
+        tags: List<String>
+    ): Publication {
         val actualRecord = when (record.isSavedRemote) {
             true -> record
             false -> uploadRecordUseCase(record).orThrow()
@@ -20,7 +24,7 @@ class PublishRecordUseCase(
         return (publicationRepository.publishRecord(
             actualRecord,
             description,
-            listOf(), // TODO: ADD TAGS
+            tags,
         ) as DataState.Success).data
     }
 }

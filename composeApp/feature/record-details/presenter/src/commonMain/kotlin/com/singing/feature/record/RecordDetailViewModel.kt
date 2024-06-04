@@ -66,7 +66,11 @@ class RecordDetailViewModel(
             when (intent) {
                 RecordDetailIntent.UploadRecord -> uploadRecordUseCase(record)
 
-                is RecordDetailIntent.PublishRecord -> publishRecordUseCase(record, intent.description)
+                is RecordDetailIntent.PublishRecord -> publishRecordUseCase(
+                    record,
+                    intent.description,
+                    intent.tags,
+                )
 
                 RecordDetailIntent.DeleteRecord -> deleteRecordUseCase(record)
             }

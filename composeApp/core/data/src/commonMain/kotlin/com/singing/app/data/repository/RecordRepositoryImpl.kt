@@ -21,8 +21,8 @@ class RecordRepositoryImpl(
     private val remoteDataSource: RecordDataSource.Remote,
     private val recordFileDataSource: RecordFileDataSource,
 ) : RecordRepository, PagingRepository() {
-    override suspend fun markPublished(record: RecordData) {
-        localDataSource.markPublished(record)
+    override suspend fun markPublished(record: RecordData, published: Boolean) {
+        localDataSource.markPublished(record, published)
     }
 
     override suspend fun saveRecord(

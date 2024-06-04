@@ -124,14 +124,14 @@ internal fun RecordDetailsMain(
 @Composable
 private fun PublishDialog(
     record: RecordData?,
-    publishRecord: (String) -> Unit,
+    publishRecord: (String, List<String>) -> Unit,
     onDismiss: () -> Unit,
 ) {
     if (record != null) {
         PublishRecordDialog(
             maxLength = MAX_PUBLICATION_DESCRIPTION_LENGTH,
-            onConfirm = {
-                publishRecord(it)
+            onConfirm = { description, tags ->
+                publishRecord(description, tags)
 
                 onDismiss()
             },

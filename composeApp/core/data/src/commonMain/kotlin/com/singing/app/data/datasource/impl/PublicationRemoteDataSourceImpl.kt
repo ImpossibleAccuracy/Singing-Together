@@ -139,7 +139,7 @@ class PublicationRemoteDataSourceImpl(
             .map(::map)
     }
 
-    override suspend fun deletePublication(publicationId: Int) {
+    override suspend fun deletePublication(publicationId: Int): ApiResult<Unit> = ApiResult {
         httpClient.delete(ApiScheme.Publication.DeletePublication(publicationId)) {
             authHeader(userProvider)
         }

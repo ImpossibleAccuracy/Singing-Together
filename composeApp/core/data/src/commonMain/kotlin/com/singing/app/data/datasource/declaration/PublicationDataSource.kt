@@ -28,6 +28,6 @@ sealed interface PublicationDataSource {
 
         suspend fun fetchPopularTags(): ApiResult<List<PublicationTagStatistics>>
 
-        suspend fun deletePublication(publicationId: Int)
+        suspend fun deletePublication(publicationId: Int): ApiResult<Unit>
     }
 }

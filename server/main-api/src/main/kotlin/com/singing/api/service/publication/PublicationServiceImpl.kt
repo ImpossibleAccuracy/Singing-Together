@@ -6,6 +6,7 @@ import com.singing.api.domain.model.PublicationEntity
 import com.singing.api.domain.model.PublicationTagEntity
 import com.singing.api.domain.model.RecordEntity
 import com.singing.api.domain.repository.PublicationRepository
+import com.singing.api.domain.repository.PublicationTagRepository
 import com.singing.api.domain.repository.pagination.OffsetBasedPageRequest
 import com.singing.api.domain.specifications.and
 import com.singing.api.domain.specifications.get
@@ -22,7 +23,8 @@ import kotlin.random.Random.Default.nextLong
 
 @Service
 class PublicationServiceImpl(
-    private val publicationRepository: PublicationRepository
+    private val publicationRepository: PublicationRepository,
+    private val publicationTagRepository: PublicationTagRepository,
 ) : PublicationService {
     override suspend fun get(publicationId: Int): Optional<PublicationEntity> =
         publicationRepository.findById(publicationId)
@@ -33,13 +35,29 @@ class PublicationServiceImpl(
     override suspend fun publishRecord(
         record: RecordEntity,
         account: AccountEntity,
-        description: String
-    ): PublicationEntity =
-        PublicationEntity(
-            record = record,
-            account = account,
-            description = description,
-        ).let(publicationRepository::save)
+        description: String,
+        tags: List<String>,
+    ): PublicationEntity {
+        val actualTags = tags.map {
+            publicationTagRepository.findByTitle(it)
+                .orElseGet {
+                    publicationTagRepository.save(
+                        PublicationTagEntity(
+                            title = it
+                        )
+                    )
+                }
+        }
+
+        return PublicationEntity()
+            .apply {
+                this.record = record
+                this.account = account
+                this.description = description
+                this.tags = actualTags.toSet()
+            }
+            .let(publicationRepository::save)
+    }
 
     override suspend fun all(): List<PublicationEntity> =
         publicationRepository.findAll()

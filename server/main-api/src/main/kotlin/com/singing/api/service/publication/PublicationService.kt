@@ -15,6 +15,7 @@ interface PublicationService {
         record: RecordEntity,
         account: AccountEntity,
         description: String,
+        tags: List<String>,
     ): PublicationEntity
 
     suspend fun all(): List<PublicationEntity>

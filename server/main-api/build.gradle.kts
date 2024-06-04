@@ -1,3 +1,6 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+import org.openjfx.gradle.JavaFXPlatform
+
 plugins {
     alias(libs.plugins.kotlin.jvm)
 
@@ -20,6 +23,12 @@ allOpen {
 }
 
 javafx {
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        setPlatform(JavaFXPlatform.WINDOWS.classifier)
+    } else {
+        setPlatform(JavaFXPlatform.LINUX.classifier)
+    }
+
     version = libs.versions.jvmTargetVersion.get()
     modules = listOf("javafx.media")
 }
@@ -43,6 +52,7 @@ dependencies {
 
     // SPRING DEPENDENCIES
     implementation(libs.bundles.spring)
+    runtimeOnly(libs.spring.starter.actuator)
     runtimeOnly(libs.spring.devtools)
     implementation(libs.bundles.mysql)
     implementation(libs.bundles.jackson)
@@ -53,7 +63,7 @@ dependencies {
     implementation(libs.spring.swagger.api)
 
     // AUDIO
-    implementation("org.openjfx:javafx-media:${libs.versions.jvmTargetVersion.get()}.0.1:win")
+//    implementation("org.openjfx:javafx-media:${libs.versions.jvmTargetVersion.get()}.0.1")
     implementation(libs.mp3spi)
     implementation(libs.dsp.core)
     implementation(libs.dsp.jvm)

@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.1.0-oracle
+    hostname: database
+    ports:
+      - "8001:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      LANG: C.UTF_8
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "127.0.0.1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 25
+    volumes:
+      - './server/db-data:/var/lib/mysql'
+      - './server/database:/docker-entrypoint-initdb.d'
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+volumes:
+  db-data:
+  database:
+  server-build:

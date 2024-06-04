@@ -27,7 +27,7 @@ data class RecordDetailsData(
 data class RecordDetailsActions(
     val uploadRecord: (() -> Unit)? = null,
     val navigatePublication: (() -> Unit)? = null,
-    val publishRecord: ((String) -> Unit)? = null,
+    val publishRecord: ((String, List<String>) -> Unit)? = null,
     val deleteRecord: (() -> Unit)? = null,
 )
 

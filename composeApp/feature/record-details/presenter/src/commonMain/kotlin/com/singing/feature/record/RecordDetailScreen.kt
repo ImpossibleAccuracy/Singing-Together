@@ -97,8 +97,13 @@ fun RecordDetailScreen(
                                 }
                             }
                         },
-                        publishRecord = {
-                            viewModel.onIntent(RecordDetailIntent.PublishRecord(it))
+                        publishRecord = { description, tags ->
+                            viewModel.onIntent(
+                                RecordDetailIntent.PublishRecord(
+                                    description,
+                                    tags,
+                                )
+                            )
                         },
                         deleteRecord = {
                             viewModel.onIntent(RecordDetailIntent.DeleteRecord)

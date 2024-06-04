@@ -24,7 +24,7 @@ sealed interface RecordDataSource {
 
         suspend fun markUploaded(record: RecordData, remoteId: Int): ApiResult<RecordData>
 
-        suspend fun markPublished(record: RecordData)
+        suspend fun markPublished(record: RecordData, published: Boolean)
 
         suspend fun getRecords(page: Int): ApiResult<List<RecordData>>
 

@@ -141,11 +141,12 @@ fun RecordListScreen(
                                         )
                                     }
                                 },
-                                publishRecord = {
+                                publishRecord = { description, tags ->
                                     viewModel.onIntent(
                                         RecordListIntent.PublishRecord(
                                             state.data,
-                                            it
+                                            description,
+                                            tags,
                                         )
                                     )
                                 },

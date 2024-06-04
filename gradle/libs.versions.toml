@@ -161,8 +161,7 @@ spring = [
     "spring-starter-web",
     "spring-starter-security",
     "spring-starter-jpa",
-    "spring-starter-validation",
-    "spring-starter-actuator"
+    "spring-starter-validation"
 ]
 mysql = ["mysql-connector"]
 jackson = ["jackson-module", "jackson-annotations"]

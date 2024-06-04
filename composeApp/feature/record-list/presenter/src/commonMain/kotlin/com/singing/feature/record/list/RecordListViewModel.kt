@@ -83,7 +83,8 @@ class RecordListViewModel(
 
                 is RecordListIntent.PublishRecord -> publishRecord(
                     intent.record,
-                    intent.description
+                    intent.description,
+                    intent.tags,
                 )
 
                 is RecordListIntent.UploadRecord -> uploadRecord(intent.record)
@@ -167,12 +168,12 @@ class RecordListViewModel(
         }
     }
 
-    private suspend fun publishRecord(record: RecordData, description: String) {
+    private suspend fun publishRecord(record: RecordData, description: String, tags: List<String>) {
         _uiState.update {
             it.copy(selectedRecord = DataState.Loading)
         }
 
-        val update = publishRecordUseCase(record, description)
+        val update = publishRecordUseCase(record, description, tags)
 
         _uiState.update {
             it.copy(selectedRecord = DataState.Success(update.record))

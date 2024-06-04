@@ -23,7 +23,6 @@ import pro.respawn.apiresult.ApiResult
 class RecordLocalDataSourceImpl(
     private val appDatabase: AppDatabase,
     private val recordInfoDataSource: RecordInfoDataSource,
-//    private val recordPointDataMapper: DataMapper<RecordItemEntity, RecordPoint>,
 ) : RecordDataSource.Local {
     override suspend fun getLocalIdByRemoteId(remoteId: Int): Int? =
         appDatabase.recordQueries
@@ -103,10 +102,13 @@ class RecordLocalDataSourceImpl(
         getRecord(record.key.localId!!)
     }
 
-    override suspend fun markPublished(record: RecordData) {
+    override suspend fun markPublished(record: RecordData, published: Boolean) {
         if (!record.isSavedLocally) throw IllegalArgumentException("Record not saved locally")
 
-        appDatabase.recordQueries.updatePublished(1, record.key.localId!!.toLong())
+        appDatabase.recordQueries.updatePublished(
+            if (published) 1 else 0,
+            record.key.localId!!.toLong()
+        )
     }
 
     private fun getRecord(recordId: Int): RecordData =
@@ -123,6 +125,7 @@ class RecordLocalDataSourceImpl(
             )
             .executeAsList()
             .map(::map)
+            .sortedByDescending { it.createdAt.instant }
     }
 
     override fun getRecentRecords(): Flow<List<RecordData>> =
