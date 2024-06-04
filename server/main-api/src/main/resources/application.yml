@@ -8,6 +8,8 @@ app:
     temp-store-path: ${TEMP_STORE_PATH}
     regular-store-path: ${REGULAR_STORE_PATH}
     file-name-pattern: "{FILE_HASH}_{TIMESTAMP}_{USER_UPLOADED}.{EXTENSION}"
+  resources:
+    resourcesServerUrl: http://localhost:8000
 
 server:
   port: ${SERVER_PORT:8000}

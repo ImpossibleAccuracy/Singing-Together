@@ -170,6 +170,8 @@ compose.desktop {
             targetFormats(TargetFormat.Exe, TargetFormat.Msi)
             packageName = AppConfig.APPLICATION_ID
             packageVersion = AppConfig.VERSION_NAME
+
+            modules("java.sql")
         }
     }
 }

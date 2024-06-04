@@ -1,7 +1,9 @@
 package com.singing.api.service.account
 
 import com.singing.api.domain.model.AccountEntity
+import com.singing.api.domain.model.DocumentEntity
 import com.singing.api.domain.repository.AccountRepository
+import com.singing.api.domain.repository.DocumentRepository
 import com.singing.api.domain.repository.PublicationRepository
 import org.springframework.stereotype.Service
 import java.util.*
@@ -9,10 +11,14 @@ import java.util.*
 @Service
 class AccountServiceImpl(
     private val accountRepository: AccountRepository,
+    private val documentRepository: DocumentRepository,
     private val publicationRepository: PublicationRepository,
 ) : AccountService {
     override suspend fun get(id: Int): Optional<AccountEntity> =
         accountRepository.findById(id)
+
+    override suspend fun getAvatar(id: Int): Optional<DocumentEntity> =
+        documentRepository.findByAvatarAccounts_Id(id)
 
     override suspend fun getPublicationsCount(id: Int): Long =
         publicationRepository.countByAccount_Id(id)

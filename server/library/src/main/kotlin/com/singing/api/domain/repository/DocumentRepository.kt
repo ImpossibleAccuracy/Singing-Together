@@ -17,4 +17,7 @@ interface DocumentRepository : JpaRepository<DocumentEntity, Int>, JpaSpecificat
 
 
     fun findByTrackRecords_Id(id: Int): Optional<DocumentEntity>
+
+
+    fun findByAvatarAccounts_Id(id: Int): Optional<DocumentEntity>
 }

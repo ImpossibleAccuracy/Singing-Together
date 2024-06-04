@@ -13,6 +13,7 @@ import com.singing.api.service.account.AccountService
 import com.singing.api.service.publication.PublicationService
 import com.singing.api.service.publication.tag.PublicationTagService
 import com.singing.api.service.record.RecordService
+import com.singing.api.service.resources.ResourcesService
 import com.singing.domain.model.PublicationSort
 import com.singing.domain.payload.dto.CategoryInfoDto
 import com.singing.domain.payload.dto.PublicationDto
@@ -34,6 +35,7 @@ class PublicationController(
     private val recordService: RecordService,
     private val publicationService: PublicationService,
     private val publicationTagService: PublicationTagService,
+    private val resourcesService: ResourcesService,
 ) {
     companion object {
         private const val PUBLICATION_LATEST_DAYS = 2L
@@ -61,7 +63,9 @@ class PublicationController(
                 description = body.description,
                 tags = body.tags.distinct(),
             )
-            .toDto()
+            .let {
+                it.toDto(resourcesService.getAccountAvatar(it.account!!))
+            }
     }
 
     @GetMapping("/account/{id}")
@@ -78,7 +82,9 @@ class PublicationController(
                 page = page,
                 sort = sort,
             )
-            .map(PublicationEntity::toDto)
+            .map {
+                it.toDto(resourcesService.getAccountAvatar(it.account!!))
+            }
     }
 
     @GetMapping
@@ -135,7 +141,9 @@ class PublicationController(
                 showOwnPublications = body.showOwnPublications,
                 sort = sort,
             )
-            .map(PublicationEntity::toDto)
+            .map {
+                it.toDto(resourcesService.getAccountAvatar(it.account!!))
+            }
     }
 
 
@@ -146,13 +154,17 @@ class PublicationController(
         return publicationService
             .byRecord(record.id!!)
             .orElseThrow { ResourceNotFoundException("Records#$recordId not published") }
-            .toDto()
+            .let {
+                it.toDto(resourcesService.getAccountAvatar(it.account!!))
+            }
     }
 
     @GetMapping("/random")
     suspend fun getRandomPublication(): PublicationDto? =
         (publicationService.random(PUBLICATION_LATEST_DAYS) ?: publicationService.random(null))
-            ?.toDto()
+            ?.let {
+                it.toDto(resourcesService.getAccountAvatar(it.account!!))
+            }
 
     @GetMapping("/tags")
     suspend fun getPopularCategories(): List<CategoryInfoDto> =

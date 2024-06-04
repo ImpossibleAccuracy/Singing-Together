@@ -1,16 +1,7 @@
 package com.singing.api.domain
 
-import com.singing.api.domain.model.AccountEntity
-import com.singing.api.domain.model.CategoryInfoEntity
-import com.singing.api.domain.model.PublicationEntity
-import com.singing.api.domain.model.RecordEntity
-import com.singing.api.domain.model.RecordItemEntity
-import com.singing.domain.payload.dto.AccountDto
-import com.singing.domain.payload.dto.AccountInfoDto
-import com.singing.domain.payload.dto.CategoryInfoDto
-import com.singing.domain.payload.dto.PublicationDto
-import com.singing.domain.payload.dto.RecordDto
-import com.singing.domain.payload.dto.RecordPointDto
+import com.singing.api.domain.model.*
+import com.singing.domain.payload.dto.*
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -47,17 +38,21 @@ fun CategoryInfoEntity.toDto() = CategoryInfoDto(
     publications = this.publications,
 )
 
-fun AccountEntity.toDto() = AccountDto(
+fun AccountEntity.toDto(
+    avatar: String?,
+) = AccountDto(
     id = this.id,
     username = this.username,
-    avatar = this.avatar?.toString(), // TODO
+    avatar = avatar,
 )
 
-fun PublicationEntity.toDto() = PublicationDto(
+fun PublicationEntity.toDto(
+    authorAvatar: String?,
+) = PublicationDto(
     id = this.id,
     createdAt = isoFormatter.format(this.createdAt),
     description = this.description,
-    author = this.account?.toDto(),
+    author = this.account?.toDto(authorAvatar),
     record = this.record?.toDto(),
     tags = this.tags.map { it.title!! },
 )
