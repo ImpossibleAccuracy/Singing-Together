@@ -1,0 +1,36 @@
+<resources>
+    <string name="empty_voice_line_title"/>
+    <string name="empty_voice_line_subtitle"/>
+
+    <string name="title_save_record"/>
+    <string name="subtitle_save_record"/>
+
+    <string name="title_save_record_done"/>
+
+    <string name="error_save_record_title"/>
+    <string name="error_save_record_subtitle"/>
+
+    <string name="lines_not_found_title"/>
+    <string name="lines_not_found_subtitle"/>
+
+    <string name="action_view_record"/>
+    <string name="action_start_record"/>
+    <string name="action_stop_record"/>
+    <string name="action_back"/>
+    <string name="action_close"/>
+    <string name="action_dismiss"/>
+    <string name="action_next"/>
+    <string name="action_push_to_server"/>
+    <string name="action_save_locally"/>
+    <string name="action_confirm"/>
+
+    <string name="label_recording"/>
+    <string name="label_start_record"/>
+    <string name="label_no_history"/>
+    <string name="label_accuracy"/>
+    <string name="label_no_selected_track_item"/>
+    <string name="label_push_to_server"/>
+    <string name="label_save_locally"/>
+    <string name="label_saved_locally"/>
+    <string name="label_saved_remote"/>
+</resources>

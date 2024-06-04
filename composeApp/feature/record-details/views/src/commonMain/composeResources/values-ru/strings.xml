@@ -1,0 +1,12 @@
+<resources>
+    <string name="common_error_title"/>
+    <string name="common_error_subtitle"/>
+    <string name="common_no_data_title"/>
+    <string name="common_no_data_subtitle"/>
+
+    <string name="title_record_points" />
+
+    <string name="label_no_selected_track_item" />
+    <string name="label_finish" />
+    <string name="label_start" />
+</resources>

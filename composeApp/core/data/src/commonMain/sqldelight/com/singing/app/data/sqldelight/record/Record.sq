@@ -60,6 +60,11 @@ UPDATE recordEntity
 SET isPublished = ?
 WHERE id = ?;
 
+updateCreatorId:
+UPDATE recordEntity
+SET creatorId = ?
+WHERE id = ?;
+
 insert:
 INSERT INTO recordEntity (remoteId, createdAt, title, accuracy, isPublished, duration, voiceRecordId, trackId, creatorId)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);

@@ -11,7 +11,7 @@ import com.singing.app.domain.model.UserData
 fun rememberRecordCardActions(user: UserData?, record: RecordData) =
     remember(user, record) {
         RecordCardActionsState(
-            canUpload = user != null && record.creatorId == user.id && !record.isSavedRemote,
+            canUpload = user != null && (record.creatorId == null || record.creatorId == user.id) && !record.isSavedRemote,
             canDelete = !record.isSavedRemote || (user != null && user.id == record.creatorId),
             canPublish = user != null && ((record.creatorId == null && record.isSavedLocally) || user.id == record.creatorId),
             canOpenPublication = record.isPublished,

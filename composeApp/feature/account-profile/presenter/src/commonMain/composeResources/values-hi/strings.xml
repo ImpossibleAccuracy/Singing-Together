@@ -1,0 +1,14 @@
+<resources>
+    <string name="title_cannot_fetch_user_info"/>
+    <string name="common_error_title"/>
+    <string name="common_error_subtitle"/>
+
+    <string name="empty_account_publications_title"/>
+    <string name="empty_account_publications_subtitle"/>
+
+    <string name="label_account_no_publications"/>
+    <string name="label_account_registered_since"/>
+    <string name="label_publications_count"/>
+
+    <string name="action_logout"/>
+</resources>

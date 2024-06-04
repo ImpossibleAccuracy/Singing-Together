@@ -143,10 +143,6 @@ class RecordListViewModel(
 
         listenSelectedRecordJob?.cancel()
 
-        _uiState.update {
-            it.copy(selectedRecord = DataState.Success(record))
-        }
-
         listenSelectedRecordJob = screenModelScope.launch {
             launch {
                 listenRecordUpdatesUseCase(record)

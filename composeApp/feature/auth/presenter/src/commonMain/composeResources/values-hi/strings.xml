@@ -1,0 +1,22 @@
+<resources>
+    <string name="title_enter_login"/>
+    <string name="title_welcome_back"/>
+    <string name="title_registration"/>
+    <string name="subtitle_registration"/>
+    <string name="title_auth_success"/>
+
+    <string name="label_login"/>
+    <string name="label_password"/>
+    <string name="label_enter_login"/>
+    <string name="label_enter_password"/>
+    <string name="label_cannot_be_blank"/>
+    <string name="label_too_long"/>
+    <string name="label_password_mismatch"/>
+    <string name="label_your_account"/>
+
+    <string name="action_next"/>
+    <string name="action_back"/>
+    <string name="action_sign_in"/>
+    <string name="action_sign_up"/>
+    <string name="action_back_to_app"/>
+</resources>

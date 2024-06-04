@@ -1,0 +1,36 @@
+<resources>
+    <string name="common_error_title"/>
+    <string name="common_error_subtitle"/>
+    <string name="common_no_data_title"/>
+    <string name="common_no_data_subtitle"/>
+
+    <string name="title_search_results_placeholder"/>
+
+    <string name="error_search_results_title"/>
+    <string name="error_search_results_subtitle"/>
+
+    <string name="empty_search_results_title"/>
+    <string name="empty_search_results_subtitle"/>
+
+    <string name="empty_popular_tags_title"/>
+    <string name="empty_popular_tags_subtitle"/>
+
+    <string name="title_community_banner"/>
+    <string name="subtitle_community_banner"/>
+
+    <string name="title_popular_categories"/>
+    <string name="title_random_latest_publication"/>
+    <string name="title_search_publications"/>
+
+    <string name="action_lets_start"/>
+    <string name="action_show_my_publications"/>
+
+    <string name="label_publication_sort"/>
+    <string name="label_for_last_day"/>
+    <string name="label_search_by_tags"/>
+    <string name="label_search_by_description"/>
+    <string name="label_sort_publication_date"/>
+    <string name="label_sort_accuracy"/>
+    <string name="label_sort_duration"/>
+    <string name="label_publications_count"/>
+</resources>

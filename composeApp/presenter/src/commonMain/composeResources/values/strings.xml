@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Singing Together</string>
+    <string name="app_name">Pina Mmoho</string>
 
     <string name="title_home">Home</string>
     <string name="title_records">Records</string>
@@ -21,7 +21,7 @@
     <string name="title_cannot_fetch_user_info">Cannot fetch user info</string>
 
     <string name="empty_account_publications_title">No publications</string>
-    <string name="empty_account_publications_subtitle">%1$s didn't published anything</string>
+    <string name="empty_account_publications_subtitle">%1$s didn\'t published anything</string>
 
     <string name="title_search_results_placeholder">Search results will be here</string>
 
@@ -32,7 +32,7 @@
     <string name="empty_search_results_subtitle">No publications found for your query</string>
 
     <string name="empty_popular_tags_title">No popular tags</string>
-    <string name="empty_popular_tags_subtitle">IDK, it's very strange...</string>
+    <string name="empty_popular_tags_subtitle">IDK, it\'s very strange…</string>
 
     <string name="title_community_banner">A space to grow,\nlearn, &amp; share</string>
     <string name="subtitle_community_banner">
@@ -46,7 +46,7 @@
     <string name="title_empty_records">Get started</string>
     <string name="subtitle_empty_records">Record something great and your work will be shown here</string>
 
-    <string name="title_empty_tracks">Looks like you didn't open anything</string>
+    <string name="title_empty_tracks">Looks like you didn\'t open anything</string>
     <string name="subtitle_empty_tracks">The tracks you used will be shown here</string>
 
     <string name="title_empty_publications">Empty in publications</string>
@@ -57,12 +57,9 @@
     <string name="title_recently_used_tracks">Recently used tracks</string>
     <string name="title_recent_publications">Recent publications</string>
 
-    <string name="title_record_points">Record nodes</string>
+    <string name="title_record_points">Record points</string>
 
-    <string name="title_empty_tracks">Looks like you didn't open anything</string>
-    <string name="subtitle_empty_tracks">The tracks you used will be shown here</string>
-
-    <string name="empty_voice_line_title">Sing something...</string>
+    <string name="empty_voice_line_title">Sing something…</string>
     <string name="empty_voice_line_subtitle">Note you sang will be displayed here</string>
 
     <string name="lines_not_found_title">No inputs available</string>
@@ -113,7 +110,6 @@
     <string name="action_confirm">OK</string>
     <string name="action_delete_record">Delete record</string>
     <string name="action_see_all_record">See all record</string>
-    <string name="action_delete_record">Delete record</string>
     <string name="action_upload_record">Push to server</string>
     <string name="action_show_publication">Show publication</string>
     <string name="action_publish_record">Publish</string>
@@ -149,7 +145,7 @@
     <string name="label_sort_publication_date">Publication Date</string>
     <string name="label_sort_accuracy">Accuracy</string>
     <string name="label_sort_duration">Duration</string>
-    <string name="label_account_no_publications">%1$s didn't publish anything.</string>
+    <string name="label_account_no_publications">%1$s didn\'t publish anything.</string>
     <string name="label_account_registered_since">Registered since %1$s</string>
     <string name="label_description">Description</string>
     <string name="label_accuracy">%1$d% accuracy</string>

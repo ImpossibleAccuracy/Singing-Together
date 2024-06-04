@@ -1,0 +1,165 @@
+<resources>
+    <string name="app_name">Pina Mmoho</string>
+
+    <string name="title_home">Главная</string>
+    <string name="title_records">Записи</string>
+    <string name="title_community">Сообщество</string>
+    <string name="title_profile">Профиль</string>
+
+    <string name="title_dialog_record_play">Прослушать</string>
+    <string name="title_dialog_record_delete">Удалить запись?</string>
+
+    <string name="title_dialog_record_publish">Введите описание</string>
+    <string name="subtitle_dialog_record_delete">Запись не может быть восстановлена после удаления.</string>
+
+    <string name="common_error_title">Невозможно загрузить</string>
+    <string name="common_error_subtitle">Ошибка при подключении к серверу</string>
+
+    <string name="common_no_data_title">Нет данных</string>
+    <string name="common_no_data_subtitle">Хм, я думал здесь что-то будет</string>
+
+    <string name="title_cannot_fetch_user_info">Невозможно получить информацию о пользователе</string>
+
+    <string name="empty_account_publications_title">Нет публикаций</string>
+    <string name="empty_account_publications_subtitle">%1$s ничего не публиковал</string>
+
+    <string name="title_search_results_placeholder">Результаты поиска будут здесь</string>
+
+    <string name="error_search_results_title">Невозможно выполнить поиск</string>
+    <string name="error_search_results_subtitle">Ошибка при поиске публикаций</string>
+
+    <string name="empty_search_results_title">Публикаций не найдено</string>
+    <string name="empty_search_results_subtitle">По вашему запросу публикаций не найдено</string>
+
+    <string name="empty_popular_tags_title">Нет популярных тегов</string>
+    <string name="empty_popular_tags_subtitle">ХЗ, это очень странно…</string>
+
+    <string name="title_community_banner">Пространство для роста\nи обучения</string>
+    <string name="subtitle_community_banner">Присоединяйтесь к нашему сообществу и поделитесь своим голосом с другими пользователями.</string>
+
+    <string name="title_popular_categories">Популярные категории</string>
+    <string name="title_random_latest_publication">Случайная публикация</string>
+    <string name="title_search_publications">Поиск публикаций</string>
+
+    <string name="title_empty_records">Начать</string>
+    <string name="subtitle_empty_records">Запишите что-нибудь великолепное, и ваша работа будет показана здесь.</string>
+
+    <string name="title_empty_tracks">Похоже, вы ничего не открывал</string>
+    <string name="subtitle_empty_tracks">Здесь будут показаны использованные вами треки.</string>
+
+    <string name="title_empty_publications">Публикаций нет</string>
+    <string name="subtitle_empty_publications">Запишите что-нибудь и опубликуйте, и это отобразится здесь.</string>
+
+    <string name="title_user_welcome">Добро пожаловать, %1$s!</string>
+    <string name="title_recent_records">Последние записи</string>
+    <string name="title_recently_used_tracks">Недавно использованные треки</string>
+    <string name="title_recent_publications">Недавние публикации</string>
+
+    <string name="title_record_points">Точки записи</string>
+
+    <string name="empty_voice_line_title">Спой что-нибудь…</string>
+    <string name="empty_voice_line_subtitle">Здесь будет отображаться нота, которую вы поете.</string>
+
+    <string name="lines_not_found_title">Нет доступного микрофона</string>
+    <string name="lines_not_found_subtitle">Подключите любой микрофон, чтобы продолжить.</string>
+
+    <string name="title_select_record_type">Выберите метод записи</string>
+    <string name="subtitle_select_record_type">Качество записи будет зависеть от выбранного метода.</string>
+
+    <string name="title_select_track">Выбрать трек</string>
+    <string name="subtitle_select_track">Ваш голос будет сравнен с выбранным треком.</string>
+
+    <string name="choice_select_vocal_title">Vocal</string>
+    <string name="choice_select_vocal_subtitle">
+        Только ты и
+        твой голос
+    </string>
+    <string name="choice_select_track_title">Cover</string>
+    <string name="choice_select_track_subtitle">
+        Обучение пению
+        под музыку
+    </string>
+
+    <string name="title_enter_login">Введите имя пользователя</string>
+    <string name="title_welcome_back">С возвращением, %1$s!</string>
+    <string name="title_registration">Привет, %1$s</string>
+    <string name="subtitle_registration">Создать аккаунт</string>
+    <string name="title_auth_success">Успешно</string>
+
+    <string name="title_save_record">Результаты записи</string>
+    <string name="subtitle_save_record">Пожалуйста, проверьте запись, прежде чем продолжить.</string>
+
+    <string name="title_save_record_done">Запись сохранена</string>
+
+    <string name="error_save_record_title">Ошибка сохранения записи</string>
+    <string name="error_save_record_subtitle">Произошла внутреняя ошибка при сохранении записи</string>
+
+
+    <string name="action_select_track">Выбрать файл с устройства</string>
+    <string name="action_view_record">Посмотреть запись</string>
+    <string name="action_start_record">Начать запись</string>
+    <string name="action_stop_record">Завершить запись</string>
+    <string name="action_close">Закрыть</string>
+    <string name="action_back">Назад</string>
+    <string name="action_replace">Заменить</string>
+    <string name="action_next">Далее</string>
+    <string name="action_dismiss">Отмена</string>
+    <string name="action_confirm">OK</string>
+    <string name="action_delete_record">Удалить запись</string>
+    <string name="action_see_all_record">Посмотреть все записи</string>
+    <string name="action_upload_record">Отправить на сервер</string>
+    <string name="action_show_publication">Показать публикацию</string>
+    <string name="action_publish_record">Опубликовать</string>
+    <string name="action_stop_playing">Останавить</string>
+    <string name="action_start_playing">Воспроизвести</string>
+    <string name="action_listen_now">Прослушать</string>
+    <string name="action_see_record">Посмотреть запись</string>
+    <string name="action_lets_start">Давайте начнем</string>
+    <string name="action_show_my_publications">Показать мои публикации</string>
+    <string name="action_start_now">Начать сейчас</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_sign_up">Зарегистрироваться</string>
+    <string name="action_back_to_app">Вернуться к работе</string>
+    <string name="action_logout">Выйти</string>
+    <string name="action_push_to_server">Отправить в облако</string>
+    <string name="action_save_locally">Сохранить локально</string>
+
+
+    <string name="label_pick_from_recent">Выбрать из недавних</string>
+    <string name="label_no_saved_tracks">Нет сохраненных треков</string>
+    <string name="label_or">ИЛИ</string>
+    <string name="label_file_name">Имя файла</string>
+    <string name="label_file_full_path">Полный путь к файлу</string>
+    <string name="label_recording">Запись</string>
+    <string name="label_start_record">Пожалуйста, начните запись</string>
+    <string name="label_no_history">История записи будет отображаться после начала записи.</string>
+    <string name="label_no_selected_track_item">Трек не выбран</string>
+    <string name="label_publication_sort">Сортировать по %1$s</string>
+    <string name="label_for_last_day">За последний день</string>
+    <string name="label_search_by_tags">Поиск по тегам</string>
+    <string name="label_search_by_description">Поиск по описанию</string>
+    <string name="label_sort_publication_date">Дата публикации</string>
+    <string name="label_sort_accuracy">Точность</string>
+    <string name="label_sort_duration">Продолжительность</string>
+    <string name="label_account_no_publications">%1$s ничего не публиковал.</string>
+    <string name="label_account_registered_since">Зарегистрирован с %1$s</string>
+    <string name="label_description">Описание</string>
+    <string name="label_accuracy">%1$d% точности</string>
+    <string name="label_start">Начинать</string>
+    <string name="label_finish">Заканчивать</string>
+    <string name="label_publications_count">%1$d публикаций</string>
+    <string name="label_login">Авторизоваться</string>
+    <string name="label_password">Пароль</string>
+    <string name="label_enter_login">Введите ваш логин</string>
+    <string name="label_enter_password">Введите ваш пароль</string>
+    <string name="label_cannot_be_blank">Значение не может быть пустым или пустым.</string>
+    <string name="label_too_long">Слишком долго</string>
+    <string name="label_password_mismatch">Неправильный пароль</string>
+    <string name="label_your_account">Ваш аккаунт:</string>
+    <string name="label_push_to_server">Запись будет сохранена в вашем аккаунте</string>
+    <string name="label_save_locally">Запись будет сохранена на текущем устройстве.</string>
+    <string name="label_saved_locally">Сохранено на вашем устройстве</string>
+    <string name="label_saved_remote">Сохранено в аккаунте %1$s</string>
+
+    <string name="quest">аноним</string>
+</resources>

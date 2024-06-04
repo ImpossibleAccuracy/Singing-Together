@@ -1,0 +1,26 @@
+<resources>
+    <string name="title_dialog_record_play" />
+    <string name="title_dialog_record_delete" />
+
+    <string name="subtitle_dialog_record_delete" />
+    <string name="title_dialog_record_publish" />
+
+    <string name="action_delete_record" />
+    <string name="action_see_all_record" />
+    <string name="action_delete_record" />
+    <string name="action_upload_record" />
+    <string name="action_show_publication" />
+    <string name="action_publish_record" />
+    <string name="action_stop_playing" />
+    <string name="action_start_playing" />
+    <string name="action_listen_now" />
+    <string name="action_see_record" />
+    <string name="action_confirm" />
+    <string name="action_dismiss" />
+    <string name="action_next" />
+    <string name="action_close" />
+
+    <string name="label_no_selected_track_item" />
+    <string name="label_accuracy" />
+    <string name="label_description" />
+</resources>

@@ -12,6 +12,8 @@ import com.singing.app.data.datasource.declaration.RecordDataSource
 import com.singing.app.data.datasource.declaration.RecordInfoDataSource
 import com.singing.app.data.sqldelight.record.DocumentEntity
 import com.singing.app.domain.model.RecordData
+import com.singing.app.domain.provider.UserProvider
+import com.singing.app.domain.provider.currentUser
 import com.singing.domain.model.RecordPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +25,7 @@ import pro.respawn.apiresult.ApiResult
 class RecordLocalDataSourceImpl(
     private val appDatabase: AppDatabase,
     private val recordInfoDataSource: RecordInfoDataSource,
+    private val userProvider: UserProvider,
 ) : RecordDataSource.Local {
     override suspend fun getLocalIdByRemoteId(remoteId: Int): Int? =
         appDatabase.recordQueries
@@ -98,6 +101,10 @@ class RecordLocalDataSourceImpl(
         if (!record.isSavedLocally) throw IllegalArgumentException("Record not saved locally")
 
         appDatabase.recordQueries.updateRemoteId(remoteId.toLong(), record.key.localId!!.toLong())
+        appDatabase.recordQueries.updateCreatorId(
+            userProvider.currentUser!!.id.toLong(),
+            record.key.localId!!.toLong()
+        )
 
         getRecord(record.key.localId!!)
     }

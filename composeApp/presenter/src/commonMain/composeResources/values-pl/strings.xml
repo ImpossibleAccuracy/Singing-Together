@@ -1,0 +1,161 @@
+<resources>
+    <string name="app_name">Wspólne śpiewanie</string>
+
+    <string name="title_home">Dom</string>
+    <string name="title_records">Dokumentacja</string>
+    <string name="title_community">Wspólnota</string>
+    <string name="title_profile">Profil</string>
+
+    <string name="title_dialog_record_play">Słuchać</string>
+    <string name="title_dialog_record_delete">Usunąć rekord\?</string>
+
+    <string name="title_dialog_record_publish">Wprowadź opis</string>
+    <string name="subtitle_dialog_record_delete">Po usunięciu rekordu nie można przywrócić.</string>
+
+    <string name="common_error_title">Nie można pobrać</string>
+    <string name="common_error_subtitle">Błąd podczas połączenia z serwerem</string>
+
+    <string name="common_no_data_title">Brak danych</string>
+    <string name="common_no_data_subtitle">Hmm, myślałem, że coś tu będzie</string>
+
+    <string name="title_cannot_fetch_user_info">Nie można pobrać informacji o użytkowniku</string>
+
+    <string name="empty_account_publications_title">Brak publikacji</string>
+    <string name="empty_account_publications_subtitle">%1$s nic nie opublikował</string>
+
+    <string name="title_search_results_placeholder">Wyniki wyszukiwania będą tutaj</string>
+
+    <string name="error_search_results_title">Nie można wyszukiwać</string>
+    <string name="error_search_results_subtitle">Błąd podczas wyszukiwania publikacji</string>
+
+    <string name="empty_search_results_title">Nie znaleziono publikacji</string>
+    <string name="empty_search_results_subtitle">Nie znaleziono publikacji odpowiadających Twojemu zapytaniu</string>
+
+    <string name="empty_popular_tags_title">Brak popularnych tagów</string>
+    <string name="empty_popular_tags_subtitle">IDK, to bardzo dziwne…</string>
+
+    <string name="title_community_banner">Przestrzeń do rozwoju,\nucz się i udostępniaj</string>
+    <string name="subtitle_community_banner">Dołącz do naszej społeczności i podziel się swoim głosem z innymi użytkownikami i posłuchaj, jak śpiewają.</string>
+
+    <string name="title_popular_categories">Popularne kategorie</string>
+    <string name="title_random_latest_publication">Losowa najnowsza publikacja</string>
+    <string name="title_search_publications">Wyszukaj publikacje</string>
+
+    <string name="title_empty_records">Zaczynaj</string>
+    <string name="subtitle_empty_records">Nagraj coś wspaniałego, a Twoja praca zostanie tutaj pokazana</string>
+
+    <string name="title_empty_tracks">Wygląda na to, że niczego nie otworzyłeś</string>
+    <string name="subtitle_empty_tracks">Tutaj zostaną pokazane użyte utwory</string>
+
+    <string name="title_empty_publications">Pusto w publikacjach</string>
+    <string name="subtitle_empty_publications">Nagraj coś i opublikuj, a będzie to tutaj widoczne</string>
+
+    <string name="title_user_welcome">Witamy %1$s!</string>
+    <string name="title_recent_records">Najnowsze zapisy</string>
+    <string name="title_recently_used_tracks">Ostatnio używane utwory</string>
+    <string name="title_recent_publications">Najnowsze publikacje</string>
+
+    <string name="title_record_points">Węzły rekordowe</string>
+
+    <string name="empty_voice_line_title">Zaśpiewaj coś…</string>
+    <string name="empty_voice_line_subtitle">Uwaga, którą zaśpiewałeś, zostanie wyświetlona tutaj</string>
+
+    <string name="lines_not_found_title">Brak dostępnych wejść</string>
+    <string name="lines_not_found_subtitle">Aby kontynuować, podłącz dowolny mikrofon</string>
+
+    <string name="title_select_record_type">Wybierz metodę nagrywania</string>
+    <string name="subtitle_select_record_type">Jakość nagrania będzie zależeć od wybranej metody.</string>
+
+    <string name="title_select_track">Wybierz utwór</string>
+    <string name="subtitle_select_track">Twój głos zostanie porównany z wybranym utworem</string>
+
+    <string name="choice_select_vocal_title">Wokal</string>
+    <string name="choice_select_vocal_subtitle">Tylko ty i\n        Twój głos</string>
+    <string name="choice_select_track_title">Okładka</string>
+    <string name="choice_select_track_subtitle">Trening śpiewu\n        do muzyki</string>
+
+    <string name="title_enter_login">Wpisz nazwę użytkownika</string>
+    <string name="title_welcome_back">Witamy ponownie, %1$s!</string>
+    <string name="title_registration">Cześć, %1$s</string>
+    <string name="subtitle_registration">Utwórz swoje konto</string>
+    <string name="title_auth_success">Powodzenie</string>
+
+    <string name="title_save_record">Rekordowe wyniki</string>
+    <string name="subtitle_save_record">Przed kontynuowaniem sprawdź dane w swoich rekordach.</string>
+
+    <string name="title_save_record_done">Rekord zapisany</string>
+
+    <string name="error_save_record_title">Błąd zapisu zapisu</string>
+    <string name="error_save_record_subtitle">Wystąpił błąd podczas zapisywania nagrania</string>
+
+    
+
+    <string name="action_select_track">Wybierz plik z urządzenia</string>
+    <string name="action_view_record">Zobacz rekord</string>
+    <string name="action_start_record">Rozpocznij nagrywanie</string>
+    <string name="action_stop_record">Zakończ nagrywanie</string>
+    <string name="action_close">Zamknąć</string>
+    <string name="action_back">Z powrotem</string>
+    <string name="action_replace">Zastępować</string>
+    <string name="action_next">Następny</string>
+    <string name="action_dismiss">Anulować</string>
+    <string name="action_confirm">OK</string>
+    <string name="action_delete_record">Usuń rekord</string>
+    <string name="action_see_all_record">Zobacz wszystkie nagrania</string>
+    <string name="action_upload_record">Prześlij na serwer</string>
+    <string name="action_show_publication">Pokaż publikację</string>
+    <string name="action_publish_record">Publikować</string>
+    <string name="action_stop_playing">Zatrzymywać się</string>
+    <string name="action_start_playing">Grać</string>
+    <string name="action_listen_now">Słuchaj teraz</string>
+    <string name="action_see_record">Zobacz rekord</string>
+    <string name="action_lets_start">Zaczynajmy</string>
+    <string name="action_show_my_publications">Pokaż moje publikacje</string>
+    <string name="action_start_now">Zacząć teraz</string>
+    <string name="action_sign_in">Zalogować się</string>
+    <string name="action_sign_up">Zapisać się</string>
+    <string name="action_back_to_app">Powrót do aplikacji</string>
+    <string name="action_logout">Wyloguj</string>
+    <string name="action_push_to_server">Prześlij na serwer</string>
+    <string name="action_save_locally">Zapisz lokalnie</string>
+
+    
+
+    <string name="label_pick_from_recent">Wybierz z ostatnich</string>
+    <string name="label_no_saved_tracks">Brak zapisanych utworów</string>
+    <string name="label_or">LUB</string>
+    <string name="label_file_name">Nazwa pliku</string>
+    <string name="label_file_full_path">Pełna ścieżka pliku</string>
+    <string name="label_recording">Nagranie</string>
+    <string name="label_start_record">Proszę rozpocząć nagrywanie</string>
+    <string name="label_no_history">Historia nagrań zostanie wyświetlona po rozpoczęciu nagrywania</string>
+    <string name="label_no_selected_track_item">Nie wybrano utworu</string>
+    <string name="label_publication_sort">Sortuj według %1$s</string>
+    <string name="label_for_last_day">Na ostatni dzień</string>
+    <string name="label_search_by_tags">Wyszukiwanie po tagach</string>
+    <string name="label_search_by_description">Szukaj według opisu</string>
+    <string name="label_sort_publication_date">Data publikacji</string>
+    <string name="label_sort_accuracy">Dokładność</string>
+    <string name="label_sort_duration">Czas trwania</string>
+    <string name="label_account_no_publications">%1$s nic nie opublikował.</string>
+    <string name="label_account_registered_since">Zarejestrowano od %1$s</string>
+    <string name="label_description">Opis</string>
+    <string name="label_accuracy">Dokładność %1$d%.</string>
+    <string name="label_start">Początek</string>
+    <string name="label_finish">Skończyć</string>
+    <string name="label_publications_count">%1$d publikacji</string>
+    <string name="label_login">Zaloguj sie</string>
+    <string name="label_password">Hasło</string>
+    <string name="label_enter_login">Wpisz swój login</string>
+    <string name="label_enter_password">Wprowadź hasło</string>
+    <string name="label_cannot_be_blank">Wartość nie może być pusta ani pusta</string>
+    <string name="label_too_long">Za długo</string>
+    <string name="label_password_mismatch">Złe hasło</string>
+    <string name="label_your_account">Twoje konto to:</string>
+    <string name="label_push_to_server">Nagranie zostanie zapisane na Twoim koncie</string>
+    <string name="label_save_locally">Nagranie zostanie zapisane na bieżącym urządzeniu</string>
+    <string name="label_saved_locally">Zapisano na Twoim urządzeniu</string>
+    <string name="label_saved_remote">Zapisano na koncie %1$s</string>
+
+    <string name="quest">Poszukiwanie</string>
+</resources>

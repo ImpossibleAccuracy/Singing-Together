@@ -1,0 +1,161 @@
+<resources>
+    <string name="app_name">साथ मिलकर गाना</string>
+
+    <string name="title_home">घर</string>
+    <string name="title_records">अभिलेख</string>
+    <string name="title_community">समुदाय</string>
+    <string name="title_profile">प्रोफ़ाइल</string>
+
+    <string name="title_dialog_record_play">सुनना</string>
+    <string name="title_dialog_record_delete">रिकॉर्ड मिटाएँ\?</string>
+
+    <string name="title_dialog_record_publish">विवरण दर्ज करें</string>
+    <string name="subtitle_dialog_record_delete">रिकॉर्ड को हटाने के बाद उसे पुनः स्थापित नहीं किया जा सकता.</string>
+
+    <string name="common_error_title">प्राप्त नहीं किया जा सका</string>
+    <string name="common_error_subtitle">सर्वर से कनेक्शन करते समय त्रुटि</string>
+
+    <string name="common_no_data_title">कोई डेटा नहीं</string>
+    <string name="common_no_data_subtitle">हम्म, मुझे लगा था कि यहाँ कुछ होगा</string>
+
+    <string name="title_cannot_fetch_user_info">उपयोगकर्ता जानकारी प्राप्त नहीं की जा सकी</string>
+
+    <string name="empty_account_publications_title">कोई प्रकाशन नहीं</string>
+    <string name="empty_account_publications_subtitle">%1$s ने कुछ भी प्रकाशित नहीं किया</string>
+
+    <string name="title_search_results_placeholder">खोज परिणाम यहां होंगे</string>
+
+    <string name="error_search_results_title">खोज नहीं की जा सकती</string>
+    <string name="error_search_results_subtitle">प्रकाशन खोजते समय त्रुटि</string>
+
+    <string name="empty_search_results_title">कोई प्रकाशन नहीं मिला</string>
+    <string name="empty_search_results_subtitle">आपके प्रश्न के लिए कोई प्रकाशन नहीं मिला</string>
+
+    <string name="empty_popular_tags_title">कोई लोकप्रिय टैग नहीं</string>
+    <string name="empty_popular_tags_subtitle">मुझे नहीं मालूम, यह बहुत अजीब है…</string>
+
+    <string name="title_community_banner">बढ़ने, सीखने और साझा करने के लिए एक स्थान</string>
+    <string name="subtitle_community_banner">हमारे समुदाय में शामिल हों और अपनी आवाज अन्य उपयोगकर्ताओं के साथ साझा करें और उन्हें गाते हुए सुनें।</string>
+
+    <string name="title_popular_categories">लोकप्रिय श्रेणियां</string>
+    <string name="title_random_latest_publication">यादृच्छिक नवीनतम प्रकाशन</string>
+    <string name="title_search_publications">प्रकाशन खोजें</string>
+
+    <string name="title_empty_records">शुरू हो जाओ</string>
+    <string name="subtitle_empty_records">कुछ बढ़िया रिकॉर्ड करें और आपका काम यहां दिखाया जाएगा</string>
+
+    <string name="title_empty_tracks">लगता है आपने कुछ भी नहीं खोला</string>
+    <string name="subtitle_empty_tracks">आपके द्वारा उपयोग किए गए ट्रैक यहां दिखाए जाएंगे</string>
+
+    <string name="title_empty_publications">प्रकाशनों में रिक्त</string>
+    <string name="subtitle_empty_publications">कुछ रिकॉर्ड करें और उन्हें प्रकाशित करें और यह यहां दिखाई देगा</string>
+
+    <string name="title_user_welcome">%1$s का स्वागत है!</string>
+    <string name="title_recent_records">हाल के रिकॉर्ड</string>
+    <string name="title_recently_used_tracks">हाल ही में उपयोग किए गए ट्रैक</string>
+    <string name="title_recent_publications">हाल के प्रकाशन</string>
+
+    <string name="title_record_points">नोड्स रिकॉर्ड करें</string>
+
+    <string name="empty_voice_line_title">कुछ गाओ…</string>
+    <string name="empty_voice_line_subtitle">ध्यान दें कि आपके द्वारा गाया गया गाना यहाँ प्रदर्शित किया जाएगा</string>
+
+    <string name="lines_not_found_title">कोई इनपुट उपलब्ध नहीं</string>
+    <string name="lines_not_found_subtitle">जारी रखने के लिए कोई भी माइक्रोफ़ोन प्लग इन करें</string>
+
+    <string name="title_select_record_type">रिकॉर्डिंग विधि चुनें</string>
+    <string name="subtitle_select_record_type">रिकॉर्डिंग की गुणवत्ता चुनी गई विधि पर निर्भर करेगी।</string>
+
+    <string name="title_select_track">ट्रैक चुनें</string>
+    <string name="subtitle_select_track">आपकी आवाज़ की तुलना चयनित ट्रैक से की जाएगी</string>
+
+    <string name="choice_select_vocal_title">स्वर</string>
+    <string name="choice_select_vocal_subtitle">सिर्फ़ आप और\nआपकी आवाज़</string>
+    <string name="choice_select_track_title">ढकना</string>
+    <string name="choice_select_track_subtitle">संगीत के साथ गायन प्रशिक्षण</string>
+
+    <string name="title_enter_login">उपयोगकर्ता नाम दर्ज करें</string>
+    <string name="title_welcome_back">आपका पुनः स्वागत है, %1$s!</string>
+    <string name="title_registration">नमस्ते, %1$s</string>
+    <string name="subtitle_registration">अपना खाता बनाएं</string>
+    <string name="title_auth_success">सफलता</string>
+
+    <string name="title_save_record">रिकॉर्ड परिणाम</string>
+    <string name="subtitle_save_record">कृपया आगे बढ़ने से पहले अपना रिकॉर्ड डेटा जांच लें।</string>
+
+    <string name="title_save_record_done">रिकॉर्ड सहेजा गया</string>
+
+    <string name="error_save_record_title">रिकॉर्ड सहेजने में त्रुटि</string>
+    <string name="error_save_record_subtitle">रिकॉर्डिंग सहेजते समय एक त्रुटि हुई</string>
+
+    
+
+    <string name="action_select_track">डिवाइस से फ़ाइल चुनें</string>
+    <string name="action_view_record">रिकॉर्ड देखें</string>
+    <string name="action_start_record">रिकॉर्डिंग शुरू</string>
+    <string name="action_stop_record">रिकॉर्ड समाप्त करें</string>
+    <string name="action_close">बंद करना</string>
+    <string name="action_back">पीछे</string>
+    <string name="action_replace">प्रतिस्थापित करें</string>
+    <string name="action_next">अगला</string>
+    <string name="action_dismiss">रद्द करना</string>
+    <string name="action_confirm">ठीक है</string>
+    <string name="action_delete_record">रिकॉर्ड मिटाएँ</string>
+    <string name="action_see_all_record">सभी रिकॉर्ड देखें</string>
+    <string name="action_upload_record">सर्वर पर पुश करें</string>
+    <string name="action_show_publication">प्रकाशन दिखाएं</string>
+    <string name="action_publish_record">प्रकाशित करना</string>
+    <string name="action_stop_playing">रुकना</string>
+    <string name="action_start_playing">खेल</string>
+    <string name="action_listen_now">सुनो अब</string>
+    <string name="action_see_record">रिकॉर्ड देखें</string>
+    <string name="action_lets_start">चलो शुरू करो</string>
+    <string name="action_show_my_publications">मेरे प्रकाशन दिखाएं</string>
+    <string name="action_start_now">शुरू करें</string>
+    <string name="action_sign_in">दाखिल करना</string>
+    <string name="action_sign_up">साइन अप करें</string>
+    <string name="action_back_to_app">ऐप पर वापस जाएं</string>
+    <string name="action_logout">लॉग आउट</string>
+    <string name="action_push_to_server">सर्वर पर पुश करें</string>
+    <string name="action_save_locally">स्थानीय रूप से सहेजें</string>
+
+    
+
+    <string name="label_pick_from_recent">हाल ही में से चुनें</string>
+    <string name="label_no_saved_tracks">कोई सहेजा हुआ ट्रैक नहीं</string>
+    <string name="label_or">या</string>
+    <string name="label_file_name">फ़ाइल का नाम</string>
+    <string name="label_file_full_path">फ़ाइल का पूर्ण पथ</string>
+    <string name="label_recording">रिकॉर्डिंग</string>
+    <string name="label_start_record">कृपया रिकॉर्डिंग शुरू करें</string>
+    <string name="label_no_history">रिकॉर्डिंग शुरू होने के बाद रिकॉर्डिंग इतिहास प्रदर्शित किया जाएगा</string>
+    <string name="label_no_selected_track_item">कोई ट्रैक चयनित नहीं</string>
+    <string name="label_publication_sort">%1$s के अनुसार क्रमबद्ध करें</string>
+    <string name="label_for_last_day">आखिरी दिन के लिए</string>
+    <string name="label_search_by_tags">टैग द्वारा खोजें</string>
+    <string name="label_search_by_description">विवरण द्वारा खोजें</string>
+    <string name="label_sort_publication_date">प्रकाशन तिथि</string>
+    <string name="label_sort_accuracy">शुद्धता</string>
+    <string name="label_sort_duration">अवधि</string>
+    <string name="label_account_no_publications">%1$s ने कुछ भी प्रकाशित नहीं किया.</string>
+    <string name="label_account_registered_since">%1$s से पंजीकृत</string>
+    <string name="label_description">विवरण</string>
+    <string name="label_accuracy">%1$d% सटीकता</string>
+    <string name="label_start">शुरू</string>
+    <string name="label_finish">खत्म करना</string>
+    <string name="label_publications_count">%1$d प्रकाशन</string>
+    <string name="label_login">लॉग इन करें</string>
+    <string name="label_password">पासवर्ड</string>
+    <string name="label_enter_login">अपना लॉगिन दर्ज करें</string>
+    <string name="label_enter_password">अपना कूटशब्द भरें</string>
+    <string name="label_cannot_be_blank">मान रिक्त या खाली नहीं हो सकता</string>
+    <string name="label_too_long">बहुत लंबा</string>
+    <string name="label_password_mismatch">गलत पासवर्ड</string>
+    <string name="label_your_account">आपका खाता है:</string>
+    <string name="label_push_to_server">रिकॉर्डिंग आपके खाते में सहेज ली जाएगी</string>
+    <string name="label_save_locally">रिकॉर्डिंग वर्तमान डिवाइस पर सहेजी जाएगी</string>
+    <string name="label_saved_locally">आपके डिवाइस पर सहेजा गया</string>
+    <string name="label_saved_remote">%1$s खाते में सहेजा गया</string>
+
+    <string name="quest">खोज</string>
+</resources>
